@@ -1,6 +1,10 @@
-# Projektdaten (CWS-intern) gehören nie ins Repository
+# Project data (CWS internal) never belongs in the repository
+*Backup*.json
 *Sicherung*.json
+AI-Request_*.json
+AI-Anfrage_*.json
 *_Readiness_*.csv
+*_Tools-Access_*.csv
 *_Tools-Zugaenge_*.csv
 *.xlsx
 *.xlsm

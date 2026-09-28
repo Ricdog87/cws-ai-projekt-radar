@@ -1,114 +1,127 @@
-# CWS AI Projekt-Radar
+# CWS AI Project Radar
 
-Tägliches Steuerungs-Dashboard für alle AI-Projekte bei CWS, End-to-End vom Intake bis zum Abschluss.
+Daily steering dashboard for all AI projects at CWS, end to end from intake to closure, plus the intake point for new use cases from the business units.
 
-**Betrieb:** lokal im Browser, keine Cloud. Siehe „Lokal starten“.
+**Runs locally in the browser, no cloud.** See "Run locally".
 
-## Aufbau
+## What's inside
 
-Gestaltet wie das **AI Governance Portal** (AI Cockpit), damit beide Tools zusammenpassen. Immer helles Design, auch wenn Windows im Dunkelmodus läuft.
+Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the same. Always light, even when Windows runs in dark mode.
 
-- **Projekt-Overview (Startseite):**
-  - Alle AI-Projekte parallel als Timeline über die 8 Phasen bis zum Ziel.
-  - Aktuelle Phase mit Fortschritt, „Heute“-Linie, Verzug schraffiert, Go-Live und Go-Live-Prognose bei Verzug.
-  - Stern markiert, woran du gerade arbeitest („In Arbeit“), diese Projekte stehen oben.
-  - Zeitraum Gesamt, 12, 6 oder 3 Monate. Darunter Status-Karten je Projekt.
-  - Gebaut für Bildschirm-Sharing: Stand, Fortschritt und nächste Schritte auf einen Blick.
-- **Heute:** Tagesfokus mit Kennzahlen, Pipeline, „Zuerst angehen“, offenen Folgeaktionen und Terminen der nächsten 14 Tage.
-- **Projektanfragen:**
-  - Ideen der Fachbereiche für Workflows, Automatisierung und AI Agents.
-  - Potenzial in Stunden pro Monat (Fälle × Minuten), Priorität aus Potenzial, Dringlichkeit, Aufwand und Datenlage.
-  - Priorisierungsmatrix (Quick Wins, Strategisch, Nebenbei, Nicht jetzt).
-  - Per Klick als Projekt übernehmen.
-- **Portfolio:** Board nach Phase oder Tabelle mit Status- und Readiness-Pillen.
-- **Kopfzeile:** Pfad „AI Center of Excellence / …“, Status „Lokal“, „+ Projekt“ und dein Profil (Name, Rolle).
+- **Project overview (start page):**
+  - All AI projects in parallel on one timeline across the 8 phases up to the go-live.
+  - Current phase with progress, "Today" line, delay hatched, go-live and a forecast go-live when late.
+  - A star marks what you are working on right now ("in progress"); those projects sit at the top.
+  - Range: all, 12, 6 or 3 months. Status cards per project below.
+  - Built for screen sharing: status, progress and next steps at a glance.
+- **Today:** daily focus with KPIs, pipeline, "Do first", open follow-ups and the next 14 days, including booked assessment meetings.
+- **Project requests:**
+  - Use cases from business units for workflows, automation and AI agents.
+  - Every request comes with a booked assessment meeting.
+  - Potential in hours per month (cases × minutes), priority from potential, urgency, effort and data availability.
+  - Prioritisation matrix (quick wins, strategic, fill-ins, not now).
+  - Turn into a project with one click.
+- **Portfolio:** board by phase or table with status and readiness pills.
+- **Header:** path "AI Center of Excellence / …", status "Local", "+ Project" and your profile (name, role).
 
-## Projektanfragen der Fachbereiche
+## Project requests from business units
 
-1. Gib den Fachbereichen die Datei **`app/anfrage.html`** (per Teams, E-Mail oder SharePoint). Sie öffnen sie im Browser, ohne Installation und ohne Login.
-2. Sie beschreiben ihre Idee: Art (Workflow, Automatisierung, AI Agent, noch unklar), Problem, Ziel, Fälle pro Monat, Minuten je Fall, Systeme, Dringlichkeit, Datenlage, Kontakt.
-3. „Anfrage speichern“ erzeugt eine Datei `AI-Anfrage_<Fachbereich>_<Datum>.json`, die sie dir schicken. Alternativ „Als Text kopieren“ für Teams oder E-Mail.
-4. Du spielst die Datei im Radar über „Anfrage einspielen“ oder „Excel / Sicherung laden“ ein. Doppelte Anfragen werden erkannt.
-5. Status: Neu → In Prüfung → Angenommen, Zurückgestellt oder Abgelehnt. „In Projekt übernehmen“ legt ein Projekt in Phase „Intake“ mit allen Angaben an.
+1. Share **`app/request.html`** with the business units (Teams, e-mail or SharePoint). It opens in any browser, no installation, no login.
+2. They describe their use case in their own words: type (workflow, automation, AI agent, not sure yet), current situation, their idea for a solution, expected outcome, cases per month, minutes per case, systems, urgency, data, business unit, country / site, contact.
+3. **They must book an assessment meeting** with you (30 min). The form only saves once a future date is entered and the booking is confirmed.
+4. "Save request" creates `AI-Request_<business-unit>_<date>.json`, which they send to you. Alternatively "Copy as text" for Teams or e-mail.
+5. You load the file in the radar via "Import request" or "Import". Duplicates are detected. The meeting shows up in the request list, in "Today" and in the next 14 days.
+6. Status: New → In review → Accepted, Parked or Rejected. "Turn into project" creates a project in phase "Intake" with all details.
 
-Anrufe oder Mails erfasst du direkt im Radar mit „Anfrage erfassen“. Wem die Fachbereiche die Datei schicken, steht oben im Formular in `CONTACT`.
+Calls or e-mails can be added directly in the radar with "Add request".
 
-## Projektlebenszyklus
+**Settings at the top of `app/request.html`:**
 
-Intake & Idee → **Discovery & Readiness** → Konzept & Freigabe → Umsetzung → Test & Abnahme → Go-Live & Rollout → Hypercare → Abgeschlossen
+```js
+const CONTACT_NAME = "the AI Center of Excellence";
+const CONTACT_EMAIL = "ricardo.serrano@cws.com";
+const BOOKING_URL = "";   // Microsoft Bookings or Outlook "Book time with me" link
+const MEETING_MINUTES = 30;
+```
 
-Jede Phase hat eine Checkliste (u. a. Readiness-Check, Datenschutz, Betriebsrat, AI-Act-Risikoklasse, Inventory-Eintrag). Der Fortschritt in Prozent ergibt sich aus Phase und erledigten Checklistenpunkten.
+With `BOOKING_URL` set, the form shows an "Open booking calendar" button. Without it, it asks the requester to send a Teams invite to `CONTACT_EMAIL`.
 
-**Zeitplan:** Jede Phase hat ein geplantes Ende. Ohne eigene Termine verteilt das Radar die Phasen automatisch zwischen Start und Go-Live, danach 6 Wochen Hypercare und 2 Wochen Abschluss. Eigene Termine trägst du im Projekt unter „Überblick → Zeitplan“ ein. Liegt heute nach dem geplanten Ende der aktuellen Phase, zeigt das Radar Verzug und eine Go-Live-Prognose.
+## Project lifecycle
 
-## Readiness-Check und Zugangsmatrix (je Projekt)
+Intake & idea → **Discovery & readiness** → Concept & approval → Build → Test & acceptance → Go-live & rollout → Hypercare → Closed
 
-Aufgebaut nach dem Muster der Checkliste „Sales Along the Route | Nordwest“:
+Each phase has a checklist (readiness check, data protection, works council, AI Act risk class, inventory entry and more). Progress in percent comes from the phase and the completed checklist items.
 
-- **9 Prüfbereiche:** Zielbild & Scope, Ist-Prozess & Business-Regeln, Daten & Datenqualität, Architektur & Integration, Tools/Lizenzen/Zugänge, Security/Datenschutz/AI Governance, Betrieb/Support/Skalierung, KPIs/Abnahme/Entscheidung, Rollen/Termine/nächste Schritte.
-- **Je Frage:** Kernfrage ★, kritisch, Typ, Priorität, Antwort / Ist-Stand, benötigte Evidenz, Owner, Status (Offen, Teilweise, Geklärt, Nicht relevant), Folgeaktion, Fälligkeit.
-- **Bewertung wie in der Excel:** Readiness = (Geklärt + ½ Teilweise) / (alle − nicht relevant).
-  - **READY:** ab 80 % und keine kritische Lücke offen.
-  - **NOT READY:** unter 50 % oder mindestens eine kritische Lücke offen.
-  - **CONDITIONAL GO:** alles dazwischen.
-  - Dazu Readiness je Prüfbereich.
-- **Tool- & Zugangsmatrix:** Tool/System, Zweck, Zugriff/Lizenz, vorhanden?, Phase/Abhängigkeit, Approver/Owner, nächster Schritt/Ticket.
-- **Folgeaktionen mit Owner und Fälligkeit** erscheinen in „Heute“. Überfällige Aktionen, NOT READY und kritische Lücken rücken ein Projekt nach oben.
-- **Kritische Lücken und Readiness** stehen im Portfolio, in der Overview und in „Heute“.
-- **Statuswechsel** landen im Verlauf des Projekts.
-- **Export:** Readiness und Zugangsmatrix als CSV, direkt in Excel zu öffnen.
-- **Neue Projekte** starten mit einem Standard-Check (29 Fragen, 15 Kernfragen, 5 kritische) und einer Standard-Zugangsmatrix.
+**Schedule:** every phase has a planned end. Without your own dates, the radar spreads the phases automatically between start and go-live, followed by 6 weeks of hypercare and 2 weeks of closure. You set your own dates in the project under "Overview → Schedule". If today is past the planned end of the current phase, the radar shows the delay and a forecast go-live.
 
-### Excel-Checkliste einlesen
+## Readiness check and access matrix (per project)
 
-- **„Laden“ oben rechts → .xlsx wählen:** Das Radar legt ein neues Projekt an, mit Titel, Teilnehmenden, Ziel/Scope, Meeting-Datum, allen Prüffragen und der Zugangsmatrix.
-- **Im Projekt unter „Readiness → Excel übernehmen“:** ersetzt den Check eines bestehenden Projekts.
-- **Erkannt wird das Format der Nordwest-Checkliste:**
-  - Kopfzeile mit „Leitfrage“ und „Status“, weitere Spalten per Name.
-  - Kritische Fragen aus der Formel „Kritische Lücken“.
-  - Zugangsmatrix über die Spalten „Tool“ und „Vorhanden?“.
-- Die Excel-Datei wird nur im Browser gelesen und nirgends hochgeladen.
+Built on the pattern of the "Sales Along the Route | Nordwest" checklist:
 
-## Lokal starten (aktueller Betrieb)
+- **9 areas:** target picture & scope, current process & business rules, data & data quality, architecture & integration, tools/licences/access, security/data protection/AI governance, operations/support/scaling, KPIs/acceptance/decision, roles/dates/next steps.
+- **Per question:** core question ★, critical, type, priority, answer / current state, evidence needed, owner, status (Open, Partial, Resolved, Not relevant), follow-up, due date.
+- **Scoring as in the Excel:** readiness = (resolved + ½ partial) / (all − not relevant).
+  - **READY:** 80 % or more and no critical gap open.
+  - **NOT READY:** below 50 % or at least one critical gap open.
+  - **CONDITIONAL GO:** everything in between.
+  - Plus readiness per area.
+- **Tool & access matrix:** tool/system, purpose, access/licence, available?, phase/dependency, approver/owner, next step/ticket.
+- **Follow-ups with owner and due date** appear in "Today". Overdue follow-ups, NOT READY and critical gaps move a project up.
+- **Critical gaps and readiness** show in the portfolio, the overview and "Today".
+- **Status changes** are logged in the project history.
+- **Export:** readiness and access matrix as CSV, opens directly in Excel.
+- **New projects** start with a default check (29 questions, 15 core, 5 critical) and a default access matrix.
 
-Solange echte CWS-Daten eingepflegt werden, läuft das Radar **ausschließlich lokal**. Es gibt keinen Server und keine Cloud, und die Seite stellt keine einzige Netzwerkanfrage (auch Schriften sind eingebettet).
+### Import an Excel checklist
 
-1. Repository klonen oder als ZIP herunterladen.
-2. **Starten über den lokalen Link (empfohlen):** Doppelklick auf `Radar-starten.cmd`. Das Radar öffnet sich unter **http://localhost:8765**.
-   - In Cursor: `Strg+Shift+B` (Task „Radar starten“), oder im Terminal `.\Radar-starten.cmd`.
-   - Der Mini-Server (`start.ps1`) braucht nur PowerShell. Er ist nur auf diesem Rechner erreichbar und sendet nichts ins Internet. Beenden mit `Strg+C`.
-   - Innerhalb von Cursor ansehen: `Strg+Shift+P` → „Simple Browser: Show“ → `http://localhost:8765`.
-3. **Alternativ ohne Server:** `app/index.html` per Doppelklick in Edge oder Chrome öffnen.
-4. Projekte anlegen. Gespeichert wird automatisch im Browser dieses Rechners.
+- **"Import" → choose .xlsx:** the radar creates a new project with title, participants, goal/scope, meeting date, all questions and the access matrix.
+- **In the project under "Readiness → Import Excel":** replaces the check of an existing project.
+- **Recognised format** (German or English headers):
+  - Header row with "Leitfrage"/"Question" and "Status", other columns by name.
+  - Critical questions from the "critical gaps" formula.
+  - Access matrix via the columns "Tool" and "Vorhanden?"/"Available?".
+- The Excel file is only read in the browser and never uploaded.
 
-**Wichtig:** Der Browser speichert die Daten getrennt je Adresse. `http://localhost:8765` und die per Doppelklick geöffnete Datei sehen **unterschiedliche** Daten. Entscheide dich für einen Weg. Beim Wechsel einmal „Sichern“ und am neuen Weg „Laden“. Der Port 8765 ist fest eingestellt, damit die Adresse und damit die Daten gleich bleiben.
+## Run locally
 
-**Sichern ist Pflicht.** Die Daten liegen im Browser-Speicher. Wer den Browser-Verlauf inklusive „Website-Daten“ löscht, löscht auch das Radar.
+While real CWS data is entered, the radar runs **locally only**. No server, no cloud, and the page makes no network request at all (fonts are embedded too).
 
-- **Sichern** (oben rechts) lädt eine Datei `CWS-AI-Radar_Sicherung_JJJJ-MM-TT.json` herunter. Sie gehört in deinen CWS-OneDrive- oder SharePoint-Ordner, nicht in dieses Repository (`.gitignore` blockiert Sicherungen, CSV-Exporte und Excel-Dateien).
-- **Laden** spielt eine Sicherung wieder ein, z. B. auf einem neuen Rechner. Vor dem Ersetzen fragt das Radar nach.
-- Nach 7 Tagen ohne Sicherung erscheint ein Hinweis.
-- Zum Ausprobieren `data/beispielprojekte.json` laden und später mit „Beispiele entfernen“ wieder löschen.
-- Beim Laden einer Sicherung kannst du wählen: **Hinzufügen / aktualisieren** (bestehende Projekte bleiben) oder **Alles ersetzen**.
+1. Clone the repository or download it as ZIP.
+2. **Start via the local link (recommended):** double-click `Start-Radar.cmd`. The radar opens at **http://localhost:8765**.
+   - In Cursor: `Ctrl+Shift+B` (task "Start radar"), or in the terminal `.\Start-Radar.cmd`.
+   - The mini server (`start.ps1`) only needs PowerShell. It is only reachable on this computer and sends nothing to the internet. Stop with `Ctrl+C`.
+   - View inside Cursor: `Ctrl+Shift+P` → "Simple Browser: Show" → `http://localhost:8765`.
+3. **Without a server:** open `app/index.html` by double-clicking it in Edge or Chrome.
+4. Add projects. Everything is saved automatically in this computer's browser.
 
-Immer dieselbe Datei im selben Browser öffnen. Ein anderer Browser oder ein privates Fenster sieht die Daten nicht.
+**Important:** the browser keeps data separately per address. `http://localhost:8765` and the double-clicked file see **different** data. Pick one. When switching, "Back up" once and "Import" on the new one. Port 8765 is fixed so the address, and with it the data, stays the same.
 
-## Technik
+**Backing up is a must.** Data lives in browser storage. Clearing browsing history including "site data" also deletes the radar.
 
-- `app/index.html`: komplette App in einer Datei, ohne Build-Schritt und ohne externe Abhängigkeiten.
-- `start.ps1` + `Radar-starten.cmd`: lokaler Mini-Webserver auf `http://localhost:8765` (PowerShell `HttpListener`, liefert nur den Ordner `app` aus). `.vscode/tasks.json` startet ihn in Cursor per `Strg+Shift+B`.
-- CI abgeglichen mit cws.com/workwear:
-  - CWS-Rot `#EA0046`, Gelb `#F9E344`, Schrift Schwarz auf Weiß.
-  - Original-Logo „CWS | WORKWEAR“ (als PNG eingebettet) oben in der Seitenleiste, Hauptaktionen als rote Buttons, aktive Navigation in zartem CWS-Rosa.
-  - Icons: Lucide (ISC-Lizenz), inline eingebettet.
-  - Browser-Tab-Icon aus dem roten Logo-Teil.
-  - Alle Werte stehen als Tokens ganz oben im zweiten `<style>`-Block (`--cws-red`, `--cws-yellow`, `--cta` …).
-- Schriften (SIL Open Font License), als Base64 eingebettet:
-  - Inter für Text und Überschriften, wie im AI Governance Portal.
-  - IBM Plex Mono für Projekt-IDs.
-- `app/anfrage.html`: eigenständiges Anfrageformular für Fachbereiche, erzeugt `{ app:"cws-ai-anfrage", version, request }`.
-- Datenformat der Sicherung: `{ app, version, exportedAt, projects[], requests[], meta }`. Damit ist die spätere Übernahme in eine zentrale Lösung (SharePoint-Liste, Dataverse, Datenbank) ohne Abtippen möglich.
+- **Back up** downloads `CWS-AI-Radar_Backup_YYYY-MM-DD.json`. Store it in your CWS OneDrive or SharePoint folder, not in this repository (`.gitignore` blocks backups, request files, CSV exports and Excel files).
+- **Import** loads a backup again, e.g. on a new computer. The radar asks before replacing anything.
+- After 7 days without a backup a reminder appears.
+- To try it out, import `data/sample-projects.json` and remove it later with "Remove samples".
+- When importing a backup you choose: **Add / update** (existing projects stay) or **Replace all**.
+
+Data from earlier German versions of the radar imports as is; stored values stayed the same.
+
+## Tech
+
+- `app/index.html`: the whole app in one file, no build step, no external dependencies.
+- `app/request.html`: standalone request form for business units, creates `{ app:"cws-ai-anfrage", version, request }`.
+- `start.ps1` + `Start-Radar.cmd`: local mini web server on `http://localhost:8765` (PowerShell `HttpListener`, serves only the `app` folder). `.vscode/tasks.json` starts it in Cursor with `Ctrl+Shift+B`.
+- CI matched with cws.com/workwear:
+  - CWS red `#EA0046`, yellow `#F9E344`, black text on white.
+  - Original "CWS | WORKWEAR" logo (embedded PNG) at the top of the sidebar, main actions as red buttons, active navigation in light CWS pink.
+  - Icons: Lucide (ISC licence), embedded inline.
+  - Browser tab icon from the red part of the logo.
+  - All values are tokens at the top of the second `<style>` block (`--cws-red`, `--cws-yellow`, `--cta` …).
+- Fonts (SIL Open Font License), embedded as Base64:
+  - Inter for text and headings, as in the AI Governance Portal.
+  - IBM Plex Mono for project IDs.
+- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
 
 ## Governance
 
-Empfehlung zum Verhältnis zum AI Cockpit (AI Inventory + CR): [docs/entscheidung-ai-cockpit.md](docs/entscheidung-ai-cockpit.md)
+Recommendation on how the radar relates to the AI Cockpit (AI Inventory + CR): [docs/ai-cockpit-decision.md](docs/ai-cockpit-decision.md)

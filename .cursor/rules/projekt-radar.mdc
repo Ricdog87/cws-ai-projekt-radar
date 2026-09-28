@@ -1,41 +1,47 @@
 ---
-description: Regeln für das CWS AI Projekt-Radar
+description: Rules for the CWS AI Project Radar
 alwaysApply: true
 ---
 
-# CWS AI Projekt-Radar
+# CWS AI Project Radar
 
-## Was es ist
-Lokales Projekt-Tool für AI-Projekte bei CWS: Projekt-Overview (Timeline), Heute, Projektanfragen der Fachbereiche, Portfolio, Readiness-Check, Zugangsmatrix, Excel-Import. Sprache der Oberfläche: Deutsch. Immer helles Design (kein Dark Mode). Keine Personennamen im Tool.
+## What it is
+Local project tool for AI projects at CWS: project overview (timeline), Today, project requests from business units (with a required assessment meeting), portfolio, readiness check, access matrix, Excel import. UI language: **English** (international rollout). Always light design (no dark mode). No personal names in the tool.
 
-## Harte Regeln
-- **Nur lokal.** Keine Netzwerkanfragen, keine CDNs, kein Tracking, keine Cloud-Speicher. Schriften, Logo und Icons sind eingebettet. Neue Abhängigkeiten ebenfalls einbetten, nicht nachladen.
-- **Keine echten CWS-Daten ins Repo.** Sicherungen (`*Sicherung*.json`), CSV-Exporte und Excel-Dateien sind per `.gitignore` gesperrt. Beispieldaten nur fiktiv (`data/beispielprojekte.json`, Feld `example: true`).
-- **Datenformat stabil halten.** Sicherungen haben `{ app, version, exportedAt, projects[], meta }`. Neue Felder immer optional, `parseBackup`, `sanitizeReadiness` und `sanitizeTools` mitziehen.
-- **Ein-Datei-App.** Alles steckt in `app/index.html`, ohne Build-Schritt.
-- **Ansehen:** `Radar-starten.cmd` oder Task „Radar starten“ öffnet `http://localhost:8765` (Mini-Server `start.ps1`). Nach Änderungen im Browser F5 drücken, der Server liefert ohne Cache aus. Port 8765 nicht ändern, sonst sieht der Browser andere localStorage-Daten.
+## Hard rules
+- **Local only.** No network requests, no CDNs, no tracking, no cloud storage. Fonts, logo and icons are embedded. Embed new dependencies too, never load them at runtime.
+- **No real CWS data in the repo.** Backups (`*Backup*.json`, `*Sicherung*.json`), request files (`AI-Request_*.json`), CSV exports and Excel files are blocked by `.gitignore`. Sample data must be fictional (`data/sample-projects.json`, field `example: true`).
+- **Keep the data format stable.** Backups are `{ app, version, exportedAt, projects[], requests[], meta }`. New fields are always optional; update `parseBackup`, `sanitizeRequest`, `sanitizeReadiness` and `sanitizeTools` with them.
+- **Stored values stay as they are.** Internal keys and stored values are German and must not change (phase keys `intake`/`analyse`/`konzept`…, readiness status `Offen`/`Teilweise`/`Geklärt`/`Nicht relevant`, request status `neu`/`pruefung`/`angenommen`/`zurueck`/`abgelehnt`, `app:"cws-ai-anfrage"`). Show English through label maps (`RD_STATUS_LABEL`, `TOOL_AVAIL_LABEL`, `RQ_STATUS` …). This keeps older backups and request files working.
+- **Single-file apps.** Everything lives in `app/index.html` and `app/request.html`, no build step.
+- **View it:** `Start-Radar.cmd` or the task "Start radar" opens `http://localhost:8765` (mini server `start.ps1`). Press F5 after changes; the server sends no-cache. Do not change port 8765, otherwise the browser sees different localStorage data.
 
-## Aufbau von app/index.html
-- **Kopf:**
-  - `<style id="fonts">` enthält eingebettete Schriften als Base64. Nicht bearbeiten, beim Lesen überspringen.
-  - Der zweite `<style>`-Block enthält die CI-Tokens in `:root` (`--cws-red #EA0046`, `--cws-yellow #F9E344`, `--tint`, `--cta` …) mit Dark-Mode-Varianten. Farben nur über Tokens setzen.
+## Structure of app/index.html
+- **Head:**
+  - `<style id="fonts">` holds embedded fonts as Base64. Do not edit, skip when reading.
+  - The second `<style>` block holds the CI tokens in `:root` (`--cws-red #EA0046`, `--cws-yellow #F9E344`, `--tint`, `--cta` …). Set colours only through tokens.
 - **Body:**
-  - `.shell` enthält die Seitenleiste `.side` (Logo als Base64-PNG), `.main` mit `.topbar` und `.wrap` mit den Views `#view-overview`, `#view-heute`, `#view-anfragen` und `#view-portfolio`.
-- **Script (Vanilla JS, keine Frameworks):**
-  - **Konfiguration:** `PHASES` mit Gates, `HEALTH`, `RD_TEMPLATE` (Standard-Readiness, 29 Fragen), `TOOL_TEMPLATE`, `ICONS` (Lucide, inline).
-  - **Abgeleitete Werte:** `readinessStats` (READY ab 80 % ohne kritische Lücke, NOT READY unter 50 % oder mit kritischer Lücke), `assess` (Priorisierung „Heute“), `openActions`.
-  - **Speicher:** `Store` schreibt in localStorage (Key `cws-ai-radar-v1`). `exportBackup` und `parseBackup` übernehmen Sichern und Laden.
-  - **Rendering:** `render()` ruft `renderChrome`, `renderOverview`, `renderHeute`, `renderRequests` und `renderPortfolio` auf.
-  - **Overview:** `phasePlan` (geplante Phasen, automatisch aus Start und Go-Live oder `p.plan`), `schedule` (Verzug, Prognose), `renderOverview`.
-  - **Anfragen:** `state.requests`, `sanitizeRequest`, `rqHours`, `rqScore`, `renderRequests`, `openRequest`, `convertRequest`. Das Formular für Fachbereiche ist `app/anfrage.html` (eigenständig, gleiches Datenformat).
-  - **Drawer:** `openDrawer`, `renderDrawerDynamic`, Tabs über `setDrawerTab`, Readiness und Tools über `renderPanes`.
-  - **Excel:** `unzip`, `readXlsx` und `checklistFromSheets` lesen .xlsx ohne Bibliothek (DecompressionStream).
-  - **Events:** Delegation über `data-action` im zentralen Click-Handler, Feldänderungen über `data-rfield` und `data-tfield` im Change-Handler.
+  - `.shell` contains the sidebar `.side` (logo as Base64 PNG), `.main` with `.topbar` and `.wrap` with the views `#view-overview`, `#view-heute`, `#view-anfragen` and `#view-portfolio`.
+- **Script (vanilla JS, no frameworks):**
+  - **Config:** `PHASES` with gates, `HEALTH`, `RD_TEMPLATE` (default readiness, 29 questions), `TOOL_TEMPLATE`, `ICONS` (Lucide, inline).
+  - **Derived values:** `readinessStats` (READY at 80 % without critical gap, NOT READY below 50 % or with a critical gap), `assess` (priority in "Today"), `openActions`.
+  - **Storage:** `Store` writes to localStorage (key `cws-ai-radar-v1`). `exportBackup` and `parseBackup` handle backup and import.
+  - **Rendering:** `render()` calls `renderChrome`, `renderOverview`, `renderHeute`, `renderRequests` and `renderPortfolio`.
+  - **Overview:** `phasePlan` (planned phases, automatic from start and go-live or `p.plan`), `schedule` (delay, forecast), `renderOverview`.
+  - **Requests:** `state.requests`, `sanitizeRequest`, `rqHours`, `rqScore`, `meetingHtml`, `nextMeeting`, `renderRequests`, `openRequest`, `convertRequest`.
+  - **Drawer:** `openDrawer`, `renderDrawerDynamic`, tabs via `setDrawerTab`, readiness and tools via `renderPanes`.
+  - **Excel:** `unzip`, `readXlsx` and `checklistFromSheets` read .xlsx without a library (DecompressionStream). German and English headers.
+  - **Events:** delegation via `data-action` in the central click handler, field changes via `data-rfield` and `data-tfield` in the change handler.
 
-## Stil
-- **Optik** wie das AI Governance Portal:
-  - Seitenleiste, Aktionskarten mit rosa Icon-Kachel
-  - Kennzahl-Karten mit rotem Rand bei Handlungsbedarf
-  - Status als Pille mit Punkt
-- **Texte:** Deutsch, klar und direkt, ohne Floskeln. Buttons sagen, was passiert („Sichern“, „Projekt anlegen“).
-- Nutzertext immer über `esc()` ausgeben.
+## app/request.html
+- Standalone form for business units, shared as a file. Settings at the top: `CONTACT_NAME`, `CONTACT_EMAIL`, `BOOKING_URL`, `MEETING_MINUTES`.
+- Required: title, current situation, expected outcome, business unit, country / site, name, e-mail, booked meeting date (not in the past) and the confirmation tick.
+- Saves `AI-Request_<unit>_<date>.json` as `{ app:"cws-ai-anfrage", version, request }`.
+
+## Style
+- **Look** like the AI Governance Portal:
+  - Sidebar, action cards with a pink icon tile
+  - KPI cards with a red edge when action is needed
+  - Status as a pill with a dot
+- **Copy:** English (UK spelling), clear and direct, no filler. Buttons say what happens ("Back up", "Add project").
+- Always output user text through `esc()`.

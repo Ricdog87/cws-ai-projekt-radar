@@ -1,7 +1,7 @@
-﻿# CWS AI Projekt-Radar lokal starten: http://localhost:8765
-# Kleiner Webserver ohne Installation (nur PowerShell). Er liefert den Ordner "app" aus,
-# ist nur auf diesem Rechner erreichbar (localhost) und sendet nichts ins Internet.
-# Beenden: Strg+C im Terminal oder Fenster schließen.
+﻿# Start the CWS AI Project Radar locally: http://localhost:8765
+# Small web server without installation (PowerShell only). It serves the "app" folder,
+# is only reachable on this computer (localhost) and sends nothing to the internet.
+# Stop: Ctrl+C in the terminal or close the window.
 
 $ErrorActionPreference = 'Stop'
 $port   = 8765
@@ -9,7 +9,7 @@ $root   = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot 'app'))
 $prefix = "http://localhost:$port/"
 
 if ($ExecutionContext.SessionState.LanguageMode -ne 'FullLanguage') {
-    Write-Host "PowerShell läuft hier im eingeschränkten Modus (Firmenrichtlinie). Der Mini-Server kann so nicht starten." -ForegroundColor Red
+    Write-Host "PowerShell runs in constrained language mode here (company policy). The mini server cannot start this way." -ForegroundColor Red
     exit 2
 }
 
@@ -19,17 +19,17 @@ try {
     $listener.Start()
 } catch {
     if ($_.Exception.Message -match 'in use|verwendet|conflicts|Konflikt|183|32') {
-        Write-Host "Port $port ist schon belegt. Läuft das Radar bereits? Ich öffne $prefix im Browser." -ForegroundColor Yellow
+        Write-Host "Port $port is already in use. Is the radar already running? Opening $prefix in the browser." -ForegroundColor Yellow
         Start-Process $prefix
         exit 0
     }
-    Write-Host "Server konnte nicht starten: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "Server could not start: $($_.Exception.Message)" -ForegroundColor Red
     exit 3
 }
 
 Write-Host ""
-Write-Host "  CWS AI Projekt-Radar läuft auf $prefix" -ForegroundColor Green
-Write-Host "  Nur lokal erreichbar. Beenden mit Strg+C." -ForegroundColor DarkGray
+Write-Host "  CWS AI Project Radar is running at $prefix" -ForegroundColor Green
+Write-Host "  Only reachable on this computer. Stop with Ctrl+C." -ForegroundColor DarkGray
 Write-Host ""
 Start-Process $prefix
 
@@ -46,7 +46,7 @@ $types = @{
 
 try {
     while ($listener.IsListening) {
-        # Asynchron warten, damit Strg+C jederzeit greift
+        # Wait asynchronously so Ctrl+C works at any time
         $task = $listener.GetContextAsync()
         while (-not $task.AsyncWaitHandle.WaitOne(250)) { }
         $ctx = $task.GetAwaiter().GetResult()
