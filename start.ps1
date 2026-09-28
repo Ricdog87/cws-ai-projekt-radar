@@ -8,14 +8,23 @@ $port   = 8765
 $root   = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot 'app'))
 $prefix = "http://localhost:$port/"
 
-$listener = [System.Net.HttpListener]::new()
-$listener.Prefixes.Add($prefix)
+if ($ExecutionContext.SessionState.LanguageMode -ne 'FullLanguage') {
+    Write-Host "PowerShell läuft hier im eingeschränkten Modus (Firmenrichtlinie). Der Mini-Server kann so nicht starten." -ForegroundColor Red
+    exit 2
+}
+
 try {
+    $listener = New-Object System.Net.HttpListener
+    $listener.Prefixes.Add($prefix)
     $listener.Start()
 } catch {
-    Write-Host "Port $port ist schon belegt. Läuft das Radar bereits? Ich öffne $prefix im Browser." -ForegroundColor Yellow
-    Start-Process $prefix
-    exit 0
+    if ($_.Exception.Message -match 'in use|verwendet|conflicts|Konflikt|183|32') {
+        Write-Host "Port $port ist schon belegt. Läuft das Radar bereits? Ich öffne $prefix im Browser." -ForegroundColor Yellow
+        Start-Process $prefix
+        exit 0
+    }
+    Write-Host "Server konnte nicht starten: $($_.Exception.Message)" -ForegroundColor Red
+    exit 3
 }
 
 Write-Host ""
