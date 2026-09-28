@@ -17,6 +17,7 @@
    Rot #EA0046, Gelb #F9E344, Schrift Schwarz auf Weiß, CTA als rote Pille.
    ------------------------------------------------------------------ */
 :root{
+  color-scheme:light;
   --cws-red:#ea0046;
   --cws-yellow:#f9e344;
   --cws-black:#000000;
@@ -54,45 +55,6 @@
   --f-body:"Inter","Segoe UI",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",Consolas,"Courier New",monospace;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0e0e10; --surface:#18181b; --surface-2:#232327;
-    --ink:#f4f4f5; --ink-2:#c8c8cc; --muted:#94949c;
-    --line:#2a2a2f; --line-strong:#3f3f46;
-    --tint:#3a0d1c; --tint-ink:#ff5c8a; --shadow-sm:none;
-    --brand:#f5f5f5; --on-brand:#000000;
-    --cta-hover:#ff1f5e;
-    --bar:#000000; --bar-ink:#ffffff; --bar-muted:#c8c8c8; --bar-shadow:0 1px 0 #2c2c2c;
-    --focus:var(--cws-yellow);
-    --ok:#4cc98a; --ok-bg:#0f2b1f;
-    --warn:#e8b04a; --warn-bg:#33270e;
-    --crit:#ff7a70; --crit-bg:#3a1714;
-    --paused:#949494; --paused-bg:#2a2a2a;
-    --ph1:#2c2c2c; --ph2:#3d3d3d; --ph3:#525252; --ph4:#6a6a6a;
-    --ph5:#838383; --ph6:#a0a0a0; --ph7:#c2c2c2; --ph8:#ececec;
-    --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.45);
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#0e0e10; --surface:#18181b; --surface-2:#232327;
-  --ink:#f4f4f5; --ink-2:#c8c8cc; --muted:#94949c;
-  --line:#2a2a2f; --line-strong:#3f3f46;
-  --tint:#3a0d1c; --tint-ink:#ff5c8a; --shadow-sm:none;
-  --brand:#f5f5f5; --on-brand:#000000;
-  --cta-hover:#ff1f5e;
-  --bar:#000000; --bar-ink:#ffffff; --bar-muted:#c8c8c8; --bar-shadow:0 1px 0 #2c2c2c;
-  --focus:var(--cws-yellow);
-  --ok:#4cc98a; --ok-bg:#0f2b1f;
-  --warn:#e8b04a; --warn-bg:#33270e;
-  --crit:#ff7a70; --crit-bg:#3a1714;
-  --paused:#949494; --paused-bg:#2a2a2a;
-  --ph1:#2c2c2c; --ph2:#3d3d3d; --ph3:#525252; --ph4:#6a6a6a;
-  --ph5:#838383; --ph6:#a0a0a0; --ph7:#c2c2c2; --ph8:#ececec;
-  --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.45);
-}
-
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 img{max-width:100%}
@@ -285,46 +247,84 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .pt .p-title{font-weight:600;font-size:14.5px}
 .overdue{color:var(--crit);font-weight:600}
 
-/* ---------- Roadmap ---------- */
-.rm-scroll{overflow-x:auto}
-.rm{min-width:980px;position:relative;padding-top:22px}
-.rm-head,.rm-row{display:grid;grid-template-columns:260px minmax(0,1fr)}
-.rm-head{border-bottom:1px solid var(--line-strong)}
-.rm-months{display:grid;position:relative}
-.rm-months div{font:600 12px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:10px 6px;border-left:1px solid var(--line)}
-.rm-row{border-bottom:1px solid var(--line);min-height:46px}
-.rm-label{padding:8px 12px;display:flex;flex-direction:column;justify-content:center;gap:1px;cursor:pointer;background:none;border:0;text-align:left}
-.rm-label:hover .t{color:var(--cta);text-decoration:underline}
-.rm-label .t{font-weight:600;font-size:14px;line-height:1.25}
-.rm-label .s{font-size:12px;color:var(--muted)}
-.rm-track{position:relative}
-.rm-grid{position:absolute;inset:0;display:grid;pointer-events:none}
-.rm-grid div{border-left:1px solid var(--line)}
-.rm-bar{position:absolute;top:13px;height:20px;border-radius:4px;background:var(--stripe);opacity:.9;display:flex;align-items:center;padding-inline:8px;font:600 11.5px/1 var(--f-body);color:#fff;white-space:nowrap;overflow:hidden;cursor:pointer;border:0}
-.rm-bar.light{color:#1d1d1b}
-.rm-golive{position:absolute;top:15px;width:14px;height:14px;transform:translateX(-7px) rotate(45deg);background:var(--surface);border:2.5px solid var(--ink);border-radius:2px}
-.rm-today{position:absolute;top:4px;bottom:0;width:2px;background:var(--accent);z-index:2;pointer-events:none}
-.rm-today span{position:absolute;top:0;left:5px;font:600 11px/1 var(--f-body);color:var(--accent);background:var(--surface);padding:2px 4px;border-radius:2px}
-.rm-legend{display:flex;flex-wrap:wrap;gap:8px 18px;padding:12px 16px;font-size:13px;color:var(--ink-2);border-top:1px solid var(--line)}
-.rm-legend div{display:flex;align-items:center;gap:7px}
+/* ---------- Projekt-Overview (Timeline) ---------- */
+.ov-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.ov-stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow-sm);display:grid;gap:4px;position:relative;overflow:hidden;min-width:0}
+.ov-stat.alert::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cws-red)}
+.ov-stat .lbl{font-size:13px;font-weight:500;color:var(--ink-2)}
+.ov-stat b{font:600 24px/1.15 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov-stat small{font-size:12.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov-mix{display:flex;height:8px;border-radius:4px;overflow:hidden;gap:2px;margin:6px 0 2px}
+.ov-mix i{display:block;height:100%}
+.ov-panel{overflow:hidden}
+.ov-toolbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.ov-toolbar .grow{flex:1}
+.ov-toolbar select{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px;font-size:13.5px}
+.ov-scroll{overflow-x:auto}
+.ov-gantt{min-width:1080px;position:relative}
+.ov-head,.ov-row{display:grid;grid-template-columns:330px minmax(0,1fr)}
+.ov-head{border-bottom:1px solid var(--line);background:var(--surface-2)}
+.ov-head .ov-lcol{padding:10px 18px;font-size:12.5px;font-weight:500;color:var(--ink-2);display:flex;align-items:flex-end}
+.ov-months{position:relative;height:46px}
+.ov-month{position:absolute;top:0;bottom:0;border-left:1px solid var(--line);padding:8px 8px 0;font-size:12.5px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden}
+.ov-month small{display:block;font-size:11px;font-weight:400;color:var(--muted)}
+.ov-body{position:relative}
+.ov-layer{position:absolute;top:0;bottom:0;left:330px;right:0;pointer-events:none;z-index:1}
+.ov-vline{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.ov-vline.qtr{background:var(--line-strong)}
+.ov-today{position:absolute;top:-46px;bottom:0;width:2px;background:var(--cws-red);z-index:3}
+.ov-today span{position:absolute;top:2px;left:50%;transform:translateX(-50%);background:var(--cws-red);color:#fff;font:600 11px/1 var(--f-body);padding:4px 7px;border-radius:999px;white-space:nowrap}
+.ov-row{border-bottom:1px solid var(--line);position:relative;cursor:pointer;min-height:84px}
+.ov-row:hover{background:#fafafb}
+.ov-row.focus{background:linear-gradient(90deg,var(--tint) 0,rgba(253,236,241,0) 330px)}
+.ov-row.focus::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cws-red)}
+.ov-lcol{padding:12px 18px;display:grid;gap:4px;align-content:center;min-width:0;border-right:1px solid var(--line);position:relative;z-index:2;background:inherit}
+.ov-l1{display:flex;align-items:center;gap:8px;min-width:0}
+.ov-title{font-weight:600;font-size:14.5px;line-height:1.3;color:var(--ink);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ov-sub{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.star{background:none;border:0;padding:2px;cursor:pointer;color:var(--line-strong);display:grid;place-items:center;border-radius:6px;pointer-events:auto}
+.star:hover{color:var(--cws-red);background:var(--surface-2)}
+.star.on{color:var(--cws-red)}
+.star svg{width:17px;height:17px}
+.star.on svg{fill:currentColor}
+.inwork{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--tint-ink);background:var(--tint);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.dots{display:flex;gap:3px;align-items:center}
+.dots i{width:14px;height:5px;border-radius:3px;background:var(--line)}
+.dots i.d{background:var(--ink)}
+.dots i.c{background:var(--cws-red)}
+.ov-track{position:relative;overflow:hidden;z-index:2}
+.seg-bar{position:absolute;top:22px;height:24px}
+.gseg{position:absolute;top:0;bottom:0;border-right:2px solid var(--surface);overflow:hidden;border-radius:2px}
+.gseg.first{border-radius:6px 2px 2px 6px}
+.gseg.last{border-radius:2px 6px 6px 2px}
+.gseg.done{background:var(--ink)}
+.gseg.future{background:#e4e4e8}
+.gseg.cur{background:var(--tint);box-shadow:inset 0 0 0 1.5px var(--cws-red)}
+.gseg.cur i{position:absolute;left:0;top:0;bottom:0;background:var(--cws-red)}
+.gseg.paused.cur{background:#ececef;box-shadow:inset 0 0 0 1.5px var(--paused)}
+.gseg.paused.cur i{background:var(--paused)}
+.gseg.after{background:#f1f1f4;background-image:repeating-linear-gradient(90deg,transparent 0 6px,rgba(0,0,0,.05) 6px 7px)}
+.delay{position:absolute;top:22px;height:24px;border-radius:0 6px 6px 0;background:repeating-linear-gradient(135deg,rgba(234,0,70,.55) 0 4px,rgba(234,0,70,.12) 4px 8px)}
+.ms{position:absolute;top:27px;width:14px;height:14px;transform:translateX(-7px) rotate(45deg);background:var(--cws-yellow);border:2px solid #111;border-radius:2px;z-index:4}
+.ms.fc{background:#fff;border:2px dashed var(--cws-red)}
+.ov-cap{position:absolute;top:52px;font-size:12px;color:var(--ink-2);white-space:nowrap;display:flex;gap:6px;align-items:center}
+.ov-cap b{color:var(--ink);font-weight:600}
+.ov-cap .late{color:var(--cws-red);font-weight:600}
+.ov-legend{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;padding:12px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-2)}
+.ov-legend span{display:inline-flex;align-items:center;gap:7px}
+.lg{display:inline-block;width:22px;height:10px;border-radius:3px}
+.ov-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.ov-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px 18px;display:grid;gap:10px;cursor:pointer;position:relative;overflow:hidden;text-align:left}
+.ov-card:hover{box-shadow:var(--shadow);border-color:var(--line-strong)}
+.ov-card.focus::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cws-red)}
+.ov-card h3{font-size:16px;line-height:1.3}
+.ov-steps{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px}
+.ov-steps i{height:6px;border-radius:3px;background:var(--line)}
+.ov-steps i.d{background:var(--ink)} .ov-steps i.c{background:var(--cws-red)}
+.ov-kv{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 10px;font-size:13.5px}
+.ov-kv dt{color:var(--muted)} .ov-kv dd{margin:0;color:var(--ink)}
+.ov-kv dd.warn{color:var(--warn)} .ov-kv dd.crit{color:var(--crit)}
 
-/* ---------- 1:1 ---------- */
-.people{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.person{border:1px solid var(--line-strong);background:var(--surface);padding:7px 14px;border-radius:999px;font-weight:600;cursor:pointer}
-.person[aria-pressed="true"]{background:var(--tint);border-color:var(--tint-ink);color:var(--tint-ink)}
-.person-add{display:flex;gap:6px}
-.person-add input{border:1px solid var(--line-strong);border-radius:999px;padding:6px 12px;background:var(--surface);width:150px}
-.oo-meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;font-size:14px;color:var(--ink-2)}
-.oo-meta input{border:1px solid var(--line-strong);border-radius:var(--radius);padding:5px 8px;background:var(--surface)}
-.oo-block{padding:4px 0}
-.oo-proj{padding:14px 16px;border-top:1px solid var(--line);display:grid;gap:6px}
-.oo-proj:first-child{border-top:0}
-.oo-proj h3{font-size:18px}
-.oo-proj h3 button{all:unset;cursor:pointer}
-.oo-proj h3 button:hover{color:var(--cta);text-decoration:underline}
-.oo-changes{margin:4px 0 0;padding-left:18px;font-size:14px;color:var(--ink-2)}
-.oo-changes li{margin:2px 0}
-.oo-changes .d{font:500 12px var(--f-mono);color:var(--muted);margin-right:6px}
 .pill-row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--muted)}
 
 /* ---------- Drawer ---------- */
@@ -470,12 +470,12 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
     <div class="side-sub">AI Projekt-Radar</div>
   </div>
   <nav class="side-nav">
+    <div class="side-label">Übersicht</div>
+    <button class="nav" data-view="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 7h8"/><path d="M11 12h7"/><path d="M7 17h6"/></svg><span>Projekt-Overview</span></button>
     <div class="side-label">Mein Tag</div>
     <button class="nav" data-view="heute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><span>Heute</span><em class="count num" id="count-need"></em></button>
-    <button class="nav" data-view="oneonone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>1:1-Vorbereitung</span></button>
     <div class="side-label">Projekte</div>
     <button class="nav" data-view="portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg><span>Portfolio</span><em class="count num" id="count-portfolio">0</em></button>
-    <button class="nav" data-view="roadmap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 7h8"/><path d="M11 12h7"/><path d="M7 17h6"/></svg><span>Roadmap</span></button>
     <div class="side-label">Daten</div>
     <button class="nav" data-action="import" title="Excel-Checkliste (.xlsx) oder Sicherung (.json) laden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><span>Excel / Sicherung laden</span></button>
     <button class="nav" data-action="export" title="Alle Daten als Datei sichern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Sichern</span></button>
@@ -500,6 +500,35 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
   </header>
 <div class="wrap">
   <div id="banner-slot"></div>
+
+  <!-- PROJEKT-OVERVIEW -->
+  <section class="view" id="view-overview" hidden>
+    <div class="view-head">
+      <div>
+        <h1>AI Projekt-Overview</h1>
+        <p id="ov-sub"></p>
+      </div>
+      <button class="btn" data-action="import"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>Projekte einspielen</button>
+    </div>
+    <div class="ov-stats" id="ov-stats"></div>
+    <div class="panel ov-panel">
+      <div class="ov-toolbar" id="ov-toolbar"></div>
+      <div class="ov-scroll"><div class="ov-gantt" id="ov-gantt"></div></div>
+      <div class="ov-legend">
+        <span><i class="lg" style="background:var(--ink)"></i>Phase abgeschlossen</span>
+        <span><i class="lg" style="background:linear-gradient(90deg,var(--cws-red) 50%,var(--tint) 50%);box-shadow:inset 0 0 0 1.5px var(--cws-red)"></i>Aktuelle Phase, Füllung = Fortschritt</span>
+        <span><i class="lg" style="background:#e4e4e8"></i>Geplant</span>
+        <span><i class="lg" style="background:#f1f1f4;box-shadow:inset 0 0 0 1px var(--line)"></i>Hypercare &amp; Abschluss</span>
+        <span><i class="lg" style="background:repeating-linear-gradient(135deg,rgba(234,0,70,.55) 0 4px,rgba(234,0,70,.12) 4px 8px)"></i>Verzug bis heute</span>
+        <span><i class="ms" style="position:static;transform:rotate(45deg);display:inline-block;width:11px;height:11px"></i>Go-Live</span>
+        <span><i class="ms fc" style="position:static;transform:rotate(45deg);display:inline-block;width:11px;height:11px"></i>Go-Live-Prognose bei Verzug</span>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><h2>Status je Projekt</h2><span class="muted" style="font-size:13px">Klick öffnet das Projekt</span></div>
+      <div class="ov-cards" id="ov-cards"></div>
+    </div>
+  </section>
 
   <!-- HEUTE -->
   <section class="view" id="view-heute">
@@ -561,33 +590,6 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
     <div id="portfolio-body"></div>
   </section>
 
-  <!-- ROADMAP -->
-  <section class="view" id="view-roadmap" hidden>
-    <div class="view-head">
-      <div>
-        <h1>Roadmap</h1>
-        <p>12 Monate. Balken von Start bis geplantem Go-Live, eingefärbt nach Status. Raute: Go-Live-Termin.</p>
-      </div>
-    </div>
-    <div class="panel rm-scroll" id="roadmap"></div>
-  </section>
-
-  <!-- 1:1 -->
-  <section class="view" id="view-oneonone" hidden>
-    <div class="view-head">
-      <div>
-        <h1>1:1-Vorbereitung</h1>
-        <p>Was ist seit dem letzten Termin passiert, was muss entschieden werden, was kommt als Nächstes.</p>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn" data-action="copy-agenda">Agenda kopieren</button>
-        <button class="btn primary" data-action="close-oneonone">1:1 abschließen</button>
-      </div>
-    </div>
-    <div class="people" id="people"></div>
-    <div class="oo-meta" id="oo-meta"></div>
-    <div id="oo-body"></div>
-  </section>
 </div>
 
 </div>
@@ -697,11 +699,11 @@ const ICONS = {
   flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
   check:'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
   panel:'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/>',
+  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   menu:'<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
   plus:'<path d="M5 12h14"/><path d="M12 5v14"/>'
 };
 const ico = (n, cls) => `<svg ${cls ? `class="${cls}" ` : ""}viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
-const DEFAULT_PEOPLE = ["Henning","Lilli"];
 const STALE_DAYS = 10;
 const LOCAL_KEY = "cws-ai-radar-v1";
 const UI_KEY = "cws-ai-radar-ui-v1";
@@ -710,19 +712,21 @@ const UI_KEY = "cws-ai-radar-ui-v1";
 const state = {
   backupAt: null, storageBlocked: false,
   projects: [],
-  meta: { people: DEFAULT_PEOPLE.slice(), lastOneOnOne: {}, me: { name:"", role:"" } },
+  meta: { me: { name:"", role:"" } },
   loaded: false,
   mode: "connecting",        // db | local | connecting
   canWrite: true,
   me: { id:null, name:"", avatarUrl:"" },
 };
 const ui = Object.assign({
-  view: "heute", pmode: "board",
+  view: "overview", pmode: "board",
   f: { q:"", dept:"", sponsor:"", health:"", phase:"", archived:false },
   sort: { key:"score", dir:"desc" },
-  person: DEFAULT_PEOPLE[0],
   collapsed: false,
+  ov: { range:"all", sort:"focus", done:false },
 }, loadUi());
+if (!["overview","heute","portfolio"].includes(ui.view)) ui.view = "overview";
+ui.ov = Object.assign({ range:"all", sort:"focus", done:false }, ui.ov);
 let menuOpen = false, profileOpen = false;
 const myProfile = () => Object.assign({ name:"", role:"" }, state.meta.me || {});
 const initials = n => (n.trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0,2).join("") || "?").toUpperCase();
@@ -741,13 +745,13 @@ const daysFromToday = s => { const d = parseDay(s); if(!d) return null; const t 
 const fmtDay = s => { const d = parseDay(s); return d ? `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}` : "–"; };
 const fmtShort = s => { const d = parseDay(s); return d ? `${pad(d.getDate())}.${pad(d.getMonth()+1)}.` : "–"; };
 const fmtStamp = s => { if(!s) return ""; const d = new Date(s); return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
-const isDark = () => { const t = document.documentElement.getAttribute("data-theme"); return t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches); };
+const isDark = () => false; // bewusst nur helles Design
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2)).replace(/[^a-zA-Z0-9-]/g,"");
 const splitList = s => String(s||"").split(/[,;]/).map(x=>x.trim()).filter(Boolean);
 const clone = o => JSON.parse(JSON.stringify(o));
 const plural = (n, one, many) => `${n} ${n===1?one:many}`;
 function loadUi(){ try { return JSON.parse(localStorage.getItem(UI_KEY) || "{}"); } catch { return {}; } }
-function saveUi(){ try { localStorage.setItem(UI_KEY, JSON.stringify({ view:ui.view, pmode:ui.pmode, f:ui.f, sort:ui.sort, person:ui.person, collapsed:ui.collapsed })); } catch {} }
+function saveUi(){ try { localStorage.setItem(UI_KEY, JSON.stringify({ view:ui.view, pmode:ui.pmode, f:ui.f, sort:ui.sort, collapsed:ui.collapsed, ov:ui.ov })); } catch {} }
 
 function toast(msg){
   const slot = $("#toast-slot");
@@ -840,7 +844,7 @@ function nextCode(){
 }
 function blankProject(){
   const t = todayISO();
-  return { id: uid(), code: nextCode(), title:"", description:"", goal:"", value:"", sponsor:"", department:"", businessOwner:"", lead: myProfile().name || "", oneOnOne: [], priority: 2,
+  return { id: uid(), code: nextCode(), title:"", description:"", goal:"", value:"", sponsor:"", department:"", businessOwner:"", lead: myProfile().name || "", focus:false, plan:{}, priority: 2,
     region:"", team:"", phase:"intake", health:"green", startDate:t, targetDate:"", nextStep:"", nextStepDue:"", blockers:"", openDecisions:"", techStack:"",
     aiAct:"offen", aiInventoryId:"", crRefs:"", gates:{}, updates:[], readiness: templateReadiness(), tools: templateTools(), archived:false, createdAt:nowISO(), updatedAt:nowISO() };
 }
@@ -908,7 +912,9 @@ function parseBackup(text){
     const x = Object.assign(blankProject(), p);
     if (!ID_OK.test(String(x.id)) || seen.has(x.id)) x.id = uid();
     seen.add(x.id);
-    x.title = String(x.title || ""); x.oneOnOne = Array.isArray(x.oneOnOne) ? x.oneOnOne.map(String) : splitList(x.oneOnOne);
+    x.title = String(x.title || ""); delete x.oneOnOne;
+    x.focus = !!p.focus;
+    x.plan = {}; if (p.plan && typeof p.plan === "object") Object.keys(p.plan).forEach(k => { if (k in PH_INDEX && /^\d{4}-\d{2}-\d{2}$/.test(p.plan[k] || "")) x.plan[k] = p.plan[k]; });
     x.updates = Array.isArray(x.updates) ? x.updates.filter(u => u && u.at && u.text) : [];
     x.gates = x.gates && typeof x.gates === "object" ? x.gates : {};
     x.readiness = p.readiness ? sanitizeReadiness(p.readiness) : null;
@@ -918,7 +924,7 @@ function parseBackup(text){
     return x;
   });
   const m = (!Array.isArray(raw) && raw.meta) || {};
-  const meta = { people: Array.isArray(m.people) ? m.people.map(String) : state.meta.people.slice(), lastOneOnOne: Object.assign({}, m.lastOneOnOne || {}),
+  const meta = {
     me: (m.me && typeof m.me === "object" && m.me.name) ? { name: String(m.me.name), role: String(m.me.role || "") } : myProfile() };
   return { projects, meta, exportedAt: Array.isArray(raw) ? null : raw.exportedAt || null };
 }
@@ -948,7 +954,7 @@ function applyImport(mode){
       if (i >= 0) state.projects[i] = p; else state.projects.push(p);
     });
     const m = pendingImport.meta;
-    state.meta = { people: [...new Set(state.meta.people.concat(m.people))], lastOneOnOne: Object.assign({}, m.lastOneOnOne, state.meta.lastOneOnOne), me: myProfile().name ? myProfile() : m.me };
+    state.meta = { me: myProfile().name ? myProfile() : m.me };
     Store.persistLocal();
   } else {
     Store.replaceAll(pendingImport);
@@ -962,7 +968,7 @@ async function importExcelAsProject(file){
   const p = projectFromExcel(x, file.name);
   await Store.saveProject(p);
   toast(`${p.code} „${p.title}“ aus Excel angelegt`);
-  ui.view = "heute"; saveUi(); render();
+  ui.view = "overview"; saveUi(); render();
   openDrawer(p.id, { tab:"readiness" });
 }
 
@@ -981,12 +987,11 @@ function render(){
   if (!state.loaded){ return; }
   if (ui.view === "heute") renderHeute();
   if (ui.view === "portfolio") renderPortfolio();
-  if (ui.view === "roadmap") renderRoadmap();
-  if (ui.view === "oneonone") renderOneOnOne();
+  if (ui.view === "overview") renderOverview();
   if (drawer) renderDrawerDynamic();
 }
 
-const VIEW_LABEL = { heute:"Heute", portfolio:"Portfolio", roadmap:"Roadmap", oneonone:"1:1-Vorbereitung" };
+const VIEW_LABEL = { overview:"Projekt-Overview", heute:"Heute", portfolio:"Portfolio" };
 function renderChrome(){
   document.querySelectorAll(".nav[data-view]").forEach(n => { if (n.dataset.view === ui.view) n.setAttribute("aria-current","page"); else n.removeAttribute("aria-current"); });
   document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== "view-" + ui.view);
@@ -1039,7 +1044,7 @@ function renderHeute(){
       <h2>So startest du</h2>
       <ol>
         <li>Lege über „+ Projekt“ deine laufenden AI-Projekte an, oder lade eine Readiness-Checkliste als Excel: Das Projekt entsteht mit allen Prüffragen und Zugängen.</li>
-        <li>Trage bei jedem Projekt die 1:1-Partner ein (z. B. Henning, Lilli). Dann ist die 1:1-Ansicht sofort vorbereitet.</li>
+        <li>Pflege Start, Go-Live und Phase. Die Projekt-Overview zeigt dann alle Projekte parallel auf der Zeitachse, mit Fortschritt und Verzug.</li>
         <li>Klick regelmäßig auf „Sichern“. Die Datei landet im Download-Ordner; leg sie in deinen CWS-OneDrive-Ordner.</li>
       </ol>
       <div class="actions"><button class="btn primary" data-action="new">+ Erstes Projekt anlegen</button><button class="btn" data-action="import">Excel-Checkliste oder Sicherung laden</button></div>
@@ -1079,12 +1084,9 @@ function renderHeute(){
     kpi(golive30, "Go-Lives", "in den nächsten 30 Tagen", "flag", false, null),
     kpi(doneYear, "Abgeschlossen", `Projekte ${year}`, "check", false, { phase:"done" }),
   ].join("");
-  const ppl = peopleList(); const nextP = ppl.includes(ui.person) ? ui.person : ppl[0];
-  let ooTxt = "Agenda für dein nächstes 1:1 erzeugen";
-  if (nextP){ const since = (state.meta.lastOneOnOne || {})[nextP]; const n = state.projects.reduce((c, p) => c + (p.updates || []).filter(u => !since || u.at.slice(0,10) >= since).length, 0); ooTxt = `${nextP}: ${plural(n,"Änderung","Änderungen")} ${since ? "seit " + fmtDay(since) : "bisher"}`; }
   $("#acards").innerHTML = `
     <button class="acard" data-action="new"><span class="aicon">${ico("filePlus")}</span><span><b>Projekt anlegen</b><span>Intake starten oder Readiness-Checkliste (Excel) einlesen</span></span></button>
-    <button class="acard" data-action="goto" data-view="oneonone"><span class="aicon">${ico("users")}</span><span><b>1:1 vorbereiten</b><span>${esc(ooTxt)}</span></span></button>`;
+    <button class="acard" data-action="goto" data-view="overview"><span class="aicon">${ico("gantt")}</span><span><b>Projekt-Overview</b><span>Alle Projekte auf der Zeitachse: Phase, Fortschritt, Verzug, Go-Live</span></span></button>`;
 
   // Pipeline
   const counts = PHASES.map(ph => state.projects.filter(p => !p.archived && p.phase === ph.key).length);
@@ -1172,7 +1174,7 @@ function filtered(){
     if (ui.f.sponsor && p.sponsor !== ui.f.sponsor) return false;
     if (ui.f.health && p.health !== ui.f.health) return false;
     if (ui.f.phase && p.phase !== ui.f.phase) return false;
-    if (q){ const hay = [p.code,p.title,p.description,p.sponsor,p.department,p.businessOwner,p.nextStep,p.techStack,p.aiInventoryId,p.crRefs,(p.oneOnOne||[]).join(" ")].join(" ").toLowerCase(); if (!hay.includes(q)) return false; }
+    if (q){ const hay = [p.code,p.title,p.description,p.sponsor,p.department,p.businessOwner,p.nextStep,p.techStack,p.aiInventoryId,p.crRefs].join(" ").toLowerCase(); if (!hay.includes(q)) return false; }
     return true;
   });
 }
@@ -1232,120 +1234,167 @@ function boardCard(p){
   </button>`;
 }
 
-/* ---------- Roadmap ---------- */
-function renderRoadmap(){
-  const el = $("#roadmap");
-  const items = state.projects.filter(p => !p.archived && (p.startDate || p.targetDate));
-  if (!items.length){ el.innerHTML = `<div class="empty">Sobald Projekte Start- und Go-Live-Termine haben, erscheinen sie hier.</div>`; return; }
-  const t = new Date(); const start = new Date(t.getFullYear(), t.getMonth() - 2, 1); const end = new Date(start.getFullYear(), start.getMonth() + 12, 1);
-  const span = end - start; const pos = s => { const d = parseDay(s); if (!d) return null; return Math.max(0, Math.min(100, (d - start) / span * 100)); };
-  const months = Array.from({ length:12 }, (_,i) => new Date(start.getFullYear(), start.getMonth()+i, 1));
-  const cols = `repeat(12,minmax(0,1fr))`;
-  const today = pos(todayISO());
-  items.sort((a,b) => (a.startDate||a.targetDate||"").localeCompare(b.startDate||b.targetDate||""));
-  const dark = isDark();
-  el.innerHTML = `<div class="rm">
-    <div class="rm-head"><div class="eyebrow" style="padding:10px 12px">Projekt</div><div class="rm-months" style="grid-template-columns:${cols}">${months.map(m => `<div>${m.toLocaleDateString("de-DE",{month:"short"})}${m.getMonth()===0 || m === months[0] ? " " + String(m.getFullYear()).slice(2) : ""}</div>`).join("")}</div></div>
-    ${items.map(p => {
-      const a = pos(p.startDate || p.targetDate), b = pos(p.targetDate || p.startDate);
-      const left = Math.min(a,b), width = Math.max(1.2, Math.abs(b - a));
-      const light = dark; // Statusfarben sind im Dark-Theme hell, daher dunkle Schrift
-      return `<div class="rm-row">
-        <button class="rm-label" data-action="open" data-id="${esc(p.id)}"><span class="t">${esc(p.title || "Ohne Titel")}</span><span class="s"><span class="mono">${esc(p.code)}</span> · ${esc(PHASES[phaseIdx(p)].label)} · ${progress(p)} %</span></button>
-        <div class="rm-track">
-          <div class="rm-grid" style="grid-template-columns:${cols}">${months.map(()=>"<div></div>").join("")}</div>
-          <button class="rm-bar ${light?"light":""}" style="left:${left}%;width:${width}%;--stripe:${stripe(p)}" data-action="open" data-id="${esc(p.id)}" title="${esc(p.title)}: ${esc(fmtDay(p.startDate))} bis ${esc(fmtDay(p.targetDate))} · ${esc((HEALTH[p.health]||HEALTH.green).label)}">${width > 9 ? esc((HEALTH[p.health]||HEALTH.green).label) : ""}</button>
-          ${p.targetDate ? `<span class="rm-golive" style="left:${pos(p.targetDate)}%" title="Go-Live ${esc(fmtDay(p.targetDate))}"></span>` : ""}
-        </div></div>`;
-    }).join("")}
-    <div class="rm-today" style="left:calc(260px + (100% - 260px) * ${today/100})"><span>Heute</span></div>
-    <div class="rm-legend">${Object.entries(HEALTH).map(([k,h]) => `<div><span class="sw" style="background:var(${h.color})"></span>${h.icon} ${esc(h.label)}</div>`).join("")}<div><span class="rm-golive" style="position:static;transform:rotate(45deg);display:inline-block"></span>Go-Live</div></div>
-  </div>`;
-}
-
-/* ---------- 1:1 ---------- */
-function peopleList(){
-  const set = new Set(state.meta.people || []);
-  state.projects.forEach(p => (p.oneOnOne||[]).forEach(n => set.add(n)));
-  return [...set].filter(Boolean);
-}
-function oneOnOneData(){
-  const person = ui.person; const since = (state.meta.lastOneOnOne || {})[person] || "";
-  const low = person.toLowerCase();
-  let scope = state.projects.filter(p => !p.archived && (p.oneOnOne||[]).some(n => n.toLowerCase() === low));
-  const assigned = scope.length > 0;
-  if (!assigned) scope = state.projects.filter(p => !p.archived);
-  scope = scope.filter(p => p.phase !== "done" || (since && (p.doneAt||p.updatedAt||"") >= since));
-  scope.sort((a,b) => assess(b).score - assess(a).score);
-  const changes = p => (p.updates||[]).filter(u => !since || u.at.slice(0,10) >= since);
-  return { person, since, scope, assigned, changes };
-}
-function renderOneOnOne(){
-  const ppl = peopleList();
-  if (!ppl.includes(ui.person) && ppl.length) ui.person = ppl[0];
-  $("#people").innerHTML = ppl.map(n => `<button class="person" aria-pressed="${n===ui.person}" data-action="person" data-name="${esc(n)}">${esc(n)}</button>`).join("") +
-    (state.canWrite ? `<form class="person-add" data-form="person"><input id="person-new" placeholder="Person hinzufügen" aria-label="Person hinzufügen"><button class="btn small" type="submit">Hinzufügen</button></form>` : "");
-  if (!ppl.length){ $("#oo-meta").innerHTML = ""; $("#oo-body").innerHTML = `<div class="panel empty">Füge eine Person hinzu, mit der du regelmäßig ein 1:1 hast.</div>`; return; }
-  const d = oneOnOneData();
-  $("#oo-meta").innerHTML = `<label>Letztes 1:1 mit ${esc(d.person)}: <input type="date" id="oo-since" value="${esc(d.since)}" ${state.canWrite?"":"disabled"}></label>
-    <span>${d.assigned ? `${plural(d.scope.length,"Projekt","Projekte")} mit ${esc(d.person)} als 1:1-Partner` : `Noch keine Projekte ${esc(d.person)} zugeordnet, daher alle Projekte. Zuordnung im Projekt unter „1:1-Partner“.`}</span>`;
-  const decisions = d.scope.filter(p => (p.openDecisions||"").trim());
-  const blockers = d.scope.filter(p => (p.blockers||"").trim());
-  const gaps = d.scope.map(p => ({ p, rs: readinessStats(p) })).filter(x => x.rs && x.rs.critOpen.length && phaseIdx(x.p) <= PH_INDEX.konzept);
-  const miles = [];
-  d.scope.forEach(p => { const x = daysFromToday(p.targetDate); if (x !== null && x >= 0 && x <= 45 && phaseIdx(p) < PH_INDEX.hypercare) miles.push(p); });
-  miles.sort((a,b) => a.targetDate.localeCompare(b.targetDate));
-  const projLink = p => `<button data-action="open" data-id="${esc(p.id)}">${esc(p.title || "Ohne Titel")}</button>`;
-  $("#oo-body").innerHTML = `
-    <div class="section two-col">
-      <div>
-        <div class="section-head"><h2>Status je Projekt</h2><span class="muted" style="font-size:13px">${d.since ? `Änderungen seit ${esc(fmtDay(d.since))}` : "Noch kein 1:1 erfasst, alle Einträge"}</span></div>
-        <div class="panel">${d.scope.map(p => { const ch = d.changes(p); const isNew = d.since && (p.createdAt||"").slice(0,10) >= d.since; return `
-          <div class="oo-proj">
-            <div class="pill-row"><span class="mono">${esc(p.code)}</span>${healthHtml(p.health)}<span>${esc(PHASES[phaseIdx(p)].long)} · ${progress(p)} %</span>${(() => { const rs = readinessStats(p); return rs && phaseIdx(p) <= PH_INDEX.konzept ? recBadge(rs, true) : ""; })()}${isNew ? `<span class="chip ok">Neu seit letztem 1:1</span>` : ""}${p.example ? `<span class="chip example">Beispiel</span>` : ""}</div>
-            <h3><button data-action="open" data-id="${esc(p.id)}">${esc(p.title || "Ohne Titel")}</button></h3>
-            ${ch.length ? `<ul class="oo-changes">${ch.slice(0,5).map(u => `<li><span class="d">${esc(fmtShort(u.at.slice(0,10)))}</span>${esc(u.text)}</li>`).join("")}${ch.length > 5 ? `<li class="muted">+ ${ch.length-5} weitere</li>` : ""}</ul>` : `<div class="muted" style="font-size:14px">Keine Änderungen seit dem letzten 1:1.</div>`}
-            <div style="font-size:14px"><b>Nächster Schritt:</b> ${esc(p.nextStep || "offen")}${p.nextStepDue ? ` <span class="muted num">(bis ${esc(fmtShort(p.nextStepDue))})</span>` : ""}</div>
-          </div>`; }).join("") || `<div class="empty">Keine Projekte im Fokus.</div>`}</div>
-      </div>
-      <div>
-        <div class="section-head"><h2>Entscheidungen</h2></div>
-        <div class="panel">${decisions.map(p => `<div class="agenda-item"><div class="d">${esc(p.code)}</div><div>${projLink(p)}<div>${esc(p.openDecisions)}</div></div></div>`).join("") || `<div class="empty">Keine offenen Entscheidungen.</div>`}</div>
-        <div class="section-head section"><h2>Blocker & Eskalationen</h2></div>
-        <div class="panel">${blockers.map(p => `<div class="agenda-item"><div class="d">${esc(p.code)}</div><div>${projLink(p)}<div>${esc(p.blockers)}</div></div></div>`).join("") || `<div class="empty">Keine Blocker.</div>`}</div>
-        <div class="section-head section"><h2>Kritische Lücken im Readiness-Check</h2></div>
-        <div class="panel">${gaps.map(({ p, rs }) => `<div class="agenda-item"><div class="d">${esc(p.code)}</div><div><button data-action="open" data-id="${esc(p.id)}" data-tab="readiness">${esc(p.title || "Ohne Titel")}</button> ${recBadge(rs, true)}<ul class="oo-changes">${rs.critOpen.map(i => `<li><span class="d">Nr. ${esc(i.nr)}</span>${esc(i.q)}${i.owner ? ` <span class="muted">(${esc(i.owner)})</span>` : ""}</li>`).join("")}</ul></div></div>`).join("") || `<div class="empty">Keine kritischen Lücken offen.</div>`}</div>
-        <div class="section-head section"><h2>Go-Lives, nächste 45 Tage</h2></div>
-        <div class="panel">${miles.map(p => `<div class="agenda-item"><div class="d">${esc(fmtShort(p.targetDate))}</div><div>${projLink(p)}<div class="muted">${esc(PHASES[phaseIdx(p)].long)}</div></div></div>`).join("") || `<div class="empty">Keine Go-Lives geplant.</div>`}</div>
-      </div>
-    </div>`;
-}
-function agendaText(){
-  const d = oneOnOneData();
-  const L = [];
-  L.push(`1:1 ${d.person} · ${fmtDay(todayISO())}`);
-  L.push(`AI-Projekte, Stand${d.since ? " seit " + fmtDay(d.since) : ""}`);
-  L.push("");
-  const dec = d.scope.filter(p => (p.openDecisions||"").trim());
-  const blk = d.scope.filter(p => (p.blockers||"").trim());
-  if (dec.length){ L.push("1. ENTSCHEIDUNGEN"); dec.forEach(p => L.push(`- [${p.code}] ${p.title}: ${p.openDecisions}`)); L.push(""); }
-  if (blk.length){ L.push(`${dec.length?2:1}. BLOCKER`); blk.forEach(p => L.push(`- [${p.code}] ${p.title}: ${p.blockers}`)); L.push(""); }
-  const gp = d.scope.map(p => ({ p, rs: readinessStats(p) })).filter(x => x.rs && phaseIdx(x.p) <= PH_INDEX.konzept);
-  if (gp.length){
-    L.push("READINESS");
-    gp.forEach(({ p, rs }) => {
-      L.push(`- [${p.code}] ${p.title}: ${rs.pct} % · ${rs.rec} · Kernfragen offen ${rs.coreOpen}/${rs.coreTotal}`);
-      rs.critOpen.forEach(i => L.push(`    Kritisch offen, Nr. ${i.nr}: ${i.q}${i.owner ? " (" + i.owner + ")" : ""}`));
-    });
-    L.push("");
-  }
-  L.push("STATUS JE PROJEKT");
-  d.scope.forEach(p => {
-    L.push(`- [${p.code}] ${p.title} | ${PHASES[phaseIdx(p)].long}, ${progress(p)} % | ${(HEALTH[p.health]||HEALTH.green).label}`);
-    d.changes(p).slice(0,5).forEach(u => L.push(`    ${fmtShort(u.at.slice(0,10))} ${u.text}`));
-    L.push(`    Nächster Schritt: ${p.nextStep || "offen"}${p.nextStepDue ? " (bis " + fmtShort(p.nextStepDue) + ")" : ""}`);
+/* ================== Projekt-Overview: Zeitplan & Timeline ================== */
+const PLAN_W = { intake:.06, analyse:.14, konzept:.15, build:.35, test:.20, golive:.10 };
+const DAY = 86400000;
+const addDays = (d, n) => new Date(d.getTime() + n * DAY);
+const fmtMonth = d => d.toLocaleDateString("de-DE", { month:"short" }).replace(".", "");
+// Geplante Phasen eines Projekts: Start und Ende je Phase. Eigene Termine (p.plan) überschreiben die Automatik.
+function phasePlan(p){
+  let start = parseDay(p.startDate) || parseDay((p.createdAt || "").slice(0,10)) || parseDay(todayISO());
+  let golive = parseDay(p.targetDate);
+  const autoGolive = !golive;
+  if (!golive || golive <= start) golive = addDays(start, autoGolive ? 150 : 30);
+  const span = golive - start; const plan = p.plan || {};
+  const out = []; let cursor = start, acc = 0;
+  PHASES.forEach((ph, i) => {
+    let end;
+    if (ph.key in PLAN_W){ acc += PLAN_W[ph.key]; end = ph.key === "golive" ? golive : new Date(start.getTime() + span * acc); }
+    else if (ph.key === "hypercare") end = addDays(golive, 42);
+    else end = addDays(out[i-1].end, 14);
+    const own = parseDay(plan[ph.key]);
+    if (own) end = own;
+    if (end < cursor) end = cursor;
+    out.push({ key: ph.key, label: ph.label, long: ph.long, start: cursor, end, own: !!own, auto: !own });
+    cursor = end;
   });
-  return L.join("\n");
+  return { phases: out, golive: out[PH_INDEX.golive].end, autoGolive, end: out[out.length-1].end };
+}
+function schedule(p){
+  const pl = phasePlan(p); const i = phaseIdx(p); const t = parseDay(todayISO());
+  const cur = pl.phases[i];
+  const delay = (p.phase !== "done" && !p.archived && t > cur.end) ? Math.round((t - cur.end) / DAY) : 0;
+  const next = pl.phases.find((x, k) => k >= i && x.end >= t);
+  return { pl, i, cur, delay, next, forecast: delay ? addDays(pl.golive, delay) : null };
+}
+const fmtDelay = d => d >= 14 ? `${Math.round(d / 7)} Wo. Verzug` : `${plural(d, "Tag", "Tage")} Verzug`;
+const HEALTH_ORDER = { red:0, amber:1, green:2, paused:3 };
+function ovProjects(){
+  const o = ui.ov;
+  let list = state.projects.filter(p => !p.archived && (o.done || p.phase !== "done"));
+  const tgt = p => p.targetDate || "9999";
+  const sorters = {
+    focus: (a,b) => (!!b.focus - !!a.focus) || (HEALTH_ORDER[a.health] - HEALTH_ORDER[b.health]) || tgt(a).localeCompare(tgt(b)),
+    golive: (a,b) => tgt(a).localeCompare(tgt(b)),
+    start: (a,b) => String(a.startDate || "").localeCompare(String(b.startDate || "")),
+    phase: (a,b) => phaseIdx(b) - phaseIdx(a),
+  };
+  return list.sort(sorters[o.sort] || sorters.focus);
+}
+function ovRange(list){
+  const t = parseDay(todayISO());
+  const m0 = new Date(t.getFullYear(), t.getMonth() - 1, 1);
+  const months = { "3":3, "6":6, "12":12 }[ui.ov.range];
+  if (months) return { from: m0, to: new Date(m0.getFullYear(), m0.getMonth() + months + 1, 1) };
+  let from = m0, to = new Date(t.getFullYear(), t.getMonth() + 5, 1);
+  list.forEach(p => { const pl = phasePlan(p); if (pl.phases[0].start < from) from = pl.phases[0].start; if (pl.end > to) to = pl.end; });
+  from = new Date(from.getFullYear(), from.getMonth(), 1);
+  to = new Date(to.getFullYear(), to.getMonth() + 1, 1);
+  const maxTo = new Date(from.getFullYear(), from.getMonth() + 24, 1);
+  return { from, to: to > maxTo ? maxTo : to };
+}
+function renderOverview(){
+  const all = ovProjects();
+  const t = parseDay(todayISO());
+  const dateLabel = t.toLocaleDateString("de-DE", { day:"numeric", month:"long", year:"numeric" });
+  $("#ov-sub").textContent = `Stand ${dateLabel}. Alle AI-Projekte End-to-End: Phase, Fortschritt, Verzug und Go-Live auf einen Blick.`;
+
+  // Kennzahlen
+  const act = all.filter(isActive);
+  const sch = new Map(all.map(p => [p.id, schedule(p)]));
+  const late = act.filter(p => sch.get(p.id).delay > 0 && p.health !== "paused");
+  const hc = k => act.filter(p => p.health === k).length;
+  const avg = act.length ? Math.round(act.reduce((n, p) => n + progress(p), 0) / act.length) : 0;
+  const nextGl = act.filter(p => p.targetDate && daysFromToday(p.targetDate) >= 0 && phaseIdx(p) <= PH_INDEX.golive).sort((a,b) => a.targetDate.localeCompare(b.targetDate))[0];
+  const mix = ["green","amber","red","paused"].map(k => ({ k, n: hc(k) })).filter(x => x.n);
+  $("#ov-stats").innerHTML = `
+    <div class="ov-stat"><span class="lbl">Aktive Projekte</span><b class="num">${act.length}</b><small>${act.filter(p => p.focus).length} aktuell in Arbeit</small></div>
+    <div class="ov-stat"><span class="lbl">Status</span><div class="ov-mix">${mix.map(x => `<i style="flex:${x.n};background:var(${HEALTH[x.k].color})" title="${esc(HEALTH[x.k].label)}: ${x.n}"></i>`).join("") || `<i style="flex:1;background:var(--line)"></i>`}</div><small>${hc("green")} im Plan · ${hc("amber")} Risiko · ${hc("red")} kritisch</small></div>
+    <div class="ov-stat"><span class="lbl">Ø Fortschritt</span><b class="num">${avg} %</b><small>über alle aktiven Projekte</small></div>
+    <div class="ov-stat ${late.length ? "alert" : ""}"><span class="lbl">Hinter Plan</span><b class="num">${late.length}</b><small>${late.length ? esc(late.map(p => p.code).join(", ")) : "alle im Zeitplan"}</small></div>
+    <div class="ov-stat"><span class="lbl">Nächster Go-Live</span><b class="num">${nextGl ? esc(fmtDay(nextGl.targetDate)) : "–"}</b><small>${nextGl ? esc(nextGl.title) : "kein Termin geplant"}</small></div>`;
+
+  // Werkzeugleiste
+  const o = ui.ov;
+  $("#ov-toolbar").innerHTML = `
+    <div class="seg" role="group" aria-label="Zeitraum">${[["all","Gesamt"],["12","12 Monate"],["6","6 Monate"],["3","3 Monate"]].map(([v,l]) => `<button data-action="ov-set" data-k="range" data-v="${v}" aria-pressed="${o.range === v}">${l}</button>`).join("")}</div>
+    <select id="ov-sort" aria-label="Sortierung">${[["focus","In Arbeit & Status zuerst"],["golive","Nach Go-Live"],["start","Nach Start"],["phase","Nach Phase"]].map(([v,l]) => `<option value="${v}" ${o.sort===v?"selected":""}>${l}</option>`).join("")}</select>
+    <label class="check"><input type="checkbox" id="ov-done" ${o.done?"checked":""}> Abgeschlossene zeigen</label>
+    <span class="grow"></span>
+    <span class="muted" style="font-size:12.5px">${ico("star").replace("<svg ", '<svg style="width:14px;height:14px;vertical-align:-2px;color:var(--cws-red)" ')} markiert, woran du gerade arbeitest</span>`;
+
+  if (!all.length){
+    $("#ov-gantt").innerHTML = `<div class="empty" style="padding:40px 18px">${state.projects.length ? "Keine Projekte für diese Auswahl." : "Noch keine Projekte. Spiel eine Excel-Checkliste oder Sicherung ein, oder leg ein Projekt an."}</div>`;
+    $("#ov-cards").innerHTML = ""; return;
+  }
+
+  // Timeline
+  const { from, to } = ovRange(all); const span = to - from;
+  const X = d => (d - from) / span * 100;
+  const months = []; for (let d = new Date(from); d < to; d = new Date(d.getFullYear(), d.getMonth() + 1, 1)) months.push(d);
+  const monthsHtml = months.map((m, k) => { const n = new Date(m.getFullYear(), m.getMonth() + 1, 1); const w = X(n) - X(m);
+    return `<div class="ov-month" style="left:${X(m)}%;width:${w}%">${esc(fmtMonth(m))}${(m.getMonth() === 0 || k === 0) ? ` <small>${m.getFullYear()}</small>` : m.getMonth() % 3 === 0 ? ` <small>Q${m.getMonth() / 3 + 1}</small>` : ""}</div>`; }).join("");
+  const lines = months.map(m => `<div class="ov-vline ${m.getMonth() % 3 === 0 ? "qtr" : ""}" style="left:${X(m)}%"></div>`).join("");
+  const todayX = X(t);
+  const rows = all.map(p => {
+    const s = sch.get(p.id); const pl = s.pl; const i = s.i; const paused = p.health === "paused";
+    const g = gateList(p, p.phase); const frac = p.phase === "done" ? 1 : (g.length ? g.filter(Boolean).length / g.length : 0);
+    const segs = pl.phases.map((ph, k) => {
+      const l = X(ph.start), w = Math.max(X(ph.end) - l, .35);
+      const cls = p.phase === "done" || k < i ? "done" : k === i ? "cur" : (k > PH_INDEX.golive ? "after" : "future");
+      return `<div class="gseg ${cls} ${paused ? "paused" : ""} ${k === 0 ? "first" : ""} ${k === pl.phases.length - 1 ? "last" : ""}" style="left:${l}%;width:${w}%" title="${esc(ph.long)}: ${esc(fmtDay(isoDay(ph.start)))} bis ${esc(fmtDay(isoDay(ph.end)))}${ph.own ? " (eigener Termin)" : ""}${k === i && p.phase !== "done" ? " · aktuell" : ""}">${cls === "cur" ? `<i style="width:${Math.round(frac * 100)}%"></i>` : ""}</div>`;
+    }).join("");
+    const delay = s.delay && !paused ? `<div class="delay" style="left:${X(s.cur.end)}%;width:${Math.max(todayX - X(s.cur.end), .3)}%" title="${esc(fmtDelay(s.delay))}: ${esc(s.cur.long)} war bis ${esc(fmtDay(isoDay(s.cur.end)))} geplant"></div>` : "";
+    const ms = p.targetDate ? `<div class="ms" style="left:${X(pl.golive)}%" title="Go-Live geplant: ${esc(fmtDay(p.targetDate))}"></div>` : "";
+    const fc = s.forecast && !paused && phaseIdx(p) <= PH_INDEX.golive && p.targetDate ? `<div class="ms fc" style="left:${X(s.forecast)}%" title="Prognose Go-Live bei aktuellem Verzug: ${esc(fmtDay(isoDay(s.forecast)))}"></div>` : "";
+    const capX = Math.min(Math.max(X(s.cur.start), 0), 70);
+    const cap = p.phase === "done" ? `<b>Abgeschlossen</b>` :
+      `<b>${esc(s.cur.long)}</b> · ${progress(p)} %${s.delay && !paused ? ` · <span class="late">${esc(fmtDelay(s.delay))}</span>` : ""}${p.targetDate ? ` · Go-Live ${esc(fmtDay(p.targetDate))}` : " · Go-Live offen"}${s.forecast && !paused && p.targetDate ? ` <span class="late">(Prognose ${esc(fmtShort(isoDay(s.forecast)))})</span>` : ""}`;
+    const dots = PHASES.map((_, k) => `<i class="${p.phase === "done" || k < i ? "d" : k === i ? "c" : ""}"></i>`).join("");
+    return `<div class="ov-row ${p.focus ? "focus" : ""}" data-action="open" data-id="${esc(p.id)}">
+      <div class="ov-lcol">
+        <div class="ov-l1"><button class="star ${p.focus ? "on" : ""}" data-action="focus" data-id="${esc(p.id)}" title="${p.focus ? "Nicht mehr als „in Arbeit“ markieren" : "Als „in Arbeit“ markieren"}" aria-pressed="${!!p.focus}">${ico("star")}</button><span class="mono muted">${esc(p.code)}</span>${healthHtml(p.health)}${p.focus ? `<span class="inwork">In Arbeit</span>` : ""}</div>
+        <div class="ov-title">${esc(p.title || "Ohne Titel")}</div>
+        <div class="ov-sub">${esc([p.department, p.sponsor ? "Sponsor: " + p.sponsor : ""].filter(Boolean).join(" · ") || "Abteilung und Sponsor offen")}</div>
+        <div class="dots" title="${esc(PHASES[i].long)}">${dots}</div>
+      </div>
+      <div class="ov-track"><div class="seg-bar" style="left:0;right:0">${segs}</div>${delay}${ms}${fc}<div class="ov-cap" style="left:calc(${capX}% + 2px)">${cap}</div></div>
+    </div>`;
+  }).join("");
+  $("#ov-gantt").innerHTML = `
+    <div class="ov-head"><div class="ov-lcol">${plural(all.length, "Projekt", "Projekte")}</div><div class="ov-months">${monthsHtml}</div></div>
+    <div class="ov-body"><div class="ov-layer">${lines}${todayX >= 0 && todayX <= 100 ? `<div class="ov-today" style="left:${todayX}%"><span>Heute</span></div>` : ""}</div>${rows}</div>`;
+
+  // Status-Karten
+  $("#ov-cards").innerHTML = all.map(p => {
+    const s = sch.get(p.id); const i = s.i; const rs = readinessStats(p); const paused = p.health === "paused";
+    const due = daysFromToday(p.nextStepDue);
+    const steps = PHASES.map((_, k) => `<i class="${p.phase === "done" || k < i ? "d" : k === i ? "c" : ""}"></i>`).join("");
+    return `<div class="ov-card ${p.focus ? "focus" : ""}" data-action="open" data-id="${esc(p.id)}">
+      <div class="ov-l1"><span class="mono muted">${esc(p.code)}</span>${healthHtml(p.health)}${p.focus ? `<span class="inwork">In Arbeit</span>` : ""}<span style="margin-left:auto" class="num muted">${progress(p)} %</span></div>
+      <h3>${esc(p.title || "Ohne Titel")}</h3>
+      <div><div class="ov-steps">${steps}</div><div style="font-size:12.5px;color:var(--ink-2);margin-top:6px">Phase ${i + 1}/8: <b style="color:var(--ink)">${esc(PHASES[i].long)}</b>${s.delay && !paused ? ` · <span style="color:var(--cws-red);font-weight:600">${esc(fmtDelay(s.delay))}</span>` : ""}</div></div>
+      <dl class="ov-kv">
+        <dt>Go-Live</dt><dd>${p.targetDate ? esc(fmtDay(p.targetDate)) : "noch offen"}${s.forecast && !paused && p.targetDate ? ` <span style="color:var(--cws-red)">(Prognose ${esc(fmtDay(isoDay(s.forecast)))})</span>` : ""}</dd>
+        <dt>Nächster Schritt</dt><dd class="${due !== null && due < 0 ? "crit" : ""}">${esc(p.nextStep || "offen")}${p.nextStepDue ? ` · bis ${esc(fmtShort(p.nextStepDue))}` : ""}</dd>
+        ${(p.blockers || "").trim() ? `<dt>Blocker</dt><dd class="crit">${esc(p.blockers)}</dd>` : ""}
+        ${(p.openDecisions || "").trim() ? `<dt>Entscheidung</dt><dd class="warn">${esc(p.openDecisions)}</dd>` : ""}
+        ${rs && i <= PH_INDEX.konzept ? `<dt>Readiness</dt><dd>${recBadge(rs, true)}${rs.critOpen.length ? ` <span class="muted">${plural(rs.critOpen.length, "kritische Lücke", "kritische Lücken")}</span>` : ""}</dd>` : ""}
+        <dt>Sponsor</dt><dd>${esc(p.sponsor || "offen")}</dd>
+      </dl>
+    </div>`;
+  }).join("");
+}
+function renderPlan(p){
+  const el = $("#d-plan"); if (!el) return;
+  const pl = phasePlan(p); const i = phaseIdx(p);
+  el.innerHTML = `<div class="section-head" style="margin:0"><h2>Zeitplan</h2><span class="muted" style="font-size:12.5px">Leer lassen = automatisch aus Start und Go-Live</span></div>
+    <div class="table-scroll"><table class="tt" style="min-width:560px"><thead><tr><th>Phase</th><th>Beginn</th><th>Geplant bis</th><th></th></tr></thead><tbody>
+    ${pl.phases.map((ph, k) => `<tr><td style="padding:8px 6px;font-weight:${k === i ? 600 : 400};color:${k === i ? "var(--cws-red)" : "inherit"}">${esc(ph.long)}</td>
+      <td style="padding:8px 6px" class="num muted">${esc(fmtDay(isoDay(ph.start)))}</td>
+      <td><input type="date" data-plan="${ph.key}" value="${ph.own ? esc(isoDay(ph.end)) : ""}" title="Automatisch: ${esc(fmtDay(isoDay(ph.end)))}" style="border:1px solid var(--line);border-radius:6px;padding:5px 8px;background:var(--surface)"></td>
+      <td class="muted" style="padding:8px 6px;font-size:12.5px">${ph.own ? "eigener Termin" : "auto: " + esc(fmtDay(isoDay(ph.end)))}</td></tr>`).join("")}
+    </tbody></table></div>`;
 }
 
 /* ================== Drawer ================== */
@@ -1357,7 +1406,6 @@ function openDrawer(id, opts){
   const cur = currentDrawerProject();
   const ro = !state.canWrite;
   const dis = ro ? "disabled" : "";
-  const people = peopleList();
   $("#drawer-slot").innerHTML = `
     <div class="scrim" data-action="close-drawer"></div>
     <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title">
@@ -1384,7 +1432,7 @@ function openDrawer(id, opts){
         <section class="d-sec" data-pane="tools"><div class="table-scroll" id="tl-list"></div></section>
         <input type="file" id="rd-excel-file" accept=".xlsx" hidden>
         <section class="d-sec" data-pane="overview">
-          <h2>Status</h2>
+          <div class="section-head" style="margin:0"><h2>Status</h2><div id="d-focus"></div></div>
           <div class="segh" id="d-health"></div>
         </section>
         <section class="d-sec" data-pane="overview">
@@ -1392,6 +1440,7 @@ function openDrawer(id, opts){
           <div class="stepper" id="d-stepper"></div>
           <div id="d-gates"></div>
         </section>
+        <section class="d-sec" data-pane="overview" id="d-plan"></section>
         <section class="d-sec" data-pane="overview">
           <h2>Nächster Schritt & Hindernisse</h2>
           <div class="form">
@@ -1399,7 +1448,7 @@ function openDrawer(id, opts){
             <div class="f"><label for="d-nextStepDue">Fällig am</label><input type="date" id="d-nextStepDue" data-field="nextStepDue" value="${esc(cur.nextStepDue)}" ${dis}></div>
             <div class="f"><label for="d-priority">Priorität</label><select id="d-priority" data-field="priority" ${dis}>${[1,2,3].map(n => `<option value="${n}" ${+cur.priority===n?"selected":""}>${PRIO[n]}</option>`).join("")}</select></div>
             <div class="f full"><label for="d-blockers">Blocker</label><textarea id="d-blockers" data-field="blockers" placeholder="Was hält das Projekt gerade auf?" ${dis}>${esc(cur.blockers)}</textarea></div>
-            <div class="f full"><label for="d-openDecisions">Offene Entscheidungen</label><textarea id="d-openDecisions" data-field="openDecisions" placeholder="Was muss der Sponsor oder das 1:1 entscheiden?" ${dis}>${esc(cur.openDecisions)}</textarea></div>
+            <div class="f full"><label for="d-openDecisions">Offene Entscheidungen</label><textarea id="d-openDecisions" data-field="openDecisions" placeholder="Was muss der Sponsor entscheiden?" ${dis}>${esc(cur.openDecisions)}</textarea></div>
           </div>
         </section>
         <section class="d-sec" data-pane="overview" id="d-update-sec">
@@ -1419,7 +1468,6 @@ function openDrawer(id, opts){
             <div class="f"><label for="d-region">Region / Pilotgebiet</label><input id="d-region" data-field="region" value="${esc(cur.region)}" placeholder="z. B. Region Nordwest" ${dis}></div>
             <div class="f"><label for="d-team">Team / Beteiligte</label><input id="d-team" data-field="team" value="${esc(cur.team)}" placeholder="Namen, mit Komma getrennt" ${dis}></div>
             <div class="f"><label for="d-lead">Projektleitung</label><input id="d-lead" data-field="lead" value="${esc(cur.lead)}" ${dis}></div>
-            <div class="f"><label for="d-oneOnOne">1:1-Partner</label><input id="d-oneOnOne" data-field="oneOnOne" value="${esc((cur.oneOnOne||[]).join(", "))}" placeholder="${esc(people.join(", "))}" ${dis}><span class="hint">Mehrere mit Komma trennen</span></div>
             <div class="f"><label for="d-startDate">Start</label><input type="date" id="d-startDate" data-field="startDate" value="${esc(cur.startDate)}" ${dis}></div>
             <div class="f"><label for="d-targetDate">Geplanter Go-Live</label><input type="date" id="d-targetDate" data-field="targetDate" value="${esc(cur.targetDate)}" ${dis}></div>
             <div class="f full"><label for="d-techStack">Tools & Tech-Stack</label><input id="d-techStack" data-field="techStack" value="${esc(cur.techStack)}" placeholder="z. B. Azure OpenAI, n8n, SAP, SharePoint" ${dis}></div>
@@ -1480,8 +1528,10 @@ function renderDrawerDynamic(){
   if (danger){
     danger.innerHTML = drawer.draft ? `<span class="muted" style="font-size:14px">Neues Projekt, wird mit „Projekt anlegen“ gespeichert.</span>` :
       (drawer.confirmDelete ? `<div class="confirm"><span>Projekt <b>${esc(p.code)}</b> endgültig löschen? Der Verlauf geht verloren.</span><button class="btn danger small" data-action="delete-confirm">Endgültig löschen</button><button class="btn small" data-action="delete-cancel">Abbrechen</button></div>` :
-      `<div class="confirm"><button class="btn small" data-action="archive">${p.archived ? "Wiederherstellen" : "Archivieren"}</button><button class="btn danger small" data-action="delete-ask">Löschen</button><span class="muted" style="font-size:13px">Archivierte Projekte verschwinden aus Heute, Roadmap und 1:1.</span></div>`);
+      `<div class="confirm"><button class="btn small" data-action="archive">${p.archived ? "Wiederherstellen" : "Archivieren"}</button><button class="btn danger small" data-action="delete-ask">Löschen</button><span class="muted" style="font-size:13px">Archivierte Projekte verschwinden aus Overview und Heute.</span></div>`);
   }
+  $("#d-focus").innerHTML = drawer.draft ? "" : `<button class="btn small ${p.focus ? "primary" : ""}" data-action="focus" data-id="${esc(p.id)}">${ico("star")}${p.focus ? "In Arbeit" : "Als „in Arbeit“ markieren"}</button>`;
+  renderPlan(p);
   const rs = readinessStats(p), ts = toolStats(p);
   $("#dt-rd").textContent = rs ? rs.pct + " %" : "–";
   $("#dt-tools").textContent = ts.total ? `${ts.ja}/${ts.total - ts.nb}` : "–";
@@ -1492,8 +1542,7 @@ function renderDrawerDynamic(){
 function readForm(target){
   document.querySelectorAll("#drawer-slot [data-field]").forEach(el => {
     const k = el.dataset.field; let v = el.value;
-    if (k === "oneOnOne") v = splitList(v);
-    else if (k === "priority") v = +v;
+    if (k === "priority") v = +v;
     else v = String(v).trim();
     target[k] = v;
   });
@@ -1832,17 +1881,11 @@ document.addEventListener("click", async e => {
   if (a === "kpi"){ const f = JSON.parse(t.dataset.filter); ui.f = Object.assign({ q:"", dept:"", sponsor:"", health:"", phase:"", archived:false }, f); ui.view = "portfolio"; ui.pmode = "list"; saveUi(); render(); return; }
   if (a === "filter-phase"){ ui.f = { q:"", dept:"", sponsor:"", health:"", phase:t.dataset.phase, archived:false }; ui.view = "portfolio"; saveUi(); render(); return; }
   if (a === "reset-filters"){ ui.f = { q:"", dept:"", sponsor:"", health:"", phase:"", archived:false }; saveUi(); render(); return; }
-  if (a === "person"){ ui.person = t.dataset.name; saveUi(); render(); return; }
-  if (a === "copy-agenda"){
-    const text = agendaText();
-    try { await navigator.clipboard.writeText(text); toast("Agenda kopiert, z. B. für Teams oder Outlook"); }
-    catch { showCopyFallback(text); }
-    return;
-  }
-  if (a === "close-oneonone"){
-    if (!state.canWrite) return;
-    state.meta.lastOneOnOne = Object.assign({}, state.meta.lastOneOnOne, { [ui.person]: todayISO() });
-    await Store.saveMeta(); toast(`1:1 mit ${ui.person} abgeschlossen. Ab jetzt zählen Änderungen ab heute.`); render(); return;
+  if (a === "ov-set"){ ui.ov[t.dataset.k] = t.dataset.v; saveUi(); renderOverview(); return; }
+  if (a === "focus"){
+    const id = t.dataset.id; const cur = state.projects.find(x => x.id === id); if (!cur) return;
+    await patchProject(id, x => { x.focus = !x.focus; pushLog(x, logEntry(x.focus ? "Als „in Arbeit“ markiert" : "Markierung „in Arbeit“ entfernt", "system")); });
+    toast(cur.focus ? `${cur.code} ist nicht mehr markiert` : `${cur.code} als „in Arbeit“ markiert`); return;
   }
 });
 document.addEventListener("change", async e => {
@@ -1888,7 +1931,13 @@ document.addEventListener("change", async e => {
     } catch (err){ toast(err.message || "Datei konnte nicht gelesen werden."); }
     return;
   }
-  if (t.id === "oo-since"){ state.meta.lastOneOnOne = Object.assign({}, state.meta.lastOneOnOne, { [ui.person]: t.value }); await Store.saveMeta(); render(); return; }
+  if (t.id === "ov-sort"){ ui.ov.sort = t.value; saveUi(); renderOverview(); return; }
+  if (t.id === "ov-done"){ ui.ov.done = t.checked; saveUi(); renderOverview(); return; }
+  if (t.dataset && t.dataset.plan && drawer){
+    const k = t.dataset.plan, v = t.value;
+    await drawerMutate(x => { x.plan = Object.assign({}, x.plan); if (v) x.plan[k] = v; else delete x.plan[k]; }, () => `Zeitplan ${PHASES[PH_INDEX[k]].long}: ${v ? "bis " + fmtDay(v) : "automatisch"}`);
+    return;
+  }
   if (t.id === "f-dept"){ ui.f.dept = t.value; } else if (t.id === "f-sponsor"){ ui.f.sponsor = t.value; } else if (t.id === "f-health"){ ui.f.health = t.value; } else if (t.id === "f-phase"){ ui.f.phase = t.value; } else if (t.id === "f-archived"){ ui.f.archived = t.checked; } else return;
   saveUi(); render();
 });
@@ -1900,10 +1949,6 @@ document.addEventListener("input", e => {
 document.addEventListener("submit", async e => {
   const f = e.target;
   if (f.dataset.form === "profile"){ e.preventDefault(); state.meta.me = { name: $("#pf-name").value.trim(), role: $("#pf-role").value.trim() }; profileOpen = false; await Store.saveMeta(); toast("Profil gespeichert"); render(); return; }
-  if (f.dataset.form !== "person") return; e.preventDefault();
-  const n = $("#person-new").value.trim(); if (!n) return;
-  if (!state.meta.people.includes(n)) state.meta.people = state.meta.people.concat(n);
-  ui.person = n; saveUi(); await Store.saveMeta(); render();
 });
 document.addEventListener("keydown", e => {
   if (e.key === "Escape" && drawer){ closeDrawer(); }
@@ -1914,7 +1959,6 @@ document.addEventListener("click", e => { const b = e.target.closest(".d-tab"); 
 document.querySelectorAll(".nav[data-view]").forEach(b => b.addEventListener("click", () => { ui.view = b.dataset.view; menuOpen = false; saveUi(); render(); window.scrollTo(0,0); }));
 document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => { ui.pmode = b.dataset.mode; saveUi(); render(); }));
 document.addEventListener("click", e => { const th = e.target.closest("th[data-sort]"); if (!th) return; const k = th.dataset.sort; ui.sort = { key:k, dir: ui.sort.key === k && ui.sort.dir === "desc" ? "asc" : "desc" }; saveUi(); renderPortfolio(); });
-matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => render());
 
 function showCopyFallback(text){
   const slot = $("#toast-slot");

@@ -10,9 +10,6 @@
   "department": "Customer Service",
   "businessOwner": "Teamleitung Service-Center DE",
   "lead": "",
-  "oneOnOne": [
-   "Henning"
-  ],
   "priority": 1,
   "phase": "build",
   "health": "green",
@@ -66,7 +63,8 @@
   "example": true,
   "archived": false,
   "createdAt": "2026-07-01T08:00:00Z",
-  "updatedAt": "2026-09-24T14:10:00Z"
+  "updatedAt": "2026-09-24T14:10:00Z",
+  "focus": true
  },
  {
   "id": "ex-ai-002",
@@ -79,9 +77,6 @@
   "department": "HR / Recruiting",
   "businessOwner": "Recruiting-Team",
   "lead": "",
-  "oneOnOne": [
-   "Lilli"
-  ],
   "priority": 1,
   "phase": "konzept",
   "health": "amber",
@@ -124,7 +119,8 @@
   "example": true,
   "archived": false,
   "createdAt": "2026-08-10T08:00:00Z",
-  "updatedAt": "2026-09-18T16:00:00Z"
+  "updatedAt": "2026-09-18T16:00:00Z",
+  "focus": true
  },
  {
   "id": "ex-ai-003",
@@ -137,9 +133,6 @@
   "department": "Finance",
   "businessOwner": "Kreditorenbuchhaltung",
   "lead": "",
-  "oneOnOne": [
-   "Henning"
-  ],
   "priority": 2,
   "phase": "test",
   "health": "green",
@@ -190,7 +183,8 @@
   "example": true,
   "archived": false,
   "createdAt": "2026-05-04T08:00:00Z",
-  "updatedAt": "2026-09-22T08:30:00Z"
+  "updatedAt": "2026-09-22T08:30:00Z",
+  "focus": false
  },
  {
   "id": "ex-ai-004",
@@ -203,10 +197,6 @@
   "department": "Operations / Logistik",
   "businessOwner": "Disposition",
   "lead": "",
-  "oneOnOne": [
-   "Henning",
-   "Lilli"
-  ],
   "priority": 2,
   "phase": "analyse",
   "health": "green",
@@ -238,7 +228,8 @@
   "example": true,
   "archived": false,
   "createdAt": "2026-09-01T08:00:00Z",
-  "updatedAt": "2026-09-10T10:00:00Z"
+  "updatedAt": "2026-09-10T10:00:00Z",
+  "focus": false
  },
  {
   "id": "ex-ai-005",
@@ -251,9 +242,6 @@
   "department": "QHSE",
   "businessOwner": "QHSE-Team",
   "lead": "",
-  "oneOnOne": [
-   "Lilli"
-  ],
   "priority": 3,
   "phase": "hypercare",
   "health": "green",
@@ -308,7 +296,8 @@
   "example": true,
   "archived": false,
   "createdAt": "2026-03-02T08:00:00Z",
-  "updatedAt": "2026-09-01T09:00:00Z"
+  "updatedAt": "2026-09-01T09:00:00Z",
+  "focus": false
  },
  {
   "id": "ex-ai-006",
@@ -321,7 +310,6 @@
   "department": "Sales",
   "businessOwner": "",
   "lead": "",
-  "oneOnOne": [],
   "priority": 3,
   "phase": "intake",
   "health": "green",
@@ -342,6 +330,7 @@
   "example": true,
   "archived": false,
   "createdAt": "2026-09-21T08:00:00Z",
-  "updatedAt": "2026-09-21T08:00:00Z"
+  "updatedAt": "2026-09-21T08:00:00Z",
+  "focus": false
  }
 ]
