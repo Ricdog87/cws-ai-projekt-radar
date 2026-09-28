@@ -13,13 +13,37 @@ Tägliches Steuerungs-Dashboard für alle AI-Projekte bei CWS, End-to-End vom In
 
 ## Projektlebenszyklus
 
-Intake & Idee → Analyse & Business Case → Konzept & Freigabe → Umsetzung → Test & Abnahme → Go-Live & Rollout → Hypercare → Abgeschlossen
+Intake & Idee → **Discovery & Readiness** → Konzept & Freigabe → Umsetzung → Test & Abnahme → Go-Live & Rollout → Hypercare → Abgeschlossen
 
-Jede Phase hat eine Checkliste (u. a. Datenschutz, Betriebsrat, AI-Act-Risikoklasse, Inventory-Eintrag). Der Fortschritt in Prozent ergibt sich aus Phase und erledigten Checklistenpunkten.
+Jede Phase hat eine Checkliste (u. a. Readiness-Check, Datenschutz, Betriebsrat, AI-Act-Risikoklasse, Inventory-Eintrag). Der Fortschritt in Prozent ergibt sich aus Phase und erledigten Checklistenpunkten.
 
-## Projektsteckbrief
+## Readiness-Check und Zugangsmatrix (je Projekt)
 
-ID, Titel, Beschreibung, Ziel & Nutzen, Business Value, Abteilung, Sponsor, fachlicher Ansprechpartner, Projektleitung, 1:1-Partner, Priorität, Start, Go-Live, Tech-Stack, nächster Schritt mit Fälligkeit, Blocker, offene Entscheidungen, EU-AI-Act-Risikoklasse, AI-Inventory-ID, Change Requests, Update-Verlauf.
+Aufgebaut nach dem Muster der Checkliste „Sales Along the Route | Nordwest“:
+
+- **9 Prüfbereiche:** Zielbild & Scope, Ist-Prozess & Business-Regeln, Daten & Datenqualität, Architektur & Integration, Tools/Lizenzen/Zugänge, Security/Datenschutz/AI Governance, Betrieb/Support/Skalierung, KPIs/Abnahme/Entscheidung, Rollen/Termine/nächste Schritte.
+- **Je Frage:** Kernfrage ★, kritisch, Typ, Priorität, Antwort / Ist-Stand, benötigte Evidenz, Owner, Status (Offen, Teilweise, Geklärt, Nicht relevant), Folgeaktion, Fälligkeit.
+- **Bewertung wie in der Excel:** Readiness = (Geklärt + ½ Teilweise) / (alle − nicht relevant).
+  - **READY:** ab 80 % und keine kritische Lücke offen.
+  - **NOT READY:** unter 50 % oder mindestens eine kritische Lücke offen.
+  - **CONDITIONAL GO:** alles dazwischen.
+  - Dazu Readiness je Prüfbereich.
+- **Tool- & Zugangsmatrix:** Tool/System, Zweck, Zugriff/Lizenz, vorhanden?, Phase/Abhängigkeit, Approver/Owner, nächster Schritt/Ticket.
+- **Folgeaktionen mit Owner und Fälligkeit** erscheinen in „Heute“. Überfällige Aktionen, NOT READY und kritische Lücken rücken ein Projekt nach oben.
+- **Kritische Lücken und Readiness** stehen in der 1:1-Vorbereitung und in der kopierten Agenda.
+- **Statuswechsel** landen im Verlauf. So sieht das 1:1, was seit dem letzten Termin geklärt wurde.
+- **Export:** Readiness und Zugangsmatrix als CSV, direkt in Excel zu öffnen.
+- **Neue Projekte** starten mit einem Standard-Check (29 Fragen, 15 Kernfragen, 5 kritische) und einer Standard-Zugangsmatrix.
+
+### Excel-Checkliste einlesen
+
+- **„Laden“ oben rechts → .xlsx wählen:** Das Radar legt ein neues Projekt an, mit Titel, Teilnehmenden, Ziel/Scope, Meeting-Datum, allen Prüffragen und der Zugangsmatrix.
+- **Im Projekt unter „Readiness → Excel übernehmen“:** ersetzt den Check eines bestehenden Projekts.
+- **Erkannt wird das Format der Nordwest-Checkliste:**
+  - Kopfzeile mit „Leitfrage“ und „Status“, weitere Spalten per Name.
+  - Kritische Fragen aus der Formel „Kritische Lücken“.
+  - Zugangsmatrix über die Spalten „Tool“ und „Vorhanden?“.
+- Die Excel-Datei wird nur im Browser gelesen und nirgends hochgeladen.
 
 ## Lokal starten (aktueller Betrieb)
 
@@ -31,10 +55,11 @@ Solange echte CWS-Daten eingepflegt werden, läuft das Radar **ausschließlich l
 
 **Sichern ist Pflicht.** Die Daten liegen im Browser-Speicher. Wer den Browser-Verlauf inklusive „Website-Daten“ löscht, löscht auch das Radar.
 
-- **Sichern** (oben rechts) lädt eine Datei `CWS-AI-Radar_Sicherung_JJJJ-MM-TT.json` herunter. Sie gehört in deinen CWS-OneDrive- oder SharePoint-Ordner, nicht in dieses Repository (`.gitignore` blockiert solche Dateien).
+- **Sichern** (oben rechts) lädt eine Datei `CWS-AI-Radar_Sicherung_JJJJ-MM-TT.json` herunter. Sie gehört in deinen CWS-OneDrive- oder SharePoint-Ordner, nicht in dieses Repository (`.gitignore` blockiert Sicherungen, CSV-Exporte und Excel-Dateien).
 - **Laden** spielt eine Sicherung wieder ein, z. B. auf einem neuen Rechner. Vor dem Ersetzen fragt das Radar nach.
 - Nach 7 Tagen ohne Sicherung erscheint ein Hinweis.
 - Zum Ausprobieren `data/beispielprojekte.json` laden und später mit „Beispiele entfernen“ wieder löschen.
+- Beim Laden einer Sicherung kannst du wählen: **Hinzufügen / aktualisieren** (bestehende Projekte bleiben) oder **Alles ersetzen**.
 
 Immer dieselbe Datei im selben Browser öffnen. Ein anderer Browser oder ein privates Fenster sieht die Daten nicht.
 

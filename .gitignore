@@ -1,4 +1,8 @@
-# Sicherungen enthalten echte CWS-Projektdaten und gehören nie ins Repository
+# Projektdaten (CWS-intern) gehören nie ins Repository
 *Sicherung*.json
+*_Readiness_*.csv
+*_Tools-Zugaenge_*.csv
+*.xlsx
+*.xlsm
 backups/
 sicherungen/

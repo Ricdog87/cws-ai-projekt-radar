@@ -223,7 +223,7 @@ h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:.005em;text
 .bfoot{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}
 
 .table-scroll{overflow-x:auto}
-table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1080px}
+table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .pt th{font:600 11.5px/1.2 var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line-strong);white-space:nowrap;cursor:pointer;user-select:none}
 .pt th[aria-sort]::after{content:" ↓";color:var(--brand)}
 .pt th[aria-sort="ascending"]::after{content:" ↑"}
@@ -277,7 +277,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1080px}
 
 /* ---------- Drawer ---------- */
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.5);z-index:40}
-.drawer{position:fixed;top:0;right:0;bottom:0;width:min(680px,100%);background:var(--bg);z-index:41;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px)}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(980px,100%);background:var(--bg);z-index:41;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px)}
 .d-head{background:var(--surface);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;gap:12px;align-items:flex-start}
 .d-head .grow{flex:1;min-width:0}
 .d-title{width:100%;border:0;background:transparent;font:600 24px/1.15 var(--f-display);padding:2px 0;border-bottom:1px dashed transparent}
@@ -316,6 +316,57 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1080px}
 
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:var(--radius);font-size:14px;z-index:60;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
 
+/* Drawer-Tabs */
+.d-tabs{display:flex;gap:2px;margin-top:10px;overflow-x:auto}
+.d-tab{background:none;border:0;border-bottom:3px solid transparent;padding:8px 12px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+.d-tab:hover{color:var(--ink)}
+.d-tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--cws-red)}
+.d-tab .count{font:500 11px/1 var(--f-mono);background:var(--surface-2);padding:2px 5px;border-radius:3px;margin-left:5px}
+/* Readiness */
+.rd-sum{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:14px 22px;align-items:center}
+.rd-score b{display:block;font:700 44px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.rd-score span{font-size:12.5px;color:var(--muted)}
+.rec{display:inline-flex;align-items:center;gap:6px;font:700 13px/1 var(--f-body);letter-spacing:.06em;padding:7px 10px;border-radius:4px;white-space:nowrap}
+.rec.ready{background:var(--ok-bg);color:var(--ok)} .rec.cond{background:var(--warn-bg);color:var(--warn)} .rec.notready{background:var(--crit-bg);color:var(--crit)}
+.rec.small{font-size:11px;padding:3px 6px;letter-spacing:.03em}
+.rd-facts{font-size:13.5px;color:var(--ink-2);display:grid;gap:3px}
+.rd-areas{display:grid;gap:4px}
+.rd-area{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px;background:none;border:0;padding:3px 0;text-align:left;cursor:pointer;color:var(--ink-2)}
+.rd-area:hover{color:var(--ink)}
+.rd-bar{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;display:block}
+.rd-bar i{display:block;height:100%;background:var(--ink);border-radius:4px}
+.rd-tools{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.rd-tools select,.rd-tools input[type=date]{border:1px solid var(--line-strong);border-radius:var(--radius);padding:6px 8px;background:var(--surface)}
+.q-area{font:600 16px/1.2 var(--f-display);padding:16px 0 6px;border-bottom:2px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+.q-area span{font:500 12px var(--f-mono);color:var(--muted)}
+.q{border-left:4px solid var(--line-strong);padding:10px 0 12px 12px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.q.s-teil{border-left-color:var(--warn)} .q.s-ok{border-left-color:var(--ok)} .q.s-nr{border-left-color:var(--line);opacity:.6}
+.q-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start}
+.q-nr{font:600 12.5px/1.7 var(--f-mono);color:var(--muted);white-space:nowrap;min-width:26px}
+.q-nr .star{color:var(--cws-red);font-size:14px}
+.q-text{font-weight:600;font-size:14.5px;line-height:1.4}
+.q-meta{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.q select{border:1px solid var(--line-strong);border-radius:var(--radius);padding:5px 6px;background:var(--surface);font-size:13.5px;font-weight:600}
+.q.s-ok select{color:var(--ok)} .q.s-teil select{color:var(--warn)}
+.q-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) 150px;gap:8px}
+.q-grid textarea{grid-column:1/-1;min-height:38px;resize:vertical;field-sizing:content}
+.q-grid textarea,.q-grid input{border:1px solid var(--line);border-radius:var(--radius);padding:6px 8px;background:var(--surface);font-size:14px;min-width:0;width:100%}
+.q-grid textarea:focus,.q-grid input:focus{border-color:var(--line-strong)}
+.tt{width:100%;border-collapse:collapse;font-size:13.5px;min-width:1000px}
+.tt th{font:600 11px/1.2 var(--f-body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1px solid var(--line-strong)}
+.tt td{padding:3px 2px;border-bottom:1px solid var(--line);vertical-align:top}
+.tt textarea,.tt select{width:100%;border:1px solid transparent;background:transparent;padding:6px;border-radius:4px;font-size:13.5px;line-height:1.35;min-width:0}
+.tt textarea{field-sizing:content;resize:none;min-height:32px;overflow:hidden}
+.tt textarea:hover,.tt textarea:focus,.tt select:hover,.tt select:focus{border-color:var(--line-strong);background:var(--surface)}
+.tt td.av-ja select{color:var(--ok);font-weight:600} .tt td.av-nein select{color:var(--crit);font-weight:600} .tt td.av-teil select,.tt td.av-unklar select{color:var(--warn);font-weight:600}
+.task-row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:12px;padding:10px 16px;border-top:1px solid var(--line);font-size:14px;align-items:start}
+.task-row:first-child{border-top:0}
+.task-row .d{font:500 12.5px/1.5 var(--f-mono);color:var(--muted)}
+.task-row .d.overdue{color:var(--crit)}
+.task-row button.lnk{all:unset;cursor:pointer;font-weight:600}
+.task-row button.lnk:hover{text-decoration:underline}
+.task-row .s{font-size:12.5px;color:var(--muted)}
+
 @media (max-width:900px){
   .two-col{grid-template-columns:1fr}
 }
@@ -336,6 +387,11 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1080px}
   .stepper{grid-template-columns:repeat(4,minmax(0,1fr))}
   .d-head,.d-body,.d-foot{padding-inline:16px}
   .agenda-item{grid-template-columns:1fr;gap:2px}
+  .q-grid{grid-template-columns:1fr}
+  .rd-sum{grid-template-columns:auto 1fr}
+  .rd-facts{grid-column:1/-1}
+  .rd-area{grid-template-columns:minmax(0,1fr) 70px 40px}
+  .task-row{grid-template-columns:1fr;gap:2px}
 }
 @media (prefers-reduced-motion:no-preference){
   .drawer{animation:slide .18s ease-out}
@@ -361,7 +417,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1080px}
       <div class="sync" id="sync"><i></i><span>Lädt …</span></div>
       <button class="btn barghost small" data-action="export" title="Alle Daten als Datei sichern">Sichern</button>
       <button class="btn barghost small" data-action="import" title="Sicherungsdatei laden">Laden</button>
-      <input type="file" id="import-file" accept="application/json,.json" hidden>
+      <input type="file" id="import-file" accept=".json,.xlsx,application/json" hidden>
       <button class="btn bar" id="btn-new" data-action="new">+ Projekt</button>
     </div>
   </div>
@@ -391,13 +447,17 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1080px}
     </div>
     <div class="section two-col">
       <div>
-        <div class="section-head"><h2>Auch im Blick</h2></div>
-        <div class="panel list" id="watch"></div>
+        <div class="section-head"><h2>Offene Folgeaktionen</h2><span class="muted" style="font-size:13px">aus den Readiness-Checks, nach Fälligkeit</span></div>
+        <div class="panel" id="actions"></div>
       </div>
       <div>
         <div class="section-head"><h2>Nächste 14 Tage</h2></div>
         <div class="panel" id="upcoming"></div>
       </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><h2>Auch im Blick</h2></div>
+      <div class="panel list" id="watch"></div>
     </div>
   </section>
 
@@ -466,7 +526,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1080px}
 /* ================== Konfiguration ================== */
 const PHASES = [
   { key:"intake",    label:"Intake",        long:"Intake & Idee",            gates:["Problem und Ziel beschrieben","Sponsor benannt","Fachbereich und Ansprechpartner benannt"] },
-  { key:"analyse",   label:"Analyse",       long:"Analyse & Business Case",  gates:["Ist-Prozess aufgenommen","Datenquellen und Zugriffe geklärt","Nutzen quantifiziert (€ oder Stunden)"] },
+  { key:"analyse",   label:"Discovery",     long:"Discovery & Readiness",    gates:["Discovery-Meeting durchgeführt","Readiness-Check: READY oder Conditional Go mit Sponsor","Tools und Zugänge geklärt","Nutzen und KPIs quantifiziert"] },
   { key:"konzept",   label:"Konzept",       long:"Konzept & Freigabe",       gates:["Lösungsdesign steht","Datenschutz geprüft (ggf. DSFA)","Betriebsrat eingebunden","AI-Act-Risikoklasse bestimmt","Freigabe durch Sponsor"] },
   { key:"build",     label:"Umsetzung",     long:"Umsetzung",                gates:["MVP / Prototyp gebaut","Systeme und Schnittstellen angebunden","Dokumentation begonnen"] },
   { key:"test",      label:"Test",          long:"Test & Abnahme",           gates:["Testfälle mit Fachbereich durchlaufen","IT-Security-Check","Fachliche Abnahme erteilt"] },
@@ -485,6 +545,63 @@ const HEALTH = {
 };
 const PRIO = { 1:"P1 hoch", 2:"P2 mittel", 3:"P3 niedrig" };
 const AIACT = { offen:"Noch offen", minimal:"Minimales Risiko", begrenzt:"Begrenztes Risiko (Transparenz)", hoch:"Hochrisiko (Anhang III)" };
+const RD_STATUS = ["Offen","Teilweise","Geklärt","Nicht relevant"];
+const RD_CLASS = { "Offen":"", "Teilweise":"s-teil", "Geklärt":"s-ok", "Nicht relevant":"s-nr" };
+const RD_TYPES = ["Nicht technisch","Prozess","Technisch","Business","Organisation","Governance"];
+const RD_PRIO = ["Hoch","Mittel","Niedrig"];
+const RD_AREAS = ["Zielbild & Scope","Ist-Prozess & Business-Regeln","Daten & Datenqualität","Architektur & Integration","Tools, Lizenzen & Zugänge","Security, Datenschutz & AI Governance","Betrieb, Support & Skalierung","KPIs, Abnahme & Entscheidung","Rollen, Termine & nächste Schritte"];
+const TOOL_AVAIL = ["","Ja","Teilweise","Nein","Unklar","Nicht benötigt"];
+const REC = { "READY":{ cls:"ready", icon:"●" }, "CONDITIONAL GO":{ cls:"cond", icon:"▲" }, "NOT READY":{ cls:"notready", icon:"■" } };
+const RD_RULE = "READY ab 80 % Readiness und ohne offene kritische Lücke. NOT READY unter 50 % oder bei offener kritischer Lücke. Dazwischen CONDITIONAL GO. Geklärt zählt voll, Teilweise halb, Nicht relevant fällt raus.";
+// Standard-Readiness-Check für AI Use Cases: [Nr, Bereich, Kernfrage, kritisch, Frage, Typ, Priorität, Evidenz]
+const RD_TEMPLATE = [
+  [1,0,1,0,"Welches konkrete Business-Problem soll der Use Case lösen?","Nicht technisch","Hoch","Problemstatement und Sponsor-Aussage"],
+  [2,0,1,0,"Welcher Teil des Use Cases wird im Pilot umgesetzt, und was ist ausdrücklich nicht im Scope?","Nicht technisch","Hoch","Bestätigter Pilotscope"],
+  [3,0,1,0,"Was ist das kleinste sinnvolle Pilotergebnis mit erkennbarem Nutzen?","Nicht technisch","Hoch","MLP- und Pilotdefinition"],
+  [4,0,1,0,"Welche Region, Standorte und Nutzergruppen sind im Pilot?","Nicht technisch","Hoch","Pilotgebiet und Nutzerliste"],
+  [5,1,0,0,"Wie läuft der Prozess heute, und welche Systeme und Datenquellen werden genutzt?","Prozess","Hoch","Ist-Prozess und Quellenübersicht"],
+  [6,1,1,0,"Nach welchen verbindlichen fachlichen Regeln soll die Lösung entscheiden oder vorschlagen?","Business","Hoch","Verbindliche Business-Regeln"],
+  [7,1,0,0,"Welche Pain Points müssen im Pilot zuerst adressiert werden?","Business","Hoch","Priorisierte Pain-Point-Liste"],
+  [8,2,1,1,"Wo liegen die benötigten Daten, in welchem Format, wer ist Data Owner und wie oft werden sie aktualisiert?","Technisch","Hoch","Datenquellen und Data Owner"],
+  [9,2,1,0,"Welche eindeutigen IDs verbinden die beteiligten Datenquellen?","Technisch","Hoch","Datenmodell und ID-Mapping"],
+  [10,2,0,0,"Wie vollständig, aktuell und korrekt sind die Daten?","Technisch","Hoch","Datenqualitätsprofil und Stichprobe"],
+  [11,2,0,0,"Welche Daten dürfen nicht verwendet werden, z. B. Bonität oder Leistungsdaten von Beschäftigten?","Governance","Hoch","Verbindliche Ausschlussliste"],
+  [12,2,0,0,"Welche Nutzungs-, Speicher- und Lizenzrechte gelten für interne und externe Daten?","Governance","Hoch","Lizenz- und Nutzungsklärung"],
+  [13,3,1,1,"Welche Zielarchitektur ist für Phase 1 sinnvoll, und warum?","Technisch","Hoch","Begründete Zielarchitektur für Phase 1"],
+  [14,3,1,0,"Wie sieht der End-to-End-Flow inklusive menschlicher Prüfung aus?","Technisch","Hoch","End-to-End-Flow mit Human Review"],
+  [15,3,1,1,"Welche Sandbox-, UAT- oder Testumgebung steht zur Verfügung?","Technisch","Hoch","Umgebungszugang und Testdaten"],
+  [16,3,0,0,"Welche APIs, Dateiimporte oder Schnittstellen existieren?","Technisch","Hoch","Schnittstellendokumentation und Owner"],
+  [17,3,0,0,"Welche technischen Blocker bestehen, und welche Workarounds gibt es?","Technisch","Hoch","Blockerliste mit Workaround"],
+  [18,4,1,0,"Welche Zugänge braucht die Projektleitung für Discovery und Pilot konkret?","Technisch","Hoch","Access-Matrix für Discovery und Pilot"],
+  [19,4,0,0,"Welche Lizenzen und Services werden benötigt, und welche Kosten entstehen?","Business","Mittel","Lizenzbedarf und Kostenannahmen"],
+  [20,4,0,0,"Wer genehmigt und provisioniert jeden benötigten Zugang?","Organisation","Hoch","Approver- und Provisionierungsliste"],
+  [21,5,1,1,"Welche Freigaben sind vor Pilotstart nötig: Datenschutz, Security, Legal, Betriebsrat, AI Governance?","Governance","Hoch","Freigabematrix und dokumentierte Ausschlüsse"],
+  [22,5,0,0,"Welche personenbezogenen Daten werden verarbeitet, und wie sind sie klassifiziert?","Governance","Hoch","Datenklassifikation und Verarbeitungsverzeichnis"],
+  [23,5,0,0,"Wo bleibt der Mensch in der Entscheidung, und was wird protokolliert?","Governance","Hoch","Human-in-the-Loop- und Audit-Konzept"],
+  [24,5,0,0,"Welche AI-Act-Risikoklasse hat der Use Case, und ist der Eintrag im AI Inventory angelegt?","Governance","Hoch","AI-Inventory-Eintrag"],
+  [25,6,0,0,"Wer verantwortet Betrieb, Support, Datenpflege und Eskalation, und was muss für weitere Regionen standardisiert werden?","Organisation","Mittel","Supportmodell und Skalierungskriterien"],
+  [26,7,1,0,"Welche KPIs, Zielwerte und Go/No-Go-Grenzen entscheiden über den Pilot?","Business","Hoch","KPI-Katalog, Zielwerte und Entscheidungsgates"],
+  [27,7,0,0,"Welche Baseline gibt es heute, und wie wird gemessen?","Business","Hoch","Baseline und Messkonzept"],
+  [28,8,1,1,"Wer ist Sponsor, Business Owner, Product Owner, Technical Owner, Data Owner und Abnahmeverantwortlicher?","Organisation","Hoch","RACI und Namensliste"],
+  [29,8,1,0,"Welche drei Arbeitspakete starten direkt, jeweils mit Owner und Fälligkeit?","Organisation","Hoch","Maßnahmenliste mit Owner und Termin"],
+];
+// Standard-Zugangsmatrix: [Tool, Zweck, Zugriff/Lizenz, Phase]
+const TOOL_TEMPLATE = [
+  ["CRM (z. B. Salesforce)","Accounts, Leads, Opportunities, Übergabe von Ergebnissen","Benutzerzugang und relevante Rollen","Discovery / Pilot"],
+  ["CRM Sandbox / UAT","Sicheres Testen von Konfiguration und Integration","Sandbox- oder UAT-Zugang mit Testdaten","Discovery / Pilot"],
+  ["Quellsystem(e) des Use Cases","Fachdaten für den Use Case","Datenexport, Dateiablage oder API","Discovery / Pilot"],
+  ["Datenverarbeitungs- oder Integrationsplattform","Abgleich, Regeln, Scoring, Protokollierung","Workspace, Rollen, Laufzeit","Architekturabhängig"],
+  ["SharePoint / Teams","Projektablage, Evidenzen, Entscheidungen","Site- oder Team-Mitgliedschaft","Discovery / Pilot"],
+  ["AI Inventory / Governance","Registrierung, Risiko- und Freigabestatus","Bearbeitungs- oder Einreichungszugang","Vor Pilotstart"],
+  ["Power BI","KPI- oder Pilotdarstellung","Workspace-Zugang und Lizenz","Nur bei bestätigter Abhängigkeit"],
+  ["Power Automate","Workflows und Benachrichtigungen","Umgebung und Connector-Rechte","Nur bei bestätigter Abhängigkeit"],
+  ["ServiceNow","Zugangs-, Incident- und technische Requests","Requester-Zugang oder Queue","Nur bei bestätigter Abhängigkeit"],
+];
+const rid = () => uid().slice(0,12);
+function templateReadiness(){
+  return { source:"Standard-Check AI Use Case", meetingAt:"", items: RD_TEMPLATE.map(([nr,a,core,crit,q,type,prio,ev]) => ({ id:rid(), nr, area:RD_AREAS[a], core:!!core, critical:!!crit, q, type, prio, answer:"", evidence:ev, owner:"", status:"Offen", action:"", due:"" })) };
+}
+function templateTools(){ return TOOL_TEMPLATE.map(([tool,purpose,access,phase]) => ({ id:rid(), tool, purpose, access, available:"", phase, owner:"", next:"" })); }
 const DEFAULT_PEOPLE = ["Henning","Lilli"];
 const STALE_DAYS = 10;
 const LOCAL_KEY = "cws-ai-radar-v1";
@@ -547,6 +664,35 @@ function isActive(p){ return !p.archived && p.phase !== "done"; }
 function lastActivity(p){ return p.updatedAt || p.createdAt || null; }
 function daysSince(iso){ if(!iso) return null; return Math.floor((Date.now() - new Date(iso).getTime())/86400000); }
 
+function readinessStats(p){
+  const items = (p.readiness && p.readiness.items) || [];
+  if (!items.length) return null;
+  const cnt = (list, s) => list.filter(i => i.status === s).length;
+  const total = items.length, done = cnt(items,"Geklärt"), part = cnt(items,"Teilweise"), open = cnt(items,"Offen"), nr = cnt(items,"Nicht relevant");
+  const denom = total - nr; const ratio = denom ? (done + 0.5*part) / denom : 0;
+  const critOpen = items.filter(i => i.critical && i.status === "Offen");
+  const coreTotal = items.filter(i => i.core).length, coreOpen = items.filter(i => i.core && i.status === "Offen").length;
+  const rec = (ratio >= 0.8 && !critOpen.length) ? "READY" : ((ratio < 0.5 || critOpen.length) ? "NOT READY" : "CONDITIONAL GO");
+  const areas = areaOrder(items).map(name => {
+    const l = items.filter(i => i.area === name); const d = l.length - cnt(l,"Nicht relevant");
+    return { name, total:l.length, done:cnt(l,"Geklärt"), part:cnt(l,"Teilweise"), open:cnt(l,"Offen"), pct: d ? Math.round((cnt(l,"Geklärt") + 0.5*cnt(l,"Teilweise")) / d * 100) : 0 };
+  });
+  return { total, done, part, open, nr, pct: Math.round(ratio*100), rec, critOpen, coreTotal, coreOpen, areas };
+}
+function areaOrder(items){
+  const seen = [...new Set(items.map(i => i.area))];
+  return RD_AREAS.filter(a => seen.includes(a)).concat(seen.filter(a => !RD_AREAS.includes(a)));
+}
+function openActions(p){
+  return ((p.readiness && p.readiness.items) || []).filter(i => (i.status === "Offen" || i.status === "Teilweise") && ((i.action||"").trim() || i.due));
+}
+function toolStats(p){
+  const t = p.tools || []; const c = v => t.filter(x => x.available === v).length;
+  return { total:t.length, ja:c("Ja"), teil:c("Teilweise"), nein:c("Nein"), unklar:c("Unklar"), leer:c(""), nb:c("Nicht benötigt"), offen: c("Nein") + c("Unklar") + c("Teilweise") };
+}
+function recBadge(rs, small){ const r = REC[rs.rec]; return `<span class="rec ${r.cls} ${small ? "small" : ""}"><i aria-hidden="true" style="font-style:normal">${r.icon}</i>${small ? rs.pct + " % · " : ""}${esc(rs.rec)}</span>`; }
+function qLabel(i){ return `Nr. ${i.nr}${i.core ? " ★" : ""}`; }
+
 function assess(p){
   const reasons = []; let score = 0;
   if (!isActive(p)) return { score:0, reasons };
@@ -566,6 +712,17 @@ function assess(p){
   if (gl !== null && gl < 0 && phaseIdx(p) < PH_INDEX.golive){ score += 18; reasons.push({ t:"Go-Live-Termin überschritten", c:"crit" }); }
   if (phaseIdx(p) >= PH_INDEX.golive && !(p.aiInventoryId||"").trim()){ score += 12; reasons.push({ t:"Live ohne AI-Inventory-ID", c:"warn" }); }
   if (!paused && !(p.nextStep||"").trim()){ score += 10; reasons.push({ t:"Kein nächster Schritt", c:"warn" }); }
+  const rs = readinessStats(p);
+  if (rs && !paused && phaseIdx(p) <= PH_INDEX.konzept){
+    if (rs.rec === "NOT READY"){ score += 12; reasons.push({ t:`Readiness ${rs.pct} % · NOT READY`, c:"crit" }); }
+    else if (rs.rec === "CONDITIONAL GO"){ score += 6; reasons.push({ t:`Readiness ${rs.pct} % · Conditional Go`, c:"warn" }); }
+    if (rs.critOpen.length){ score += Math.min(20, 5 * rs.critOpen.length); reasons.push({ t:`${plural(rs.critOpen.length,"kritische Lücke","kritische Lücken")} offen`, c:"crit" }); }
+  }
+  const acts = paused ? [] : openActions(p);
+  const od = acts.filter(i => { const d = daysFromToday(i.due); return d !== null && d < 0; }).length;
+  const td = acts.filter(i => daysFromToday(i.due) === 0).length;
+  if (od){ score += 25 + Math.min(od * 3, 15); reasons.push({ t:`${plural(od,"Folgeaktion","Folgeaktionen")} überfällig`, c:"crit" }); }
+  if (td){ score += 15; reasons.push({ t:`${plural(td,"Folgeaktion","Folgeaktionen")} heute fällig`, c:"crit" }); }
   const idle = daysSince(lastActivity(p));
   if (!paused && idle !== null && idle >= STALE_DAYS){ score += 10; reasons.push({ t:`${idle} Tage ohne Update`, c:"" }); }
   if (paused){ score = Math.max(0, score - 30); }
@@ -580,8 +737,8 @@ function nextCode(){
 function blankProject(){
   const t = todayISO();
   return { id: uid(), code: nextCode(), title:"", description:"", goal:"", value:"", sponsor:"", department:"", businessOwner:"", lead: state.me.name || "", oneOnOne: [], priority: 2,
-    phase:"intake", health:"green", startDate:t, targetDate:"", nextStep:"", nextStepDue:"", blockers:"", openDecisions:"", techStack:"",
-    aiAct:"offen", aiInventoryId:"", crRefs:"", gates:{}, updates:[], archived:false, createdAt:nowISO(), updatedAt:nowISO() };
+    region:"", team:"", phase:"intake", health:"green", startDate:t, targetDate:"", nextStep:"", nextStepDue:"", blockers:"", openDecisions:"", techStack:"",
+    aiAct:"offen", aiInventoryId:"", crRefs:"", gates:{}, updates:[], readiness: templateReadiness(), tools: templateTools(), archived:false, createdAt:nowISO(), updatedAt:nowISO() };
 }
 
 /* ================== Speicher: lokal im Browser ================== */
@@ -650,6 +807,8 @@ function parseBackup(text){
     x.title = String(x.title || ""); x.oneOnOne = Array.isArray(x.oneOnOne) ? x.oneOnOne.map(String) : splitList(x.oneOnOne);
     x.updates = Array.isArray(x.updates) ? x.updates.filter(u => u && u.at && u.text) : [];
     x.gates = x.gates && typeof x.gates === "object" ? x.gates : {};
+    x.readiness = p.readiness ? sanitizeReadiness(p.readiness) : null;
+    x.tools = sanitizeTools(p.tools);
     if (!PH_INDEX.hasOwnProperty(x.phase)) x.phase = "intake";
     if (!HEALTH[x.health]) x.health = "green";
     return x;
@@ -658,13 +817,48 @@ function parseBackup(text){
   const meta = { people: Array.isArray(m.people) ? m.people.map(String) : state.meta.people.slice(), lastOneOnOne: Object.assign({}, m.lastOneOnOne || {}) };
   return { projects, meta, exportedAt: Array.isArray(raw) ? null : raw.exportedAt || null };
 }
+function sanitizeReadiness(r){
+  if (!r || !Array.isArray(r.items)) return null;
+  const str = v => String(v ?? "");
+  return { source: str(r.source), meetingAt: /^\d{4}-\d{2}-\d{2}$/.test(r.meetingAt||"") ? r.meetingAt : "",
+    items: r.items.filter(i => i && typeof i === "object" && i.q).map(i => ({ id: ID_OK.test(str(i.id)) ? str(i.id) : rid(), nr: (typeof i.nr === "number" ? i.nr : str(i.nr)), area: str(i.area) || RD_AREAS[0],
+      core: !!i.core, critical: !!i.critical, q: str(i.q), type: str(i.type), prio: str(i.prio), answer: str(i.answer), evidence: str(i.evidence), owner: str(i.owner),
+      status: RD_STATUS.includes(i.status) ? i.status : "Offen", action: str(i.action), due: /^\d{4}-\d{2}-\d{2}$/.test(i.due||"") ? i.due : "" })) };
+}
+function sanitizeTools(t){
+  if (!Array.isArray(t)) return [];
+  const str = v => String(v ?? "");
+  return t.filter(x => x && typeof x === "object").map(x => ({ id: ID_OK.test(str(x.id)) ? str(x.id) : rid(), tool: str(x.tool), purpose: str(x.purpose), access: str(x.access),
+    available: TOOL_AVAIL.includes(x.available) ? x.available : "", phase: str(x.phase), owner: str(x.owner), next: str(x.next) }));
+}
 let pendingImport = null;
-function applyImport(){
+function applyImport(mode){
   if (!pendingImport) return;
   const n = pendingImport.projects.length;
-  Store.replaceAll(pendingImport); pendingImport = null;
+  if (mode === "merge"){
+    const byId = Object.fromEntries(state.projects.map(p => [p.id, p]));
+    pendingImport.projects.forEach(p => {
+      if (!byId[p.id] && state.projects.some(x => x.code === p.code)) p.code = nextCode();
+      const i = state.projects.findIndex(x => x.id === p.id);
+      if (i >= 0) state.projects[i] = p; else state.projects.push(p);
+    });
+    const m = pendingImport.meta;
+    state.meta = { people: [...new Set(state.meta.people.concat(m.people))], lastOneOnOne: Object.assign({}, m.lastOneOnOne, state.meta.lastOneOnOne) };
+    Store.persistLocal();
+  } else {
+    Store.replaceAll(pendingImport);
+  }
+  pendingImport = null;
   if (drawer) closeDrawer();
-  toast(`${plural(n,"Projekt","Projekte")} geladen`); render();
+  toast(`${plural(n,"Projekt","Projekte")} ${mode === "merge" ? "hinzugefügt oder aktualisiert" : "geladen"}`); render();
+}
+async function importExcelAsProject(file){
+  const x = checklistFromSheets(await readXlsx(await file.arrayBuffer()), file.name);
+  const p = projectFromExcel(x, file.name);
+  await Store.saveProject(p);
+  toast(`${p.code} „${p.title}“ aus Excel angelegt`);
+  ui.view = "heute"; saveUi(); render();
+  openDrawer(p.id, { tab:"readiness" });
 }
 
 async function patchProject(id, fn){
@@ -697,7 +891,7 @@ function renderChrome(){
   sync.title = "Die Daten liegen ausschließlich im Browser dieses Rechners. Nichts wird an einen Server gesendet.";
   const banners = [];
   if (pendingImport){
-    banners.push(`<div class="banner warn"><span><b>Sicherung laden?</b> ${pendingImport.exportedAt ? "Stand " + esc(fmtStamp(pendingImport.exportedAt)) + ", " : ""}${plural(pendingImport.projects.length,"Projekt","Projekte")}. Ersetzt die aktuellen ${plural(state.projects.length,"Projekt","Projekte")} in diesem Browser.</span><span style="display:flex;gap:8px"><button class="btn small primary" data-action="import-confirm">Ersetzen</button><button class="btn small" data-action="import-cancel">Abbrechen</button></span></div>`);
+    banners.push(`<div class="banner warn"><span><b>Sicherung laden?</b> ${pendingImport.exportedAt ? "Stand " + esc(fmtStamp(pendingImport.exportedAt)) + ", " : ""}${plural(pendingImport.projects.length,"Projekt","Projekte")}. Hinzufügen behält deine ${plural(state.projects.length,"Projekt","Projekte")} und aktualisiert gleiche Projekte. Ersetzen löscht alles andere.</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small primary" data-action="import-merge">Hinzufügen / aktualisieren</button><button class="btn small" data-action="import-confirm">Alles ersetzen</button><button class="btn small" data-action="import-cancel">Abbrechen</button></span></div>`);
   }
   const days = state.backupAt ? daysSince(state.backupAt) : null;
   if (state.projects.some(p => !p.example) && (days === null || days >= BACKUP_REMIND_DAYS)){
@@ -724,12 +918,12 @@ function renderHeute(){
     $("#welcome").innerHTML = `<div class="welcome">
       <h2>So startest du</h2>
       <ol>
-        <li>Lege über „+ Projekt“ deine laufenden AI-Projekte an: Titel, Sponsor, Abteilung, Phase, nächster Schritt.</li>
+        <li>Lege über „+ Projekt“ deine laufenden AI-Projekte an, oder lade eine Readiness-Checkliste als Excel: Das Projekt entsteht mit allen Prüffragen und Zugängen.</li>
         <li>Trage bei jedem Projekt die 1:1-Partner ein (z. B. Henning, Lilli). Dann ist die 1:1-Ansicht sofort vorbereitet.</li>
         <li>Klick regelmäßig auf „Sichern“. Die Datei landet im Download-Ordner; leg sie in deinen CWS-OneDrive-Ordner.</li>
       </ol>
-      <div class="actions"><button class="btn primary" data-action="new">+ Erstes Projekt anlegen</button><button class="btn" data-action="import">Sicherung oder Beispiele laden</button></div>
-      <div class="muted" style="font-size:13px">Zum Ausprobieren: <span class="mono">data/beispielprojekte.json</span> aus dem Projektordner laden.</div>
+      <div class="actions"><button class="btn primary" data-action="new">+ Erstes Projekt anlegen</button><button class="btn" data-action="import">Excel-Checkliste oder Sicherung laden</button></div>
+      <div class="muted" style="font-size:13px">„Laden“ liest eine Readiness-Checkliste (.xlsx) und legt daraus ein Projekt an, oder spielt eine Sicherung (.json) ein. Zum Ausprobieren: <span class="mono">data/beispielprojekte.json</span>.</div>
     </div>`;
     return;
   }
@@ -790,11 +984,26 @@ function renderHeute(){
     const d2 = daysFromToday(p.targetDate);
     if (d2 !== null && d2 >= 0 && d2 <= 14 && phaseIdx(p) < PH_INDEX.hypercare) events.push({ d:p.targetDate, p, t:"Geplanter Go-Live", k:"Go-Live" });
   });
+  active.forEach(p => openActions(p).forEach(i => { const d = daysFromToday(i.due); if (d !== null && d >= 0 && d <= 14) events.push({ d:i.due, p, t:`${i.action || i.q}${i.owner ? " · " + i.owner : ""}`, k:"Aktion", tab:"readiness" }); }));
   events.sort((a,b) => a.d.localeCompare(b.d));
+  renderActions(active);
   $("#upcoming").innerHTML = events.length ? events.map(e => `
     <div class="agenda-item"><div class="d">${e.d === todayISO() ? "Heute" : esc(fmtShort(e.d) + " " + parseDay(e.d).toLocaleDateString("de-DE",{weekday:"short"}))}</div>
-    <div><button data-action="open" data-id="${esc(e.p.id)}">${esc(e.p.title || "Ohne Titel")}</button><div class="muted">${e.k === "Go-Live" ? "◆ " : ""}${esc(e.t)}</div></div></div>`).join("")
+    <div><button data-action="open" data-id="${esc(e.p.id)}" ${e.tab ? `data-tab="${e.tab}"` : ""}>${esc(e.p.title || "Ohne Titel")}</button><div class="muted">${e.k === "Go-Live" ? "◆ " : e.k === "Aktion" ? "Folgeaktion: " : ""}${esc(e.t)}</div></div></div>`).join("")
     : `<div class="empty">Keine Termine in den nächsten 14 Tagen.</div>`;
+}
+function renderActions(active){
+  const all = [];
+  active.filter(p => p.health !== "paused").forEach(p => openActions(p).forEach(i => all.push({ p, i, d: daysFromToday(i.due) })));
+  all.sort((a,b) => (a.d === null) - (b.d === null) || (a.d ?? 0) - (b.d ?? 0) || (b.i.core - a.i.core) || (b.i.critical - a.i.critical));
+  const top = all.slice(0, 10);
+  $("#actions").innerHTML = top.length ? top.map(({ p, i, d }) => `
+    <div class="task-row">
+      <div class="d ${d !== null && d < 0 ? "overdue" : ""}">${d === null ? "ohne Termin" : d < 0 ? `${-d} T. über` : d === 0 ? "Heute" : esc(fmtShort(i.due))}</div>
+      <div><button class="lnk" data-action="open" data-id="${esc(p.id)}" data-tab="readiness">${esc(i.action || i.q)}</button>
+        <div class="s"><span class="mono">${esc(p.code)}</span> · ${esc(qLabel(i))}${i.critical ? " · kritisch" : ""} · ${esc(i.owner || "Owner offen")}</div></div>
+    </div>`).join("") + (all.length > 10 ? `<div class="empty" style="padding:10px 16px">+ ${all.length - 10} weitere in den Projekten</div>` : "")
+    : `<div class="empty">Keine offenen Folgeaktionen. Trag im Readiness-Check eines Projekts Owner, Folgeaktion und Fälligkeit ein, dann erscheinen sie hier.</div>`;
 }
 function kpi(n, label, cls, filter){
   const attrs = filter ? `data-action="kpi" data-filter='${esc(JSON.stringify(filter))}'` : `data-action="noop"`;
@@ -854,23 +1063,24 @@ function renderPortfolio(){
         ${items.map(boardCard).join("") || `<div class="muted" style="font-size:13px;padding:4px 2px">Leer</div>`}</div>`;
     }).join("")}</div></div>`;
   } else {
-    const rows = list.map(p => Object.assign({ p, score: assess(p).score, prog: progress(p) }));
+    const rows = list.map(p => Object.assign({ p, score: assess(p).score, prog: progress(p), rs: readinessStats(p) }));
     const k = ui.sort.key, dir = ui.sort.dir === "asc" ? 1 : -1;
-    const val = r => ({ code:r.p.code, title:r.p.title, department:r.p.department, sponsor:r.p.sponsor, phase:phaseIdx(r.p), health:["red","amber","green","paused"].indexOf(r.p.health), prog:r.prog, due:r.p.nextStepDue||"9999", target:r.p.targetDate||"9999", upd:lastActivity(r.p)||"", score:r.score }[k]);
+    const val = r => ({ code:r.p.code, title:r.p.title, department:r.p.department, sponsor:r.p.sponsor, phase:phaseIdx(r.p), health:["red","amber","green","paused"].indexOf(r.p.health), prog:r.prog, rd:(r.rs ? r.rs.pct : -1), due:r.p.nextStepDue||"9999", target:r.p.targetDate||"9999", upd:lastActivity(r.p)||"", score:r.score }[k]);
     rows.sort((a,b) => { const x = val(a), y = val(b); return (typeof x === "number" ? x - y : String(x||"").localeCompare(String(y||""),"de")) * dir; });
     const th = (key, label) => `<th data-sort="${key}" ${ui.sort.key===key ? `aria-sort="${ui.sort.dir==="asc"?"ascending":"descending"}"` : ""}>${label}</th>`;
     body.innerHTML = `<div class="panel table-scroll"><table class="pt"><thead><tr>
-      ${th("code","ID")}${th("title","Projekt")}${th("department","Abteilung")}${th("sponsor","Sponsor")}${th("phase","Phase")}${th("health","Status")}${th("prog","Fortschritt")}${th("due","Nächster Schritt")}${th("target","Go-Live")}${th("upd","Letztes Update")}${th("score","Dringlichkeit")}
+      ${th("code","ID")}${th("title","Projekt")}${th("department","Abteilung")}${th("sponsor","Sponsor")}${th("phase","Phase")}${th("health","Status")}${th("prog","Fortschritt")}${th("rd","Readiness")}${th("due","Nächster Schritt")}${th("target","Go-Live")}${th("upd","Letztes Update")}${th("score","Dringlichkeit")}
     </tr></thead><tbody>${rows.map(r => { const p = r.p; const due = daysFromToday(p.nextStepDue); return `<tr data-action="open" data-id="${esc(p.id)}" tabindex="0">
       <td class="mono">${esc(p.code)}</td>
       <td><div class="p-title">${esc(p.title || "Ohne Titel")}</div>${p.example ? `<span class="chip example">Beispiel</span>` : ""}${p.archived ? `<span class="chip">Archiviert</span>` : ""}</td>
       <td>${esc(p.department||"–")}</td><td>${esc(p.sponsor||"–")}</td>
       <td>${esc(PHASES[phaseIdx(p)].label)}</td><td>${healthHtml(p.health)}</td>
       <td class="num" style="min-width:110px"><div class="prog"><i style="width:${r.prog}%"></i></div><span style="font-size:12px">${r.prog} %</span></td>
+      <td>${r.rs ? recBadge(r.rs, true) : `<span class="muted">–</span>`}</td>
       <td style="min-width:200px">${esc(p.nextStep||"–")}${p.nextStepDue ? `<div class="num ${due<0?"overdue":"muted"}" style="font-size:12.5px">bis ${esc(fmtDay(p.nextStepDue))}</div>` : ""}</td>
       <td class="num">${esc(fmtDay(p.targetDate))}</td>
       <td class="num muted">${esc(lastActivity(p) ? fmtDay(lastActivity(p).slice(0,10)) : "–")}</td>
-      <td class="num">${r.score}</td></tr>`; }).join("") || `<tr><td colspan="11" class="empty">Keine Projekte für diese Filter.</td></tr>`}</tbody></table></div>`;
+      <td class="num">${r.score}</td></tr>`; }).join("") || `<tr><td colspan="12" class="empty">Keine Projekte für diese Filter.</td></tr>`}</tbody></table></div>`;
   }
 }
 function boardCard(p){
@@ -880,6 +1090,7 @@ function boardCard(p){
     <div class="t">${esc(p.title || "Ohne Titel")}</div>
     <div class="s">${esc(p.department || "–")} · ${esc(p.sponsor || "Sponsor offen")}</div>
     <div class="prog" title="${pr} %"><i style="width:${pr}%"></i></div>
+    ${(() => { const rs = readinessStats(p); return rs && phaseIdx(p) <= PH_INDEX.konzept ? `<div>${recBadge(rs, true)}</div>` : ""; })()}
     <div class="bfoot"><span>${healthHtml(p.health)}</span><span class="num ${due !== null && due < 0 ? "overdue" : ""}">${p.nextStepDue ? "fällig " + esc(fmtShort(p.nextStepDue)) : ""}</span></div>
     ${p.example ? `<span class="chip example" style="align-self:flex-start">Beispiel</span>` : ""}
   </button>`;
@@ -944,6 +1155,7 @@ function renderOneOnOne(){
     <span>${d.assigned ? `${plural(d.scope.length,"Projekt","Projekte")} mit ${esc(d.person)} als 1:1-Partner` : `Noch keine Projekte ${esc(d.person)} zugeordnet, daher alle Projekte. Zuordnung im Projekt unter „1:1-Partner“.`}</span>`;
   const decisions = d.scope.filter(p => (p.openDecisions||"").trim());
   const blockers = d.scope.filter(p => (p.blockers||"").trim());
+  const gaps = d.scope.map(p => ({ p, rs: readinessStats(p) })).filter(x => x.rs && x.rs.critOpen.length && phaseIdx(x.p) <= PH_INDEX.konzept);
   const miles = [];
   d.scope.forEach(p => { const x = daysFromToday(p.targetDate); if (x !== null && x >= 0 && x <= 45 && phaseIdx(p) < PH_INDEX.hypercare) miles.push(p); });
   miles.sort((a,b) => a.targetDate.localeCompare(b.targetDate));
@@ -954,7 +1166,7 @@ function renderOneOnOne(){
         <div class="section-head"><h2>Status je Projekt</h2><span class="muted" style="font-size:13px">${d.since ? `Änderungen seit ${esc(fmtDay(d.since))}` : "Noch kein 1:1 erfasst, alle Einträge"}</span></div>
         <div class="panel">${d.scope.map(p => { const ch = d.changes(p); const isNew = d.since && (p.createdAt||"").slice(0,10) >= d.since; return `
           <div class="oo-proj">
-            <div class="pill-row"><span class="mono">${esc(p.code)}</span>${healthHtml(p.health)}<span>${esc(PHASES[phaseIdx(p)].long)} · ${progress(p)} %</span>${isNew ? `<span class="chip ok">Neu seit letztem 1:1</span>` : ""}${p.example ? `<span class="chip example">Beispiel</span>` : ""}</div>
+            <div class="pill-row"><span class="mono">${esc(p.code)}</span>${healthHtml(p.health)}<span>${esc(PHASES[phaseIdx(p)].long)} · ${progress(p)} %</span>${(() => { const rs = readinessStats(p); return rs && phaseIdx(p) <= PH_INDEX.konzept ? recBadge(rs, true) : ""; })()}${isNew ? `<span class="chip ok">Neu seit letztem 1:1</span>` : ""}${p.example ? `<span class="chip example">Beispiel</span>` : ""}</div>
             <h3><button data-action="open" data-id="${esc(p.id)}">${esc(p.title || "Ohne Titel")}</button></h3>
             ${ch.length ? `<ul class="oo-changes">${ch.slice(0,5).map(u => `<li><span class="d">${esc(fmtShort(u.at.slice(0,10)))}</span>${esc(u.text)}</li>`).join("")}${ch.length > 5 ? `<li class="muted">+ ${ch.length-5} weitere</li>` : ""}</ul>` : `<div class="muted" style="font-size:14px">Keine Änderungen seit dem letzten 1:1.</div>`}
             <div style="font-size:14px"><b>Nächster Schritt:</b> ${esc(p.nextStep || "offen")}${p.nextStepDue ? ` <span class="muted num">(bis ${esc(fmtShort(p.nextStepDue))})</span>` : ""}</div>
@@ -965,6 +1177,8 @@ function renderOneOnOne(){
         <div class="panel">${decisions.map(p => `<div class="agenda-item"><div class="d">${esc(p.code)}</div><div>${projLink(p)}<div>${esc(p.openDecisions)}</div></div></div>`).join("") || `<div class="empty">Keine offenen Entscheidungen.</div>`}</div>
         <div class="section-head section"><h2>Blocker & Eskalationen</h2></div>
         <div class="panel">${blockers.map(p => `<div class="agenda-item"><div class="d">${esc(p.code)}</div><div>${projLink(p)}<div>${esc(p.blockers)}</div></div></div>`).join("") || `<div class="empty">Keine Blocker.</div>`}</div>
+        <div class="section-head section"><h2>Kritische Lücken im Readiness-Check</h2></div>
+        <div class="panel">${gaps.map(({ p, rs }) => `<div class="agenda-item"><div class="d">${esc(p.code)}</div><div><button data-action="open" data-id="${esc(p.id)}" data-tab="readiness">${esc(p.title || "Ohne Titel")}</button> ${recBadge(rs, true)}<ul class="oo-changes">${rs.critOpen.map(i => `<li><span class="d">Nr. ${esc(i.nr)}</span>${esc(i.q)}${i.owner ? ` <span class="muted">(${esc(i.owner)})</span>` : ""}</li>`).join("")}</ul></div></div>`).join("") || `<div class="empty">Keine kritischen Lücken offen.</div>`}</div>
         <div class="section-head section"><h2>Go-Lives, nächste 45 Tage</h2></div>
         <div class="panel">${miles.map(p => `<div class="agenda-item"><div class="d">${esc(fmtShort(p.targetDate))}</div><div>${projLink(p)}<div class="muted">${esc(PHASES[phaseIdx(p)].long)}</div></div></div>`).join("") || `<div class="empty">Keine Go-Lives geplant.</div>`}</div>
       </div>
@@ -980,6 +1194,15 @@ function agendaText(){
   const blk = d.scope.filter(p => (p.blockers||"").trim());
   if (dec.length){ L.push("1. ENTSCHEIDUNGEN"); dec.forEach(p => L.push(`- [${p.code}] ${p.title}: ${p.openDecisions}`)); L.push(""); }
   if (blk.length){ L.push(`${dec.length?2:1}. BLOCKER`); blk.forEach(p => L.push(`- [${p.code}] ${p.title}: ${p.blockers}`)); L.push(""); }
+  const gp = d.scope.map(p => ({ p, rs: readinessStats(p) })).filter(x => x.rs && phaseIdx(x.p) <= PH_INDEX.konzept);
+  if (gp.length){
+    L.push("READINESS");
+    gp.forEach(({ p, rs }) => {
+      L.push(`- [${p.code}] ${p.title}: ${rs.pct} % · ${rs.rec} · Kernfragen offen ${rs.coreOpen}/${rs.coreTotal}`);
+      rs.critOpen.forEach(i => L.push(`    Kritisch offen, Nr. ${i.nr}: ${i.q}${i.owner ? " (" + i.owner + ")" : ""}`));
+    });
+    L.push("");
+  }
   L.push("STATUS JE PROJEKT");
   d.scope.forEach(p => {
     L.push(`- [${p.code}] ${p.title} | ${PHASES[phaseIdx(p)].long}, ${progress(p)} % | ${(HEALTH[p.health]||HEALTH.green).label}`);
@@ -994,7 +1217,7 @@ function currentDrawerProject(){ if (!drawer) return null; return drawer.draft |
 function openDrawer(id, opts){
   opts = opts || {};
   const p = id ? state.projects.find(x => x.id === id) : null;
-  drawer = { id: p ? p.id : null, draft: p ? null : blankProject(), dirty:false, confirmDelete:false, gateWarn:"" };
+  drawer = { id: p ? p.id : null, draft: p ? null : blankProject(), dirty:false, confirmDelete:false, gateWarn:"", tab: opts.tab || "overview", rdFilter:{ area:"", core:false, open:false }, rdAdd:false, rdPending:null };
   const cur = currentDrawerProject();
   const ro = !state.canWrite;
   const dis = ro ? "disabled" : "";
@@ -1009,17 +1232,31 @@ function openDrawer(id, opts){
         </div>
         <button class="btn ghost" data-action="close-drawer" aria-label="Schließen">✕</button>
       </div>
+      <nav class="d-tabs" role="tablist" aria-label="Projektbereiche" style="background:var(--surface);padding:0 20px;margin:0;border-bottom:1px solid var(--line)">
+        <button class="d-tab" role="tab" data-dtab="overview">Überblick</button>
+        <button class="d-tab" role="tab" data-dtab="readiness">Readiness<span class="count num" id="dt-rd"></span></button>
+        <button class="d-tab" role="tab" data-dtab="tools">Tools & Zugänge<span class="count num" id="dt-tools"></span></button>
+        <button class="d-tab" role="tab" data-dtab="profile">Steckbrief</button>
+      </nav>
       <div class="d-body" id="d-body">
-        <section class="d-sec">
+        <section class="d-sec" data-pane="readiness" id="rd-summary"></section>
+        <section class="d-sec" data-pane="readiness" id="rd-list-sec">
+          <div class="rd-tools" id="rd-toolbar"></div>
+          <div id="rd-list"></div>
+        </section>
+        <section class="d-sec" data-pane="tools" id="tl-summary"></section>
+        <section class="d-sec" data-pane="tools"><div class="table-scroll" id="tl-list"></div></section>
+        <input type="file" id="rd-excel-file" accept=".xlsx" hidden>
+        <section class="d-sec" data-pane="overview">
           <h2>Status</h2>
           <div class="segh" id="d-health"></div>
         </section>
-        <section class="d-sec">
+        <section class="d-sec" data-pane="overview">
           <div class="section-head" style="margin:0"><h2>Phase</h2><span class="muted num" id="d-progress"></span></div>
           <div class="stepper" id="d-stepper"></div>
           <div id="d-gates"></div>
         </section>
-        <section class="d-sec">
+        <section class="d-sec" data-pane="overview">
           <h2>Nächster Schritt & Hindernisse</h2>
           <div class="form">
             <div class="f full"><label for="d-nextStep">Nächster Schritt</label><input id="d-nextStep" data-field="nextStep" value="${esc(cur.nextStep)}" placeholder="z. B. Termin Betriebsrat vereinbaren" ${dis}></div>
@@ -1029,12 +1266,12 @@ function openDrawer(id, opts){
             <div class="f full"><label for="d-openDecisions">Offene Entscheidungen</label><textarea id="d-openDecisions" data-field="openDecisions" placeholder="Was muss der Sponsor oder das 1:1 entscheiden?" ${dis}>${esc(cur.openDecisions)}</textarea></div>
           </div>
         </section>
-        <section class="d-sec" id="d-update-sec">
+        <section class="d-sec" data-pane="overview" id="d-update-sec">
           <h2>Update & Verlauf</h2>
           ${ro ? "" : `<div class="upd"><textarea id="d-update" placeholder="Was ist passiert? z. B. „Datenexport aus SAP liegt vor, Qualität gut.“"></textarea><div><button class="btn primary small" data-action="add-update">Update speichern</button></div></div>`}
           <div class="log" id="d-log"></div>
         </section>
-        <section class="d-sec">
+        <section class="d-sec" data-pane="profile">
           <h2>Projektsteckbrief</h2>
           <div class="form">
             <div class="f full"><label for="d-description">Beschreibung</label><textarea id="d-description" data-field="description" placeholder="Was wird gebaut, für wen, welcher Prozess?" ${dis}>${esc(cur.description)}</textarea></div>
@@ -1043,6 +1280,8 @@ function openDrawer(id, opts){
             <div class="f"><label for="d-department">Abteilung / Bereich</label><input id="d-department" data-field="department" value="${esc(cur.department)}" list="dl-dept" ${dis}></div>
             <div class="f"><label for="d-sponsor">Projektsponsor</label><input id="d-sponsor" data-field="sponsor" value="${esc(cur.sponsor)}" list="dl-sponsor" ${dis}></div>
             <div class="f"><label for="d-businessOwner">Fachlicher Ansprechpartner</label><input id="d-businessOwner" data-field="businessOwner" value="${esc(cur.businessOwner)}" ${dis}></div>
+            <div class="f"><label for="d-region">Region / Pilotgebiet</label><input id="d-region" data-field="region" value="${esc(cur.region)}" placeholder="z. B. Region Nordwest" ${dis}></div>
+            <div class="f"><label for="d-team">Team / Beteiligte</label><input id="d-team" data-field="team" value="${esc(cur.team)}" placeholder="Namen, mit Komma getrennt" ${dis}></div>
             <div class="f"><label for="d-lead">Projektleitung</label><input id="d-lead" data-field="lead" value="${esc(cur.lead)}" ${dis}></div>
             <div class="f"><label for="d-oneOnOne">1:1-Partner</label><input id="d-oneOnOne" data-field="oneOnOne" value="${esc((cur.oneOnOne||[]).join(", "))}" placeholder="${esc(people.join(", "))}" ${dis}><span class="hint">Mehrere mit Komma trennen</span></div>
             <div class="f"><label for="d-startDate">Start</label><input type="date" id="d-startDate" data-field="startDate" value="${esc(cur.startDate)}" ${dis}></div>
@@ -1050,7 +1289,7 @@ function openDrawer(id, opts){
             <div class="f full"><label for="d-techStack">Tools & Tech-Stack</label><input id="d-techStack" data-field="techStack" value="${esc(cur.techStack)}" placeholder="z. B. Azure OpenAI, n8n, SAP, SharePoint" ${dis}></div>
           </div>
         </section>
-        <section class="d-sec">
+        <section class="d-sec" data-pane="profile">
           <h2>Governance & AI Cockpit</h2>
           <div class="form">
             <div class="f"><label for="d-aiAct">EU AI Act Risikoklasse</label><select id="d-aiAct" data-field="aiAct" ${dis}>${Object.entries(AIACT).map(([k,v]) => `<option value="${k}" ${cur.aiAct===k?"selected":""}>${esc(v)}</option>`).join("")}</select><span class="hint">KI in Bewerberauswahl oder Leistungsbewertung ist Hochrisiko.</span></div>
@@ -1058,7 +1297,7 @@ function openDrawer(id, opts){
             <div class="f full"><label for="d-crRefs">Change Requests</label><input id="d-crRefs" data-field="crRefs" value="${esc(cur.crRefs)}" placeholder="z. B. CR-2026-014, CR-2026-021" ${dis}><span class="hint">CR-Nummern aus dem AI Cockpit, die dieses Projekt betreffen</span></div>
           </div>
         </section>
-        ${ro ? "" : `<section class="d-sec" id="d-danger"></section>`}
+        ${ro ? "" : `<section class="d-sec" data-pane="overview" id="d-danger"></section>`}
       </div>
       <div class="d-foot">
         <span class="muted" id="d-savestate" style="font-size:13px"></span>
@@ -1069,13 +1308,19 @@ function openDrawer(id, opts){
       </div>
     </aside>
     <datalist id="dl-dept">${[...new Set(state.projects.map(p=>p.department).filter(Boolean))].map(v=>`<option value="${esc(v)}">`).join("")}</datalist>
+    <datalist id="dl-owner">${[...new Set(state.projects.flatMap(p => ((p.readiness && p.readiness.items) || []).map(i => i.owner)).concat(splitList(cur.team)).filter(Boolean))].map(v=>`<option value="${esc(v)}">`).join("")}</datalist>
     <datalist id="dl-sponsor">${[...new Set(state.projects.map(p=>p.sponsor).filter(Boolean))].map(v=>`<option value="${esc(v)}">`).join("")}</datalist>`;
   renderDrawerDynamic();
+  renderPanes(cur);
+  setDrawerTab(drawer.tab);
   document.body.style.overflow = "hidden";
   const focusEl = opts.focus === "update" ? $("#d-update") : (drawer.draft ? $("#d-title") : null);
-  if (focusEl){ focusEl.focus(); if (opts.focus === "update") $("#d-update-sec").scrollIntoView({ block:"start" }); }
+  if (focusEl){ focusEl.focus(); if (opts.focus === "update"){ setDrawerTab("overview"); $("#d-update-sec").scrollIntoView({ block:"start" }); } }
 }
-function closeDrawer(){ drawer = null; $("#drawer-slot").innerHTML = ""; document.body.style.overflow = ""; }
+function closeDrawer(){
+  const a = document.activeElement;
+  if (drawer && a && a.dataset && (a.dataset.rfield || a.dataset.tfield || a.dataset.rmeta)) a.blur();
+  drawer = null; $("#drawer-slot").innerHTML = ""; document.body.style.overflow = ""; }
 
 function renderDrawerDynamic(){
   const p = currentDrawerProject();
@@ -1101,6 +1346,10 @@ function renderDrawerDynamic(){
       (drawer.confirmDelete ? `<div class="confirm"><span>Projekt <b>${esc(p.code)}</b> endgültig löschen? Der Verlauf geht verloren.</span><button class="btn danger small" data-action="delete-confirm">Endgültig löschen</button><button class="btn small" data-action="delete-cancel">Abbrechen</button></div>` :
       `<div class="confirm"><button class="btn small" data-action="archive">${p.archived ? "Wiederherstellen" : "Archivieren"}</button><button class="btn danger small" data-action="delete-ask">Löschen</button><span class="muted" style="font-size:13px">Archivierte Projekte verschwinden aus Heute, Roadmap und 1:1.</span></div>`);
   }
+  const rs = readinessStats(p), ts = toolStats(p);
+  $("#dt-rd").textContent = rs ? rs.pct + " %" : "–";
+  $("#dt-tools").textContent = ts.total ? `${ts.ja}/${ts.total - ts.nb}` : "–";
+  renderReadinessSummary(p); renderToolsSummary(p);
   $("#d-savestate").textContent = drawer.dirty ? "Ungespeicherte Änderungen" : (p.updatedAt && !drawer.draft ? `Zuletzt geändert ${fmtStamp(p.updatedAt)}` : "");
 }
 
@@ -1119,6 +1368,235 @@ async function drawerMutate(fn, logText){
   await patchProject(p.id, x => { fn(x); if (logText) pushLog(x, logEntry(logText(x), "system")); });
 }
 
+/* ================== Drawer: Readiness & Tools ================== */
+function setDrawerTab(tab){
+  if (!drawer) return;
+  drawer.tab = tab;
+  document.querySelectorAll("#drawer-slot [data-pane]").forEach(el => el.hidden = el.dataset.pane !== tab);
+  document.querySelectorAll("#drawer-slot .d-tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.dtab === tab)));
+  const cur = currentDrawerProject(); if (cur && !readinessStats(cur)) $("#rd-list-sec").hidden = true;
+  $("#d-body").scrollTop = 0;
+}
+function renderReadinessSummary(p){
+  const el = $("#rd-summary"); if (!el) return;
+  const rs = readinessStats(p);
+  const pending = drawer.rdPending ? `<div class="banner warn" style="margin:0"><span><b>Checkliste aus „${esc(drawer.rdPending.file)}“ übernehmen?</b> ${plural(drawer.rdPending.data.readiness.items.length,"Prüffrage","Prüffragen")}${drawer.rdPending.data.tools.length ? " und " + plural(drawer.rdPending.data.tools.length,"Tool/Zugang","Tools/Zugänge") : ""}. Ersetzt den aktuellen Readiness-Check${drawer.rdPending.data.tools.length ? " und die Zugangsmatrix" : ""}.</span><span style="display:flex;gap:8px"><button class="btn small primary" data-action="rd-excel-confirm">Übernehmen</button><button class="btn small" data-action="rd-excel-cancel">Abbrechen</button></span></div>` : "";
+  const listSec = $("#rd-list-sec"); if (listSec) listSec.hidden = !rs || drawer.tab !== "readiness";
+  if (!rs){
+    el.innerHTML = `${pending}<h2>Readiness-Check</h2>
+      <p style="margin:0;color:var(--ink-2)">Prüft vor dem Pilotstart Scope, Business-Regeln, Daten, Architektur, Zugänge, Freigaben, KPIs und Rollen. Ergebnis: READY, CONDITIONAL GO oder NOT READY.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary small" data-action="rd-create">Standard-Check anlegen (29 Fragen)</button><button class="btn small" data-action="rd-excel">Excel-Checkliste übernehmen</button></div>`;
+    return;
+  }
+  const r = p.readiness;
+  el.innerHTML = `${pending}
+    <div class="rd-sum">
+      <div class="rd-score"><b>${rs.pct} %</b><span>Readiness</span></div>
+      <div>${recBadge(rs)}</div>
+      <div class="rd-facts">
+        <span><b class="num">${rs.done}</b> geklärt · <b class="num">${rs.part}</b> teilweise · <b class="num">${rs.open}</b> offen · <b class="num">${rs.nr}</b> nicht relevant</span>
+        <span>Kernfragen ★ offen: <b class="num">${rs.coreOpen}</b> von ${rs.coreTotal}</span>
+        <span>${rs.critOpen.length ? `<b style="color:var(--crit)">Kritische Lücken offen: ${rs.critOpen.map(i => "Nr. " + esc(i.nr)).join(", ")}</b>` : "Keine kritische Lücke offen"}</span>
+      </div>
+    </div>
+    <div class="rd-areas">${rs.areas.map(a => `<button class="rd-area" data-action="rd-area" data-area="${esc(a.name)}" title="${a.done} geklärt, ${a.part} teilweise, ${a.open} offen"><span>${esc(a.name)}</span><span class="rd-bar"><i style="width:${a.pct}%"></i></span><span class="num" style="text-align:right">${a.pct} %</span></button>`).join("")}</div>
+    <div class="muted" style="font-size:12.5px">${esc(RD_RULE)} Die Readiness ist eine Arbeitsorientierung, keine automatische Projektfreigabe.</div>
+    <div class="rd-tools">
+      <label style="font-size:13.5px">Discovery-Meeting <input type="date" id="rd-meeting" data-rmeta="meetingAt" value="${esc(r.meetingAt || "")}"></label>
+      <span class="muted" style="font-size:12.5px">Quelle: ${esc(r.source || "–")}</span>
+      <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="rd-excel">Excel übernehmen</button><button class="btn small" data-action="rd-csv">Als Excel-Liste (CSV)</button></span>
+    </div>`;
+}
+function renderReadinessList(p){
+  const el = $("#rd-list"); if (!el || !p.readiness) return;
+  const f = drawer.rdFilter;
+  const items = p.readiness.items;
+  const areas = areaOrder(items);
+  $("#rd-toolbar").innerHTML = `
+    <select id="rd-f-area" aria-label="Prüfbereich"><option value="">Alle Prüfbereiche</option>${areas.map(a => `<option ${f.area===a?"selected":""}>${esc(a)}</option>`).join("")}</select>
+    <label class="check"><input type="checkbox" id="rd-f-core" ${f.core?"checked":""}> Nur Kernfragen ★</label>
+    <label class="check"><input type="checkbox" id="rd-f-open" ${f.open?"checked":""}> Nur offene</label>
+    <button class="btn small" data-action="rd-add-toggle" style="margin-left:auto">+ Frage</button>`;
+  const add = drawer.rdAdd ? `<div class="d-sec" style="background:var(--surface-2)">
+      <div class="form">
+        <div class="f full"><label for="rd-new-q">Neue Prüffrage</label><input id="rd-new-q" placeholder="z. B. Ist die Kostenstelle für Lizenzen geklärt?"></div>
+        <div class="f"><label for="rd-new-area">Prüfbereich</label><select id="rd-new-area">${RD_AREAS.map(a => `<option ${(f.area||RD_AREAS[0])===a?"selected":""}>${esc(a)}</option>`).join("")}</select></div>
+        <div class="f"><label>&nbsp;</label><div style="display:flex;gap:14px;align-items:center;min-height:36px"><label class="check"><input type="checkbox" id="rd-new-core"> Kernfrage ★</label><label class="check"><input type="checkbox" id="rd-new-crit"> Kritisch</label></div></div>
+      </div>
+      <div style="display:flex;gap:8px"><button class="btn primary small" data-action="rd-add">Hinzufügen</button><button class="btn small" data-action="rd-add-toggle">Abbrechen</button></div>
+    </div>` : "";
+  const vis = items.filter(i => (!f.area || i.area === f.area) && (!f.core || i.core) && (!f.open || i.status === "Offen" || i.status === "Teilweise"));
+  const nrSort = (a,b) => (typeof a.nr === "number" && typeof b.nr === "number") ? a.nr - b.nr : String(a.nr).localeCompare(String(b.nr), "de", { numeric:true });
+  el.innerHTML = add + (vis.length ? areas.filter(a => vis.some(i => i.area === a)).map(a => {
+    const list = vis.filter(i => i.area === a).sort(nrSort);
+    return `<div class="q-area">${esc(a)}<span>${list.length}</span></div>` + list.map(qRow).join("");
+  }).join("") : `<div class="empty">Keine Fragen für diesen Filter.</div>`);
+}
+function qRow(i){
+  return `<div class="q ${RD_CLASS[i.status] || ""}" data-qid="${esc(i.id)}">
+    <div class="q-head">
+      <span class="q-nr">${esc(i.nr)}${i.core ? ` <span class="star" title="Kernfrage: entscheidet über Go/No-Go">★</span>` : ""}</span>
+      <div class="q-text">${esc(i.q)}</div>
+      <select data-rid="${esc(i.id)}" data-rfield="status" aria-label="Status">${RD_STATUS.map(s => `<option ${i.status===s?"selected":""}>${s}</option>`).join("")}</select>
+    </div>
+    <div class="q-meta">${i.critical ? `<span class="chip crit">kritisch</span>` : ""}${i.type ? `<span>${esc(i.type)}</span>` : ""}${i.prio ? `<span>Priorität ${esc(i.prio)}</span>` : ""}${i.evidence ? `<span>Evidenz: ${esc(i.evidence)}</span>` : ""}<button class="btn ghost small" data-action="rd-del" data-rid="${esc(i.id)}" style="margin-left:auto;padding:0 4px;font-weight:500">Entfernen</button></div>
+    <div class="q-grid">
+      <textarea data-rid="${esc(i.id)}" data-rfield="answer" placeholder="Antwort / Ist-Stand" rows="1">${esc(i.answer)}</textarea>
+      <input data-rid="${esc(i.id)}" data-rfield="owner" value="${esc(i.owner)}" placeholder="Owner" list="dl-owner">
+      <input data-rid="${esc(i.id)}" data-rfield="action" value="${esc(i.action)}" placeholder="Folgeaktion / Zugang / Tool">
+      <input type="date" data-rid="${esc(i.id)}" data-rfield="due" value="${esc(i.due)}" aria-label="Fällig am" title="Fällig am">
+    </div>
+  </div>`;
+}
+function renderToolsSummary(p){
+  const el = $("#tl-summary"); if (!el) return;
+  const ts = toolStats(p);
+  el.innerHTML = `<div class="section-head" style="margin:0"><h2>Tools, Lizenzen & Zugänge</h2><span style="display:flex;gap:8px"><button class="btn small" data-action="tl-add">+ Tool / Zugang</button>${ts.total ? `<button class="btn small" data-action="tl-csv">Als Excel-Liste (CSV)</button>` : ""}</span></div>
+    <div class="pill-row"><span class="health h-green"><i aria-hidden="true">●</i>${ts.ja} vorhanden</span><span class="health h-amber"><i aria-hidden="true">▲</i>${ts.teil + ts.unklar} teilweise/unklar</span><span class="health h-red"><i aria-hidden="true">■</i>${ts.nein} fehlt</span><span>${ts.leer} nicht bewertet</span><span>${ts.nb} nicht benötigt</span></div>
+    <div class="muted" style="font-size:12.5px">Nur Zugänge bewerten, die sich aus dem bestätigten Pilotscope und der Zielarchitektur ergeben. Ein fehlender Zugang wird erst zum Antrag, wenn die Komponente nachweislich benötigt wird.</div>`;
+}
+function renderToolsList(p){
+  const el = $("#tl-list"); if (!el) return;
+  const tools = p.tools || [];
+  const cls = v => ({ "Ja":"av-ja", "Nein":"av-nein", "Teilweise":"av-teil", "Unklar":"av-unklar" }[v] || "");
+  el.innerHTML = tools.length ? `<table class="tt"><thead><tr><th style="width:17%">Tool / System</th><th style="width:19%">Zweck im Projekt</th><th style="width:17%">Zugriff / Lizenz</th><th style="width:10%">Vorhanden?</th><th style="width:12%">Phase / Abhängigkeit</th><th style="width:10%">Approver / Owner</th><th style="width:13%">Nächster Schritt / Ticket</th><th style="width:2%"></th></tr></thead><tbody>
+    ${tools.map(t => `<tr data-tlid="${esc(t.id)}">
+      ${["tool","purpose","access"].map(k => `<td><textarea rows="1" data-tid="${esc(t.id)}" data-tfield="${k}" aria-label="${k}">${esc(t[k])}</textarea></td>`).join("")}
+      <td class="${cls(t.available)}"><select data-tid="${esc(t.id)}" data-tfield="available" aria-label="Vorhanden?">${TOOL_AVAIL.map(v => `<option value="${esc(v)}" ${t.available===v?"selected":""}>${v || "–"}</option>`).join("")}</select></td>
+      ${["phase","owner","next"].map(k => `<td><textarea rows="1" data-tid="${esc(t.id)}" data-tfield="${k}" aria-label="${k}">${esc(t[k])}</textarea></td>`).join("")}
+      <td><button class="btn ghost small" data-action="tl-del" data-tid="${esc(t.id)}" aria-label="Entfernen" title="Entfernen">✕</button></td>
+    </tr>`).join("")}</tbody></table>` : `<div class="empty">Noch keine Tools oder Zugänge erfasst.</div>`;
+}
+function renderPanes(p){ renderReadinessSummary(p); renderReadinessList(p); renderToolsSummary(p); renderToolsList(p); }
+function downloadFile(name, text, type){
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function toCsv(rows){ return "﻿" + rows.map(r => r.map(v => { const s = String(v ?? ""); return /[;"\n\r]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; }).join(";")).join("\r\n"); }
+const safeName = s => String(s || "Projekt").replace(/[^\wÄÖÜäöüß-]+/g, "-").slice(0,40);
+
+/* ================== Excel-Import (.xlsx, ohne externe Bibliothek) ================== */
+async function unzip(buf){
+  const dv = new DataView(buf), u8 = new Uint8Array(buf);
+  let eocd = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 70000); i--){ if (dv.getUint32(i, true) === 0x06054b50){ eocd = i; break; } }
+  if (eocd < 0) throw new Error("Die Datei ist keine gültige Excel-Datei (.xlsx).");
+  const count = dv.getUint16(eocd + 10, true); let off = dv.getUint32(eocd + 16, true);
+  const files = {};
+  for (let n = 0; n < count && dv.getUint32(off, true) === 0x02014b50; n++){
+    const nlen = dv.getUint16(off + 28, true), xlen = dv.getUint16(off + 30, true), clen = dv.getUint16(off + 32, true);
+    const name = new TextDecoder().decode(u8.subarray(off + 46, off + 46 + nlen));
+    files[name] = { method: dv.getUint16(off + 10, true), size: dv.getUint32(off + 20, true), lho: dv.getUint32(off + 42, true) };
+    off += 46 + nlen + xlen + clen;
+  }
+  return async name => {
+    const f = files[name]; if (!f) return null;
+    const start = f.lho + 30 + dv.getUint16(f.lho + 26, true) + dv.getUint16(f.lho + 28, true);
+    const data = u8.subarray(start, start + f.size);
+    if (f.method === 0) return new TextDecoder().decode(data);
+    if (f.method !== 8 || typeof DecompressionStream === "undefined") throw new Error("Dieser Browser kann Excel-Dateien nicht lesen. Bitte Edge oder Chrome verwenden.");
+    return await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text();
+  };
+}
+async function readXlsx(buf){
+  const get = await unzip(buf);
+  const xml = s => new DOMParser().parseFromString(s || "<x/>", "application/xml");
+  const txt = el => [...el.getElementsByTagName("t")].map(t => t.textContent).join("");
+  const shared = [...xml(await get("xl/sharedStrings.xml")).getElementsByTagName("si")].map(txt);
+  const rels = {}; for (const r of xml(await get("xl/_rels/workbook.xml.rels")).getElementsByTagName("Relationship")) rels[r.getAttribute("Id")] = r.getAttribute("Target");
+  const colIdx = letters => [...letters].reduce((n,c) => n*26 + c.charCodeAt(0) - 64, 0) - 1;
+  const sheets = [];
+  for (const s of xml(await get("xl/workbook.xml")).getElementsByTagName("sheet")){
+    const target = rels[s.getAttribute("r:id")]; if (!target) continue;
+    const path = target.startsWith("/") ? target.slice(1) : "xl/" + target.replace(/^\.\//, "");
+    const doc = xml(await get(path)); const rows = {}; const formulas = [];
+    for (const c of doc.getElementsByTagName("c")){
+      const m = /^([A-Z]+)(\d+)$/.exec(c.getAttribute("r") || ""); if (!m) continue;
+      const t = c.getAttribute("t"), v = c.getElementsByTagName("v")[0], f = c.getElementsByTagName("f")[0];
+      if (f) formulas.push(f.textContent);
+      let val = "";
+      if (t === "s" && v) val = shared[+v.textContent] ?? "";
+      else if (t === "inlineStr") val = txt(c);
+      else if (v) val = v.textContent;
+      (rows[+m[2]] = rows[+m[2]] || [])[colIdx(m[1])] = String(val).trim();
+    }
+    sheets.push({ name: s.getAttribute("name"), rows, formulas });
+  }
+  return sheets;
+}
+function excelDate(v){
+  if (!v) return "";
+  if (/^\d{4}-\d{2}-\d{2}/.test(v)) return v.slice(0,10);
+  const de = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(v); if (de) return `${de[3]}-${pad(de[2])}-${pad(de[1])}`;
+  const n = Number(v); if (n > 20000 && n < 80000) return isoDay(new Date(Math.round((n - 25569) * 86400000) + new Date().getTimezoneOffset()*60000));
+  return "";
+}
+function mapHeader(cells, spec){
+  const map = {}, used = new Set();
+  for (const [key, re] of spec){ const i = cells.findIndex((c,ix) => c && !used.has(ix) && re.test(c.toLowerCase())); if (i >= 0){ map[key] = i; used.add(i); } }
+  return map;
+}
+function checklistFromSheets(sheets, fileName){
+  const Q_SPEC = [["nr",/^nr\.?$|^nummer/],["area",/prüfbereich|^bereich/],["core",/^kern/],["q",/leitfrage|^frage|prüfpunkt/],["type",/^typ/],["prio",/priorit/],["answer",/antwort|ist-stand/],["evidence",/evidenz|artefakt/],["owner",/^owner|verantwortlich/],["status",/^status$/],["due",/fällig|faellig|termin|due/],["action",/folgeaktion|maßnahme|massnahme/]];
+  const T_SPEC = [["tool",/^tool|system/],["purpose",/zweck/],["access",/zugriff|lizenz/],["available",/vorhanden/],["phase",/phase|abhängigkeit/],["owner",/approver|owner/],["next",/nächster schritt|ticket/]];
+  let qSheet = null, qHead = 0, qMap = null;
+  for (const sh of sheets){
+    for (const r of Object.keys(sh.rows).map(Number).sort((a,b)=>a-b)){
+      const cells = (sh.rows[r] || []).map(c => c || "");
+      if (cells.some(c => /^status$/i.test(c)) && cells.some(c => /leitfrage|^frage/i.test(c))){ qSheet = sh; qHead = r; qMap = mapHeader(cells, Q_SPEC); break; }
+    }
+    if (qSheet) break;
+  }
+  if (!qSheet) throw new Error("In der Excel-Datei wurde keine Checkliste mit den Spalten „Leitfrage“ und „Status“ gefunden.");
+  const crit = new Set();
+  sheets.forEach(sh => sh.formulas.forEach(f => { const re = /![A-Z]+\d+:[A-Z]+\d+,\s*(\d+)\s*,/g; let m; while ((m = re.exec(f))) crit.add(Number(m[1])); }));
+  const cell = (row, key) => (qMap[key] !== undefined ? (row[qMap[key]] || "") : "");
+  const normStatus = s => { s = s.toLowerCase(); return s.startsWith("gekl") ? "Geklärt" : s.startsWith("teil") ? "Teilweise" : s.startsWith("nicht") ? "Nicht relevant" : "Offen"; };
+  const items = [];
+  Object.keys(qSheet.rows).map(Number).filter(r => r > qHead).sort((a,b)=>a-b).forEach(r => {
+    const row = qSheet.rows[r] || []; const q = cell(row,"q"); if (!q) return;
+    const nrRaw = cell(row,"nr"); const nr = /^\d+(\.0)?$/.test(nrRaw) ? Number(nrRaw) : (nrRaw || items.length + 1);
+    items.push({ id:rid(), nr, area: cell(row,"area") || "Sonstiges", core: /★|\*|^x$|^ja$/i.test(cell(row,"core")), critical: typeof nr === "number" && crit.has(nr),
+      q, type: cell(row,"type"), prio: cell(row,"prio"), answer: cell(row,"answer"), evidence: cell(row,"evidence"), owner: cell(row,"owner"),
+      status: normStatus(cell(row,"status")), action: cell(row,"action"), due: excelDate(cell(row,"due")) });
+  });
+  // Kopfbereich: Projekt, Teilnehmende, Ziel, Scope, Meeting-Datum
+  let title = "", team = "", meetingAt = ""; const desc = [];
+  Object.keys(qSheet.rows).map(Number).filter(r => r < qHead).forEach(r => {
+    const row = qSheet.rows[r] || []; const label = (row[0] || "").toLowerCase();
+    if (/^projekt/.test(label) && row[1]) title = row[1];
+    if (/teilnehm/.test(label) && row[1]) team = row[1];
+    if (/^(ziel|scope):/i.test(row[0] || "")) desc.push(row[0]);
+    row.forEach(c => { const m = /(\d{1,2}\.\d{1,2}\.\d{4})/.exec(c || ""); if (m && /meeting|termin/i.test(c)) meetingAt = excelDate(m[1]); });
+  });
+  if (!title) title = (qSheet.rows[1] || [])[0] || fileName.replace(/\.xlsx$/i, "");
+  title = title.replace(/\s+/g, " ").trim();
+  // Tool- & Zugangsmatrix
+  const tools = [];
+  for (const sh of sheets){
+    const hr = Object.keys(sh.rows).map(Number).sort((a,b)=>a-b).find(r => { const c = sh.rows[r] || []; return c.some(x => /tool/i.test(x||"")) && c.some(x => /vorhanden/i.test(x||"")); });
+    if (!hr) continue;
+    const tm = mapHeader((sh.rows[hr] || []).map(c => c || ""), T_SPEC);
+    Object.keys(sh.rows).map(Number).filter(r => r > hr).sort((a,b)=>a-b).forEach(r => {
+      const row = sh.rows[r] || []; const g = k => tm[k] !== undefined ? (row[tm[k]] || "") : "";
+      if (!g("tool")) return;
+      const av = TOOL_AVAIL.find(v => v && v.toLowerCase() === g("available").toLowerCase()) || "";
+      tools.push({ id:rid(), tool:g("tool"), purpose:g("purpose"), access:g("access"), available:av, phase:g("phase"), owner:g("owner"), next:g("next") });
+    });
+    break;
+  }
+  return { title, team, description: desc.join("\n"), meetingAt, readiness: { source: fileName, meetingAt, items }, tools };
+}
+function projectFromExcel(x, fileName){
+  const p = blankProject();
+  p.title = x.title; p.description = x.description; p.team = x.team; p.phase = "analyse";
+  p.readiness = x.readiness; p.tools = x.tools.length ? x.tools : templateTools();
+  if (x.meetingAt){ p.startDate = x.meetingAt; if (x.meetingAt <= todayISO()) p.gates["analyse-0"] = true; }
+  pushLog(p, logEntry(`Aus Excel-Checkliste übernommen: ${fileName} (${x.readiness.items.length} Prüffragen, ${x.tools.length} Tools/Zugänge)`, "system"));
+  return p;
+}
+
 /* ================== Events ================== */
 document.addEventListener("click", async e => {
   const t = e.target.closest("[data-action]"); if (!t) return;
@@ -1126,9 +1604,45 @@ document.addEventListener("click", async e => {
   if (a === "noop") return;
   if (a === "export"){ exportBackup(); return; }
   if (a === "import"){ const f = $("#import-file"); f.value = ""; f.click(); return; }
-  if (a === "import-confirm"){ applyImport(); return; }
+  if (a === "import-confirm"){ applyImport("replace"); return; }
+  if (a === "import-merge"){ applyImport("merge"); return; }
   if (a === "import-cancel"){ pendingImport = null; render(); return; }
-  if (a === "open"){ openDrawer(t.dataset.id, { focus: t.dataset.focus }); return; }
+  if (a === "open"){ openDrawer(t.dataset.id, { focus: t.dataset.focus, tab: t.dataset.tab }); return; }
+  if (a === "rd-create"){ await drawerMutate(x => { x.readiness = templateReadiness(); }, () => "Readiness-Check angelegt (Standard, 29 Fragen)"); renderPanes(currentDrawerProject()); setDrawerTab("readiness"); return; }
+  if (a === "rd-excel"){ const f = $("#rd-excel-file"); f.value = ""; f.click(); return; }
+  if (a === "rd-excel-cancel"){ drawer.rdPending = null; renderDrawerDynamic(); return; }
+  if (a === "rd-excel-confirm"){
+    const pend = drawer.rdPending; drawer.rdPending = null; if (!pend) return;
+    await drawerMutate(x => { x.readiness = pend.data.readiness; if (pend.data.tools.length) x.tools = pend.data.tools; if (!x.team && pend.data.team) x.team = pend.data.team; }, () => `Readiness-Check aus Excel übernommen: ${pend.file}`);
+    renderPanes(currentDrawerProject()); toast("Checkliste übernommen"); return;
+  }
+  if (a === "rd-area"){ drawer.rdFilter.area = drawer.rdFilter.area === t.dataset.area ? "" : t.dataset.area; renderReadinessList(currentDrawerProject()); $("#rd-list-sec").scrollIntoView({ block:"start" }); return; }
+  if (a === "rd-add-toggle"){ drawer.rdAdd = !drawer.rdAdd; renderReadinessList(currentDrawerProject()); if (drawer.rdAdd) $("#rd-new-q").focus(); return; }
+  if (a === "rd-add"){
+    const q = $("#rd-new-q").value.trim(); if (!q){ $("#rd-new-q").focus(); return; }
+    const area = $("#rd-new-area").value, core = $("#rd-new-core").checked, critical = $("#rd-new-crit").checked;
+    await drawerMutate(x => { const nums = x.readiness.items.map(i => +i.nr).filter(n => !isNaN(n)); x.readiness.items.push({ id:rid(), nr:(nums.length ? Math.max(...nums) : 0) + 1, area, core, critical, q, type:"", prio:"", answer:"", evidence:"", owner:"", status:"Offen", action:"", due:"" }); });
+    drawer.rdAdd = false; renderReadinessList(currentDrawerProject()); return;
+  }
+  if (a === "rd-del"){
+    if (!t.dataset.sure){ t.dataset.sure = "1"; t.textContent = "Wirklich entfernen?"; t.style.color = "var(--crit)"; return; }
+    const id = t.dataset.rid; await drawerMutate(x => { x.readiness.items = x.readiness.items.filter(i => i.id !== id); }); renderReadinessList(currentDrawerProject()); return;
+  }
+  if (a === "rd-csv"){
+    const p = currentDrawerProject(); const items = p.readiness.items;
+    downloadFile(`${safeName(p.code)}_Readiness_${todayISO()}.csv`, toCsv([["Nr.","Prüfbereich","Kern","Kritisch","Leitfrage / Prüfpunkte","Typ","Priorität","Antwort / Ist-Stand","Benötigte Evidenz","Owner","Status","Folgeaktion","Fällig"]].concat(items.map(i => [i.nr, i.area, i.core ? "★" : "", i.critical ? "ja" : "", i.q, i.type, i.prio, i.answer, i.evidence, i.owner, i.status, i.action, i.due ? fmtDay(i.due) : ""]))), "text/csv;charset=utf-8");
+    return;
+  }
+  if (a === "tl-add"){ await drawerMutate(x => { x.tools = (x.tools || []).concat({ id:rid(), tool:"", purpose:"", access:"", available:"", phase:"", owner:"", next:"" }); }); renderToolsList(currentDrawerProject()); const ins = document.querySelectorAll('#tl-list textarea[data-tfield="tool"]'); ins[ins.length-1] && ins[ins.length-1].focus(); return; }
+  if (a === "tl-del"){
+    if (!t.dataset.sure){ t.dataset.sure = "1"; t.textContent = "Löschen?"; t.style.color = "var(--crit)"; return; }
+    const id = t.dataset.tid; await drawerMutate(x => { x.tools = x.tools.filter(v => v.id !== id); }); renderToolsList(currentDrawerProject()); return;
+  }
+  if (a === "tl-csv"){
+    const p = currentDrawerProject();
+    downloadFile(`${safeName(p.code)}_Tools-Zugaenge_${todayISO()}.csv`, toCsv([["Tool / System","Zweck im Projekt","Zugriff / Lizenz","Vorhanden?","Phase / Abhängigkeit","Approver / Owner","Nächster Schritt / Ticket"]].concat((p.tools||[]).map(v => [v.tool, v.purpose, v.access, v.available, v.phase, v.owner, v.next]))), "text/csv;charset=utf-8");
+    return;
+  }
   if (a === "new"){ openDrawer(null); return; }
   if (a === "close-drawer"){
     if (drawer && drawer.dirty && !drawer.leaveOk){ drawer.leaveOk = true; $("#d-savestate").innerHTML = `<b style="color:var(--warn)">Ungespeicherte Änderungen. Nochmal klicken zum Verwerfen.</b>`; return; }
@@ -1193,6 +1707,31 @@ document.addEventListener("click", async e => {
 });
 document.addEventListener("change", async e => {
   const t = e.target;
+  if (t.dataset && t.dataset.rfield && drawer){
+    const id = t.dataset.rid, f = t.dataset.rfield, val = f === "due" ? t.value : (f === "status" ? t.value : t.value.trim());
+    let label = "", old = "";
+    await drawerMutate(x => { const it = (x.readiness.items || []).find(i => i.id === id); if (!it) return; old = it[f]; it[f] = val; label = qLabel(it); },
+      f === "status" ? () => `Readiness ${label}: ${old} → ${val}` : null);
+    if (f === "status"){ const row = t.closest(".q"); if (row) row.className = "q " + (RD_CLASS[val] || ""); }
+    return;
+  }
+  if (t.dataset && t.dataset.tfield && drawer){
+    const id = t.dataset.tid, f = t.dataset.tfield, val = t.value.trim();
+    await drawerMutate(x => { const it = (x.tools || []).find(v => v.id === id); if (it) it[f] = val; });
+    if (f === "available"){ const td = t.closest("td"); if (td) td.className = ({ "Ja":"av-ja", "Nein":"av-nein", "Teilweise":"av-teil", "Unklar":"av-unklar" }[val] || ""); }
+    return;
+  }
+  if (t.dataset && t.dataset.rmeta && drawer){ const k = t.dataset.rmeta, v = t.value; await drawerMutate(x => { x.readiness[k] = v; }); return; }
+  if (t.id === "rd-f-area" || t.id === "rd-f-core" || t.id === "rd-f-open"){
+    drawer.rdFilter = { area: $("#rd-f-area").value, core: $("#rd-f-core").checked, open: $("#rd-f-open").checked };
+    renderReadinessList(currentDrawerProject()); return;
+  }
+  if (t.id === "rd-excel-file"){
+    const file = t.files && t.files[0]; if (!file) return;
+    try { const data = checklistFromSheets(await readXlsx(await file.arrayBuffer()), file.name); drawer.rdPending = { file: file.name, data }; renderDrawerDynamic(); $("#d-body").scrollTop = 0; }
+    catch (err){ toast(err.message || "Excel-Datei konnte nicht gelesen werden."); }
+    return;
+  }
   if (t.dataset && t.dataset.action === "toggle-gate"){
     const key = t.dataset.gate; const val = t.checked;
     const p = currentDrawerProject(); const ph = key.replace(/-\d+$/,""); const i = +key.split("-").pop();
@@ -1202,9 +1741,10 @@ document.addEventListener("change", async e => {
   if (t.id === "import-file"){
     const file = t.files && t.files[0]; if (!file) return;
     try {
+      if (/\.xlsx$/i.test(file.name)){ await importExcelAsProject(file); return; }
       const data = parseBackup(await file.text());
       pendingImport = data;
-      if (!state.projects.length) applyImport(); else { render(); window.scrollTo(0,0); }
+      if (!state.projects.length) applyImport("replace"); else { render(); window.scrollTo(0,0); }
     } catch (err){ toast(err.message || "Datei konnte nicht gelesen werden."); }
     return;
   }
@@ -1227,6 +1767,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && drawer){ closeDrawer(); }
   if (e.key === "Enter" && e.target.matches && e.target.matches("tr[data-action='open']")){ openDrawer(e.target.dataset.id); }
 });
+document.addEventListener("click", e => { const b = e.target.closest(".d-tab"); if (b) setDrawerTab(b.dataset.dtab); });
 document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => { ui.view = b.dataset.view; saveUi(); render(); window.scrollTo(0,0); }));
 document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => { ui.pmode = b.dataset.mode; saveUi(); render(); }));
 document.addEventListener("click", e => { const th = e.target.closest("th[data-sort]"); if (!th) return; const k = th.dataset.sort; ui.sort = { key:k, dir: ui.sort.key === k && ui.sort.dir === "desc" ? "asc" : "desc" }; saveUi(); renderPortfolio(); });
