@@ -68,11 +68,11 @@ Immer dieselbe Datei im selben Browser öffnen. Ein anderer Browser oder ein pri
 - `app/index.html`: komplette App in einer Datei, ohne Build-Schritt und ohne externe Abhängigkeiten.
 - CI abgeglichen mit cws.com/workwear:
   - CWS-Rot `#EA0046`, Gelb `#F9E344`, Schrift Schwarz auf Weiß.
-  - Weiße Kopfzeile mit Rot-Gelb-Markenblock, Hauptaktionen als rote Pillen-Buttons.
+  - Weiße Kopfzeile mit dem Original-Logo „CWS | WORKWEAR“ (als PNG eingebettet), Hauptaktionen als rote Pillen-Buttons.
+  - Browser-Tab-Icon aus dem roten Logo-Teil.
   - Alle Werte stehen als Tokens ganz oben im zweiten `<style>`-Block (`--cws-red`, `--cws-yellow`, `--cta` …).
 - Schriften (SIL Open Font License), als Base64 eingebettet:
   - Archivo für Text und Überschriften, nah an der Website-Typo.
-  - Saira für die Wortmarke.
   - IBM Plex Mono für Projekt-IDs.
 - Datenformat der Sicherung: `{ app, version, exportedAt, projects[], meta }`. Damit ist die spätere Übernahme in eine zentrale Lösung (SharePoint-Liste, Dataverse, Datenbank) ohne Abtippen möglich.
 
