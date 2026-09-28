@@ -12,7 +12,8 @@ Lokales Steuerungs-Dashboard für AI-Projekte bei CWS (Heute, Portfolio, Roadmap
 - **Nur lokal.** Keine Netzwerkanfragen, keine CDNs, kein Tracking, keine Cloud-Speicher. Schriften, Logo und Icons sind eingebettet. Neue Abhängigkeiten ebenfalls einbetten, nicht nachladen.
 - **Keine echten CWS-Daten ins Repo.** Sicherungen (`*Sicherung*.json`), CSV-Exporte und Excel-Dateien sind per `.gitignore` gesperrt. Beispieldaten nur fiktiv (`data/beispielprojekte.json`, Feld `example: true`).
 - **Datenformat stabil halten.** Sicherungen haben `{ app, version, exportedAt, projects[], meta }`. Neue Felder immer optional, `parseBackup`, `sanitizeReadiness` und `sanitizeTools` mitziehen.
-- **Ein-Datei-App.** Alles steckt in `app/index.html`, ohne Build-Schritt. Öffnen per Doppelklick in Edge oder Chrome.
+- **Ein-Datei-App.** Alles steckt in `app/index.html`, ohne Build-Schritt.
+- **Ansehen:** `Radar-starten.cmd` oder Task „Radar starten“ öffnet `http://localhost:8765` (Mini-Server `start.ps1`). Nach Änderungen im Browser F5 drücken, der Server liefert ohne Cache aus. Port 8765 nicht ändern, sonst sieht der Browser andere localStorage-Daten.
 
 ## Aufbau von app/index.html
 - **Kopf:**

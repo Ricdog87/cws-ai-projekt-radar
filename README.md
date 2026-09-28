@@ -62,9 +62,15 @@ Aufgebaut nach dem Muster der Checkliste „Sales Along the Route | Nordwest“:
 
 Solange echte CWS-Daten eingepflegt werden, läuft das Radar **ausschließlich lokal**. Es gibt keinen Server und keine Cloud, und die Seite stellt keine einzige Netzwerkanfrage (auch Schriften sind eingebettet).
 
-1. Repository als ZIP herunterladen oder klonen.
-2. `app/index.html` per Doppelklick in **Edge oder Chrome** öffnen. Tipp: als Lesezeichen speichern.
-3. Projekte anlegen. Gespeichert wird automatisch im Browser dieses Rechners.
+1. Repository klonen oder als ZIP herunterladen.
+2. **Starten über den lokalen Link (empfohlen):** Doppelklick auf `Radar-starten.cmd`. Das Radar öffnet sich unter **http://localhost:8765**.
+   - In Cursor: `Strg+Shift+B` (Task „Radar starten“), oder im Terminal `.\Radar-starten.cmd`.
+   - Der Mini-Server (`start.ps1`) braucht nur PowerShell. Er ist nur auf diesem Rechner erreichbar und sendet nichts ins Internet. Beenden mit `Strg+C`.
+   - Innerhalb von Cursor ansehen: `Strg+Shift+P` → „Simple Browser: Show“ → `http://localhost:8765`.
+3. **Alternativ ohne Server:** `app/index.html` per Doppelklick in Edge oder Chrome öffnen.
+4. Projekte anlegen. Gespeichert wird automatisch im Browser dieses Rechners.
+
+**Wichtig:** Der Browser speichert die Daten getrennt je Adresse. `http://localhost:8765` und die per Doppelklick geöffnete Datei sehen **unterschiedliche** Daten. Entscheide dich für einen Weg. Beim Wechsel einmal „Sichern“ und am neuen Weg „Laden“. Der Port 8765 ist fest eingestellt, damit die Adresse und damit die Daten gleich bleiben.
 
 **Sichern ist Pflicht.** Die Daten liegen im Browser-Speicher. Wer den Browser-Verlauf inklusive „Website-Daten“ löscht, löscht auch das Radar.
 
@@ -79,6 +85,7 @@ Immer dieselbe Datei im selben Browser öffnen. Ein anderer Browser oder ein pri
 ## Technik
 
 - `app/index.html`: komplette App in einer Datei, ohne Build-Schritt und ohne externe Abhängigkeiten.
+- `start.ps1` + `Radar-starten.cmd`: lokaler Mini-Webserver auf `http://localhost:8765` (PowerShell `HttpListener`, liefert nur den Ordner `app` aus). `.vscode/tasks.json` startet ihn in Cursor per `Strg+Shift+B`.
 - CI abgeglichen mit cws.com/workwear:
   - CWS-Rot `#EA0046`, Gelb `#F9E344`, Schrift Schwarz auf Weiß.
   - Original-Logo „CWS | WORKWEAR“ (als PNG eingebettet) oben in der Seitenleiste, Hauptaktionen als rote Buttons, aktive Navigation in zartem CWS-Rosa.
