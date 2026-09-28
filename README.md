@@ -4,12 +4,25 @@ Tägliches Steuerungs-Dashboard für alle AI-Projekte bei CWS, End-to-End vom In
 
 **Betrieb:** lokal im Browser, keine Cloud. Siehe „Lokal starten“.
 
-## Ansichten
+## Aufbau
 
-- **Heute**: Die drei Projekte, die heute am meisten Aufmerksamkeit brauchen, mit Begründung (überfällig, kritisch, Blocker, Go-Live naht, kein Update, live ohne Inventory-Eintrag). Dazu KPIs, Pipeline je Phase und Termine der nächsten 14 Tage.
-- **Portfolio**: Board nach Phase oder sortierbare Liste. Filter nach Abteilung, Sponsor, Status, Phase.
-- **Roadmap**: 12 Monate, Start bis Go-Live, eingefärbt nach Status.
-- **1:1**: Pro Person (z. B. Henning, Lilli) alle Änderungen seit dem letzten Termin, offene Entscheidungen, Blocker und anstehende Go-Lives. „Agenda kopieren“ erzeugt Text für Teams oder Outlook, „1:1 abschließen“ setzt den Stichtag neu.
+Gestaltet wie das **AI Governance Portal** (AI Cockpit), damit beide Tools zusammenpassen:
+
+- **Seitenleiste:**
+  - **Mein Tag:** Heute, 1:1-Vorbereitung
+  - **Projekte:** Portfolio, Roadmap
+  - **Daten:** Excel / Sicherung laden, Sichern
+  - Die Leiste lässt sich auf Icons einklappen. Auf dem Handy öffnet sie sich über das Menü.
+- **Kopfzeile:** Pfad „AI Center of Excellence / …“, Status „Lokal“, Button „+ Projekt“ und dein Profil. Name und Rolle hinterlegst du per Klick auf den Avatar.
+- **Heute:**
+  - Zwei Aktionskarten: „Projekt anlegen“ und „1:1 vorbereiten“.
+  - 8 Kennzahl-Karten: aktiv, kritisch, Risiko, überfällig, NOT READY, kritische Lücken, Go-Lives, abgeschlossen. Ein roter Rand zeigt Handlungsbedarf.
+  - Dazu Pipeline, Tagesfokus, offene Folgeaktionen (deine eigenen mit „Du“ markiert) und die Termine der nächsten 14 Tage.
+- **Portfolio:** Board nach Phase oder Tabelle mit Status- und Readiness-Pillen. Filter nach Abteilung, Sponsor, Status, Phase.
+- **Roadmap:** 12 Monate, Start bis Go-Live, eingefärbt nach Status.
+- **1:1:**
+  - Pro Person (z. B. Henning, Lilli) die Änderungen seit dem letzten Termin, Entscheidungen, Blocker, kritische Lücken und Go-Lives.
+  - „Agenda kopieren“ erzeugt Text für Teams oder Outlook.
 
 ## Projektlebenszyklus
 
@@ -68,11 +81,12 @@ Immer dieselbe Datei im selben Browser öffnen. Ein anderer Browser oder ein pri
 - `app/index.html`: komplette App in einer Datei, ohne Build-Schritt und ohne externe Abhängigkeiten.
 - CI abgeglichen mit cws.com/workwear:
   - CWS-Rot `#EA0046`, Gelb `#F9E344`, Schrift Schwarz auf Weiß.
-  - Weiße Kopfzeile mit dem Original-Logo „CWS | WORKWEAR“ (als PNG eingebettet), Hauptaktionen als rote Pillen-Buttons.
+  - Original-Logo „CWS | WORKWEAR“ (als PNG eingebettet) oben in der Seitenleiste, Hauptaktionen als rote Buttons, aktive Navigation in zartem CWS-Rosa.
+  - Icons: Lucide (ISC-Lizenz), inline eingebettet.
   - Browser-Tab-Icon aus dem roten Logo-Teil.
   - Alle Werte stehen als Tokens ganz oben im zweiten `<style>`-Block (`--cws-red`, `--cws-yellow`, `--cta` …).
 - Schriften (SIL Open Font License), als Base64 eingebettet:
-  - Archivo für Text und Überschriften, nah an der Website-Typo.
+  - Inter für Text und Überschriften, wie im AI Governance Portal.
   - IBM Plex Mono für Projekt-IDs.
 - Datenformat der Sicherung: `{ app, version, exportedAt, projects[], meta }`. Damit ist die spätere Übernahme in eine zentrale Lösung (SharePoint-Liste, Dataverse, Datenbank) ohne Abtippen möglich.
 
