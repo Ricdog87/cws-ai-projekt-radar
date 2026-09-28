@@ -6,7 +6,7 @@ alwaysApply: true
 # CWS AI Projekt-Radar
 
 ## Was es ist
-Lokales Steuerungs-Dashboard für AI-Projekte bei CWS (Heute, Portfolio, Roadmap, 1:1, Readiness-Check, Zugangsmatrix, Excel-Import). Sprache der Oberfläche: Deutsch.
+Lokales Projekt-Tool für AI-Projekte bei CWS: Projekt-Overview (Timeline), Heute, Projektanfragen der Fachbereiche, Portfolio, Readiness-Check, Zugangsmatrix, Excel-Import. Sprache der Oberfläche: Deutsch. Immer helles Design (kein Dark Mode). Keine Personennamen im Tool.
 
 ## Harte Regeln
 - **Nur lokal.** Keine Netzwerkanfragen, keine CDNs, kein Tracking, keine Cloud-Speicher. Schriften, Logo und Icons sind eingebettet. Neue Abhängigkeiten ebenfalls einbetten, nicht nachladen.
@@ -20,12 +20,14 @@ Lokales Steuerungs-Dashboard für AI-Projekte bei CWS (Heute, Portfolio, Roadmap
   - `<style id="fonts">` enthält eingebettete Schriften als Base64. Nicht bearbeiten, beim Lesen überspringen.
   - Der zweite `<style>`-Block enthält die CI-Tokens in `:root` (`--cws-red #EA0046`, `--cws-yellow #F9E344`, `--tint`, `--cta` …) mit Dark-Mode-Varianten. Farben nur über Tokens setzen.
 - **Body:**
-  - `.shell` enthält die Seitenleiste `.side` (Logo als Base64-PNG), `.main` mit `.topbar` und `.wrap` mit den Views `#view-heute`, `#view-portfolio`, `#view-roadmap` und `#view-oneonone`.
+  - `.shell` enthält die Seitenleiste `.side` (Logo als Base64-PNG), `.main` mit `.topbar` und `.wrap` mit den Views `#view-overview`, `#view-heute`, `#view-anfragen` und `#view-portfolio`.
 - **Script (Vanilla JS, keine Frameworks):**
   - **Konfiguration:** `PHASES` mit Gates, `HEALTH`, `RD_TEMPLATE` (Standard-Readiness, 29 Fragen), `TOOL_TEMPLATE`, `ICONS` (Lucide, inline).
   - **Abgeleitete Werte:** `readinessStats` (READY ab 80 % ohne kritische Lücke, NOT READY unter 50 % oder mit kritischer Lücke), `assess` (Priorisierung „Heute“), `openActions`.
   - **Speicher:** `Store` schreibt in localStorage (Key `cws-ai-radar-v1`). `exportBackup` und `parseBackup` übernehmen Sichern und Laden.
-  - **Rendering:** `render()` ruft `renderChrome`, `renderHeute`, `renderPortfolio`, `renderRoadmap` und `renderOneOnOne` auf.
+  - **Rendering:** `render()` ruft `renderChrome`, `renderOverview`, `renderHeute`, `renderRequests` und `renderPortfolio` auf.
+  - **Overview:** `phasePlan` (geplante Phasen, automatisch aus Start und Go-Live oder `p.plan`), `schedule` (Verzug, Prognose), `renderOverview`.
+  - **Anfragen:** `state.requests`, `sanitizeRequest`, `rqHours`, `rqScore`, `renderRequests`, `openRequest`, `convertRequest`. Das Formular für Fachbereiche ist `app/anfrage.html` (eigenständig, gleiches Datenformat).
   - **Drawer:** `openDrawer`, `renderDrawerDynamic`, Tabs über `setDrawerTab`, Readiness und Tools über `renderPanes`.
   - **Excel:** `unzip`, `readXlsx` und `checklistFromSheets` lesen .xlsx ohne Bibliothek (DecompressionStream).
   - **Events:** Delegation über `data-action` im zentralen Click-Handler, Feldänderungen über `data-rfield` und `data-tfield` im Change-Handler.

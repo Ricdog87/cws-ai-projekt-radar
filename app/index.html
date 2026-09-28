@@ -133,6 +133,7 @@ h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.015em;tex
 .welcome .actions{display:flex;gap:10px;flex-wrap:wrap}
 .sync.warn i{background:var(--warn)}
 
+a.btn{text-decoration:none}
 .btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:8px;font-weight:500;font-size:14px;cursor:pointer;white-space:nowrap;box-shadow:var(--shadow-sm)}
 .btn svg{width:17px;height:17px}
 .btn:hover{border-color:var(--ink-2);color:var(--ink);background:var(--surface-2)}
@@ -327,6 +328,39 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 
 .pill-row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--muted)}
 
+/* ---------- Projektanfragen ---------- */
+.rq-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.rq-grid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:16px;align-items:start}
+.rq-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.rq-type{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.rq-type svg{width:15px;height:15px;color:var(--tint-ink)}
+.score{display:flex;align-items:center;gap:8px;min-width:90px}
+.score .bar{flex:1;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.score .bar i{display:block;height:100%;background:var(--ink);border-radius:3px}
+.score b{font:600 13px/1 var(--f-body);font-variant-numeric:tabular-nums;min-width:24px;text-align:right}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;white-space:nowrap;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.st i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.st.neu{background:var(--tint);color:var(--tint-ink)}
+.st.pruefung{background:var(--warn-bg);color:var(--warn)}
+.st.angenommen{background:var(--ok-bg);color:var(--ok)}
+.st.zurueck,.st.abgelehnt{color:var(--muted)}
+.tag{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.tag.qw{background:var(--ok-bg);color:var(--ok)}
+.tag.risk{background:var(--warn-bg);color:var(--warn)}
+.matrix{padding:16px 18px;display:grid;gap:10px}
+.mx{display:grid;grid-template-columns:28px repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(78px,auto)) auto;gap:4px}
+.mx-cell{background:var(--surface-2);border-radius:8px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;position:relative}
+.mx-cell.qw{background:var(--ok-bg)}
+.mx-cell.st2{background:#eef1fb}
+.mx-cell em{position:absolute;right:8px;bottom:6px;font:600 10.5px/1 var(--f-body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-style:normal}
+.mx-y{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11.5px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.mx-x{text-align:center;font-size:11.5px;color:var(--muted)}
+.mx-chip{font:600 11.5px/1 var(--f-mono);background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:4px 8px;cursor:pointer}
+.mx-chip:hover{border-color:var(--cws-red);color:var(--cws-red)}
+.hours{font-size:13px;color:var(--ink-2);background:var(--surface-2);border-radius:8px;padding:8px 12px}
+.hours b{color:var(--ink)}
+@media (max-width:1100px){ .rq-grid{grid-template-columns:1fr} .rq-stats,.ov-stats{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
 /* ---------- Drawer ---------- */
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.5);z-index:40}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(980px,100%);background:var(--bg);z-index:41;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px)}
@@ -456,7 +490,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 }
 @media (prefers-reduced-motion:no-preference){
   .drawer{animation:slide .18s ease-out}
-  @keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
+  @keyframes slide{from{transform:translateX(24px)}to{transform:none}}
 }
 </style>
 </head>
@@ -475,6 +509,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
     <div class="side-label">Mein Tag</div>
     <button class="nav" data-view="heute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><span>Heute</span><em class="count num" id="count-need"></em></button>
     <div class="side-label">Projekte</div>
+    <button class="nav" data-view="anfragen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>Projektanfragen</span><em class="count num" id="count-rq"></em></button>
     <button class="nav" data-view="portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg><span>Portfolio</span><em class="count num" id="count-portfolio">0</em></button>
     <div class="side-label">Daten</div>
     <button class="nav" data-action="import" title="Excel-Checkliste (.xlsx) oder Sicherung (.json) laden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><span>Excel / Sicherung laden</span></button>
@@ -528,6 +563,27 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
       <div class="section-head"><h2>Status je Projekt</h2><span class="muted" style="font-size:13px">Klick öffnet das Projekt</span></div>
       <div class="ov-cards" id="ov-cards"></div>
     </div>
+  </section>
+
+  <!-- PROJEKTANFRAGEN -->
+  <section class="view" id="view-anfragen" hidden>
+    <div class="view-head">
+      <div>
+        <h1>Projektanfragen</h1>
+        <p>Ideen der Fachbereiche für Workflows, Automatisierung und AI Agents: sichten, bewerten, priorisieren und per Klick als Projekt übernehmen.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="anfrage.html" target="_blank" rel="noopener" title="Das Formular als Datei an die Fachbereiche weitergeben: app/anfrage.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Anfrageformular öffnen</a>
+        <button class="btn" data-action="import"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>Anfrage einspielen</button>
+        <button class="btn primary" data-action="rq-new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Anfrage erfassen</button>
+      </div>
+    </div>
+    <div class="rq-stats" id="rq-stats"></div>
+    <div class="rq-grid">
+      <div class="panel ov-panel"><div id="rq-toolbar" class="rq-toolbar"></div><div class="table-scroll" id="rq-list"></div></div>
+      <div class="panel" id="rq-matrix"></div>
+    </div>
+    <div class="hours" style="margin-top:16px">So kommen Anfragen rein: Die Fachbereiche füllen <b>app/anfrage.html</b> aus (einfach per Teams oder E-Mail weitergeben), klicken auf „Anfrage speichern“ und schicken dir die Datei. Du spielst sie hier über „Anfrage einspielen“ ein. Anrufe oder Mails erfasst du direkt mit „Anfrage erfassen“.</div>
   </section>
 
   <!-- HEUTE -->
@@ -700,6 +756,8 @@ const ICONS = {
   check:'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
   panel:'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/>',
   star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  ext:'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
   menu:'<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
   plus:'<path d="M5 12h14"/><path d="M12 5v14"/>'
 };
@@ -712,6 +770,7 @@ const UI_KEY = "cws-ai-radar-ui-v1";
 const state = {
   backupAt: null, storageBlocked: false,
   projects: [],
+  requests: [],
   meta: { me: { name:"", role:"" } },
   loaded: false,
   mode: "connecting",        // db | local | connecting
@@ -724,8 +783,10 @@ const ui = Object.assign({
   sort: { key:"score", dir:"desc" },
   collapsed: false,
   ov: { range:"all", sort:"focus", done:false },
+  rq: { filter:"offen" },
 }, loadUi());
-if (!["overview","heute","portfolio"].includes(ui.view)) ui.view = "overview";
+if (!["overview","heute","portfolio","anfragen"].includes(ui.view)) ui.view = "overview";
+ui.rq = Object.assign({ filter:"offen" }, ui.rq);
 ui.ov = Object.assign({ range:"all", sort:"focus", done:false }, ui.ov);
 let menuOpen = false, profileOpen = false;
 const myProfile = () => Object.assign({ name:"", role:"" }, state.meta.me || {});
@@ -751,7 +812,7 @@ const splitList = s => String(s||"").split(/[,;]/).map(x=>x.trim()).filter(Boole
 const clone = o => JSON.parse(JSON.stringify(o));
 const plural = (n, one, many) => `${n} ${n===1?one:many}`;
 function loadUi(){ try { return JSON.parse(localStorage.getItem(UI_KEY) || "{}"); } catch { return {}; } }
-function saveUi(){ try { localStorage.setItem(UI_KEY, JSON.stringify({ view:ui.view, pmode:ui.pmode, f:ui.f, sort:ui.sort, collapsed:ui.collapsed, ov:ui.ov })); } catch {} }
+function saveUi(){ try { localStorage.setItem(UI_KEY, JSON.stringify({ view:ui.view, pmode:ui.pmode, f:ui.f, sort:ui.sort, collapsed:ui.collapsed, ov:ui.ov, rq:ui.rq })); } catch {} }
 
 function toast(msg){
   const slot = $("#toast-slot");
@@ -865,11 +926,11 @@ const Store = {
   readLocal(){
     try {
       const raw = JSON.parse(localStorage.getItem(LOCAL_KEY) || "null");
-      if (raw){ state.projects = Array.isArray(raw.projects) ? raw.projects : []; if (raw.meta) state.meta = raw.meta; state.backupAt = raw.backupAt || null; }
+      if (raw){ state.projects = Array.isArray(raw.projects) ? raw.projects : []; state.requests = Array.isArray(raw.requests) ? raw.requests : []; if (raw.meta) state.meta = raw.meta; state.backupAt = raw.backupAt || null; }
     } catch { state.storageBlocked = true; }
   },
   persistLocal(){
-    try { localStorage.setItem(LOCAL_KEY, JSON.stringify({ projects: state.projects, meta: state.meta, backupAt: state.backupAt || null })); state.storageBlocked = false; }
+    try { localStorage.setItem(LOCAL_KEY, JSON.stringify({ projects: state.projects, requests: state.requests, meta: state.meta, backupAt: state.backupAt || null })); state.storageBlocked = false; }
     catch { state.storageBlocked = true; toast("Speichern im Browser nicht möglich. Bitte sofort „Sichern“ klicken."); }
   },
   async saveProject(p){
@@ -883,7 +944,7 @@ const Store = {
   },
   async saveMeta(){ this.persistLocal(); },
   replaceAll(data){
-    state.projects = data.projects; state.meta = data.meta;
+    state.projects = data.projects; state.requests = data.requests || []; state.meta = data.meta;
     this.persistLocal();
   }
 };
@@ -891,7 +952,7 @@ const Store = {
 /* ================== Sichern & Laden ================== */
 const BACKUP_REMIND_DAYS = 7;
 function exportBackup(){
-  const payload = { app:"cws-ai-projekt-radar", version:1, exportedAt: nowISO(), projects: state.projects, meta: state.meta };
+  const payload = { app:"cws-ai-projekt-radar", version:1, exportedAt: nowISO(), projects: state.projects, requests: state.requests, meta: state.meta };
   const blob = new Blob([JSON.stringify(payload, null, 1)], { type:"application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -899,7 +960,7 @@ function exportBackup(){
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
   state.backupAt = nowISO(); Store.persistLocal();
-  toast(`Sicherung mit ${plural(state.projects.length,"Projekt","Projekten")} gespeichert (Download-Ordner)`);
+  toast(`Sicherung mit ${plural(state.projects.length,"Projekt","Projekten")} und ${plural(state.requests.length,"Anfrage","Anfragen")} gespeichert (Download-Ordner)`);
   render();
 }
 const ID_OK = /^[A-Za-z0-9_-]{1,80}$/;
@@ -926,7 +987,8 @@ function parseBackup(text){
   const m = (!Array.isArray(raw) && raw.meta) || {};
   const meta = {
     me: (m.me && typeof m.me === "object" && m.me.name) ? { name: String(m.me.name), role: String(m.me.role || "") } : myProfile() };
-  return { projects, meta, exportedAt: Array.isArray(raw) ? null : raw.exportedAt || null };
+  const requests = (!Array.isArray(raw) && Array.isArray(raw.requests)) ? raw.requests.filter(r => r && typeof r === "object").map(sanitizeRequest) : [];
+  return { projects, requests, meta, exportedAt: Array.isArray(raw) ? null : raw.exportedAt || null };
 }
 function sanitizeReadiness(r){
   if (!r || !Array.isArray(r.items)) return null;
@@ -955,6 +1017,7 @@ function applyImport(mode){
     });
     const m = pendingImport.meta;
     state.meta = { me: myProfile().name ? myProfile() : m.me };
+    (pendingImport.requests || []).forEach(r => { const i = state.requests.findIndex(x => x.id === r.id); if (i >= 0) state.requests[i] = r; else { if (state.requests.some(x => x.code === r.code)) r.code = nextRqCode(); state.requests.push(r); } });
     Store.persistLocal();
   } else {
     Store.replaceAll(pendingImport);
@@ -988,10 +1051,11 @@ function render(){
   if (ui.view === "heute") renderHeute();
   if (ui.view === "portfolio") renderPortfolio();
   if (ui.view === "overview") renderOverview();
+  if (ui.view === "anfragen") renderRequests();
   if (drawer) renderDrawerDynamic();
 }
 
-const VIEW_LABEL = { overview:"Projekt-Overview", heute:"Heute", portfolio:"Portfolio" };
+const VIEW_LABEL = { overview:"Projekt-Overview", heute:"Heute", anfragen:"Projektanfragen", portfolio:"Portfolio" };
 function renderChrome(){
   document.querySelectorAll(".nav[data-view]").forEach(n => { if (n.dataset.view === ui.view) n.setAttribute("aria-current","page"); else n.removeAttribute("aria-current"); });
   document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== "view-" + ui.view);
@@ -1000,6 +1064,8 @@ function renderChrome(){
   $("#count-portfolio").textContent = state.projects.filter(isActive).length;
   const need = state.projects.filter(p => isActive(p) && assess(p).score > 0).length;
   $("#count-need").textContent = need || ""; $("#count-need").hidden = !need;
+  const rqNew = state.requests.filter(r => r.status === "neu").length;
+  $("#count-rq").textContent = rqNew || ""; $("#count-rq").hidden = !rqNew;
   const sync = $("#sync");
   sync.className = "sync " + (state.storageBlocked ? "warn" : "live");
   const bdays = state.backupAt ? daysSince(state.backupAt) : null;
@@ -1086,6 +1152,7 @@ function renderHeute(){
   ].join("");
   $("#acards").innerHTML = `
     <button class="acard" data-action="new"><span class="aicon">${ico("filePlus")}</span><span><b>Projekt anlegen</b><span>Intake starten oder Readiness-Checkliste (Excel) einlesen</span></span></button>
+    <button class="acard" data-action="goto" data-view="anfragen"><span class="aicon">${ico("inbox")}</span><span><b>Projektanfragen</b><span>${(() => { const n = state.requests.filter(r => r.status === "neu").length, o = state.requests.filter(rqOpen).length; return n ? `${plural(n,"neue Anfrage","neue Anfragen")} zu sichten` : o ? `${plural(o,"offene Anfrage","offene Anfragen")} in Prüfung` : "Keine offenen Anfragen"; })()}</span></span></button>
     <button class="acard" data-action="goto" data-view="overview"><span class="aicon">${ico("gantt")}</span><span><b>Projekt-Overview</b><span>Alle Projekte auf der Zeitachse: Phase, Fortschritt, Verzug, Go-Live</span></span></button>`;
 
   // Pipeline
@@ -1397,10 +1464,222 @@ function renderPlan(p){
     </tbody></table></div>`;
 }
 
+/* ================== Projektanfragen der Fachbereiche ================== */
+const RQ_STATUS = { neu:"Neu", pruefung:"In Prüfung", angenommen:"Angenommen", zurueck:"Zurückgestellt", abgelehnt:"Abgelehnt" };
+const RQ_TYPE = { workflow:"Workflow / Prozess", automatisierung:"Automatisierung", agent:"AI Agent", unklar:"Noch unklar" };
+const RQ_TYPE_ICON = { workflow:"gantt", automatisierung:"activity", agent:"sun", unklar:"target" };
+const RQ_URG = { niedrig:"Niedrig", mittel:"Mittel", hoch:"Hoch" };
+const RQ_CPLX = { "":"Noch nicht bewertet", klein:"Klein (Tage)", mittel:"Mittel (Wochen)", gross:"Groß (Monate)" };
+const RQ_YN = { ja:"Ja", teilweise:"Teilweise", nein:"Nein", unklar:"Unklar" };
+function blankRequest(){
+  return { id: uid(), code: nextRqCode(), status:"neu", type:"unklar", title:"", department:"", requester:"", requesterEmail:"", problem:"", goal:"", systems:"",
+    volume:"", minutes:"", urgency:"mittel", deadline:"", dataAvailable:"unklar", personalData:"unklar", complexity:"", notes:"", projectId:"", source:"manuell",
+    createdAt: nowISO(), updatedAt: nowISO() };
+}
+function nextRqCode(){
+  const nums = state.requests.map(r => parseInt(String(r.code||"").replace(/\D/g,""),10)).filter(n => !isNaN(n));
+  return "ANF-" + String((nums.length ? Math.max(...nums) : 0) + 1).padStart(3,"0");
+}
+function sanitizeRequest(r){
+  const b = blankRequest(); const x = Object.assign(b, {});
+  const str = v => String(v ?? "").slice(0, 4000);
+  ["title","department","requester","requesterEmail","problem","goal","systems","notes","projectId","source"].forEach(k => x[k] = str(r[k]));
+  x.id = ID_OK.test(str(r.id)) ? str(r.id) : uid();
+  x.code = /^ANF-\d+$/.test(str(r.code)) ? str(r.code) : x.code;
+  x.status = r.status in RQ_STATUS ? r.status : "neu";
+  x.type = r.type in RQ_TYPE ? r.type : "unklar";
+  x.urgency = r.urgency in RQ_URG ? r.urgency : "mittel";
+  x.complexity = r.complexity in RQ_CPLX ? r.complexity : "";
+  x.dataAvailable = r.dataAvailable in RQ_YN ? r.dataAvailable : "unklar";
+  x.personalData = r.personalData in RQ_YN ? r.personalData : "unklar";
+  x.volume = isFinite(+r.volume) && r.volume !== "" ? String(+r.volume) : "";
+  x.minutes = isFinite(+r.minutes) && r.minutes !== "" ? String(+r.minutes) : "";
+  x.deadline = /^\d{4}-\d{2}-\d{2}$/.test(r.deadline || "") ? r.deadline : "";
+  x.createdAt = str(r.createdAt) || nowISO(); x.updatedAt = str(r.updatedAt) || x.createdAt;
+  return x;
+}
+// Nutzen und Priorität
+const rqHours = r => { const v = +r.volume, m = +r.minutes; return v > 0 && m > 0 ? Math.round(v * m / 60) : 0; };
+function rqValue(r){ const h = rqHours(r); return h >= 150 ? 5 : h >= 60 ? 4 : h >= 20 ? 3 : h >= 5 ? 2 : h > 0 ? 1 : 0; }
+function rqScore(r){
+  const v = rqValue(r) || 1, u = { niedrig:1, mittel:2, hoch:3 }[r.urgency] || 2;
+  const c = { klein:1, mittel:2, gross:3 }[r.complexity] || 2, d = { ja:1, teilweise:2, nein:3, unklar:2 }[r.dataAvailable] || 2;
+  const raw = v * 2 + u * 1.5 - (c - 1) * 1.5 - (d - 1);
+  return Math.max(0, Math.min(100, Math.round((raw + 1.5) / 16 * 100)));
+}
+const rqQuickWin = r => rqValue(r) >= 3 && r.complexity === "klein";
+const rqRisk = r => r.personalData === "ja";
+const rqOpen = r => r.status === "neu" || r.status === "pruefung";
+function stHtml(s){ return `<span class="st ${s}"><i aria-hidden="true"></i>${esc(RQ_STATUS[s] || s)}</span>`; }
+function typeHtml(t){ return `<span class="rq-type">${ico(RQ_TYPE_ICON[t] || "target")}${esc(RQ_TYPE[t] || t)}</span>`; }
+
+function renderRequests(){
+  const all = state.requests;
+  const f = ui.rq.filter;
+  const list = all.filter(r => f === "offen" ? rqOpen(r) : f === "alle" ? true : f === "zu" ? (r.status === "zurueck" || r.status === "abgelehnt") : r.status === f)
+    .sort((a,b) => (rqOpen(b) - rqOpen(a)) || rqScore(b) - rqScore(a) || String(b.createdAt).localeCompare(String(a.createdAt)));
+  const cnt = s => all.filter(r => r.status === s).length;
+  const hoursOpen = all.filter(rqOpen).reduce((n, r) => n + rqHours(r), 0);
+  $("#rq-stats").innerHTML = `
+    <div class="ov-stat ${cnt("neu") ? "alert" : ""}"><span class="lbl">Neu eingegangen</span><b class="num">${cnt("neu")}</b><small>warten auf erste Sichtung</small></div>
+    <div class="ov-stat"><span class="lbl">In Prüfung</span><b class="num">${cnt("pruefung")}</b><small>Nutzen und Aufwand klären</small></div>
+    <div class="ov-stat"><span class="lbl">Angenommen</span><b class="num">${cnt("angenommen")}</b><small>als Projekt übernommen</small></div>
+    <div class="ov-stat"><span class="lbl">Zurückgestellt / abgelehnt</span><b class="num">${cnt("zurueck") + cnt("abgelehnt")}</b><small>mit Begründung dokumentiert</small></div>
+    <div class="ov-stat"><span class="lbl">Potenzial offener Anfragen</span><b class="num">${hoursOpen.toLocaleString("de-DE")} h</b><small>pro Monat, laut Angaben der Fachbereiche</small></div>`;
+  const pills = [["offen","Offen"],["neu","Neu"],["pruefung","In Prüfung"],["angenommen","Angenommen"],["zu","Zurückgestellt / abgelehnt"],["alle","Alle"]];
+  $("#rq-toolbar").innerHTML = `<div class="seg" role="group" aria-label="Filter">${pills.map(([v,l]) => `<button data-action="rq-filter" data-v="${v}" aria-pressed="${f===v}">${l}</button>`).join("")}</div>`;
+  $("#rq-list").innerHTML = list.length ? `<table class="pt" style="min-width:860px"><thead><tr><th>ID</th><th>Anfrage</th><th>Art</th><th>Potenzial</th><th>Dringlichkeit</th><th>Priorität</th><th>Status</th><th>Eingang</th></tr></thead><tbody>
+    ${list.map(r => { const h = rqHours(r), sc = rqScore(r); return `<tr data-action="rq-open" data-id="${esc(r.id)}" tabindex="0">
+      <td class="mono">${esc(r.code)}</td>
+      <td><div class="p-title">${esc(r.title || "Ohne Titel")}</div><div class="muted" style="font-size:12.5px">${esc([r.department, r.requester].filter(Boolean).join(" · ") || "Fachbereich offen")}</div>
+        <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">${rqQuickWin(r) ? `<span class="tag qw">Quick Win</span>` : ""}${rqRisk(r) ? `<span class="tag risk">Personenbezogene Daten</span>` : ""}${r.projectId ? `<span class="tag" style="background:var(--surface-2)">→ ${esc((state.projects.find(p => p.id === r.projectId) || {}).code || "Projekt")}</span>` : ""}</div></td>
+      <td>${typeHtml(r.type)}</td>
+      <td class="num">${h ? `${h.toLocaleString("de-DE")} h/Monat` : `<span class="muted">–</span>`}</td>
+      <td>${esc(RQ_URG[r.urgency])}${r.deadline ? `<div class="muted num" style="font-size:12.5px">bis ${esc(fmtDay(r.deadline))}</div>` : ""}</td>
+      <td><div class="score" title="Priorität aus Potenzial, Dringlichkeit, Aufwand und Datenlage"><span class="bar"><i style="width:${sc}%"></i></span><b>${sc}</b></div></td>
+      <td>${stHtml(r.status)}</td>
+      <td class="num muted">${esc(fmtDay(String(r.createdAt).slice(0,10)))}</td></tr>`; }).join("")}</tbody></table>`
+    : `<div class="empty" style="padding:28px 18px">${all.length ? "Keine Anfragen für diesen Filter." : "Noch keine Anfragen. Gib den Fachbereichen das Anfrageformular oder erfasse eine Anfrage selbst."}</div>`;
+  // Priorisierungsmatrix: Nutzen x Aufwand
+  const open = all.filter(rqOpen);
+  const row = r => { const v = rqValue(r); return v >= 4 ? 0 : v === 3 ? 1 : 2; };
+  const col = { klein:0, mittel:1, gross:2 };
+  const cells = [[[],[],[]],[[],[],[]],[[],[],[]]]; const unrated = [];
+  open.forEach(r => { if (!(r.complexity in col) || !r.complexity) unrated.push(r); else cells[row(r)][col[r.complexity]].push(r); });
+  const chip = r => `<button class="mx-chip" data-action="rq-open" data-id="${esc(r.id)}" title="${esc(r.title)}">${esc(r.code)}</button>`;
+  const lab = { "0-0":"Quick Wins", "0-2":"Strategisch", "2-0":"Nebenbei", "2-2":"Nicht jetzt" };
+  $("#rq-matrix").innerHTML = `<div class="matrix">
+    <div class="section-head" style="margin:0"><h2>Priorisierung</h2><span class="muted" style="font-size:12.5px">offene Anfragen</span></div>
+    <div class="mx">
+      ${[0,1,2].map(ri => `<div class="mx-y">${["Nutzen hoch","mittel","gering"][ri]}</div>${[0,1,2].map(ci => `<div class="mx-cell ${ri===0&&ci===0?"qw":ri===0&&ci===2?"st2":""}">${cells[ri][ci].map(chip).join("")}${lab[ri+"-"+ci] ? `<em>${lab[ri+"-"+ci]}</em>` : ""}</div>`).join("")}`).join("")}
+      <div></div><div class="mx-x">Aufwand klein</div><div class="mx-x">mittel</div><div class="mx-x">groß</div>
+    </div>
+    <div class="muted" style="font-size:12.5px">Nutzen aus Fällen pro Monat × Minuten je Fall. Aufwand bewertest du in der Anfrage.${unrated.length ? `<br>Aufwand noch nicht bewertet: ${unrated.map(chip).join(" ")}` : ""}</div>
+  </div>`;
+}
+
+let rqDrawer = null;
+function openRequest(id){
+  if (drawer) closeDrawer();
+  const r = id ? state.requests.find(x => x.id === id) : null;
+  rqDrawer = { id: r ? r.id : null, draft: r ? null : blankRequest(), confirmDelete:false };
+  const cur = r || rqDrawer.draft;
+  const opt = (map, v) => Object.entries(map).map(([k,l]) => `<option value="${k}" ${v===k?"selected":""}>${esc(l)}</option>`).join("");
+  const f = (k, label, html, full) => `<div class="f ${full ? "full" : ""}"><label for="rq-${k}">${label}</label>${html}</div>`;
+  const inp = (k, ph, type) => `<input id="rq-${k}" data-rq="${k}" ${type ? `type="${type}"` : ""} value="${esc(cur[k])}" placeholder="${esc(ph || "")}">`;
+  const ta = (k, ph) => `<textarea id="rq-${k}" data-rq="${k}" placeholder="${esc(ph || "")}">${esc(cur[k])}</textarea>`;
+  const sel = (k, map) => `<select id="rq-${k}" data-rq="${k}">${opt(map, cur[k])}</select>`;
+  $("#drawer-slot").innerHTML = `
+    <div class="scrim" data-action="rq-close"></div>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="rq-title">
+      <div class="d-head"><div class="grow">
+        <div class="eyebrow"><span class="mono">${esc(cur.code)}</span> · Projektanfrage${cur.source === "formular" ? " aus dem Formular" : ""}</div>
+        <input class="d-title" id="rq-title" data-rq="title" value="${esc(cur.title)}" placeholder="Kurzer Titel der Idee">
+      </div><button class="btn ghost" data-action="rq-close" aria-label="Schließen">✕</button></div>
+      <div class="d-body">
+        <section class="d-sec"><div class="section-head" style="margin:0"><h2>Status</h2><span id="rq-prio"></span></div>
+          <div class="segh">${Object.entries(RQ_STATUS).map(([k,l]) => `<button data-action="rq-status" data-v="${k}" aria-pressed="${cur.status===k}">${esc(l)}</button>`).join("")}</div>
+          <div id="rq-convert"></div>
+        </section>
+        <section class="d-sec"><h2>Idee</h2><div class="form">
+          ${f("type","Art der Anfrage",sel("type",RQ_TYPE))}
+          ${f("urgency","Dringlichkeit",sel("urgency",RQ_URG))}
+          ${f("problem","Was ist heute das Problem?",ta("problem","Welcher Ablauf kostet Zeit, ist fehleranfällig oder nervt?"),true)}
+          ${f("goal","Was soll danach besser sein?",ta("goal","z. B. Angebote in 1 statt 3 Tagen, keine manuelle Übertragung mehr"),true)}
+          ${f("systems","Beteiligte Systeme und Daten",inp("systems","z. B. Salesforce, SAP, Excel, E-Mail-Postfach"),true)}
+        </div></section>
+        <section class="d-sec"><h2>Umfang & Potenzial</h2><div class="form">
+          ${f("volume","Fälle pro Monat",inp("volume","z. B. 400","number"))}
+          ${f("minutes","Minuten je Fall",inp("minutes","z. B. 12","number"))}
+          <div class="f full"><div class="hours" id="rq-hours"></div></div>
+          ${f("deadline","Wunschtermin",inp("deadline","","date"))}
+          ${f("dataAvailable","Daten digital verfügbar?",sel("dataAvailable",RQ_YN))}
+          ${f("personalData","Personenbezogene Daten betroffen?",sel("personalData",RQ_YN))}
+        </div></section>
+        <section class="d-sec"><h2>Fachbereich</h2><div class="form">
+          ${f("department","Fachbereich / Abteilung",inp("department","z. B. Customer Service"))}
+          ${f("requester","Ansprechpartner",inp("requester","Vor- und Nachname"))}
+          ${f("requesterEmail","E-Mail",inp("requesterEmail","name@cws.com","email"),true)}
+        </div></section>
+        <section class="d-sec"><h2>Deine Bewertung</h2><div class="form">
+          ${f("complexity","Geschätzter Aufwand",sel("complexity",RQ_CPLX))}
+          ${f("notes","Notizen, Begründung, nächste Schritte",ta("notes","z. B. Rückfrage an Fachbereich zu Datenquelle, Entscheidung, Begründung bei Ablehnung"),true)}
+        </div></section>
+        <section class="d-sec" id="rq-danger"></section>
+      </div>
+      <div class="d-foot"><span class="muted" id="rq-savestate" style="font-size:13px"></span>
+        <div style="display:flex;gap:8px"><button class="btn" data-action="rq-close">Schließen</button><button class="btn primary" data-action="rq-save">${rqDrawer.draft ? "Anfrage anlegen" : "Speichern"}</button></div></div>
+    </aside>`;
+  document.body.style.overflow = "hidden";
+  renderRequestDynamic();
+  if (rqDrawer.draft) $("#rq-title").focus();
+}
+function currentRequest(){ if (!rqDrawer) return null; return rqDrawer.draft || state.requests.find(r => r.id === rqDrawer.id) || null; }
+function readRequestForm(r){ document.querySelectorAll("#drawer-slot [data-rq]").forEach(el => { r[el.dataset.rq] = el.type === "number" ? (el.value === "" ? "" : String(+el.value)) : el.value.trim(); }); }
+function renderRequestDynamic(){
+  const r = currentRequest(); if (!r) return;
+  const tmp = clone(r); readRequestForm(tmp);
+  const h = rqHours(tmp);
+  $("#rq-hours").innerHTML = h ? `Potenzial: <b>≈ ${h.toLocaleString("de-DE")} Stunden pro Monat</b> (≈ ${(h * 12 / 1600).toLocaleString("de-DE", { maximumFractionDigits:1 })} FTE pro Jahr bei 1.600 h)` : "Fälle pro Monat und Minuten je Fall eintragen, dann rechnet das Radar das Potenzial aus.";
+  const sc = rqScore(tmp);
+  $("#rq-prio").innerHTML = `<div class="score" style="min-width:160px" title="Priorität aus Potenzial, Dringlichkeit, Aufwand und Datenlage"><span class="muted" style="font-size:12.5px">Priorität</span><span class="bar"><i style="width:${sc}%"></i></span><b>${sc}</b></div>`;
+  document.querySelectorAll('#drawer-slot [data-action="rq-status"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === r.status)));
+  const proj = r.projectId && state.projects.find(p => p.id === r.projectId);
+  $("#rq-convert").innerHTML = rqDrawer.draft ? "" : proj
+    ? `<div class="hours">Übernommen als Projekt <b>${esc(proj.code)} ${esc(proj.title)}</b> <button class="btn small" data-action="open" data-id="${esc(proj.id)}" style="margin-left:8px">Projekt öffnen</button></div>`
+    : `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn primary small" data-action="rq-convert">${ico("plus")}In Projekt übernehmen</button><span class="muted" style="font-size:12.5px">Legt ein Projekt in Phase „Intake“ an und übernimmt alle Angaben.</span></div>`;
+  $("#rq-danger").innerHTML = rqDrawer.draft ? `<span class="muted" style="font-size:14px">Neue Anfrage, wird mit „Anfrage anlegen“ gespeichert.</span>` :
+    rqDrawer.confirmDelete ? `<div class="confirm"><span>Anfrage <b>${esc(r.code)}</b> endgültig löschen?</span><button class="btn danger small" data-action="rq-del-confirm">Endgültig löschen</button><button class="btn small" data-action="rq-del-cancel">Abbrechen</button></div>`
+    : `<div class="confirm"><button class="btn danger small" data-action="rq-del-ask">Anfrage löschen</button><span class="muted" style="font-size:13px">Besser: auf „Zurückgestellt“ oder „Abgelehnt“ setzen und die Begründung notieren.</span></div>`;
+  $("#rq-savestate").textContent = r.updatedAt && !rqDrawer.draft ? `Eingang ${fmtDay(String(r.createdAt).slice(0,10))} · geändert ${fmtStamp(r.updatedAt)}` : "";
+}
+function closeRequest(){ rqDrawer = null; $("#drawer-slot").innerHTML = ""; document.body.style.overflow = ""; }
+async function saveRequestFromForm(extra){
+  const r = currentRequest(); if (!r) return null;
+  const next = clone(r); readRequestForm(next); if (extra) extra(next);
+  if (!next.title){ $("#rq-title").focus(); $("#rq-savestate").innerHTML = `<b style="color:var(--crit)">Bitte einen Titel eingeben.</b>`; return null; }
+  next.updatedAt = nowISO();
+  const i = state.requests.findIndex(x => x.id === next.id);
+  if (i >= 0) state.requests[i] = next; else state.requests.push(next);
+  Store.persistLocal();
+  rqDrawer.draft = null; rqDrawer.id = next.id;
+  return next;
+}
+async function convertRequest(){
+  const r = await saveRequestFromForm(); if (!r) return;
+  const p = blankProject();
+  const h = rqHours(r);
+  Object.assign(p, { title: r.title, description: r.problem, goal: r.goal, department: r.department, businessOwner: [r.requester, r.requesterEmail].filter(Boolean).join(", "),
+    techStack: r.systems, value: h ? `≈ ${h.toLocaleString("de-DE")} h/Monat laut Fachbereich` : "", priority: rqScore(r) >= 66 ? 1 : rqScore(r) >= 40 ? 2 : 3,
+    nextStep: "Discovery-Termin mit dem Fachbereich vereinbaren", requestId: r.id });
+  p.gates = { "intake-0": !!(r.problem && r.goal), "intake-2": !!(r.department && r.requester) };
+  pushLog(p, logEntry(`Aus Projektanfrage ${r.code} übernommen (${RQ_TYPE[r.type]})`, "system"));
+  await Store.saveProject(p);
+  const i = state.requests.findIndex(x => x.id === r.id);
+  state.requests[i] = Object.assign({}, r, { status:"angenommen", projectId: p.id, updatedAt: nowISO() });
+  Store.persistLocal();
+  closeRequest(); toast(`${r.code} ist jetzt Projekt ${p.code}`); render();
+  openDrawer(p.id);
+}
+function parseRequestFile(raw){
+  const list = raw && raw.app === "cws-ai-anfrage" ? [raw.request] : raw && Array.isArray(raw.requests) && !Array.isArray(raw.projects) ? raw.requests : null;
+  return list ? list.filter(Boolean).map(x => { const r = sanitizeRequest(Object.assign({}, x, { status:"neu" })); r.source = "formular"; return r; }) : null;
+}
+function addRequests(list){
+  let added = 0;
+  list.forEach(r => {
+    if (state.requests.some(x => x.id === r.id)) return;
+    if (state.requests.some(x => x.code === r.code)) r.code = nextRqCode();
+    state.requests.push(r); added++;
+  });
+  Store.persistLocal();
+  return added;
+}
+
 /* ================== Drawer ================== */
 function currentDrawerProject(){ if (!drawer) return null; return drawer.draft || state.projects.find(p => p.id === drawer.id) || null; }
 function openDrawer(id, opts){
-  opts = opts || {};
+  opts = opts || {}; rqDrawer = null;
   const p = id ? state.projects.find(x => x.id === id) : null;
   drawer = { id: p ? p.id : null, draft: p ? null : blankProject(), dirty:false, confirmDelete:false, gateWarn:"", tab: opts.tab || "overview", rdFilter:{ area:"", core:false, open:false }, rdAdd:false, rdPending:null };
   const cur = currentDrawerProject();
@@ -1881,6 +2160,19 @@ document.addEventListener("click", async e => {
   if (a === "kpi"){ const f = JSON.parse(t.dataset.filter); ui.f = Object.assign({ q:"", dept:"", sponsor:"", health:"", phase:"", archived:false }, f); ui.view = "portfolio"; ui.pmode = "list"; saveUi(); render(); return; }
   if (a === "filter-phase"){ ui.f = { q:"", dept:"", sponsor:"", health:"", phase:t.dataset.phase, archived:false }; ui.view = "portfolio"; saveUi(); render(); return; }
   if (a === "reset-filters"){ ui.f = { q:"", dept:"", sponsor:"", health:"", phase:"", archived:false }; saveUi(); render(); return; }
+  if (a === "rq-new"){ openRequest(null); return; }
+  if (a === "rq-open"){ openRequest(t.dataset.id); return; }
+  if (a === "rq-close"){ closeRequest(); return; }
+  if (a === "rq-filter"){ ui.rq.filter = t.dataset.v; saveUi(); renderRequests(); return; }
+  if (a === "rq-save"){ const wasNew = !!(rqDrawer && rqDrawer.draft); const r = await saveRequestFromForm(); if (r){ toast(wasNew ? `${r.code} angelegt` : "Gespeichert"); render(); renderRequestDynamic(); t.textContent = "Speichern"; } return; }
+  if (a === "rq-status"){
+    const v = t.dataset.v; const r = await saveRequestFromForm(x => { x.status = v; });
+    if (r){ toast(`${r.code}: ${RQ_STATUS[v]}`); render(); renderRequestDynamic(); const sb = $('[data-action="rq-save"]'); if (sb) sb.textContent = "Speichern"; } return;
+  }
+  if (a === "rq-convert"){ await convertRequest(); return; }
+  if (a === "rq-del-ask"){ rqDrawer.confirmDelete = true; renderRequestDynamic(); return; }
+  if (a === "rq-del-cancel"){ rqDrawer.confirmDelete = false; renderRequestDynamic(); return; }
+  if (a === "rq-del-confirm"){ const r = currentRequest(); state.requests = state.requests.filter(x => x.id !== r.id); Store.persistLocal(); closeRequest(); toast(`${r.code} gelöscht`); render(); return; }
   if (a === "ov-set"){ ui.ov[t.dataset.k] = t.dataset.v; saveUi(); renderOverview(); return; }
   if (a === "focus"){
     const id = t.dataset.id; const cur = state.projects.find(x => x.id === id); if (!cur) return;
@@ -1925,9 +2217,13 @@ document.addEventListener("change", async e => {
     const file = t.files && t.files[0]; if (!file) return;
     try {
       if (/\.xlsx$/i.test(file.name)){ await importExcelAsProject(file); return; }
-      const data = parseBackup(await file.text());
+      const text = await file.text();
+      let raw = null; try { raw = JSON.parse(text); } catch {}
+      const rqs = raw && parseRequestFile(raw);
+      if (rqs){ const n = addRequests(rqs); ui.view = "anfragen"; ui.rq.filter = "offen"; saveUi(); render(); toast(n ? `${plural(n,"Anfrage","Anfragen")} eingespielt` : "Diese Anfrage ist schon vorhanden"); return; }
+      const data = parseBackup(text);
       pendingImport = data;
-      if (!state.projects.length) applyImport("replace"); else { render(); window.scrollTo(0,0); }
+      if (!state.projects.length && !state.requests.length) applyImport("replace"); else { render(); window.scrollTo(0,0); }
     } catch (err){ toast(err.message || "Datei konnte nicht gelesen werden."); }
     return;
   }
@@ -1944,6 +2240,7 @@ document.addEventListener("change", async e => {
 document.addEventListener("input", e => {
   const t = e.target;
   if (t.id === "f-search"){ ui.f.q = t.value; saveUi(); renderPortfolio(); return; }
+  if (rqDrawer && t.dataset && t.dataset.rq){ renderRequestDynamic(); return; }
   if (drawer && t.dataset && t.dataset.field){ if (!drawer.dirty){ drawer.dirty = true; drawer.leaveOk = false; $("#d-savestate").textContent = "Ungespeicherte Änderungen"; } }
 });
 document.addEventListener("submit", async e => {
@@ -1951,9 +2248,11 @@ document.addEventListener("submit", async e => {
   if (f.dataset.form === "profile"){ e.preventDefault(); state.meta.me = { name: $("#pf-name").value.trim(), role: $("#pf-role").value.trim() }; profileOpen = false; await Store.saveMeta(); toast("Profil gespeichert"); render(); return; }
 });
 document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && rqDrawer){ closeRequest(); return; }
   if (e.key === "Escape" && drawer){ closeDrawer(); }
   else if (e.key === "Escape" && (profileOpen || menuOpen)){ profileOpen = false; menuOpen = false; renderChrome(); }
   if (e.key === "Enter" && e.target.matches && e.target.matches("tr[data-action='open']")){ openDrawer(e.target.dataset.id); }
+  if (e.key === "Enter" && e.target.matches && e.target.matches("tr[data-action='rq-open']")){ openRequest(e.target.dataset.id); }
 });
 document.addEventListener("click", e => { const b = e.target.closest(".d-tab"); if (b) setDrawerTab(b.dataset.dtab); });
 document.querySelectorAll(".nav[data-view]").forEach(b => b.addEventListener("click", () => { ui.view = b.dataset.view; menuOpen = false; saveUi(); render(); window.scrollTo(0,0); }));

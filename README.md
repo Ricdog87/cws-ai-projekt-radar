@@ -6,29 +6,40 @@ Tägliches Steuerungs-Dashboard für alle AI-Projekte bei CWS, End-to-End vom In
 
 ## Aufbau
 
-Gestaltet wie das **AI Governance Portal** (AI Cockpit), damit beide Tools zusammenpassen:
+Gestaltet wie das **AI Governance Portal** (AI Cockpit), damit beide Tools zusammenpassen. Immer helles Design, auch wenn Windows im Dunkelmodus läuft.
 
-- **Seitenleiste:**
-  - **Mein Tag:** Heute, 1:1-Vorbereitung
-  - **Projekte:** Portfolio, Roadmap
-  - **Daten:** Excel / Sicherung laden, Sichern
-  - Die Leiste lässt sich auf Icons einklappen. Auf dem Handy öffnet sie sich über das Menü.
-- **Kopfzeile:** Pfad „AI Center of Excellence / …“, Status „Lokal“, Button „+ Projekt“ und dein Profil. Name und Rolle hinterlegst du per Klick auf den Avatar.
-- **Heute:**
-  - Zwei Aktionskarten: „Projekt anlegen“ und „1:1 vorbereiten“.
-  - 8 Kennzahl-Karten: aktiv, kritisch, Risiko, überfällig, NOT READY, kritische Lücken, Go-Lives, abgeschlossen. Ein roter Rand zeigt Handlungsbedarf.
-  - Dazu Pipeline, Tagesfokus, offene Folgeaktionen (deine eigenen mit „Du“ markiert) und die Termine der nächsten 14 Tage.
-- **Portfolio:** Board nach Phase oder Tabelle mit Status- und Readiness-Pillen. Filter nach Abteilung, Sponsor, Status, Phase.
-- **Roadmap:** 12 Monate, Start bis Go-Live, eingefärbt nach Status.
-- **1:1:**
-  - Pro Person (z. B. Henning, Lilli) die Änderungen seit dem letzten Termin, Entscheidungen, Blocker, kritische Lücken und Go-Lives.
-  - „Agenda kopieren“ erzeugt Text für Teams oder Outlook.
+- **Projekt-Overview (Startseite):**
+  - Alle AI-Projekte parallel als Timeline über die 8 Phasen bis zum Ziel.
+  - Aktuelle Phase mit Fortschritt, „Heute“-Linie, Verzug schraffiert, Go-Live und Go-Live-Prognose bei Verzug.
+  - Stern markiert, woran du gerade arbeitest („In Arbeit“), diese Projekte stehen oben.
+  - Zeitraum Gesamt, 12, 6 oder 3 Monate. Darunter Status-Karten je Projekt.
+  - Gebaut für Bildschirm-Sharing: Stand, Fortschritt und nächste Schritte auf einen Blick.
+- **Heute:** Tagesfokus mit Kennzahlen, Pipeline, „Zuerst angehen“, offenen Folgeaktionen und Terminen der nächsten 14 Tage.
+- **Projektanfragen:**
+  - Ideen der Fachbereiche für Workflows, Automatisierung und AI Agents.
+  - Potenzial in Stunden pro Monat (Fälle × Minuten), Priorität aus Potenzial, Dringlichkeit, Aufwand und Datenlage.
+  - Priorisierungsmatrix (Quick Wins, Strategisch, Nebenbei, Nicht jetzt).
+  - Per Klick als Projekt übernehmen.
+- **Portfolio:** Board nach Phase oder Tabelle mit Status- und Readiness-Pillen.
+- **Kopfzeile:** Pfad „AI Center of Excellence / …“, Status „Lokal“, „+ Projekt“ und dein Profil (Name, Rolle).
+
+## Projektanfragen der Fachbereiche
+
+1. Gib den Fachbereichen die Datei **`app/anfrage.html`** (per Teams, E-Mail oder SharePoint). Sie öffnen sie im Browser, ohne Installation und ohne Login.
+2. Sie beschreiben ihre Idee: Art (Workflow, Automatisierung, AI Agent, noch unklar), Problem, Ziel, Fälle pro Monat, Minuten je Fall, Systeme, Dringlichkeit, Datenlage, Kontakt.
+3. „Anfrage speichern“ erzeugt eine Datei `AI-Anfrage_<Fachbereich>_<Datum>.json`, die sie dir schicken. Alternativ „Als Text kopieren“ für Teams oder E-Mail.
+4. Du spielst die Datei im Radar über „Anfrage einspielen“ oder „Excel / Sicherung laden“ ein. Doppelte Anfragen werden erkannt.
+5. Status: Neu → In Prüfung → Angenommen, Zurückgestellt oder Abgelehnt. „In Projekt übernehmen“ legt ein Projekt in Phase „Intake“ mit allen Angaben an.
+
+Anrufe oder Mails erfasst du direkt im Radar mit „Anfrage erfassen“. Wem die Fachbereiche die Datei schicken, steht oben im Formular in `CONTACT`.
 
 ## Projektlebenszyklus
 
 Intake & Idee → **Discovery & Readiness** → Konzept & Freigabe → Umsetzung → Test & Abnahme → Go-Live & Rollout → Hypercare → Abgeschlossen
 
 Jede Phase hat eine Checkliste (u. a. Readiness-Check, Datenschutz, Betriebsrat, AI-Act-Risikoklasse, Inventory-Eintrag). Der Fortschritt in Prozent ergibt sich aus Phase und erledigten Checklistenpunkten.
+
+**Zeitplan:** Jede Phase hat ein geplantes Ende. Ohne eigene Termine verteilt das Radar die Phasen automatisch zwischen Start und Go-Live, danach 6 Wochen Hypercare und 2 Wochen Abschluss. Eigene Termine trägst du im Projekt unter „Überblick → Zeitplan“ ein. Liegt heute nach dem geplanten Ende der aktuellen Phase, zeigt das Radar Verzug und eine Go-Live-Prognose.
 
 ## Readiness-Check und Zugangsmatrix (je Projekt)
 
@@ -43,8 +54,8 @@ Aufgebaut nach dem Muster der Checkliste „Sales Along the Route | Nordwest“:
   - Dazu Readiness je Prüfbereich.
 - **Tool- & Zugangsmatrix:** Tool/System, Zweck, Zugriff/Lizenz, vorhanden?, Phase/Abhängigkeit, Approver/Owner, nächster Schritt/Ticket.
 - **Folgeaktionen mit Owner und Fälligkeit** erscheinen in „Heute“. Überfällige Aktionen, NOT READY und kritische Lücken rücken ein Projekt nach oben.
-- **Kritische Lücken und Readiness** stehen in der 1:1-Vorbereitung und in der kopierten Agenda.
-- **Statuswechsel** landen im Verlauf. So sieht das 1:1, was seit dem letzten Termin geklärt wurde.
+- **Kritische Lücken und Readiness** stehen im Portfolio, in der Overview und in „Heute“.
+- **Statuswechsel** landen im Verlauf des Projekts.
 - **Export:** Readiness und Zugangsmatrix als CSV, direkt in Excel zu öffnen.
 - **Neue Projekte** starten mit einem Standard-Check (29 Fragen, 15 Kernfragen, 5 kritische) und einer Standard-Zugangsmatrix.
 
@@ -95,7 +106,8 @@ Immer dieselbe Datei im selben Browser öffnen. Ein anderer Browser oder ein pri
 - Schriften (SIL Open Font License), als Base64 eingebettet:
   - Inter für Text und Überschriften, wie im AI Governance Portal.
   - IBM Plex Mono für Projekt-IDs.
-- Datenformat der Sicherung: `{ app, version, exportedAt, projects[], meta }`. Damit ist die spätere Übernahme in eine zentrale Lösung (SharePoint-Liste, Dataverse, Datenbank) ohne Abtippen möglich.
+- `app/anfrage.html`: eigenständiges Anfrageformular für Fachbereiche, erzeugt `{ app:"cws-ai-anfrage", version, request }`.
+- Datenformat der Sicherung: `{ app, version, exportedAt, projects[], requests[], meta }`. Damit ist die spätere Übernahme in eine zentrale Lösung (SharePoint-Liste, Dataverse, Datenbank) ohne Abtippen möglich.
 
 ## Governance
 
