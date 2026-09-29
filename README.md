@@ -12,8 +12,18 @@ Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the s
   - All AI projects in parallel on one timeline across the 8 phases up to the go-live.
   - Current phase with progress, "Today" line, delay hatched, go-live and a forecast go-live when late.
   - A star marks what you are working on right now ("in progress"); those projects sit at the top.
-  - Range: all, 12, 6 or 3 months. Status cards per project below.
+  - Range: all, 12, 6 or 3 months.
+  - **Needs attention:** the most urgent projects on top, with the reason (overdue, blocker, delay, no next step, no update for 10 days) and the next step.
+  - **Live status cards:** tick off the checklist of the current phase, move to the next phase, set the status, edit next step and due date, and log a quick update, without opening the project. Everything saves right away and lands in the project history.
+  - **Tasks on the card:** add a task with owner and due date right on the card and tick it off there.
+  - **Status report:** one HTML file with all active projects (status, phase, go-live, next step, blockers, open tasks) to send by e-mail or Teams, or print as PDF.
   - Built for screen sharing: status, progress and next steps at a glance.
+- **Team & tasks:**
+  - Your AI team and project members with role and country.
+  - One card per person with their open tasks across all projects, overdue first. Tasks without an owner sit on top.
+  - "Copy list for Teams / e-mail" sends a person their task list.
+  - Overdue tasks show in the navigation and move the project up in "Needs attention".
+- **Share a project:** in the project under "Overview → Share": copy the status as text for Teams or e-mail, or download a status one-pager (HTML, printable as PDF).
 - **Today:** daily focus with KPIs, pipeline, "Do first", open follow-ups and the next 14 days, including booked assessment meetings.
 - **Project requests:**
   - Use cases from business units for workflows, automation and AI agents.
@@ -22,7 +32,7 @@ Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the s
   - Prioritisation matrix (quick wins, strategic, fill-ins, not now).
   - Turn into a project with one click.
 - **Portfolio:** board by phase or table with status and readiness pills.
-- **Header:** path "AI Center of Excellence / …", status "Local", "+ Project" and your profile (name, role).
+- **Header:** path "Project Radar / …", status "Local", "+ Project" and your profile (name, role).
 
 ## Project requests from business units
 
@@ -120,8 +130,10 @@ Data from earlier German versions of the radar imports as is; stored values stay
 - Fonts (SIL Open Font License), embedded as Base64:
   - Inter for text and headings, as in the AI Governance Portal.
   - IBM Plex Mono for project IDs.
-- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
+- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`erledigt`), the team in `meta.team[]` (`name`, `role`, `country`). Both are optional; older backups import as is. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
 
 ## Governance
 
-Recommendation on how the radar relates to the AI Cockpit (AI Inventory + CR): [docs/ai-cockpit-decision.md](docs/ai-cockpit-decision.md)
+- Recommendation on how the radar relates to the AI Cockpit (AI Inventory + CR): [docs/ai-cockpit-decision.md](docs/ai-cockpit-decision.md)
+- Sharing and cross-country rollout (local, M365 or standard tool): [docs/rollout-decision.md](docs/rollout-decision.md)
+- Names: team members and project members may be entered by name. Stakeholders, sponsors and business units stay as roles.

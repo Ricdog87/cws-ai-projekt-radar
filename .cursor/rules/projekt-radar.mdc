@@ -6,12 +6,12 @@ alwaysApply: true
 # CWS AI Project Radar
 
 ## What it is
-Local project tool for AI projects at CWS: project overview (timeline), Today, project requests from business units (with a required assessment meeting), portfolio, readiness check, access matrix, Excel import. UI language: **English** (international rollout). Always light design (no dark mode). No personal names in the tool.
+Local project tool for AI projects at CWS: project overview (timeline, live cards), Today, Team & tasks (delegation), project requests from business units (with a required assessment meeting), portfolio, readiness check, access matrix, Excel import, status sharing as text and HTML one-pager. UI language: **English** (international rollout). Always light design (no dark mode). **Names:** team members and project members (task owners, `meta.team`) may be named; stakeholders, sponsors and business units stay as roles. Cross-country rollout options: `docs/rollout-decision.md`.
 
 ## Hard rules
 - **Local only.** No network requests, no CDNs, no tracking, no cloud storage. Fonts, logo and icons are embedded. Embed new dependencies too, never load them at runtime.
 - **No real CWS data in the repo.** Backups (`*Backup*.json`, `*Sicherung*.json`), request files (`AI-Request_*.json`), CSV exports and Excel files are blocked by `.gitignore`. Sample data must be fictional (`data/sample-projects.json`, field `example: true`).
-- **Keep the data format stable.** Backups are `{ app, version, exportedAt, projects[], requests[], meta }`. New fields are always optional; update `parseBackup`, `sanitizeRequest`, `sanitizeReadiness` and `sanitizeTools` with them.
+- **Keep the data format stable.** Backups are `{ app, version, exportedAt, projects[], requests[], meta }`. New fields are always optional; update `parseBackup`, `sanitizeRequest`, `sanitizeReadiness`, `sanitizeTools`, `sanitizeTasks` and `sanitizeTeam` with them. Tasks: `project.tasks[]` `{ id, text, owner, due, status, createdAt, doneAt }` with status `offen`/`erledigt` (`TASK_OPEN`/`TASK_DONE`). Team: `meta.team[]` `{ id, name, role, country }`, merged by name on import (`mergeTeam`).
 - **Stored values stay as they are.** Internal keys and stored values are German and must not change (phase keys `intake`/`analyse`/`konzept`…, readiness status `Offen`/`Teilweise`/`Geklärt`/`Nicht relevant`, request status `neu`/`pruefung`/`angenommen`/`zurueck`/`abgelehnt`, `app:"cws-ai-anfrage"`). Show English through label maps (`RD_STATUS_LABEL`, `TOOL_AVAIL_LABEL`, `RQ_STATUS` …). This keeps older backups and request files working.
 - **Single-file apps.** Everything lives in `app/index.html` and `app/request.html`, no build step.
 - **View it:** `Start-Radar.cmd` or the task "Start radar" opens `http://localhost:8765` (mini server `start.ps1`). Press F5 after changes; the server sends no-cache. Do not change port 8765, otherwise the browser sees different localStorage data.
@@ -21,17 +21,18 @@ Local project tool for AI projects at CWS: project overview (timeline), Today, p
   - `<style id="fonts">` holds embedded fonts as Base64. Do not edit, skip when reading.
   - The second `<style>` block holds the CI tokens in `:root` (`--cws-red #EA0046`, `--cws-yellow #F9E344`, `--tint`, `--cta` …). Set colours only through tokens.
 - **Body:**
-  - `.shell` contains the sidebar `.side` (logo as Base64 PNG), `.main` with `.topbar` and `.wrap` with the views `#view-overview`, `#view-heute`, `#view-anfragen` and `#view-portfolio`.
+  - `.shell` contains the sidebar `.side` (logo as Base64 PNG), `.main` with `.topbar` and `.wrap` with the views `#view-overview`, `#view-heute`, `#view-team`, `#view-anfragen` and `#view-portfolio`. `#dl-team` is the shared datalist for owner inputs.
 - **Script (vanilla JS, no frameworks):**
   - **Config:** `PHASES` with gates, `HEALTH`, `RD_TEMPLATE` (default readiness, 29 questions), `TOOL_TEMPLATE`, `ICONS` (Lucide, inline).
   - **Derived values:** `readinessStats` (READY at 80 % without critical gap, NOT READY below 50 % or with a critical gap), `assess` (priority in "Today"), `openActions`.
   - **Storage:** `Store` writes to localStorage (key `cws-ai-radar-v1`). `exportBackup` and `parseBackup` handle backup and import.
-  - **Rendering:** `render()` calls `renderChrome`, `renderOverview`, `renderHeute`, `renderRequests` and `renderPortfolio`.
+  - **Rendering:** `render()` calls `renderChrome`, `renderOverview`, `renderHeute`, `renderTeam`, `renderRequests` and `renderPortfolio`.
+  - **Tasks & sharing:** `openTasks`, `taskOverdue`, `ownerNames`, `taskLine`, `addTask`, `renderTasksPane` (drawer tab "Tasks"); `statusText`, `tasksText` and `copyText` for Teams/e-mail; `statusReportHtml` builds the self-contained HTML report (own colour variables, no external resources). Overdue tasks raise the score in `assess`.
   - **Overview:** `phasePlan` (planned phases, automatic from start and go-live or `p.plan`), `schedule` (delay, forecast), `renderOverview`.
   - **Requests:** `state.requests`, `sanitizeRequest`, `rqHours`, `rqScore`, `meetingHtml`, `nextMeeting`, `renderRequests`, `openRequest`, `convertRequest`.
   - **Drawer:** `openDrawer`, `renderDrawerDynamic`, tabs via `setDrawerTab`, readiness and tools via `renderPanes`.
   - **Excel:** `unzip`, `readXlsx` and `checklistFromSheets` read .xlsx without a library (DecompressionStream). German and English headers.
-  - **Events:** delegation via `data-action` in the central click handler, field changes via `data-rfield` and `data-tfield` in the change handler.
+  - **Events:** delegation via `data-action` in the central click handler, field changes via `data-rfield`, `data-tfield`, `data-task`, `data-tkfield` and `data-tmfield` in the change handler.
 
 ## app/request.html
 - Standalone form for business units, shared as a file. Settings at the top: `CONTACT_NAME`, `CONTACT_EMAIL`, `BOOKING_URL`, `MEETING_MINUTES`.
