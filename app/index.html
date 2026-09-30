@@ -1736,6 +1736,10 @@ const RQ_TYPE_ICON = { workflow:"gantt", automatisierung:"activity", agent:"sun"
 const RQ_URG = { niedrig:"Low", mittel:"Medium", hoch:"High" };
 const RQ_CPLX = { "":"Not assessed yet", klein:"Small (days)", mittel:"Medium (weeks)", gross:"Large (months)" };
 const RQ_YN = { ja:"Yes", teilweise:"Partly", nein:"No", unklar:"Don't know" };
+const RQ_AFFECTS = { kunden:"Customers", mitarbeitende:"Employees", bewerber:"Applicants", niemand:"No people", unklar:"Don't know" };
+const RQ_DECIDES = { vorschlag:"Suggests only, a person decides", entscheidung:"Decides, rejects or scores on its own", unklar:"Don't know" };
+const RQ_SENSITIVE = { keine:"None of these", bewerbung:"Hiring or applicants", leistung:"Employee performance", kredit:"Creditworthiness", ueberwachung:"Monitoring people", unklar:"Don't know" };
+const rqGov = r => r.personalData === "ja" || r.decides === "entscheidung" || ["bewerbung","leistung","kredit","ueberwachung"].includes(r.sensitiveUse);
 const WEEKDAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 function fmtMeeting(v){
   if (!v) return "–";
@@ -1749,7 +1753,7 @@ function nextMeeting(){
 }
 function blankRequest(){
   return { id: uid(), code: nextRqCode(), status:"neu", type:"unklar", title:"", department:"", site:"", requester:"", requesterEmail:"", problem:"", idea:"", goal:"", systems:"",
-    volume:"", minutes:"", urgency:"mittel", deadline:"", dataAvailable:"unklar", personalData:"unklar", complexity:"", notes:"", projectId:"", source:"manuell",
+    volume:"", minutes:"", urgency:"mittel", deadline:"", dataAvailable:"unklar", personalData:"unklar", affects:"unklar", decides:"unklar", sensitiveUse:"unklar", complexity:"", notes:"", projectId:"", source:"manuell",
     meetingAt:"", createdAt: nowISO(), updatedAt: nowISO() };
 }
 function nextRqCode(){
@@ -1768,6 +1772,9 @@ function sanitizeRequest(r){
   x.complexity = r.complexity in RQ_CPLX ? r.complexity : "";
   x.dataAvailable = r.dataAvailable in RQ_YN ? r.dataAvailable : "unklar";
   x.personalData = r.personalData in RQ_YN ? r.personalData : "unklar";
+  x.affects = r.affects in RQ_AFFECTS ? r.affects : "unklar";
+  x.decides = r.decides in RQ_DECIDES ? r.decides : "unklar";
+  x.sensitiveUse = r.sensitiveUse in RQ_SENSITIVE ? r.sensitiveUse : "unklar";
   x.volume = isFinite(+r.volume) && r.volume !== "" ? String(+r.volume) : "";
   x.minutes = isFinite(+r.minutes) && r.minutes !== "" ? String(+r.minutes) : "";
   x.deadline = /^\d{4}-\d{2}-\d{2}$/.test(r.deadline || "") ? r.deadline : "";
@@ -1785,7 +1792,6 @@ function rqScore(r){
   return Math.max(0, Math.min(100, Math.round((raw + 1.5) / 16 * 100)));
 }
 const rqQuickWin = r => rqValue(r) >= 3 && r.complexity === "klein";
-const rqRisk = r => r.personalData === "ja";
 const rqOpen = r => r.status === "neu" || r.status === "pruefung";
 function stHtml(s){ return `<span class="st ${s}"><i aria-hidden="true"></i>${esc(RQ_STATUS[s] || s)}</span>`; }
 function typeHtml(t){ return `<span class="rq-type">${ico(RQ_TYPE_ICON[t] || "target")}${esc(RQ_TYPE[t] || t)}</span>`; }
@@ -1818,7 +1824,7 @@ function renderRequests(){
     ${list.map(r => { const h = rqHours(r), sc = rqScore(r); return `<tr data-action="rq-open" data-id="${esc(r.id)}" tabindex="0">
       <td class="mono">${esc(r.code)}</td>
       <td><div style="margin-bottom:2px">${typeHtml(r.type)}</div><div class="p-title">${esc(r.title || "Untitled")}</div><div class="muted" style="font-size:12.5px">${esc([r.department, r.site, r.requester].filter(Boolean).join(" · ") || "Business unit missing")}</div>
-        <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">${rqQuickWin(r) ? `<span class="tag qw">Quick win</span>` : ""}${rqRisk(r) ? `<span class="tag risk">Personal data</span>` : ""}${r.urgency === "hoch" ? `<span class="tag" style="background:var(--crit-bg);color:var(--crit)">Urgent</span>` : ""}${r.projectId ? `<span class="tag" style="background:var(--surface-2)">→ ${esc((state.projects.find(p => p.id === r.projectId) || {}).code || "Project")}</span>` : ""}</div></td>
+        <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">${rqQuickWin(r) ? `<span class="tag qw">Quick win</span>` : ""}${rqGov(r) ? `<span class="tag risk">Governance check</span>` : ""}${r.urgency === "hoch" ? `<span class="tag" style="background:var(--crit-bg);color:var(--crit)">Urgent</span>` : ""}${r.projectId ? `<span class="tag" style="background:var(--surface-2)">→ ${esc((state.projects.find(p => p.id === r.projectId) || {}).code || "Project")}</span>` : ""}</div></td>
       <td class="num">${meetingHtml(r)}</td>
       <td><div class="score" title="Priority from potential, urgency, effort and data availability"><span class="bar"><i style="width:${sc}%"></i></span><b>${sc}</b></div><div class="muted" style="font-size:12.5px;margin-top:4px;white-space:nowrap">${h ? `≈ ${h.toLocaleString("en-GB")} h/month` : "potential –"}</div></td>
       <td>${stHtml(r.status)}</td></tr>`; }).join("")}</tbody></table>`
@@ -1883,6 +1889,10 @@ function openRequest(id){
           ${f("deadline","Target date",inp("deadline","","date"))}
           ${f("dataAvailable","Data available digitally?",sel("dataAvailable",RQ_YN))}
           ${f("personalData","Personal data involved?",sel("personalData",RQ_YN))}
+          ${f("affects","Who it concerns",sel("affects",RQ_AFFECTS))}
+          ${f("decides","What it would do",sel("decides",RQ_DECIDES))}
+          ${f("sensitiveUse","Sensitive use (EU AI Act signal)",sel("sensitiveUse",RQ_SENSITIVE),true)}
+          <div class="f full"><div class="hours">${rqGov(cur) ? "Early governance check: data protection, works council and EU AI Act risk class in the assessment meeting. AI Inventory entry before go-live." : "No early flag. The assessment meeting still checks whether AI is involved."}</div></div>
         </div></section>
         <section class="d-sec"><h2>Business unit</h2><div class="form">
           ${f("department","Business unit / department",inp("department","e.g. Customer Service"))}
@@ -1938,7 +1948,9 @@ async function convertRequest(){
   const r = await saveRequestFromForm(); if (!r) return;
   const p = blankProject();
   const h = rqHours(r);
-  Object.assign(p, { title: r.title, description: [r.problem, r.idea ? "Idea: " + r.idea : ""].filter(Boolean).join("\n\n"), goal: r.goal, department: r.department,
+  const gov = [`Concerns: ${RQ_AFFECTS[r.affects] || "–"}`, `What it would do: ${RQ_DECIDES[r.decides] || "–"}`, `Sensitive use: ${RQ_SENSITIVE[r.sensitiveUse] || "–"}`, `Personal data: ${RQ_YN[r.personalData] || "–"}`].join("\n");
+  Object.assign(p, { title: r.title, description: [r.problem, r.idea ? "Idea: " + r.idea : "", "Governance signals from the request:\n" + gov].filter(Boolean).join("\n\n"), goal: r.goal, department: r.department,
+    openDecisions: rqGov(r) ? "Early governance check from the request: confirm data protection, works council and the EU AI Act risk class. AI Inventory entry before go-live." : "",
     businessOwner: [r.requester, r.requesterEmail].filter(Boolean).join(", "), region: r.site, techStack: r.systems,
     value: h ? `≈ ${h.toLocaleString("en-GB")} h/month as stated by business unit` : "", priority: rqScore(r) >= 66 ? 1 : rqScore(r) >= 40 ? 2 : 3,
     nextStep: "Schedule discovery with the business unit", requestId: r.id });

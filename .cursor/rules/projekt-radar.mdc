@@ -38,6 +38,7 @@ Local project tool for AI projects at CWS: project overview (timeline, live card
 - Standalone form for business units, shared as a file. Settings at the top: `CONTACT_NAME`, `CONTACT_EMAIL`, `BOOKING_URL`, `MEETING_MINUTES`.
 - Required: title, current situation, expected outcome, business unit, country / site, name, e-mail, booked meeting date (not in the past) and the confirmation tick.
 - Saves `AI-Request_<unit>_<date>.json` as `{ app:"cws-ai-anfrage", version, request }`.
+- Governance signals on a request are optional and stored in German: `affects` (`kunden`/`mitarbeitende`/`bewerber`/`niemand`/`unklar`), `decides` (`vorschlag`/`entscheidung`/`unklar`), `sensitiveUse` (`keine`/`bewerbung`/`leistung`/`kredit`/`ueberwachung`/`unklar`). The form does not classify the EU AI Act risk. `rqGov` flags an early check; `sanitizeRequest` keeps the fields.
 
 ## Style
 - **Look** like the AI Governance Portal:

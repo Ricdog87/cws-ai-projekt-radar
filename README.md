@@ -37,7 +37,7 @@ Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the s
 ## Project requests from business units
 
 1. Share **`app/request.html`** with the business units (Teams, e-mail or SharePoint). It opens in any browser, no installation, no login.
-2. They describe their use case in their own words: type (workflow, automation, AI agent, not sure yet), current situation, their idea for a solution, expected outcome, cases per month, minutes per case, systems, urgency, data, business unit, country / site, contact.
+2. They describe their use case in their own words: type (workflow, automation, AI agent, not sure yet), current situation, their idea for a solution, expected outcome, cases per month, minutes per case, systems, urgency, data, who it concerns, whether it only suggests or decides, and whether it touches hiring, performance, credit or monitoring. Those answers are a signal for the assessment meeting, not an EU AI Act classification. The BPM & AI team does that check, and an AI system is registered in the AI Inventory before go-live.
 3. **They must book an assessment meeting** with you (30 min). The form only saves once a future date is entered and the booking is confirmed.
 4. "Save request" creates `AI-Request_<business-unit>_<date>.json`, which they send to you. Alternatively "Copy as text" for Teams or e-mail.
 5. You load the file in the radar via "Import request" or "Import". Duplicates are detected. The meeting shows up in the request list, in "Today" and in the next 14 days.
