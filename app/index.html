@@ -314,15 +314,17 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .ov-legend{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;padding:12px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-2)}
 .ov-legend span{display:inline-flex;align-items:center;gap:7px}
 .lg{display:inline-block;width:22px;height:10px;border-radius:3px}
-.ov-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
-.ov-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px 18px;display:grid;gap:12px;align-content:start;position:relative;overflow:hidden;text-align:left}
+.ov-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:14px}
+.ov-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start;position:relative;overflow:hidden;text-align:left;min-width:0}
+.ov-card h3{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ov-card .ov-l1 > span:last-child{flex:none}
 .ov-card:hover{border-color:var(--line-strong)}
 .ov-card.focus::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cws-red)}
 .ov-card h3{font-size:16px;line-height:1.3}
 .ov-card h3 button{all:unset;cursor:pointer}
 .ov-card h3 button:hover{text-decoration:underline;text-decoration-color:var(--cws-red);text-underline-offset:3px}
-.ov-blk{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:10px}
-.ov-blk-h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+.ov-blk{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;border-top:1px solid var(--line);padding-top:10px;min-width:0}
+.ov-blk-h{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
 .ov-blk-h .grow{flex:1}
 .gates{display:grid;gap:5px}
 .gate{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;cursor:pointer;line-height:1.35}
@@ -342,7 +344,9 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .ov-last{font-size:13px;color:var(--ink-2);line-height:1.4}
 .ov-last.stale{color:var(--crit)}
 .ov-last small{color:var(--muted)}
-.ov-foot{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.ov-foot{display:flex;gap:8px;align-items:center;justify-content:space-between;min-width:0}
+.ov-foot > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ov-foot > .btn{flex:none}
 .attn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);margin-bottom:16px;overflow:hidden;position:relative}
 .attn.alert::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cws-red)}
 .attn-head{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--line)}
@@ -368,8 +372,8 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .who-chip.none{background:var(--surface-2);color:var(--muted)}
 .task-due{font-size:12px;color:var(--ink-2);white-space:nowrap}
 .task.late .task-due{color:var(--crit);font-weight:600}
-.tm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:8px}
-.tm-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px 18px;display:grid;gap:12px;align-content:start;position:relative;overflow:hidden}
+.tm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:14px;margin-bottom:8px}
+.tm-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr);min-width:0;gap:12px;align-content:start;position:relative;overflow:hidden}
 .tm-card.alert::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cws-red)}
 .tm-h{display:flex;gap:10px;align-items:center}
 .tm-h .grow{flex:1;min-width:0;display:grid}
@@ -392,6 +396,8 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .ov-kv{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 10px;font-size:13.5px}
 .ov-kv dt{color:var(--muted)} .ov-kv dd{margin:0;color:var(--ink)}
 .ov-kv dd.warn{color:var(--warn)} .ov-kv dd.crit{color:var(--crit)}
+.ov-kv dd{min-width:0;overflow-wrap:anywhere}
+.ov-kv dd.clamp{white-space:pre-line;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;cursor:help}
 
 .pill-row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--muted)}
 
@@ -1655,8 +1661,8 @@ function renderOverview(){
       <div><div class="ov-steps">${steps}</div><div style="font-size:12.5px;color:var(--ink-2);margin-top:6px">${done ? `<b style="color:var(--ink)">Closed</b>` : `Phase ${i + 1} of 8: <b style="color:var(--ink)">${esc(ph.long)}</b> until ${esc(fmtShort(isoDay(s.cur.end)))}`}${s.delay && !paused ? ` · <span style="color:var(--cws-red);font-weight:600">${esc(fmtDelay(s.delay))}</span>` : ""}</div></div>
       <dl class="ov-kv">
         <dt>Go-live</dt><dd>${p.targetDate ? esc(fmtDay(p.targetDate)) : "not set"}${s.forecast && !paused && p.targetDate ? ` <span style="color:var(--cws-red)">(forecast ${esc(fmtDay(isoDay(s.forecast)))})</span>` : ""}</dd>
-        ${(p.blockers || "").trim() ? `<dt>Blocker</dt><dd class="crit">${esc(p.blockers)}</dd>` : ""}
-        ${(p.openDecisions || "").trim() ? `<dt>Decision</dt><dd class="warn">${esc(p.openDecisions)}</dd>` : ""}
+        ${(p.blockers || "").trim() ? `<dt>Blocker</dt><dd class="crit clamp" title="${esc(p.blockers.trim())}">${esc(p.blockers.trim())}</dd>` : ""}
+        ${(p.openDecisions || "").trim() ? `<dt>Decision</dt><dd class="warn clamp" title="${esc(p.openDecisions.trim())}">${esc(p.openDecisions.trim())}</dd>` : ""}
         ${rs && i <= PH_INDEX.konzept ? `<dt>Readiness</dt><dd>${recBadge(rs, true)}${rs.critOpen.length ? ` <span class="muted">${plural(rs.critOpen.length, "critical gap", "critical gaps")}</span>` : ""}</dd>` : ""}
       </dl>
       ${done ? "" : `<div class="ov-blk"><div class="ov-blk-h">Checklist ${esc(ph.label)}<span class="grow"></span><span>${g.length - openG} / ${g.length}</span></div>
