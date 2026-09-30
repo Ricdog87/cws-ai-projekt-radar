@@ -1190,6 +1190,15 @@ function sanitizeTools(t){
     available: TOOL_AVAIL.includes(x.available) ? x.available : "", phase: str(x.phase), owner: str(x.owner), next: str(x.next) }));
 }
 let pendingImport = null;
+function uniqueCodes(list, prefix){
+  const num = c => parseInt(String(c || "").replace(/\D/g, ""), 10);
+  let max = Math.max(0, ...list.map(x => num(x.code)).filter(n => !isNaN(n)));
+  const seen = new Set();
+  list.forEach(x => {
+    if (!x.code || seen.has(x.code)) x.code = prefix + String(++max).padStart(3, "0");
+    seen.add(x.code);
+  });
+}
 function applyImport(mode){
   if (!pendingImport) return;
   const n = pendingImport.projects.length;
@@ -1205,6 +1214,8 @@ function applyImport(mode){
     (pendingImport.requests || []).forEach(r => { const i = state.requests.findIndex(x => x.id === r.id); if (i >= 0) state.requests[i] = r; else { if (state.requests.some(x => x.code === r.code)) r.code = nextRqCode(); state.requests.push(r); } });
     Store.persistLocal();
   } else {
+    uniqueCodes(pendingImport.projects, "AI-");
+    uniqueCodes(pendingImport.requests || [], "REQ-");
     Store.replaceAll(pendingImport);
   }
   pendingImport = null;
