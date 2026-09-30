@@ -48,7 +48,7 @@ Calls or e-mails can be added directly in the radar with "Add request".
 **Settings at the top of `app/request.html`:**
 
 ```js
-const CONTACT_NAME = "the AI Center of Excellence";
+const CONTACT_NAME = "the AI Teamlead of the BPM & AI team";
 const CONTACT_EMAIL = "ricardo.serrano@cws.com";
 const BOOKING_URL = "";   // Microsoft Bookings or Outlook "Book time with me" link
 const MEETING_MINUTES = 30;
