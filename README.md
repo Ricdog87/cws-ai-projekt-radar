@@ -20,11 +20,11 @@ Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the s
   - Built for screen sharing: status, progress and next steps at a glance.
 - **Team & tasks:**
   - Your AI team and project members with role and country.
-  - One card per person with their open tasks across all projects, overdue first. Tasks without an owner sit on top.
-  - "Copy list for Teams / e-mail" sends a person their task list.
+  - One card per person with their open tasks across all projects, overdue first. Each task has an owner, a deadline, a stand (Not started, In progress, Waiting, Done) and one status note. Tasks without an owner sit on top.
+  - "Copy list for Teams / e-mail" sends a person their task list. The note is the project stand; the conversation stays in Teams.
   - Overdue tasks show in the navigation and move the project up in "Needs attention".
 - **Share a project:** in the project under "Overview → Share": copy the status as text for Teams or e-mail, or download a status one-pager (HTML, printable as PDF).
-- **Today:** daily focus with KPIs, pipeline, "Do first", open follow-ups and the next 14 days, including booked assessment meetings.
+- **Today:** daily focus with KPIs, pipeline, "Do first", open follow-ups and the next 14 days, including task deadlines and booked assessment meetings.
 - **Project requests:**
   - Use cases from business units for workflows, automation and AI agents.
   - Every request comes with a booked assessment meeting.
@@ -130,7 +130,7 @@ Data from earlier German versions of the radar imports as is; stored values stay
 - Fonts (SIL Open Font License), embedded as Base64:
   - Inter for text and headings, as in the AI Governance Portal.
   - IBM Plex Mono for project IDs.
-- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`erledigt`), the team in `meta.team[]` (`name`, `role`, `country`). Both are optional; older backups import as is. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
+- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`). Both are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
 
 ## Governance
 

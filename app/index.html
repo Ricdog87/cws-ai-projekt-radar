@@ -372,6 +372,12 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .who-chip.none{background:var(--surface-2);color:var(--muted)}
 .task-due{font-size:12px;color:var(--ink-2);white-space:nowrap}
 .task.late .task-due{color:var(--crit);font-weight:600}
+.task-note{display:block;margin-top:2px;font-size:12px;color:var(--muted);line-height:1.35}
+.task-st{font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.task-st.arbeit{background:var(--tint);color:var(--tint-ink)}
+.task-st.wartet{background:var(--warn-bg);color:var(--warn)}
+#view-team .ov-stats{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media (max-width:1100px){ #view-team .ov-stats{grid-template-columns:repeat(3,minmax(0,1fr))} }
 .tm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:14px;margin-bottom:8px}
 .tm-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr);min-width:0;gap:12px;align-content:start;position:relative;overflow:hidden}
 .tm-card.alert::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cws-red)}
@@ -382,7 +388,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .tm-n{font-size:12.5px;color:var(--ink-2);white-space:nowrap}
 .tm-n b{color:var(--crit)}
 .tm-tasks{display:grid;gap:7px}
-.tm-table input,.tk-table input{width:100%;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13.5px;background:var(--surface);color:var(--ink)}
+.tm-table input,.tk-table input,.tk-table select{width:100%;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13.5px;background:var(--surface);color:var(--ink)}
 .tm-table td,.tk-table td{padding:6px 6px;vertical-align:middle}
 .tk-table td:first-child{width:28px}
 .tk-table input[type="checkbox"]{width:15px;height:15px;accent-color:var(--cws-red)}
@@ -705,7 +711,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
     <div class="view-head">
       <div>
         <h1>Team &amp; tasks</h1>
-        <p>Who does what by when, across all projects. Send each person their list via Teams or e-mail.</p>
+        <p>Who does what by when. Assign a task, set the deadline, and leave one status note. The conversation stays in Teams.</p>
       </div>
     </div>
     <div class="ov-stats" id="tm-stats"></div>
@@ -1013,7 +1019,8 @@ function blankProject(){
 
 /* ================== Team & tasks ================== */
 // Stored task status stays German like the other stored values
-const TASK_OPEN = "offen", TASK_DONE = "erledigt";
+const TASK_OPEN = "offen", TASK_WORK = "arbeit", TASK_WAIT = "wartet", TASK_DONE = "erledigt";
+const TASK_STATUS = { offen:"Not started", arbeit:"In progress", wartet:"Waiting", erledigt:"Done" };
 const team = () => state.meta.team || [];
 const openTasks = p => (p.tasks || []).filter(t => t.status !== TASK_DONE);
 const taskOverdue = t => t.status !== TASK_DONE && !!t.due && daysFromToday(t.due) < 0;
@@ -1026,7 +1033,7 @@ function sanitizeTasks(t){
   if (!Array.isArray(t)) return [];
   const str = v => String(v ?? "");
   return t.filter(x => x && typeof x === "object" && str(x.text).trim()).map(x => ({ id: ID_OK.test(str(x.id)) ? str(x.id) : rid(), text: str(x.text).slice(0, 500), owner: str(x.owner).trim().slice(0, 80),
-    due: /^\d{4}-\d{2}-\d{2}$/.test(x.due || "") ? x.due : "", status: x.status === TASK_DONE ? TASK_DONE : TASK_OPEN, createdAt: str(x.createdAt) || nowISO(), doneAt: str(x.doneAt) }));
+    due: /^\d{4}-\d{2}-\d{2}$/.test(x.due || "") ? x.due : "", status: TASK_STATUS[x.status] ? x.status : TASK_OPEN, note: str(x.note).trim().slice(0, 240), createdAt: str(x.createdAt) || nowISO(), doneAt: str(x.doneAt) }));
 }
 function sanitizeTeam(t){
   if (!Array.isArray(t)) return [];
@@ -1041,8 +1048,10 @@ function mergeTeam(a, b){
 const byDue = (a, b) => (a.due || "9999").localeCompare(b.due || "9999");
 function taskLine(p, t, withProject){
   const done = t.status === TASK_DONE, late = taskOverdue(t), d = t.due ? daysFromToday(t.due) : null;
+  const st = t.status === TASK_WORK || t.status === TASK_WAIT ? t.status : "";
   return `<div class="task ${done ? "done" : ""} ${late ? "late" : ""}"><input type="checkbox" data-task="${esc(t.id)}" data-id="${esc(p.id)}" ${done ? "checked" : ""} aria-label="Done: ${esc(t.text)}">
-    <span class="task-t">${esc(t.text)}${withProject ? ` <button class="task-p" data-action="open" data-id="${esc(p.id)}" data-tab="tasks">${esc(p.code)}</button>` : ""}</span>
+    <span class="task-t">${esc(t.text)}${withProject ? ` <button class="task-p" data-action="open" data-id="${esc(p.id)}" data-tab="tasks">${esc(p.code)}</button>` : ""}${t.note ? `<span class="task-note">${esc(t.note)}</span>` : ""}</span>
+    ${st ? `<span class="task-st ${st}">${esc(TASK_STATUS[st])}</span>` : ""}
     ${withProject ? "" : `<span class="who-chip ${t.owner ? "" : "none"}" title="${esc(t.owner || "Not assigned")}">${esc(firstName(t.owner) || "Unassigned")}</span>`}
     ${t.due ? `<span class="task-due" title="${esc(fmtDay(t.due))}">${late ? `${-d} d late` : d === 0 ? "today" : esc(fmtShort(t.due))}</span>` : ""}</div>`;
 }
@@ -1060,12 +1069,12 @@ function statusText(p){
   if (p.nextStep) lines.push(`Next step: ${p.nextStep}${p.nextStepDue ? ` (due ${fmtDay(p.nextStepDue)})` : ""}`);
   if ((p.blockers || "").trim()) lines.push(`Blocker: ${p.blockers.trim()}`);
   if ((p.openDecisions || "").trim()) lines.push(`Decisions needed: ${p.openDecisions.trim()}`);
-  if (open.length) lines.push("Open tasks:", ...open.map(t => `- ${t.text}${t.owner ? ` → ${t.owner}` : ""}${t.due ? `, due ${fmtDay(t.due)}` : ""}${taskOverdue(t) ? " (overdue)" : ""}`));
+  if (open.length) lines.push("Open tasks:", ...open.map(t => `- ${t.text}${t.owner ? ` → ${t.owner}` : ""}${t.due ? `, due ${fmtDay(t.due)}` : ""}${t.status && t.status !== TASK_OPEN ? ` · ${TASK_STATUS[t.status] || t.status}` : ""}${taskOverdue(t) ? " (overdue)" : ""}${t.note ? ` — ${t.note}` : ""}`));
   if (last) lines.push(`Latest update (${fmtDay(String(last.at).slice(0, 10))}): ${last.text}`);
   return lines.join("\n");
 }
 function tasksText(owner, items){
-  return [`Tasks for ${owner} · as of ${fmtDay(todayISO())}`, ...items.map(({ p, t }) => `- ${t.text} (${p.code} ${p.title})${t.due ? `, due ${fmtDay(t.due)}` : ""}${taskOverdue(t) ? " – overdue" : ""}`)].join("\n");
+  return [`Tasks for ${owner} · as of ${fmtDay(todayISO())}`, ...items.map(({ p, t }) => `- ${t.text} (${p.code} ${p.title})${t.due ? `, due ${fmtDay(t.due)}` : ""}${t.status && t.status !== TASK_OPEN ? ` · ${TASK_STATUS[t.status] || t.status}` : ""}${taskOverdue(t) ? " – overdue" : ""}${t.note ? ` — ${t.note}` : ""}`)].join("\n");
 }
 function statusReportHtml(list){
   const me = myProfile(); const date = fmtDay(todayISO());
@@ -1079,7 +1088,7 @@ function statusReportHtml(list){
       <div class="steps">${steps}</div>
       <div class="phase">${p.phase === "done" ? "Closed" : `Phase ${i + 1} of 8: <b>${esc(PHASES[i].long)}</b>`}${s.delay ? ` · <span class="late">${esc(fmtDelay(s.delay))}</span>` : ""}</div>
       <table>${row("Go-live", p.targetDate ? fmtDay(p.targetDate) + (s.forecast ? ` (forecast ${fmtDay(isoDay(s.forecast))})` : "") : "not set")}${row("Next step", p.nextStep ? p.nextStep + (p.nextStepDue ? ` · due ${fmtDay(p.nextStepDue)}` : "") : "")}${row("Blocker", (p.blockers || "").trim(), "crit")}${row("Decisions", (p.openDecisions || "").trim(), "warn")}${row("Sponsor", p.sponsor)}${row("Business unit", p.department)}${row("Latest update", last ? `${last.text} (${fmtDay(String(last.at).slice(0, 10))})` : "")}</table>
-      ${open.length ? `<h3>Open tasks</h3><ul>${open.map(t => `<li class="${taskOverdue(t) ? "late" : ""}">${esc(t.text)}${t.owner ? ` <b>→ ${esc(t.owner)}</b>` : ""}${t.due ? ` · ${esc(fmtDay(t.due))}` : ""}</li>`).join("")}</ul>` : ""}</section>`;
+      ${open.length ? `<h3>Open tasks</h3><ul>${open.map(t => `<li class="${taskOverdue(t) ? "late" : ""}">${esc(t.text)}${t.owner ? ` <b>→ ${esc(t.owner)}</b>` : ""}${t.due ? ` · ${esc(fmtDay(t.due))}` : ""}${t.status && t.status !== TASK_OPEN ? ` · ${esc(TASK_STATUS[t.status] || t.status)}` : ""}${t.note ? ` — ${esc(t.note)}` : ""}</li>`).join("")}</ul>` : ""}</section>`;
   };
   return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>AI project status · ${esc(date)}</title><style>
 :root{--red:#EA0046;--ink:#1d1d1b;--ink2:#52525b;--muted:#71717a;--line:#e4e4e7;--ok:#1b7f4c;--warn:#8f5d00;--crit:#a8201a;--paused:#71717a}
@@ -1395,12 +1404,13 @@ function renderHeute(){
     if (d2 !== null && d2 >= 0 && d2 <= 14 && phaseIdx(p) < PH_INDEX.hypercare) events.push({ d:p.targetDate, p, t:"Planned go-live", k:"Go-Live" });
   });
   active.forEach(p => openActions(p).forEach(i => { const d = daysFromToday(i.due); if (d !== null && d >= 0 && d <= 14) events.push({ d:i.due, p, t:`${i.action || i.q}${i.owner ? " · " + i.owner : ""}`, k:"Aktion", tab:"readiness" }); }));
+  active.forEach(p => openTasks(p).forEach(t => { if (!t.due) return; const d = daysFromToday(t.due); if (d !== null && d <= 14) events.push({ d:t.due, late:d < 0, p, t:`${t.text}${t.owner ? " · " + t.owner : ""}${t.note ? " — " + t.note : ""}`, k:"Task", tab:"tasks" }); }));
   state.requests.filter(r => r.status !== "abgelehnt" && r.meetingAt).forEach(r => { const d = daysFromToday(r.meetingAt.slice(0,10)); if (d !== null && d >= 0 && d <= 14) events.push({ d:r.meetingAt.slice(0,10), p:{ id:"", title:r.title }, t:`${r.code} · ${/T(\d{2}:\d{2})/.test(r.meetingAt) ? r.meetingAt.slice(11,16) + " · " : ""}${r.department || "business unit"}`, k:"Meeting", rq:r.id }); });
   events.sort((a,b) => a.d.localeCompare(b.d));
   renderActions(active);
   $("#upcoming").innerHTML = events.length ? events.map(e => `
-    <div class="agenda-item"><div class="d">${e.d === todayISO() ? "Today" : esc(fmtShort(e.d) + " " + parseDay(e.d).toLocaleDateString("en-GB",{weekday:"short"}))}</div>
-    <div><button ${e.rq ? `data-action="rq-open" data-id="${esc(e.rq)}"` : `data-action="open" data-id="${esc(e.p.id)}"`} ${e.tab ? `data-tab="${e.tab}"` : ""}>${esc(e.p.title || "Untitled")}</button><div class="muted">${e.k === "Go-Live" ? "◆ " : e.k === "Aktion" ? "Follow-up: " : e.k === "Meeting" ? "Assessment meeting: " : ""}${esc(e.t)}</div></div></div>`).join("")
+    <div class="agenda-item"><div class="d"${e.late ? ` style="color:var(--crit)"` : ""}>${e.late ? `${-daysFromToday(e.d)} d late` : e.d === todayISO() ? "Today" : esc(fmtShort(e.d) + " " + parseDay(e.d).toLocaleDateString("en-GB",{weekday:"short"}))}</div>
+    <div><button ${e.rq ? `data-action="rq-open" data-id="${esc(e.rq)}"` : `data-action="open" data-id="${esc(e.p.id)}"`} ${e.tab ? `data-tab="${e.tab}"` : ""}>${esc(e.p.title || "Untitled")}</button><div class="muted">${e.k === "Go-Live" ? "◆ " : e.k === "Aktion" ? "Follow-up: " : e.k === "Meeting" ? "Assessment meeting: " : e.k === "Task" ? "Task: " : ""}${esc(e.t)}</div></div></div>`).join("")
     : `<div class="empty">Nothing scheduled in the next 14 days.</div>`;
 }
 function renderActions(active){
@@ -1690,10 +1700,13 @@ function renderTeam(){
   const unassigned = items.filter(x => !x.t.owner);
   const since = Date.now() - 7 * DAY;
   const doneWeek = act.reduce((n, p) => n + (p.tasks || []).filter(t => t.status === TASK_DONE && t.doneAt && new Date(t.doneAt).getTime() >= since).length, 0);
+  const waiting = items.filter(x => x.t.status === TASK_WAIT).length;
   const members = team(); const key = n => String(n || "").toLowerCase();
+  const me = key(myProfile().name);
   $("#tm-stats").innerHTML = `
     <div class="ov-stat"><span class="lbl">Open tasks</span><b class="num">${items.length}</b><small>across ${plural(new Set(items.map(x => x.p.id)).size, "project", "projects")}</small></div>
     <div class="ov-stat ${late ? "alert" : ""}"><span class="lbl">Overdue</span><b class="num">${late}</b><small>${late ? "follow up today" : "nothing overdue"}</small></div>
+    <div class="ov-stat ${waiting ? "alert" : ""}"><span class="lbl">Waiting</span><b class="num">${waiting}</b><small>${waiting ? "blocked on someone" : "nothing waiting"}</small></div>
     <div class="ov-stat ${unassigned.length ? "alert" : ""}"><span class="lbl">Not assigned</span><b class="num">${unassigned.length}</b><small>tasks without an owner</small></div>
     <div class="ov-stat"><span class="lbl">Done in 7 days</span><b class="num">${doneWeek}</b><small>tasks closed</small></div>
     <div class="ov-stat"><span class="lbl">Team</span><b class="num">${members.length}</b><small>${members.length ? plural(members.length, "member", "members") : "add your team below"}</small></div>`;
@@ -1704,8 +1717,9 @@ function renderTeam(){
   $("#tm-people").innerHTML = people.length ? people.map(({ name, m, list }) => {
     const od = list.filter(x => taskOverdue(x.t)).length;
     const sub = m ? [m.role, m.country].filter(Boolean).join(" · ") : name ? "Not in the team list" : "Assign these tasks to someone";
+    const you = name && key(name) === me;
     return `<div class="tm-card ${od ? "alert" : ""}">
-      <div class="tm-h"><span class="avatar">${esc(name ? initials(name) : "?")}</span><div class="grow"><b>${esc(name || "Not assigned")}</b><small>${esc(sub)}</small></div><span class="tm-n">${list.length} open${od ? ` · <b>${od} late</b>` : ""}</span></div>
+      <div class="tm-h"><span class="avatar">${esc(name ? initials(name) : "?")}</span><div class="grow"><b>${esc(name || "Not assigned")}${you ? ` <span class="task-st arbeit">You</span>` : ""}</b><small>${esc(sub)}</small></div><span class="tm-n">${list.length} open${od ? ` · <b>${od} late</b>` : ""}</span></div>
       ${list.length ? `<div class="tm-tasks">${list.map(({ p, t }) => taskLine(p, t, true)).join("")}</div>` : `<div class="muted" style="font-size:13px">No open tasks.</div>`}
       ${name && list.length ? `<div><button class="btn small" data-action="tm-copy" data-owner="${esc(name)}">Copy list for Teams / e-mail</button></div>` : ""}
     </div>`; }).join("")
@@ -2140,7 +2154,7 @@ function readForm(target){
 async function drawerMutate(fn, logText){
   const p = currentDrawerProject(); if (!p) return;
   if (drawer.draft){ fn(drawer.draft); renderDrawerDynamic(); return; }
-  await patchProject(p.id, x => { fn(x); if (logText) pushLog(x, logEntry(logText(x), "system")); });
+  await patchProject(p.id, x => { fn(x); if (logText){ const msg = logText(x); if (msg) pushLog(x, logEntry(msg, "system")); } });
 }
 
 /* ================== Drawer: Readiness & Tools ================== */
@@ -2249,23 +2263,24 @@ function renderTasksPane(p){
   const open = all.filter(t => t.status !== TASK_DONE).sort(byDue);
   const done = all.filter(t => t.status === TASK_DONE).sort((a, b) => String(b.doneAt).localeCompare(String(a.doneAt)));
   const row = t => `<tr class="${taskOverdue(t) ? "late" : ""}">
-    <td><input type="checkbox" data-task="${esc(t.id)}" data-id="${esc(p.id)}" aria-label="Done: ${esc(t.text)}"></td>
-    <td><input data-tkfield="text" data-tid="${esc(t.id)}" value="${esc(t.text)}" aria-label="Task"></td>
+    <td><input type="checkbox" data-task="${esc(t.id)}" data-id="${esc(p.id)}" ${t.status === TASK_DONE ? "checked" : ""} aria-label="Done: ${esc(t.text)}"></td>
+    <td><input data-tkfield="text" data-tid="${esc(t.id)}" value="${esc(t.text)}" aria-label="Task"><input data-tkfield="note" data-tid="${esc(t.id)}" value="${esc(t.note || "")}" placeholder="Status note" aria-label="Status note" style="margin-top:4px"></td>
     <td><input data-tkfield="owner" data-tid="${esc(t.id)}" value="${esc(t.owner)}" list="dl-team" placeholder="Who?" aria-label="Owner"></td>
+    <td><select data-tkfield="status" data-tid="${esc(t.id)}" aria-label="Status">${Object.keys(TASK_STATUS).map(k => `<option value="${k}" ${t.status === k ? "selected" : ""}>${esc(TASK_STATUS[k])}</option>`).join("")}</select></td>
     <td><input type="date" data-tkfield="due" data-tid="${esc(t.id)}" value="${esc(t.due)}" aria-label="Due date"></td>
     <td><button class="btn ghost small" data-action="tk-del" data-tid="${esc(t.id)}">Delete</button></td></tr>`;
   el.innerHTML = `<div class="section-head" style="margin:0"><h2>Tasks</h2>${open.length ? `<button class="btn small" data-action="tk-copy">Copy open tasks</button>` : ""}</div>
     <div class="tk-add"><input id="tk-new-text" placeholder="What needs to be done?" aria-label="New task"><input id="tk-new-owner" list="dl-team" placeholder="Who?" aria-label="Assign to"><input type="date" id="tk-new-due" aria-label="Due date"><button class="btn primary small" data-action="tk-add">Add task</button></div>
-    ${open.length ? `<div class="table-scroll"><table class="tt tk-table"><thead><tr><th></th><th>Task</th><th>Owner</th><th>Due</th><th></th></tr></thead><tbody>${open.map(row).join("")}</tbody></table></div>` : `<div class="muted" style="font-size:14px">No open tasks.</div>`}
+    ${open.length ? `<div class="table-scroll"><table class="tt tk-table" style="min-width:760px"><thead><tr><th></th><th>Task</th><th>Owner</th><th>Status</th><th>Due</th><th></th></tr></thead><tbody>${open.map(row).join("")}</tbody></table></div>` : `<div class="muted" style="font-size:14px">No open tasks.</div>`}
     ${done.length ? `<details><summary class="muted" style="font-size:13px;cursor:pointer">${plural(done.length, "done task", "done tasks")}</summary><div style="display:grid;gap:5px;margin-top:8px">${done.map(t => taskLine(p, t)).join("")}</div></details>` : ""}
-    <div class="muted" style="font-size:12.5px">Names come from your team list under “Team &amp; tasks”. Overdue tasks move the project up in “Needs attention”.</div>`;
+    <div class="muted" style="font-size:12.5px">Assign someone from Team &amp; tasks and set a deadline. In progress and Waiting show the stand. The status note is one line, not a chat. Talk in Teams.</div>`;
 }
 async function addTask(id, text, owner, due){
   text = String(text || "").trim(); owner = String(owner || "").trim();
   if (!text) return false;
   if (!state.projects.some(x => x.id === id)) return false;
   const d = /^\d{4}-\d{2}-\d{2}$/.test(due || "") ? due : "";
-  await patchProject(id, x => { x.tasks = (x.tasks || []).concat({ id: rid(), text, owner, due: d, status: TASK_OPEN, createdAt: nowISO(), doneAt: "" });
+  await patchProject(id, x => { x.tasks = (x.tasks || []).concat({ id: rid(), text, owner, due: d, status: TASK_OPEN, note:"", createdAt: nowISO(), doneAt: "" });
     pushLog(x, logEntry(`Task: ${text}${owner ? ` → ${owner}` : ""}${d ? `, due ${fmtDay(d)}` : ""}`, "system")); });
   toast(owner ? `Task delegated to ${firstName(owner)}` : "Task added");
   return true;
@@ -2649,10 +2664,26 @@ document.addEventListener("change", async e => {
     toast(val ? `Done: ${txt}${who ? ` (${firstName(who)})` : ""}` : `Reopened: ${txt}`); return;
   }
   if (t.dataset && t.dataset.tkfield && drawer){
-    const tid = t.dataset.tid, f = t.dataset.tkfield, v = f === "due" ? t.value : t.value.trim();
+    const tid = t.dataset.tid, f = t.dataset.tkfield;
+    let v = f === "due" || f === "status" ? t.value : t.value.trim();
+    if (f === "note") v = v.slice(0, 240);
+    if (f === "status" && !TASK_STATUS[v]) return;
+    const curTk = ((currentDrawerProject() || {}).tasks || []).find(k => k.id === tid);
+    if (!curTk) return;
     if (f === "text" && !v){ renderTasksPane(currentDrawerProject()); return; }
-    await drawerMutate(x => { const tk = (x.tasks || []).find(k => k.id === tid); if (tk) tk[f] = v; },
-      f === "owner" ? x => { const tk = x.tasks.find(k => k.id === tid); return v ? `Task assigned: ${tk.text} → ${v}` : `Task unassigned: ${tk.text}`; } : null);
+    if ((curTk[f] || "") === v) return;
+    await drawerMutate(x => {
+      const tk = (x.tasks || []).find(k => k.id === tid); if (!tk) return;
+      if (f === "status"){ tk.status = v; tk.doneAt = v === TASK_DONE ? (tk.doneAt || nowISO()) : ""; }
+      else tk[f] = v;
+    }, x => {
+      const tk = x.tasks.find(k => k.id === tid); if (!tk) return "";
+      if (f === "owner") return v ? `Task assigned: ${tk.text} → ${v}` : `Task unassigned: ${tk.text}`;
+      if (f === "status") return `Task ${TASK_STATUS[tk.status]}: ${tk.text}${tk.owner ? ` → ${tk.owner}` : ""}`;
+      if (f === "note") return v ? `Status note on “${tk.text}”: ${v}` : `Status note cleared: ${tk.text}`;
+      if (f === "due") return `Deadline ${v ? fmtDay(v) : "cleared"}: ${tk.text}`;
+      return "";
+    });
     return;
   }
   if (t.dataset && t.dataset.tmfield){
