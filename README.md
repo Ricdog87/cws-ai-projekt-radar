@@ -2,7 +2,7 @@
 
 Daily steering dashboard for all AI projects at CWS, end to end from intake to closure, plus the intake point for new use cases from the business units.
 
-**Runs locally in the browser, no cloud.** See "Run locally".
+**Runs locally in the browser, no cloud.** The dashboard UI is German. See "Run locally".
 
 ## What's inside
 

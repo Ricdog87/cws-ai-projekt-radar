@@ -6,13 +6,13 @@ alwaysApply: true
 # CWS AI Project Radar
 
 ## What it is
-Local project tool for AI projects at CWS: project overview (timeline, live cards), Today, Team & tasks (delegation), project requests from business units (with a required assessment meeting), portfolio, readiness check, access matrix, Excel import, status sharing as text and HTML one-pager. UI language: **English** (international rollout). Always light design (no dark mode). **Names:** team members and project members (task owners, `meta.team`) may be named; stakeholders, sponsors and business units stay as roles. Cross-country rollout options: `docs/rollout-decision.md`.
+Local project tool for AI projects at CWS: project overview (timeline, live cards), Today, Team & tasks (delegation), project requests from business units (with a required assessment meeting), portfolio, readiness check, access matrix, Excel import, status sharing as text and HTML one-pager. UI language: **German**. The request form `app/request.html` stays English for international business units. Always light design (no dark mode). **Names:** team members and project members (task owners, `meta.team`) may be named; stakeholders, sponsors and business units stay as roles. Cross-country rollout options: `docs/rollout-decision.md`.
 
 ## Hard rules
 - **Local only.** No network requests, no CDNs, no tracking, no cloud storage. Fonts, logo and icons are embedded. Embed new dependencies too, never load them at runtime.
 - **No real CWS data in the repo.** Backups (`*Backup*.json`, `*Sicherung*.json`), request files (`AI-Request_*.json`), CSV exports and Excel files are blocked by `.gitignore`. Sample data must be fictional (`data/sample-projects.json`, field `example: true`).
 - **Keep the data format stable.** Backups are `{ app, version, exportedAt, projects[], requests[], meta }`. New fields are always optional; update `parseBackup`, `sanitizeRequest`, `sanitizeReadiness`, `sanitizeTools`, `sanitizeTasks` and `sanitizeTeam` with them. Tasks: `project.tasks[]` `{ id, text, owner, due, status, note, createdAt, doneAt }` with status `offen`/`arbeit`/`wartet`/`erledigt` (`TASK_OPEN`/`TASK_WORK`/`TASK_WAIT`/`TASK_DONE`). `note` is one status line, not a chat. Team: `meta.team[]` `{ id, name, role, country }`, merged by name on import (`mergeTeam`).
-- **Stored values stay as they are.** Internal keys and stored values are German and must not change (phase keys `intake`/`analyse`/`konzept`…, readiness status `Offen`/`Teilweise`/`Geklärt`/`Nicht relevant`, request status `neu`/`pruefung`/`angenommen`/`zurueck`/`abgelehnt`, `app:"cws-ai-anfrage"`). Show English through label maps (`RD_STATUS_LABEL`, `TOOL_AVAIL_LABEL`, `RQ_STATUS` …). This keeps older backups and request files working.
+- **Stored values stay as they are.** Internal keys and stored values are German and must not change (phase keys `intake`/`analyse`/`konzept`…, readiness status `Offen`/`Teilweise`/`Geklärt`/`Nicht relevant`, request status `neu`/`pruefung`/`angenommen`/`zurueck`/`abgelehnt`, `app:"cws-ai-anfrage"`). Show German through label maps (`RD_STATUS_LABEL`, `TOOL_AVAIL_LABEL`, `RQ_STATUS`, `deUi` for the standard readiness questions). This keeps older backups and request files working.
 - **Single-file apps.** Everything lives in `app/index.html` and `app/request.html`, no build step.
 - **View it:** `Start-Radar.cmd` or the task "Start radar" opens `http://localhost:8765` (mini server `start.ps1`). Press F5 after changes; the server sends no-cache. Do not change port 8765, otherwise the browser sees different localStorage data.
 
@@ -45,5 +45,5 @@ Local project tool for AI projects at CWS: project overview (timeline, live card
   - Sidebar, action cards with a pink icon tile
   - KPI cards with a red edge when action is needed
   - Status as a pill with a dot
-- **Copy:** English (UK spelling), clear and direct, no filler. Buttons say what happens ("Back up", "Add project").
+- **Copy:** German, clear and direct, no filler. Buttons say what happens ("Sichern", "Projekt anlegen"). Stored keys stay unchanged.
 - Always output user text through `esc()`.
