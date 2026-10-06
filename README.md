@@ -175,7 +175,7 @@ Until CWS GitHub and Azure access are in place, the radar is deployed from this 
 - **Data still lives only in the browser** of whoever opens the link (localStorage of that web address). Nothing is sent to Vercel or anywhere else; a Content Security Policy blocks every network request (`connect-src 'none'`), and search engines are told not to index (`X-Robots-Tag`).
 - Each person and each address has their own data. The web link does **not** see the data from `http://localhost:8765`. To move: "Sichern" on localhost, then "Importieren" on the web link.
 - The link is public. Anyone who has it sees an empty radar, not your projects. Do not put real project data into the repository.
-- Vercel settings: leave "Root Directory" empty (repository root), framework "Other". `vercel.json` takes care of the rest.
+- Vercel settings: "Root Directory" either empty (then `vercel.json` publishes `app/`) or `app` (then `app/vercel.json` applies). Both files carry the same security headers; keep them in sync.
 
 ## Tech
 
