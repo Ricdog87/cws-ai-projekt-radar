@@ -34,6 +34,43 @@ Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the s
 - **Portfolio:** board by phase or table with status and readiness pills.
 - **Header:** path "Project Radar / …", status "Local", "+ Project" and your profile (name, role).
 
+## Less admin: meetings in, updates out
+
+The radar is built so you type as little as possible. Three ways to keep projects current:
+
+**1. Read in a meeting** ("Meeting einlesen": top bar, sidebar, "Heute", or in a project next to "Updates & Verlauf")
+
+- Drop a Teams transcript (`.vtt` or `.docx` from "Download transcript"), a `.txt` file, or paste text: the AI notes and follow-up tasks from the Teams meeting recap, a Copilot answer, or your own notes. Drag and drop onto the page works too.
+- The radar finds the project (project code, title words, participants in the project team) or suggests a new project with title, business unit, description and goal taken from the conversation.
+- It suggests, each with the quote and speaker it comes from:
+  - **Tasks** with owner and due date ("Ich kläre bis Freitag …", "Kannst du bitte bis Ende der Woche …", "Jonas macht …"). Relative dates like "bis Freitag", "nächste Woche", "KW 43", "Ende Oktober" are resolved from the meeting date.
+  - **Done** items that match open tasks or the next step.
+  - **Decisions** and **open decisions**, **blockers and risks**, a solved blocker.
+  - **Phase change** ("Abnahme ist durch" → Go-live), **new go-live date**, **status** (blocker or escalation in the meeting), **new participants** for the project team.
+  - **Next step:** the most urgent new task, when the current one is done, overdue or empty.
+  - **Key points** as meeting minutes in the project history.
+- You check everything in one review, untick what is wrong, edit text, owner and dates, and apply with one click.
+- **Privacy:** the transcript is analysed only in this browser, never uploaded and never stored. Only the points you confirm end up in the project (meeting title, date, participants, key points, tasks, decisions).
+- **More accuracy, optional:** "Genauer mit Copilot" copies a prompt for Microsoft Copilot (best in the Teams meeting chat, where Copilot knows the transcript). Paste Copilot's JSON answer back and the review fills with Copilot's result. A Copilot answer can also be pasted straight into "Meeting einlesen".
+- Try it: `data/Beispiel-Meeting Rechnungseingang-20261005_100000.vtt` with the sample projects loaded.
+
+**2. Quick capture** (`Strg+K` or "Schnell erfassen" in the top bar)
+
+One line, the radar works out the rest and shows a preview before saving:
+
+- `AI-003 Abnahme erledigt` ticks off the matching task.
+- `nächster Schritt: Go-live vorbereiten bis 15.10.` sets the next step with due date.
+- `Jonas klärt bis Freitag den API-Zugang` or `Aufgabe: … @Jonas` creates a task with owner and due date.
+- `Entscheidung: …`, `Blocker: …`, `Risiko: …`, `Status gelb`, `Go-live 30.11.`, `Phase Test`.
+- Several points separated by `;`. Text without a keyword becomes an update in the history. The project comes from the code, the title words, or the project you have open.
+
+**3. The radar thinks along**
+
+- **Status suggestion** from the facts (overdue next step or tasks, blocker, delay, go-live passed). Shown in the project with one click to accept; "Needs attention" flags projects whose status looks better than it is.
+- **Next step moves on by itself:** when you tick off the task that is the next step, the next open task by due date takes its place. Without a next step the radar suggests one from the open tasks.
+- **Agenda for the next meeting:** one click copies an agenda (status, done since the last meeting, open and overdue tasks, blockers, decisions needed, critical readiness questions) for the Teams invite.
+- **Decision log** per project ("Entscheidungen & Meetings"), filled from meetings, quick capture or by hand, with all read-in meetings and their key points.
+
 ## Project requests from business units
 
 1. Share **`app/request.html`** with the business units (Teams, e-mail or SharePoint). It opens in any browser, no installation, no login.
@@ -130,7 +167,7 @@ Data from earlier German versions of the radar imports as is; stored values stay
 - Fonts (SIL Open Font License), embedded as Base64:
   - Inter for text and headings, as in the AI Governance Portal.
   - IBM Plex Mono for project IDs.
-- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`). Both are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
+- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`). Decisions live in `project.decisions[]` (`text`, `date`, `meetingId`), read-in meetings in `project.meetings[]` (`date`, `title`, `participants`, `minutes`, `summary`, `counts`, `source`); transcripts themselves are never stored. All are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
 
 ## Governance
 

@@ -10,3 +10,7 @@ AI-Anfrage_*.json
 *.xlsm
 backups/
 sicherungen/
+# Meeting transcripts contain personal data: never commit them (the fictional sample is the exception)
+*.vtt
+*.docx
+!data/Beispiel-Meeting*.vtt

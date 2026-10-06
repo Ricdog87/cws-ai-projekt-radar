@@ -116,7 +116,7 @@ h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.015em;tex
 .side-scrim{display:none}
 
 /* Action cards */
-.acards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:14px}
+.acards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:14px}
 .acard{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-align:left;cursor:pointer;box-shadow:var(--shadow-sm)}
 .acard:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}
 .aicon{width:40px;height:40px;border-radius:8px;background:var(--tint);color:var(--tint-ink);display:grid;place-items:center;flex:none}
@@ -442,6 +442,83 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .hours b{color:var(--ink)}
 @media (max-width:1100px){ .rq-grid{grid-template-columns:1fr} .rq-stats,.ov-stats{grid-template-columns:repeat(2,minmax(0,1fr))} }
 
+/* ---------- Meetings, quick capture ---------- */
+.qc-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--ink-2);border-radius:8px;padding:7px 10px 7px 12px;font-size:13.5px;cursor:pointer;min-width:220px}
+.qc-btn:hover{border-color:var(--ink-2);color:var(--ink)}
+.qc-btn svg{width:16px;height:16px;color:var(--cws-red)}
+.qc-btn kbd{margin-left:auto;font:600 11px/1 var(--f-mono);border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:3px 5px;background:var(--surface);color:var(--muted)}
+.drawer.mt{width:min(860px,100%)}
+.mt-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;border:2px dashed var(--line-strong);border-radius:12px;background:var(--surface);padding:34px 20px;cursor:pointer;color:var(--ink-2)}
+.mt-drop:hover{border-color:var(--cws-red);background:var(--tint)}
+.mt-drop svg{width:34px;height:34px;color:var(--cws-red)}
+.mt-drop b{font-size:16px;color:var(--ink)}
+.mt-drop span{font-size:13px}
+.mt-paste{width:100%;min-height:150px;border:1px solid var(--line-strong);border-radius:var(--radius);padding:9px 11px;background:var(--surface);font:14px/1.45 var(--f-body);resize:vertical}
+.mt-privacy{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-2);background:var(--surface-2);border-radius:8px;padding:10px 12px}
+.mt-privacy svg{width:18px;height:18px;flex:none;color:var(--ok);margin-top:1px}
+.mt-facts{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:13px;color:var(--ink-2);margin-top:4px}
+.mt-facts span,.mt-facts label{display:inline-flex;align-items:center;gap:6px}
+.mt-facts svg{width:15px;height:15px;color:var(--muted)}
+.mt-facts input{border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:13px;background:var(--surface)}
+.mt-target select{border:1px solid var(--line-strong);border-radius:var(--radius);padding:8px 10px;background:var(--surface);font-size:14.5px;font-weight:600;width:100%}
+.mt-rows{display:flex;flex-direction:column}
+.mt-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+.mt-rows > .mt-row:first-child{border-top:0;padding-top:2px}
+.mt-row > input[type=checkbox]{margin-top:8px;width:17px;height:17px;accent-color:var(--brand);flex:none}
+.mt-row.off .mt-main{opacity:.5}
+.mt-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.mt-main > div:first-child{font-size:14px}
+.mt-in{width:100%;border:1px solid transparent;border-radius:6px;padding:5px 7px;margin-left:-7px;background:transparent;font:500 14.5px/1.4 var(--f-body);color:var(--ink);resize:none;overflow:hidden}
+.mt-in:hover{border-color:var(--line)}
+.mt-in:focus{border-color:var(--line-strong);background:var(--surface);outline:none}
+.mt-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mt-owner,.mt-due{border:1px solid var(--line-strong);border-radius:6px;padding:4px 8px;font-size:13px;background:var(--surface)}
+.mt-owner{width:190px}
+.mt-ns{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.mt-ns input{accent-color:var(--brand)}
+.mt-src{font-size:12.5px;color:var(--muted);line-height:1.4;border-left:2px solid var(--line-strong);padding-left:8px}
+.mt-src b{color:var(--ink-2);font-weight:600}
+.mt-sum{width:100%;border:1px solid var(--line-strong);border-radius:var(--radius);padding:8px 10px;font:14px/1.5 var(--f-body);background:var(--surface);resize:vertical}
+.mt-cp h2{display:inline-flex;align-items:center;gap:8px}
+.mt-cp h2 svg{width:18px;height:18px;color:var(--cws-red)}
+.mt-steps{margin:0;padding-left:20px;font-size:13.5px;color:var(--ink-2);display:grid;gap:4px}
+.qc-scrim{position:fixed;inset:0;background:rgba(20,20,20,.35);z-index:60}
+.qc{position:fixed;top:12vh;left:50%;transform:translateX(-50%);width:min(680px,calc(100% - 32px));background:var(--surface);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.25);z-index:61;overflow:hidden;border:1px solid var(--line)}
+.qc-in{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.qc-in svg{width:20px;height:20px;color:var(--cws-red);flex:none}
+.qc-in input{flex:1;border:0;outline:none;font:500 16px/1.4 var(--f-body);background:transparent;color:var(--ink);min-width:0}
+.qc-body{padding:12px 16px 14px;display:flex;flex-direction:column;gap:8px;font-size:14px;max-height:60vh;overflow-y:auto}
+.qc-proj{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.qc-proj select{border:1px solid var(--line-strong);border-radius:6px;padding:5px 8px;background:var(--surface);font-weight:600;max-width:100%}
+.qc-op{display:flex;gap:10px;align-items:baseline}
+.qc-k{flex:none;font-size:11.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);min-width:118px;text-align:center}
+.qc-k.task,.qc-k.next{background:var(--tint);color:var(--tint-ink)}
+.qc-k.done{background:var(--ok-bg);color:var(--ok)}
+.qc-k.blocker{background:var(--crit-bg);color:var(--crit)}
+.qc-k.decision{background:var(--warn-bg);color:var(--warn)}
+.qc-foot{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+.qc-help{color:var(--ink-2);font-size:13.5px;line-height:1.5}
+.qc-help b{color:var(--ink)}
+.qc-help ul{margin:6px 0;padding-left:18px;display:grid;gap:3px}
+.qc-help .mono{font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;color:var(--ink)}
+.sg{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;background:var(--warn-bg);color:var(--ink);border-radius:8px;padding:8px 10px}
+.sg b{font-weight:600}
+.sg.ok{background:var(--ok-bg)}
+.dec-list{display:flex;flex-direction:column}
+.dec{display:grid;grid-template-columns:86px 1fr auto;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px;align-items:baseline}
+.dec:first-child{border-top:0}
+.dec .d{font:500 12px var(--f-mono);color:var(--muted)}
+.dec button{border:0;background:none;color:var(--muted);cursor:pointer;font-size:12px}
+.mtg{border-top:1px solid var(--line);padding:8px 0;font-size:14px}
+.mtg:first-child{border-top:0}
+.mtg summary{cursor:pointer;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.mtg summary .d{font:500 12px var(--f-mono);color:var(--muted)}
+.mtg ul{margin:6px 0 2px;padding-left:20px;color:var(--ink-2);font-size:13.5px;display:grid;gap:2px}
+body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder Sicherung";position:fixed;inset:12px;border:3px dashed var(--cws-red);border-radius:16px;background:rgba(255,255,255,.88);display:grid;place-items:center;font:600 20px var(--f-display);color:var(--ink);z-index:90;pointer-events:none}
+@media (max-width:900px){ .qc-btn{min-width:0} .qc-btn span,.qc-btn kbd{display:none} }
+@media (max-width:1100px){ .top-right > .btn[data-action="mt-open"] span{display:none} }
+@media (max-width:720px){ .mt-owner{width:100%} .dec{grid-template-columns:1fr auto} .dec .d{grid-column:1/-1} .top-right{gap:8px} .top-right > .btn[data-action="mt-open"]{display:none} }
+
 /* ---------- Drawer ---------- */
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.5);z-index:40}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(980px,100%);background:var(--bg);z-index:41;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px)}
@@ -594,9 +671,10 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
     <button class="nav" data-view="anfragen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>Projektanfragen</span><em class="count num" id="count-rq"></em></button>
     <button class="nav" data-view="portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg><span>Portfolio</span><em class="count num" id="count-portfolio">0</em></button>
     <div class="side-label">Daten</div>
+    <button class="nav" data-action="mt-open" title="Teams-Transkript oder Meeting-Notizen einlesen: Aufgaben, Entscheidungen und nächste Schritte landen im Projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Meeting einlesen</span></button>
     <button class="nav" data-action="import" title="Excel-Checkliste (.xlsx), Anfrage (.json) oder Sicherung (.json) laden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><span>Importieren</span></button>
     <button class="nav" data-action="export" title="Alle Daten als Sicherungsdatei speichern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Sichern</span></button>
-    <input type="file" id="import-file" accept=".json,.xlsx,application/json" hidden>
+    <input type="file" id="import-file" accept=".json,.xlsx,.vtt,.docx,.txt,application/json" hidden>
   </nav>
   <div class="side-foot">
     <div class="sync" id="sync"><i></i><span>Wird geladen …</span></div>
@@ -610,6 +688,8 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
     <div class="crumb">Projekt-Radar / <b id="crumb-cur">Overview</b></div>
     <div class="top-right">
       <span class="env-pill" id="env-pill" title="Alle Daten bleiben in diesem Browser auf diesem Computer."><i></i><span>Lokal</span></span>
+      <button class="qc-btn" data-action="qc-open" title="Update, Aufgabe oder Entscheidung in einem Satz erfassen (Strg+K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span>Schnell erfassen …</span><kbd>Strg K</kbd></button>
+      <button class="btn" data-action="mt-open" title="Teams-Transkript oder Notizen einlesen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Meeting einlesen</span></button>
       <button class="btn primary" id="btn-new" data-action="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span>Projekt</span></button>
       <button class="me" id="me-chip" data-action="profile" aria-label="Profil"></button>
     </div>
@@ -754,6 +834,7 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 </div>
 
 <div id="drawer-slot"></div>
+<div id="qc-slot"></div>
 <div id="toast-slot" aria-live="polite"></div>
 <datalist id="dl-team"></datalist>
 
@@ -965,7 +1046,10 @@ const ICONS = {
   inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
   ext:'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
   menu:'<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
-  plus:'<path d="M5 12h14"/><path d="M12 5v14"/>'
+  plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',
+  fileText:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+  zap:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  sparkles:'<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/>'
 };
 const ico = (n, cls) => `<svg ${cls ? `class="${cls}" ` : ""}viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
 const STALE_DAYS = 10;
@@ -1103,6 +1187,8 @@ function assess(p){
   if (tod){ score += 20 + Math.min(tod * 3, 12); reasons.push({ t:`${plural(tod,"Aufgabe","Aufgaben")} überfällig`, c:"crit" }); }
   const idle = daysSince(lastActivity(p));
   if (!paused && idle !== null && idle >= STALE_DAYS){ score += 10; reasons.push({ t:`${idle} Tage ohne Update`, c:"" }); }
+  const sg = suggestHealth(p);
+  if (sg && (HEALTH_ORDER[sg.h] ?? 2) < (HEALTH_ORDER[p.health] ?? 2)){ score += 5; reasons.push({ t:`Status wirkt ${HEALTH[sg.h].label.toLowerCase()}`, c:"warn" }); }
   if (paused){ score = Math.max(0, score - 30); }
   if (score > 0){ if (+p.priority === 1) score += 15; else if (+p.priority === 2) score += 5; }
   return { score, reasons };
@@ -1116,7 +1202,7 @@ function blankProject(){
   const t = todayISO();
   return { id: uid(), code: nextCode(), title:"", description:"", goal:"", value:"", sponsor:"", department:"", businessOwner:"", lead: myProfile().name || "", focus:false, plan:{}, priority: 2,
     region:"", team:"", phase:"intake", health:"green", startDate:t, targetDate:"", nextStep:"", nextStepDue:"", blockers:"", openDecisions:"", techStack:"",
-    aiAct:"offen", aiInventoryId:"", crRefs:"", gates:{}, updates:[], tasks:[], readiness: templateReadiness(), tools: templateTools(), archived:false, createdAt:nowISO(), updatedAt:nowISO() };
+    aiAct:"offen", aiInventoryId:"", crRefs:"", gates:{}, updates:[], tasks:[], decisions:[], meetings:[], readiness: templateReadiness(), tools: templateTools(), archived:false, createdAt:nowISO(), updatedAt:nowISO() };
 }
 
 /* ================== Team & tasks ================== */
@@ -1136,6 +1222,20 @@ function sanitizeTasks(t){
   const str = v => String(v ?? "");
   return t.filter(x => x && typeof x === "object" && str(x.text).trim()).map(x => ({ id: ID_OK.test(str(x.id)) ? str(x.id) : rid(), text: str(x.text).slice(0, 500), owner: str(x.owner).trim().slice(0, 80),
     due: /^\d{4}-\d{2}-\d{2}$/.test(x.due || "") ? x.due : "", status: TASK_STATUS[x.status] ? x.status : TASK_OPEN, note: str(x.note).trim().slice(0, 240), createdAt: str(x.createdAt) || nowISO(), doneAt: str(x.doneAt) }));
+}
+function sanitizeDecisions(d){
+  if (!Array.isArray(d)) return [];
+  const str = v => String(v ?? "");
+  return d.filter(x => x && typeof x === "object" && str(x.text).trim()).slice(0, 200).map(x => ({ id: ID_OK.test(str(x.id)) ? str(x.id) : rid(), text: str(x.text).slice(0, 400),
+    date: /^\d{4}-\d{2}-\d{2}$/.test(x.date || "") ? x.date : "", meetingId: ID_OK.test(str(x.meetingId)) ? str(x.meetingId) : "" }));
+}
+function sanitizeMeetings(m){
+  if (!Array.isArray(m)) return [];
+  const str = v => String(v ?? "");
+  const strs = (a, n, len) => Array.isArray(a) ? a.map(v => str(v).slice(0, len)).filter(Boolean).slice(0, n) : [];
+  return m.filter(x => x && typeof x === "object").slice(0, 50).map(x => ({ id: ID_OK.test(str(x.id)) ? str(x.id) : rid(), date: /^\d{4}-\d{2}-\d{2}$/.test(x.date || "") ? x.date : "",
+    title: str(x.title).slice(0, 160), participants: strs(x.participants, 30, 80), minutes: Math.max(0, Math.round(+x.minutes || 0)), summary: strs(x.summary, 10, 300),
+    counts: { a: +((x.counts || {}).a) || 0, d: +((x.counts || {}).d) || 0, b: +((x.counts || {}).b) || 0, x: +((x.counts || {}).x) || 0 }, source: str(x.source).slice(0, 20), at: str(x.at).slice(0, 40) }));
 }
 function sanitizeTeam(t){
   if (!Array.isArray(t)) return [];
@@ -1206,7 +1306,7 @@ h2{font-size:17px;margin:6px 0 8px}h3{font-size:13px;margin:12px 0 4px;color:var
 table{border-collapse:collapse;width:100%}th{text-align:left;font-weight:500;color:var(--muted);width:130px;padding:3px 10px 3px 0;vertical-align:top}td{padding:3px 0}
 td.crit{color:var(--crit)}td.warn{color:var(--warn)}ul{margin:0;padding-left:18px}li.late{color:var(--crit)}
 footer{color:var(--muted);font-size:12px;margin-top:20px}@media print{body{margin:0}}
-</style></head><body><header><h1>KI-Projektstatus</h1><p>Stand ${esc(date)}${me.name ? ` · ${esc(me.name)}${me.role ? ", " + esc(me.role) : ""}` : ""} · ${plural(list.length, "project", "projects")}</p></header>
+</style></head><body><header><h1>KI-Projektstatus</h1><p>Stand ${esc(date)}${me.name ? ` · ${esc(me.name)}${me.role ? ", " + esc(me.role) : ""}` : ""} · ${plural(list.length, "Projekt", "Projekts")}</p></header>
 ${list.map(block).join("")}<footer>Erstellt mit dem CWS Projekt-Radar. Intern. Drucken oder als PDF speichern mit Strg+P.</footer></body></html>`;
 }
 
@@ -1281,6 +1381,8 @@ function parseBackup(text){
     x.readiness = p.readiness ? sanitizeReadiness(p.readiness) : null;
     x.tools = sanitizeTools(p.tools);
     x.tasks = sanitizeTasks(p.tasks);
+    x.decisions = sanitizeDecisions(p.decisions);
+    x.meetings = sanitizeMeetings(p.meetings);
     if (!PH_INDEX.hasOwnProperty(x.phase)) x.phase = "intake";
     if (!HEALTH[x.health]) x.health = "green";
     return x;
@@ -1468,6 +1570,7 @@ function renderHeute(){
     kpi(doneYear, "Abgeschlossen", `Projekte in ${year}`, "check", false, { phase:"done" }),
   ].join("");
   $("#acards").innerHTML = `
+    <button class="acard" data-action="mt-open"><span class="aicon">${ico("fileText")}</span><span><b>Meeting einlesen</b><span>Transkript oder Notizen rein, Aufgaben und Entscheidungen ins Projekt</span></span></button>
     <button class="acard" data-action="new"><span class="aicon">${ico("filePlus")}</span><span><b>Projekt anlegen</b><span>Aufnahme starten oder Readiness-Checkliste (Excel) importieren</span></span></button>
     <button class="acard" data-action="goto" data-view="anfragen"><span class="aicon">${ico("inbox")}</span><span><b>Projektanfragen</b><span>${(() => { const n = state.requests.filter(r => r.status === "neu").length, o = state.requests.filter(rqOpen).length, m = nextMeeting(); return m ? `Nächste Bewertung: ${fmtMeeting(m.meetingAt)} · ${m.code}` : n ? `${plural(n,"neue Anfrage","neue Anfragen")} zur Prüfung` : o ? `${plural(o,"offene Anfrage","offene Anfragen")} in Prüfung` : "Keine offenen Anfragen"; })()}</span></span></button>
     <button class="acard" data-action="goto" data-view="overview"><span class="aicon">${ico("gantt")}</span><span><b>Projektübersicht</b><span>Alle Projekte auf einer Zeitachse: Phase, Fortschritt, Verzug, Go-live</span></span></button>`;
@@ -1757,7 +1860,7 @@ function renderOverview(){
     </div>`;
   }).join("");
   $("#ov-gantt").innerHTML = `
-    <div class="ov-head"><div class="ov-lcol">${plural(all.length, "project", "projects")}</div><div class="ov-months">${monthsHtml}</div></div>
+    <div class="ov-head"><div class="ov-lcol">${plural(all.length, "Projekt", "Projekte")}</div><div class="ov-months">${monthsHtml}</div></div>
     <div class="ov-body"><div class="ov-layer">${lines}${todayX >= 0 && todayX <= 100 ? `<div class="ov-today" style="left:${todayX}%"><span>Heute</span></div>` : ""}</div>${rows}</div>`;
 
   // Live status cards: update without opening the project
@@ -2072,7 +2175,7 @@ async function convertRequest(){
     value: h ? `≈ ${h.toLocaleString("de-DE")} h/month as stated by business unit` : "", priority: rqScore(r) >= 66 ? 1 : rqScore(r) >= 40 ? 2 : 3,
     nextStep: "Schedule discovery with the business unit", requestId: r.id });
   p.gates = { "intake-0": !!(r.problem && r.goal), "intake-2": !!(r.department && r.requester) };
-  pushLog(p, logEntry(`Created from project request ${r.code} (${RQ_TYPE[r.type]})${r.meetingAt ? ", assessment meeting " + fmtMeeting(r.meetingAt) : ""}`, "system"));
+  pushLog(p, logEntry(`Aus Projektanfrage ${r.code} angelegt (${RQ_TYPE[r.type]})${r.meetingAt ? ", Bewertungstermin " + fmtMeeting(r.meetingAt) : ""}`, "system"));
   await Store.saveProject(p);
   const i = state.requests.findIndex(x => x.id === r.id);
   state.requests[i] = Object.assign({}, r, { status:"angenommen", projectId: p.id, updatedAt: nowISO() });
@@ -2134,6 +2237,7 @@ function openDrawer(id, opts){
         <section class="d-sec" data-pane="overview">
           <div class="section-head" style="margin:0"><h2>Status</h2><div id="d-focus"></div></div>
           <div class="segh" id="d-health"></div>
+          <div id="d-health-sg"></div>
         </section>
         <section class="d-sec" data-pane="overview">
           <div class="section-head" style="margin:0"><h2>Phase</h2><span class="muted num" id="d-progress"></span></div>
@@ -2150,14 +2254,16 @@ function openDrawer(id, opts){
             <div class="f full"><label for="d-blockers">Blocker</label><textarea id="d-blockers" data-field="blockers" placeholder="Was hält das Projekt gerade auf?" ${dis}>${esc(cur.blockers)}</textarea></div>
             <div class="f full"><label for="d-openDecisions">Offene Entscheidungen</label><textarea id="d-openDecisions" data-field="openDecisions" placeholder="Was muss der Sponsor entscheiden?" ${dis}>${esc(cur.openDecisions)}</textarea></div>
           </div>
+          <div id="d-ns-sg"></div>
         </section>
         ${drawer.draft ? "" : `<section class="d-sec" data-pane="overview">
           <h2>Teilen</h2>
           <p style="margin:0;color:var(--ink-2);font-size:14px">Schick den aktuellen Stand an Stakeholder, Projektbeteiligte oder Leads. Nichts wird hochgeladen; du entscheidest, wer ihn bekommt.</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="share-copy" data-id="${esc(cur.id)}">Status für Teams / E-Mail kopieren</button><button class="btn small" data-action="share-html" data-id="${esc(cur.id)}">Status-Einseiter laden</button></div>
         </section>`}
+        ${drawer.draft ? "" : `<section class="d-sec" data-pane="overview" id="d-dec-sec"></section>`}
         <section class="d-sec" data-pane="overview" id="d-update-sec">
-          <h2>Updates & Verlauf</h2>
+          <div class="section-head" style="margin:0"><h2>Updates & Verlauf</h2>${drawer.draft || ro ? "" : `<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" data-action="mt-open" data-id="${esc(cur.id)}">${ico("fileText")}Meeting einlesen</button><button class="btn small" data-action="agenda" data-id="${esc(cur.id)}">Agenda fürs nächste Meeting kopieren</button></div>`}</div>
           ${ro ? "" : `<div class="upd"><textarea id="d-update" placeholder="Was ist passiert? z. B. „SAP-Datenexport da, Qualität ist gut.“"></textarea><div><button class="btn primary small" data-action="add-update">Update speichern</button></div></div>`}
           <div class="log" id="d-log"></div>
         </section>
@@ -2237,6 +2343,7 @@ function renderDrawerDynamic(){
   }
   $("#d-focus").innerHTML = drawer.draft ? "" : `<button class="btn small ${p.focus ? "primary" : ""}" data-action="focus" data-id="${esc(p.id)}">${ico("star")}${p.focus ? "In Arbeit" : "Als in Arbeit markieren"}</button>`;
   renderPlan(p);
+  renderSmartHints(p, ro);
   const rs = readinessStats(p), ts = toolStats(p);
   $("#dt-rd").textContent = rs ? rs.pct + " %" : "–";
   $("#dt-tools").textContent = ts.total ? `${ts.ja}/${ts.total - ts.nb}` : "–";
@@ -2246,6 +2353,19 @@ function renderDrawerDynamic(){
   $("#d-savestate").textContent = drawer.dirty ? "Ungespeicherte Änderungen" : (p.updatedAt && !drawer.draft ? `Zuletzt geändert ${fmtStamp(p.updatedAt)}` : "");
 }
 
+function renderSmartHints(p, ro){
+  const hs = $("#d-health-sg"), ns = $("#d-ns-sg"), dec = $("#d-dec-sec");
+  const sg = !drawer.draft && suggestHealth(p);
+  if (hs) hs.innerHTML = sg ? `<div class="sg ${sg.h === "green" ? "ok" : ""}"><span>Vorschlag aus den Fakten: <b>${esc(HEALTH[sg.h].label)}</b> · ${esc(sg.why.join(", "))}</span>${ro ? "" : `<button class="btn small" data-action="health-accept" data-id="${esc(p.id)}">Übernehmen</button>`}</div>` : "";
+  const nxt = openTasks(p).sort(byDue)[0];
+  if (ns) ns.innerHTML = !drawer.draft && !ro && !(p.nextStep || "").trim() && nxt ? `<div class="sg ok"><span>Kein nächster Schritt. Vorschlag aus den Aufgaben: <b>${esc(nxt.text)}</b>${nxt.due ? ` · bis ${esc(fmtDay(nxt.due))}` : ""}</span><button class="btn small" data-action="ns-accept" data-id="${esc(p.id)}">Übernehmen</button></div>` : "";
+  if (!dec) return;
+  const decs = p.decisions || [], mts = p.meetings || [];
+  dec.innerHTML = `<div class="section-head" style="margin:0"><h2>Entscheidungen & Meetings</h2><span class="muted" style="font-size:13px">${plural(decs.length, "Entscheidung", "Entscheidungen")} · ${plural(mts.length, "Meeting", "Meetings")}</span></div>
+    ${ro ? "" : `<div class="tk-add" style="grid-template-columns:1fr auto"><input id="d-dec-new" placeholder="Entscheidung festhalten, z. B. „Pilot startet mit Region Nordwest“" aria-label="Neue Entscheidung"><button class="btn small" data-action="dec-add">Festhalten</button></div>`}
+    ${decs.length ? `<div class="dec-list">${decs.slice(0, 12).map(d => `<div class="dec"><span class="d">${esc(d.date ? fmtShort(d.date) : "")}</span><span>${esc(d.text)}</span>${ro ? "" : `<button data-action="dec-del" data-did="${esc(d.id)}" aria-label="Entscheidung löschen">✕</button>`}</div>`).join("")}</div>` : `<div class="muted" style="font-size:13.5px">Noch keine Entscheidungen. Sie kommen automatisch aus eingelesenen Meetings oder per Strg+K („Entscheidung: …“).</div>`}
+    ${mts.length ? `<div>${mts.slice(0, 8).map(m => `<details class="mtg"><summary><span class="d">${esc(m.date ? fmtShort(m.date) : "")}</span><b>${esc(m.title || "Meeting")}</b><span class="muted" style="font-size:12.5px">${esc([m.participants.length ? plural(m.participants.length, "Person", "Personen") : "", m.minutes ? m.minutes + " min" : "", m.counts.a ? plural(m.counts.a, "Aufgabe", "Aufgaben") : "", m.counts.d ? plural(m.counts.d, "Entscheidung", "Entscheidungen") : ""].filter(Boolean).join(" · "))}</span></summary>${m.summary.length ? `<ul>${m.summary.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}${m.participants.length ? `<div class="muted" style="font-size:12.5px">${esc(m.participants.join(", "))}</div>` : ""}</details>`).join("")}</div>` : ""}`;
+}
 function readForm(target){
   document.querySelectorAll("#drawer-slot [data-field]").forEach(el => {
     const k = el.dataset.field; let v = el.value;
@@ -2525,9 +2645,993 @@ function projectFromExcel(x, fileName){
   p.title = x.title; p.description = x.description; p.team = x.team; p.phase = "analyse";
   p.readiness = x.readiness; p.tools = x.tools.length ? x.tools : templateTools();
   if (x.meetingAt){ p.startDate = x.meetingAt; if (x.meetingAt <= todayISO()) p.gates["analyse-0"] = true; }
-  pushLog(p, logEntry(`Created from Excel checklist: ${fileName} (${x.readiness.items.length} questions, ${x.tools.length} tools/access items)`, "system"));
+  pushLog(p, logEntry(`Aus Excel-Checkliste angelegt: ${fileName} (${x.readiness.items.length} Fragen, ${x.tools.length} Tools/Zugriffe)`, "system"));
   return p;
 }
+
+async function handleImportFile(file){
+  try {
+    if (/\.(vtt|docx|txt|md)$/i.test(file.name)){ await mtLoadFile(file, ""); return; }
+    if (/\.xlsx$/i.test(file.name)){ await importExcelAsProject(file); return; }
+    const text = await file.text();
+    let raw = null; try { raw = JSON.parse(text); } catch {}
+    const rqs = raw && parseRequestFile(raw);
+    if (rqs){ const n = addRequests(rqs); ui.view = "anfragen"; ui.rq.filter = "offen"; saveUi(); render(); toast(n ? `${plural(n,"Anfrage","Anfragen")} importiert` : "Diese Anfrage gibt es schon"); return; }
+    const data = parseBackup(text);
+    pendingImport = data;
+    if (!state.projects.length && !state.requests.length) applyImport("replace"); else { render(); window.scrollTo(0,0); }
+  } catch (err){ toast(err.message || "Die Datei konnte nicht gelesen werden."); }
+}
+
+/* ================== Meetings: transcript or notes → project ================== */
+// Runs completely in this browser. The transcript is analysed in memory and never stored;
+// only the points you confirm in the review end up in the project.
+const MT_STOP = new Set(("der die das den dem des ein eine einen einem einer eines und oder aber auch noch schon nur mal dann denn doch ja nein nicht kein keine keinen "
+  + "ich du er sie es wir ihr mich mir dich dir uns euch ihn ihm ihnen man sich mein dein unser euer "
+  + "zu zum zur im in am an auf aus bei mit nach von vor für über unter um bis ab seit durch gegen ohne "
+  + "ist sind war waren wird werden wurde hat haben hatte hatten kann können konnte muss müssen soll sollen sollte will wollen würde gibt geht "
+  + "so wie was wer wo wann warum wieso dass da hier jetzt also eben halt gerade sehr mehr ganz gut okay genau einfach mal etwas alles bitte danke "
+  + "the a an and or but to of in on at for with by from is are was were be been will would can could should this that these those there here now then just so very not no yes okay also "
+  + "thema punkt sache frage meeting heute morgen woche projekt").split(/\s+/));
+const mtWords = s => (String(s || "").toLowerCase().match(/[\p{L}\p{N}][\p{L}\p{N}-]*/gu) || []);
+const mtStem = w => w.length > 5 ? w.replace(/(ungen|ung|en|er|es|e|n|s)$/, "") : w;
+const mtTokens = s => [...new Set(mtWords(s).filter(w => w.length >= 3 && !MT_STOP.has(w) && !/^\d+$/.test(w)).map(mtStem))];
+function mtOverlap(a, b){
+  const ta = mtTokens(a), tb = mtTokens(b), set = new Set(tb);
+  if (!ta.length) return { n:0, r:0 };
+  const n = ta.filter(w => set.has(w) || (w.length >= 5 && tb.some(x => x.length >= 5 && (x.startsWith(w) || w.startsWith(x))))).length;
+  return { n, r: n / ta.length };
+}
+
+/* ---------- Dates: "bis Freitag", "15.10.", "KW 42", "Ende Oktober", "in zwei Wochen" ---------- */
+const MT_WD = { sonntag:0, montag:1, dienstag:2, mittwoch:3, donnerstag:4, freitag:5, samstag:6, sunday:0, monday:1, tuesday:2, wednesday:3, thursday:4, friday:5, saturday:6 };
+const MT_MON = { januar:0, jan:0, january:0, februar:1, feb:1, february:1, märz:2, maerz:2, mär:2, march:2, mar:2, april:3, apr:3, mai:4, may:4, juni:5, jun:5, june:5,
+  juli:6, jul:6, july:6, august:7, aug:7, september:8, sept:8, sep:8, oktober:9, okt:9, october:9, oct:9, november:10, nov:10, dezember:11, dez:11, december:11, dec:11 };
+const MT_NUM = { ein:1, eine:1, einer:1, einen:1, zwei:2, drei:3, vier:4, fünf:5, sechs:6, acht:8, zehn:10, one:1, two:2, three:3, four:4, five:5, six:6 };
+const MT_MON_RX = Object.keys(MT_MON).sort((a, b) => b.length - a.length).join("|");
+const mtAddDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+function mtDate(text, refISO){
+  const ref = parseDay(refISO) || parseDay(todayISO());
+  const s = " " + String(text || "").toLowerCase() + " ";
+  let m;
+  const out = (d, raw) => d && !isNaN(d) ? { iso: isoDay(d), raw: raw.trim() } : null;
+  const ymd = (y, mo, d, raw) => {
+    let yy = y == null ? ref.getFullYear() : (y < 100 ? 2000 + y : y);
+    let dt = new Date(yy, mo, d);
+    if (y == null && dt < mtAddDays(ref, -60)) dt = new Date(yy + 1, mo, d);
+    return dt.getMonth() === ((mo % 12) + 12) % 12 ? out(dt, raw) : null;
+  };
+  const endOfMonth = (mo, raw) => { let y = ref.getFullYear(); if (mo < ref.getMonth() - 1) y++; return out(new Date(y, mo + 1, 0), raw); };
+  if ((m = s.match(/\b(\d{4})-(\d{2})-(\d{2})\b/))) return ymd(+m[1], +m[2] - 1, +m[3], m[0]);
+  if ((m = s.match(/\b(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})?(?![\d.])/))) return ymd(m[3] ? +m[3] : null, +m[2] - 1, +m[1], m[0]);
+  if ((m = s.match(new RegExp(`\\b(anfang|mitte|ende|end of|early|mid|late)\\s+(${MT_MON_RX})\\b`)))){
+    const mo = MT_MON[m[2]];
+    if (/ende|end|late/.test(m[1])) return endOfMonth(mo, m[0]);
+    return ymd(null, mo, /anfang|early/.test(m[1]) ? 5 : 15, m[0]);
+  }
+  if ((m = s.match(new RegExp(`\\b(\\d{1,2})\\.?\\s*(${MT_MON_RX})\\b\\.?(?:\\s*(\\d{4}))?`)))) return ymd(m[3] ? +m[3] : null, MT_MON[m[2]], +m[1], m[0]);
+  if ((m = s.match(new RegExp(`\\b(${MT_MON_RX})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`)))) return ymd(null, MT_MON[m[1]], +m[2], m[0]);
+  if ((m = s.match(/\b(?:kw|kalenderwoche|cw|week)\s*(\d{1,2})\b/))){
+    let y = ref.getFullYear(); const wk = +m[1];
+    const isoMon = yy => { const j4 = new Date(yy, 0, 4); return mtAddDays(j4, -((j4.getDay() + 6) % 7)); };
+    let fri = mtAddDays(isoMon(y), (wk - 1) * 7 + 4);
+    if (fri < mtAddDays(ref, -60)) fri = mtAddDays(isoMon(y + 1), (wk - 1) * 7 + 4);
+    return out(fri, m[0]);
+  }
+  if ((m = s.match(/\b(übermorgen|day after tomorrow)\b/))) return out(mtAddDays(ref, 2), m[0]);
+  if ((m = s.match(/\b(morgen früh|morgen|tomorrow)\b/)) && !/\bmorgen(meeting|runde)\b/.test(s)) return out(mtAddDays(ref, 1), m[0]);
+  if ((m = s.match(/\b(bis heute|heute noch|noch heute|today|end of day|eod)\b/))) return out(ref, m[0]);
+  if ((m = s.match(/\b(asap|sofort|umgehend)\b/))) return out(mtAddDays(ref, 1), m[0]);
+  const wdRx = Object.keys(MT_WD).join("|");
+  if ((m = s.match(new RegExp(`\\b(?:(nächste[nm]?|kommende[nm]?|next)\\s+(woche\\s+|week\\s+)?)?(${wdRx})\\b`)))){
+    let d = (MT_WD[m[3]] - ref.getDay() + 7) % 7 || 7;
+    if (m[2] && d < 7 && MT_WD[m[3]] > ref.getDay()) d += 7;   // "nächste Woche Mittwoch"
+    return out(mtAddDays(ref, d), m[0]);
+  }
+  const fridayIn = weeks => { const toFri = (5 - ref.getDay() + 7) % 7; return mtAddDays(ref, toFri + 7 * weeks); };
+  if ((m = s.match(/\b(ende der woche|ende dieser woche|diese woche|end of (the )?week|eow)\b/))) return out(fridayIn(0), m[0]);
+  if ((m = s.match(/\b(übernächste woche|week after next)\b/))) return out(fridayIn(2), m[0]);
+  if ((m = s.match(/\b(nächste woche|kommende woche|next week)\b/))) return out(fridayIn(1), m[0]);
+  if ((m = s.match(/\bin\s+(\d+|[a-zäöü]+)\s+(tag|tage|tagen|days?|woche|wochen|weeks?|monat|monaten|months?)\b/))){
+    const n = /^\d+$/.test(m[1]) ? +m[1] : MT_NUM[m[1]];
+    if (n){ if (/^(tag|day)/.test(m[2])) return out(mtAddDays(ref, n), m[0]); if (/^(woch|week)/.test(m[2])) return out(mtAddDays(ref, 7 * n), m[0]); const x = new Date(ref); x.setMonth(x.getMonth() + n); return out(x, m[0]); }
+  }
+  if ((m = s.match(/\b(ende des monats|monatsende|ende monat|end of (the )?month|eom)\b/))) return endOfMonth(ref.getMonth(), m[0]);
+  return null;
+}
+function mtStripDate(text, raw){
+  if (!raw) return text;
+  const rx = new RegExp(`\\s*\\b(?:bis(?: zum| spätestens)?|am|zum|spätestens|by|until|on|due)?\\s*${raw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i");
+  return text.replace(rx, "").replace(/\s{2,}/g, " ").replace(/\s+([,.!?])/g, "$1").trim();
+}
+
+/* ---------- Reading files ---------- */
+async function mtReadFile(file){
+  const name = file.name || "Meeting";
+  if (/\.docx$/i.test(name)){
+    let get;
+    try { get = await unzip(await file.arrayBuffer()); } catch { throw new Error("Die Word-Datei konnte nicht gelesen werden."); }
+    const xml = await get("word/document.xml");
+    if (!xml) throw new Error("In der Word-Datei wurde kein Text gefunden.");
+    const doc = new DOMParser().parseFromString(xml, "application/xml");
+    const W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+    const lines = [];
+    for (const p of doc.getElementsByTagNameNS(W, "p")){
+      let s = "";
+      for (const el of p.getElementsByTagNameNS(W, "*")){
+        if (el.localName === "t") s += el.textContent;
+        else if (el.localName === "tab") s += "\t";
+        else if (el.localName === "br" || el.localName === "cr") s += "\n";
+      }
+      lines.push(s);
+    }
+    return { text: lines.join("\n"), name, kind:"docx" };
+  }
+  if (/\.(vtt|txt|md|text|srt)$/i.test(name) || /^text\//.test(file.type || "")) return { text: await file.text(), name, kind: /\.vtt$/i.test(name) ? "vtt" : "text" };
+  throw new Error("Bitte ein Teams-Transkript (.vtt oder .docx) oder eine Textdatei (.txt) wählen.");
+}
+
+/* ---------- Parsing: speakers, sections, sentences ---------- */
+const MT_LABELS = /^(ziel|ziele|aufgabe|aufgaben|entscheidung|entscheidungen|blocker|risiko|risiken|notiz|notizen|hinweis|thema|themen|agenda|nächster schritt|nächste schritte|next steps?|action items?|actions?|to-?dos?|status|datum|date|teilnehmer|teilnehmende|participants|attendees|summary|zusammenfassung|frage|fragen|antwort|owner|due|fällig|projekt|project|note|notes|decisions?|risks?|ergebnis|ergebnisse|offene punkte|offene fragen|follow-?ups?|folgeaufgaben|kernpunkte|highlights|besprochen|überblick|recap|erledigt|done|ort|zeit|uhrzeit|betreff|subject|titel|title|von|an|cc)$/i;
+const MT_SECTION = [
+  [/aufgabe|to-?do|action|follow|nächste schritte|next step|maßnahme|massnahme|folgeaufgabe|offene aufgaben|tasks/i, "actions"],
+  [/entscheid|beschl|decision|vereinbar|agreed|ergebnis/i, "decisions"],
+  [/offene (punkte|fragen)|open (question|point|item)|klärungsbedarf|zu klären|fragen/i, "open"],
+  [/blocker|risik|risk|hindernis|issue|problem/i, "blockers"],
+  [/erledigt|done|abgeschlossen|completed|fertig/i, "done"],
+  [/zusammenfassung|summary|notiz|notes|besprochen|discussion|überblick|recap|kernpunkte|highlights|stand|status/i, "summary"],
+];
+const looksLikeName = s => /^[\p{Lu}][\p{L}.'’-]*(?:\s+(?:von |van |de |del |da )?[\p{Lu}][\p{L}.'’-]*){0,3}$/u.test(s.trim()) && !MT_LABELS.test(s.trim()) && s.trim().length <= 48;
+const tsToMin = ts => { if (!ts) return 0; const p = ts.split(/[:.]/).map(Number); if (p.length >= 3 && ts.split(":").length === 3) return p[0] * 60 + p[1] + p[2] / 60; return p[0] + (p[1] || 0) / 60; };
+
+function mtParse(text, fileName, kind){
+  const raw = String(text || "").replace(/\r\n?/g, "\n").replace(/ /g, " ");
+  const lines = raw.split("\n");
+  const segs = [], items = [];
+  let who = "", ts = "", section = "", maxMin = 0, title = "", date = "", minutes = 0, expect = false;
+  const declared = [];
+  const vtt = kind === "vtt" || /^\s*WEBVTT/.test(raw) || /\d{2}:\d{2}[:.]\d{2}[.,]\d{3}\s+-->/.test(raw);
+  // Speaker candidates in "Name: text" lines: only names used at least twice count as speakers
+  const colonNames = {};
+  if (!vtt) lines.forEach(l => { const m = l.match(/^\s*(?:\[?\d{1,2}:\d{2}(?::\d{2})?\]?\s*)?([^:\t]{2,48}):\s+\S/); if (m && looksLikeName(m[1])) colonNames[m[1].trim()] = (colonNames[m[1].trim()] || 0) + 1; });
+  const add = (w, t, stamp) => {
+    t = t.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim(); if (!t) return;
+    const last = segs[segs.length - 1];
+    if (last && last.who === w && !section) last.t += " " + t; else segs.push({ who: w, t, ts: stamp || "" , section });
+  };
+  for (let i = 0; i < lines.length; i++){
+    let l = lines[i].replace(/\s+$/, ""); const lt = l.trim();
+    if (!lt) continue;
+    if (vtt){
+      if (/^WEBVTT|^NOTE\b|^STYLE\b|^[0-9a-f-]{8,}(\/\d+-\d+)?$|^\d+$/i.test(lt)) continue;
+      const cue = lt.match(/^(\d{1,2}:)?(\d{2}):(\d{2})[.,](\d{3})\s+-->\s+((?:\d{1,2}:)?\d{2}:\d{2})[.,]\d{3}/);
+      if (cue){ ts = (cue[1] || "") + cue[2] + ":" + cue[3]; maxMin = Math.max(maxMin, tsToMin(cue[5])); continue; }
+      const v = lt.match(/^<v\s+([^>]+)>(.*?)(?:<\/v>)?$/);
+      if (v){ who = v[1].trim(); add(who, v[2], ts); continue; }
+      const c = lt.match(/^([^:]{2,48}):\s+(.+)$/);
+      if (c && looksLikeName(c[1])){ who = c[1].trim(); add(who, c[2], ts); continue; }
+      add(who, lt, ts); continue;
+    }
+    if (/(started|stopped) transcription|transkription (gestartet|beendet)|hat die transkription|^(transcript|transkript|besprechungstranskript|meeting transcript)$/i.test(lt)) continue;
+    // Header lines of a Teams .docx transcript or notes: title, date, duration, participants
+    if (!segs.length && !items.length && i < 8){
+      const dm = mtHeaderDate(lt);
+      if (dm && !date){ date = dm; continue; }
+      const dur = lt.match(/^(?:(\d+)\s*h\s*)?(\d+)\s*m(?:in)?(?:\s*\d+\s*s)?$/i);
+      if (dur){ minutes = (+dur[1] || 0) * 60 + +dur[2]; continue; }
+      const nextNon = (lines.slice(i + 1).find(x => x.trim()) || "").trim();
+      if (!title && lt.length < 120 && !/[.!?]$/.test(lt) && !/\t/.test(l) && !/\s\d{1,2}:\d{2}(:\d{2})?$/.test(lt) && !/:\s/.test(lt) && !/^[-*•]/.test(lt) && (kind === "docx" || /^#\s/.test(lt) || mtHeaderDate(nextNon) || (i === lines.findIndex(x => x.trim()) && lt.length < 100 && lines[i + 1] !== undefined && !lines[i + 1].trim()))){ title = lt.replace(/^#\s*/, ""); continue; }
+    }
+    const pl = lt.match(/^(?:teilnehmer|teilnehmende|participants|attendees|anwesend)\s*:\s*(.+)$/i);
+    if (pl){ pl[1].split(/[,;]| und | and /).map(x => x.trim()).filter(x => looksLikeName(x)).forEach(x => declared.push(x)); continue; }
+    const arrow = lt.match(/^(\d{1,2}:\d{1,2}:\d{1,2})(?:[.,]\d+)?\s*-->\s*(\d{1,2}:\d{1,2}:\d{1,2})/);
+    if (arrow){ ts = arrow[1]; maxMin = Math.max(maxMin, tsToMin(arrow[2])); expect = true; continue; }
+    if (expect){ expect = false; if (looksLikeName(lt)){ who = lt; continue; } }
+    // "Name   0:03" or "Name\t00:01:23" → speaker header
+    const sh = l.match(/^\s*([^\t]{2,60}?)[\t ]+(\d{1,2}:\d{2}(?::\d{2})?)\s*$/);
+    if (sh && looksLikeName(sh[1])){ who = sh[1].trim(); ts = sh[2]; maxMin = Math.max(maxMin, tsToMin(ts)); section = ""; continue; }
+    // "[00:01:23] Name: text" or "Name: text"
+    const ct = lt.match(/^\[?(\d{1,2}:\d{2}(?::\d{2})?)\]?\s+([^:]{2,48}):\s+(.+)$/) || lt.match(/^()([^:\t]{2,48}):\s+(.+)$/);
+    if (ct && looksLikeName(ct[2]) && (colonNames[ct[2].trim()] >= 2 || ct[1])){ who = ct[2].trim(); if (ct[1]){ ts = ct[1]; maxMin = Math.max(maxMin, tsToMin(ts)); } section = ""; add(who, ct[3], ts); continue; }
+    // Headings of notes or a Copilot / Teams recap
+    const hd = lt.replace(/^#+\s*|^\*\*|\*\*:?$|:$/g, "").trim();
+    const nextLine = (lines.slice(i + 1).find(x => x.trim()) || "").trim();
+    const bareHeading = lt.split(/\s+/).length <= 4 && !/[.!?,]$/.test(lt) && MT_SECTION.some(([rx]) => rx.test(lt)) && /^(?:[-*•–·▪◦]|\d{1,2}[.)]|\[[ xX]\]|☐|☑|✓|✔)\s+/.test(nextLine);
+    const isHeading = (/^#{1,4}\s/.test(lt) || /^\*\*[^*]+\*\*:?$/.test(lt) || (/:$/.test(lt) && lt.length < 60) || bareHeading) && !/^[-*•]/.test(lt);
+    if (isHeading){ const sec = MT_SECTION.find(([rx]) => rx.test(hd)); section = sec ? sec[1] : ""; continue; }
+    const bl = lt.match(/^(?:[-*•–·▪◦]|\d{1,2}[.)]|\[[ xX]\]|☐|☑|✓|✔)\s+(.+)$/);
+    if (bl && section){ items.push({ type: section, t: bl[1].replace(/\*\*/g, "").trim(), who }); continue; }
+    if (!bl) section = "";
+    add(who, bl ? bl[1] : lt, ts);
+  }
+  // Meeting date and title from a Teams file name: "Projekt X-20261005_143022-Meeting Recording.vtt"
+  const base = String(fileName || "").replace(/\.[a-z0-9]+$/i, "");
+  const fd = base.match(/(20\d{2})[-_.]?(\d{2})[-_.]?(\d{2})(?:[_ T-]?\d{4,6})?/);
+  if (!date && fd) date = `${fd[1]}-${fd[2]}-${fd[3]}`;
+  let fTitle = base.replace(fd ? fd[0] : "§§", " ").replace(/\b(meeting recording|meeting transcript|besprechungsaufzeichnung|transkript|transcript|recording|aufzeichnung)\b/gi, " ").replace(/[_]+/g, " ").replace(/\s*-\s*$|^\s*-\s*/g, "").replace(/\s{2,}/g, " ").trim().replace(/^-|-$/g, "").trim();
+  if (!title) title = fTitle || "Meeting";
+  const talk = {};
+  segs.forEach(s => { if (s.who && !/^(unknown|unbekannt|speaker \d+|sprecher \d+)$/i.test(s.who)) talk[s.who] = (talk[s.who] || 0) + s.t.length; });
+  const participants = Object.keys(talk).sort((a, b) => talk[b] - talk[a]);
+  declared.forEach(n => { if (!participants.some(x => x.toLowerCase() === n.toLowerCase())) participants.push(n); });
+  const sentences = [];
+  segs.forEach(s => s.t.split(/(?<=[.!?])\s+(?=[\p{Lu}\d„"])/u).forEach(x => { x = x.trim(); if (x) sentences.push({ s: x, who: s.who, ts: s.ts }); }));
+  return { title, date: date || todayISO(), minutes: minutes || Math.round(maxMin), participants, sentences, items, kind: vtt ? "vtt" : (kind || "text"), chars: raw.length };
+}
+function mtHeaderDate(s){
+  let m = s.match(new RegExp(`^(\\d{1,2})\\.\\s*(${MT_MON_RX})\\.?\\s+(\\d{4})`, "i"));
+  if (m) return `${m[3]}-${pad(MT_MON[m[2].toLowerCase()] + 1)}-${pad(+m[1])}`;
+  m = s.match(new RegExp(`^(${MT_MON_RX})\\.?\\s+(\\d{1,2}),?\\s+(\\d{4})`, "i"));
+  if (m) return `${m[3]}-${pad(MT_MON[m[1].toLowerCase()] + 1)}-${pad(+m[2])}`;
+  m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:[ ,]|$)/);
+  if (m) return `${m[3]}-${pad(+m[2])}-${pad(+m[1])}`;
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T,]|$)/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  return "";
+}
+
+/* ---------- Extraction ---------- */
+const RX_FILLER = /^(?:(?:okay|ok|gut|also|ja|genau|super|prima|perfekt|alles klar|na ja|ähm|äh|hm|so|und|dann|good|right|so yeah|yeah|alright)[,.!]?\s+)+/i;
+const RX_PAST = /\b(habe|hab|hatte|haben|hatten|ist|sind|wurde|wurden|war|waren)\b[^.?!]{0,60}\b(ge[\p{L}]+(t|en)|erledigt|fertig|abgeschlossen|verschickt|geklärt|erstellt|übernommen|bestellt|eingerichtet|freigegeben|umgesetzt|getestet|vorbereitet|abgestimmt)\b/iu;
+const RX_COMMIT_VERB = /\b(mach|kümmer|schick|send|klär|übernehm|bereit|vorbereit|organisier|plan|erstell|bau|prüf|check|test|meld|frag|setz|lad|stell|besorg|hol|richt|buch|schreib|geb|leit|schau|guck|ruf|informier|aktualisier|dokumentier|start|stimm|abstimm|terminier|koordinier|liefer|exportier|analysier|zieh|verschick|teil|share|prepare|schedule|draft|create|follow|update|review|set up|reach out|look into|take care|organi[sz]e|book|call|write|fix|deliver|export|align)[\p{L}]*/iu;
+const RX_REQUEST = /\b(kannst|könntest|würdest|kannste|magst) du\b|\b(können|könnten|würden) sie\b|\bcan you\b|\bcould you\b|\bwould you\b/i;
+const RX_SELF = /\b(ich|i)\b/i;
+const RX_FUTURE_ME = /\b(ich werde|ich will|ich würde|werde ich|mach ich|mache ich|kümmere mich|kümmer mich|übernehme ich|übernehm ich|kläre ich|schicke ich|schick ich|melde mich|i'll|i will|i can take|let me)\b/i;
+const RX_MARKER = /\b(to-?do|action item|aufgabe für|nächste[rn]? schritt|next step|follow[- ]?up)\b/i;
+const RX_OBLIG = /\b(müssen|muss|sollten|sollte|soll|sollen|need to|needs to|have to|must)\b/i;
+const RX_DEC = /\b(entschieden|beschlossen|beschließen|einigen uns|haben uns geeinigt|geeinigt|vereinbart|festgelegt|freigegeben|freigabe (ist )?(erteilt|da)|go für|grünes licht|wir machen das so|so machen wir (das|es)|wir gehen mit|ist gesetzt|agreed|decided|approved|we'll go with|we will go with|sign[- ]?off)\b/i;
+const RX_DEC_NEG = /\b(noch nicht|nicht|kein|not yet|not)\b[^.?!]{0,25}\b(entschieden|freigegeben|beschlossen|geeinigt|vereinbart|decided|approved|agreed)\b/i;
+const RX_OPEN = /\b((muss|müssen) (noch )?(entschieden|geklärt|abgestimmt) werden|noch (zu )?(klären|entscheiden)|ist noch offen|entscheidung (steht aus|nötig|offen|fehlt)|brauchen (eine|die) entscheidung|offene frage|klären wir (noch|später|mit)|tbd|to be decided|open question|needs? (a )?decision|(sponsor|geschäftsführung|lenkungskreis) (muss|soll) entscheiden|(muss|soll|müssen) (der|die|das|unser) [\p{L}-]+ (noch )?entscheiden|offen ist (noch)?|steht noch aus)\b/iu;
+const RX_BLOCK = /\b(blockiert|blocker|blockt|blocked|hängt (an|bei|noch)|hängen (an|bei|noch)|warte[nt]? (noch )?auf|waiting (for|on)|kein(en)? (zugriff|zugang|lizenz|lizenzen|budget|freigabe|daten|ansprechpartner)|no access|fehlt (noch|uns)|fehlen (noch|uns)|nicht (verfügbar|freigegeben)|liegt noch nicht vor)\b/i;
+const RX_RISK = /\b(risiko|risiken|risk|probleme?|schwierig|kritisch|critical|verzug|verzögert|verzögerung|delay(ed)?|engpass|knapp|eskalier\w*|eskalation|escalat\w*|gefährdet|nicht halten|schaffen wir nicht|verschieben|verschoben|bedenken|concern)\b/i;
+const RX_CRIT = /\b(eskalier\w*|eskalation|escalat\w*|go-?live (ist )?gefährdet|schaffen wir nicht|nicht (zu )?halten|kritisch|critical)\b/i;
+const RX_RESOLVED = /\b(gelöst|behoben|ist (jetzt |inzwischen |endlich )?(da|freigegeben|erteilt)|haben (jetzt|inzwischen|endlich) (zugriff|zugang|die daten|die freigabe|die lizenz)|funktioniert (jetzt|wieder)|resolved|unblocked|fixed)\b/i;
+const RX_DONE = /\b(erledigt|fertig|abgeschlossen|geschafft|umgesetzt|geliefert|(ist|sind) ([\p{L}]+ )?(durch|live|da)|(liegt|liegen) ([\p{L}]+ )?vor|steht jetzt|done|finished|completed|delivered|available now)(?![\p{L}])/iu;
+const RX_SMALLTALK = /\b(hallo|hi zusammen|guten morgen|danke|tschüss|bis dann|schönes wochenende|hört ihr mich|hörst du mich|sieht man|bildschirm|screen|teilen|mute|kamera|kurz warten|sorry|entschuldigung|moment)\b/i;
+const RX_GOLIVE = /\b(go-?live|live gehen|livegang|produktivstart|produktiv gehen|rollout|roll-out|launch|einführung)\b/i;
+const MT_PHASE_SIGNALS = [
+  [/\b(kick-?off|discovery|ist-analyse)\b/i, "analyse"],
+  [/\b(konzept|lösungsdesign|solution design|grobkonzept)\b[^.?!]{0,40}\b(freigegeben|abgenommen|approved|steht)\b|\bfreigabe (für die )?umsetzung\b|\bgo für (die )?umsetzung\b/i, "build"],
+  [/\b(umsetzung|entwicklung|implementierung|build)\b[^.?!]{0,25}\b(startet|beginnt|gestartet|begonnen|started)\b/i, "build"],
+  [/\b(test(phase)?|uat|abnahmetest|pilot(phase)?)\b[^.?!]{0,25}\b(startet|beginnt|gestartet|begonnen|started)\b|\bin den test\b/i, "test"],
+  [/\b(abnahme\w*|uat)\b[^.?!]{0,50}\b(erfolgt|erteilt|durch|bestanden|abgeschlossen|passed)\b|\babgenommen\b/i, "golive"],
+  [/\b(sind|ist|gingen|went)\b[^.?!]{0,12}\blive\b|\bgo-?live\b[^.?!]{0,20}\b(war|erfolgt|ist durch|geschafft|done)\b|\bproduktiv (gestartet|gegangen)\b/i, "hypercare"],
+  [/\bprojekt\b[^.?!]{0,20}\b(abgeschlossen|beendet|closed)\b|\bprojektabschluss\b/i, "done"],
+];
+const MT_DEPTS = [
+  [/\b(vertrieb|sales|innendienst|außendienst|angebot\w*)\b/i, "Vertrieb"],
+  [/\b(hr|personal\w*|recruiting|bewerb\w*)\b/i, "HR / Recruiting"],
+  [/\b(finance|finanz\w*|buchhaltung|controlling|kreditor\w*|rechnung\w*)\b/i, "Finance"],
+  [/\b(logistik|disposition|touren?\w*|lager|operations)\b/i, "Operations / Logistik"],
+  [/\b(kundenservice|customer service|service-?center|support)\b/i, "Customer Service"],
+  [/\b(einkauf|procurement|beschaffung)\b/i, "Einkauf"],
+  [/\b(marketing)\b/i, "Marketing"],
+  [/\b(qhse|arbeitsschutz|hygiene)\b/i, "QHSE"],
+];
+
+function mtPeople(parsed){
+  const names = [...parsed.participants, ...team().map(m => m.name), ...ownerNames(), myProfile().name].filter(Boolean);
+  const seen = new Set(); const list = [];
+  names.forEach(n => { const k = n.trim().toLowerCase(); if (k && !seen.has(k)){ seen.add(k); list.push(n.trim()); } });
+  return list;
+}
+function mtFindPerson(s, people){
+  const at = s.match(/@([\p{L}][\p{L}.'-]*(?:\s+[\p{Lu}][\p{L}.'-]*)?)/u);
+  if (at){ const k = at[1].toLowerCase(); const hit = people.find(n => n.toLowerCase() === k || firstName(n).toLowerCase() === k.split(/\s+/)[0]); return hit || at[1].trim(); }
+  for (const n of people){
+    const full = n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), first = firstName(n).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (new RegExp(`(^|[^\\p{L}])(${full}|${first})(?![\\p{L}])`, "iu").test(s)) return n;
+  }
+  return "";
+}
+function mtCleanAction(s){
+  let t = s.replace(RX_FILLER, "").trim();
+  const rq = t.match(/^(?:[\p{L}]+,\s*)?(?:kannst|könntest|würdest|kannste|magst) du (?:bitte |mal |noch |dann )*(.+?)\??$/iu) || t.match(/^(?:can|could|would) you (?:please )?(.+?)\??$/i);
+  if (rq) t = rq[1];
+  t = t.replace(/\s*(,?\s*oder\??|,?\s*ja\?|,?\s*okay\?)$/i, "").replace(/[?.!]+$/, "").trim();
+  if (t.length > 180) t = t.slice(0, 177).replace(/\s+\S*$/, "") + " …";
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+const MT_SEP = "vor|ab|an|auf|aus|ein|mit|nach|zu|zurück|weiter|fertig|durch|her|hin|los|fest|zusammen|rein|raus";
+const MT_IRR = { mache:"machen", mach:"machen", macht:"machen", gebe:"geben", gibt:"geben", nehme:"nehmen", nimmt:"nehmen", sehe:"sehen", sieht:"sehen", schau:"schauen", lade:"laden", lädt:"laden", übernimmt:"übernehmen", schreibt:"schreiben", ruft:"rufen", hält:"halten", trägt:"tragen", lässt:"lassen" };
+function mtInfinitive(verb){
+  let v = verb.toLowerCase();
+  if (MT_IRR[v]) return MT_IRR[v];
+  if (/(d|t)et$/.test(v)) v = v.slice(0, -2);          // bereitet → bereit, meldet → meld
+  else if (/[^e]t$/.test(v)) v = v.slice(0, -1);       // klärt → klär
+  if (/e$/.test(v)) v = v.slice(0, -1);                // schicke → schick
+  return /(er|el)$/.test(v) ? v + "n" : v + "en";
+}
+const rxEsc = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function mtNeutral(t, owner){
+  // "Ich schicke euch die Zahlen" → "Die Zahlen schicken" · "Tobias klärt den Zugang" → "Den Zugang klären" · "X wird Y vorbereiten" → "Y vorbereiten"
+  const names = owner ? [owner, firstName(owner)].filter(Boolean).map(rxEsc).join("|") : "";
+  const subj = `(?:ich|wir${names ? "|" + names : ""})`;
+  const cap = x => { x = x.trim().replace(/[.!]+$/, ""); return x.charAt(0).toUpperCase() + x.slice(1); };
+  let m = t.match(new RegExp(`^${subj}\\s+(?:werde|werden|wird|will|wollen|möchte|möchten|muss|müssen|soll|sollen|kann|können)\\s+(.+)$`, "iu"));
+  if (m) return cap(m[1]);
+  m = t.match(new RegExp(`^${subj}\\s+([\\p{L}]+)\\s+(?:(?:mich|uns|sich|mir|dir|euch|ihnen|ihm|ihr|mal|noch|dann|gleich|direkt|auch|jetzt|sofort|gern|gerne)\\s+)*(.+)$`, "iu"));
+  if (!m || /^(bin|ist|sind|habe|hab|hat|haben|war|waren|weiß|glaube|denke|finde|meine|sehe|hoffe|gehe|geht)$/i.test(m[1])) return t;
+  let rest = m[2].replace(/[.!]+$/, "").trim(), prefix = "";
+  const sep = rest.match(new RegExp(`\\s+(${MT_SEP})$`, "i"));
+  if (sep){ prefix = sep[1].toLowerCase(); rest = rest.slice(0, sep.index); }
+  if (!rest) return t;
+  if (/,\s*(die|der|das|dass|ob|wenn|damit|wie|was|wann)\b/i.test(rest)) rest += ",";
+  return cap(`${rest} ${prefix}${mtInfinitive(m[1])}`);
+}
+const mtShort = s => { s = String(s || "").replace(RX_FILLER, "").trim(); return s.length > 220 ? s.slice(0, 217).replace(/\s+\S*$/, "") + " …" : s; };
+
+function mtAnalyze(parsed, project){
+  const people = mtPeople(parsed);
+  const me = myProfile().name;
+  const ref = parsed.date || todayISO();
+  const an = { actions:[], decisions:[], open:[], blockers:[], done:[], resolved:null, phase:null, goLive:null, health:null, summary:[], team:null, ns:-1, nsOn:false };
+  const src = x => ({ who: x.who || "", ts: x.ts || "", q: mtShort(x.s) });
+  const doneExtra = [];
+  const seen = new Set(); const uniq = (arr, text) => { const k = mtTokens(text).join(" "); if (!k || seen.has(arr + k)) return false; seen.add(arr + k); return true; };
+  const others = who => parsed.participants.filter(n => n !== who);
+  const addAction = (text, owner, sent, strong) => {
+    const d = mtDate(sent.s || text, ref);
+    let t = mtCleanAction(text);
+    if (d) t = mtStripDate(t, d.raw);
+    t = mtNeutral(t.replace(/\(\s*\)/g, "").replace(/\s{2,}/g, " ").trim(), owner);
+    t = t.replace(/[.!]+$/, ""); t = t.charAt(0).toUpperCase() + t.slice(1);
+    if (mtTokens(t).length < 2 || !uniq("a", t)) return;
+    an.actions.push({ text: t, owner: owner || "", due: d ? d.iso : "", on: strong !== false, src: src(sent) });
+  };
+  // 1. Structured notes and recaps: bullets under headings
+  parsed.items.forEach(it => {
+    const sent = { s: it.t, who: it.who || "", ts: "" };
+    if (it.type === "actions"){
+      let t = it.t, owner = "";
+      const pre = t.match(/^([\p{Lu}][\p{L}.'-]+(?:\s+[\p{Lu}][\p{L}.'-]+){0,2})\s*(?::|–|-|→)\s+(.+)$/u);
+      const willRx = t.match(/^([\p{Lu}][\p{L}.'-]+(?:\s+[\p{Lu}][\p{L}.'-]+){0,2})\s+(?:wird|will|soll|übernimmt|kümmert sich( um)?|is going to|will)\s+(.+)$/u);
+      const post = t.match(/^(.+?)\s*[(\[–-]\s*(?:owner:?\s*|verantwortlich:?\s*|@)?([\p{Lu}][\p{L}.'-]+(?:\s+[\p{Lu}][\p{L}.'-]+){0,2})\s*(?:,[^)\]]*)?[)\]]?$/u);
+      if (pre && looksLikeName(pre[1])){ owner = pre[1]; t = pre[2]; }
+      else if (willRx && looksLikeName(willRx[1])){ owner = willRx[1]; t = willRx[3]; }
+      else if (post && looksLikeName(post[2]) && people.some(n => n.toLowerCase().startsWith(post[2].toLowerCase().split(" ")[0]))){ owner = post[2]; t = post[1]; }
+      else owner = mtFindPerson(t, people);
+      const known = people.find(n => n.toLowerCase() === owner.toLowerCase() || firstName(n).toLowerCase() === owner.toLowerCase());
+      addAction(t, known || owner, sent, true);
+    } else if (it.type === "decisions"){ if (uniq("d", it.t)) an.decisions.push({ text: mtShort(it.t), on:true, src: src(sent) }); }
+    else if (it.type === "open"){ if (uniq("o", it.t)) an.open.push({ text: mtShort(it.t), on:true, src: src(sent) }); }
+    else if (it.type === "blockers"){ if (uniq("b", it.t)) an.blockers.push({ text: mtShort(it.t), kind: RX_BLOCK.test(it.t) ? "blocker" : "risk", on: true, src: src(sent) }); }
+    else if (it.type === "done"){ doneExtra.push({ s: it.t + " erledigt.", who: it.who || "", ts: "" }); }
+    else if (it.type === "summary"){ an.summary.push(mtShort(it.t)); if (RX_DONE.test(it.t)) doneExtra.push(sent); }
+  });
+  // 2. Spoken sentences
+  const scored = [];
+  parsed.sentences.forEach((x, idx) => {
+    const s = x.s, low = s.toLowerCase(); const words = mtWords(s).length;
+    if (words < 4) return;
+    const q = /\?\s*$/.test(s);
+    const past = RX_PAST.test(s) && !RX_FUTURE_ME.test(s);
+    let isAction = false;
+    if (!past){
+      let owner = "";
+      if (RX_REQUEST.test(s)){
+        const voc = mtFindPerson(s, people);
+        owner = voc && voc !== x.who ? voc : (others(x.who).length === 1 ? others(x.who)[0] : "");
+        addAction(s, owner, x); isAction = true;
+      } else if (!q && RX_SELF.test(s) && (RX_FUTURE_ME.test(s) || (RX_COMMIT_VERB.test(s) && (mtDate(s, ref) || /\b(noch|dann|gleich|direkt|nachher|morgen|mal)\b/i.test(s))))){
+        addAction(s, x.who || me, x); isAction = true;
+      } else if (!q && RX_MARKER.test(s)){
+        addAction(s.replace(/^.*?\b(to-?do|action item|nächste[rn]? schritt( ist)?|next step( is)?|follow[- ]?up)\b\s*:?\s*/i, ""), mtFindPerson(s, people), x); isAction = true;
+      } else if (!q){
+        const name = mtFindPerson(s, people);
+        if (name && new RegExp(`(^|[^\\p{L}])(${firstName(name)}|${name})\\s+(macht|kümmert sich|übernimmt|schickt|klärt|bereitet|prüft|organisiert|erstellt|meldet sich|schaut|wird|soll|will|setzt|baut|testet|lädt|ruft)`, "iu").test(s)){ addAction(s, name, x); isAction = true; }
+        else if ((RX_OBLIG.test(s) || /\bwir\b/i.test(s)) && RX_COMMIT_VERB.test(s) && mtDate(s, ref)){ addAction(s, name, x, false); isAction = true; }
+      }
+    }
+    if (!q && RX_DEC.test(s) && !RX_DEC_NEG.test(s)){ if (uniq("d", s)) an.decisions.push({ text: mtShort(s), on:true, src: src(x) }); }
+    else if (RX_OPEN.test(s) || RX_DEC_NEG.test(s) || (q && /\b(sollen wir|wollen wir|machen wir|nehmen wir|should we|do we)\b/i.test(s))){ if (uniq("o", s)) an.open.push({ text: mtShort(s), on: !q, src: src(x) }); }
+    if (RX_BLOCK.test(s) && !RX_RESOLVED.test(s)){ if (uniq("b", s)) an.blockers.push({ text: mtShort(s), kind:"blocker", on:true, src: src(x) }); }
+    else if (RX_RISK.test(s) && !q && !RX_RESOLVED.test(s)){ if (uniq("b", s)) an.blockers.push({ text: mtShort(s), kind:"risk", on:false, src: src(x) }); }
+    if (RX_RESOLVED.test(s) && !an.resolved) an.resolved = { src: src(x) };
+    if (RX_GOLIVE.test(s) && !past){ const d = mtDate(s, ref); if (d && d.iso >= ref) an.goLive = { date: d.iso, on: true, src: src(x) }; }
+    for (const [rx, key] of MT_PHASE_SIGNALS){ if (rx.test(s) && !/\b(noch nicht|nicht|not yet)\b/i.test(s)){ if (!an.phase || PH_INDEX[key] > PH_INDEX[an.phase.key]) an.phase = { key, src: src(x) }; } }
+    if (!q && !isAction && !RX_SMALLTALK.test(s) && words >= 7){
+      let sc = 0;
+      if (RX_DEC.test(s)) sc += 3;
+      if (/\b(stand|status|aktuell|fertig|läuft|erreicht|ergebnis|prozent|getestet|live|daten|zahlen|quote|treffer|budget|pilot|kunde|nutzer)\b/i.test(low)) sc += 2;
+      if (/\d/.test(s)) sc += 1;
+      if (project) sc += Math.min(3, mtOverlap(project.title, s).n);
+      if (words > 45) sc -= 1;
+      scored.push({ i: idx, s, sc });
+    }
+  });
+  if (!an.summary.length){
+    an.summary = scored.filter(x => x.sc >= 2).sort((a, b) => b.sc - a.sc).slice(0, 5).sort((a, b) => a.i - b.i).map(x => mtShort(x.s));
+  }
+  // 3. Against the chosen project: done tasks, next step, phase, health, team
+  mtProjectContext(an, parsed, project, doneExtra);
+  return an;
+}
+function mtProjectContext(an, parsed, project, doneExtra){
+  an.done = []; an.team = null;
+  const doneSents = parsed.sentences.filter(x => RX_DONE.test(x.s) || RX_PAST.test(x.s)).concat(doneExtra || []);
+  const cands = project ? openTasks(project).map(t => ({ id: t.id, text: t.text })) : [];
+  if (project && (project.nextStep || "").trim() && !cands.some(c => mtOverlap(c.text, project.nextStep).r >= .8)) cands.push({ id: "__next", text: project.nextStep });
+  const won = {};
+  doneSents.forEach(x => {
+    let top = null;
+    cands.forEach(c => { const o = mtOverlap(c.text, x.s); if (o.n >= 2 && o.r >= .4 && (!top || o.r > top.o.r || (o.r === top.o.r && o.n > top.o.n))) top = { c, o }; });
+    if (top && (!won[top.c.id] || top.o.r > won[top.c.id].o.r)) won[top.c.id] = { x, o: top.o, c: top.c };
+  });
+  cands.forEach(c => { const w = won[c.id]; if (w) an.done.push({ id: c.id, text: c.text, on: w.o.r >= .6, src: { who: w.x.who, ts: w.x.ts, q: mtShort(w.x.s) } }); });
+  if (an.phase && project && PH_INDEX[an.phase.key] <= phaseIdx(project)) an.phase = null;
+  if (an.phase) an.phase.on = !project || PH_INDEX[an.phase.key] === phaseIdx(project) + 1;
+  if (an.goLive && project && an.goLive.date === project.targetDate) an.goLive = null;
+  const blockersN = an.blockers.filter(b => b.kind === "blocker").length, risksN = an.blockers.filter(b => b.kind === "risk").length;
+  const crit = parsed.sentences.some(x => RX_CRIT.test(x.s) && !RX_RESOLVED.test(x.s));
+  let h = crit ? "red" : (blockersN || risksN >= 2) ? "amber" : (an.resolved && project && project.health !== "green" && !blockersN) ? "green" : "";
+  const cur = project ? project.health : "green";
+  an.health = h && h !== cur && cur !== "paused" ? { h, on: (HEALTH_ORDER[h] ?? 2) < (HEALTH_ORDER[cur] ?? 2), why: crit ? "kritische Aussagen im Meeting" : blockersN ? `${plural(blockersN, "Blocker", "Blocker")} genannt` : risksN >= 2 ? `${risksN} Risiken genannt` : "Blocker als gelöst gemeldet" } : null;
+  if (an.resolved && project && (project.blockers || "").trim()) an.resolved.on = !blockersN; else an.resolved = null;
+  const known = splitList(project ? project.team : "").map(n => n.toLowerCase());
+  const add = parsed.participants.filter(n => !known.some(k => k === n.toLowerCase() || firstName(k) === firstName(n).toLowerCase()) && !isMine(n));
+  if (add.length) an.team = { names: add, on: true };
+  // Next step: the action with the earliest due date, mine first if equal
+  const acts = an.actions.map((a, i) => ({ a, i })).filter(x => x.a.on);
+  if (acts.length){
+    acts.sort((x, y) => (x.a.due || "9999").localeCompare(y.a.due || "9999") || (isMine(y.a.owner) - isMine(x.a.owner)) || x.i - y.i);
+    an.ns = acts[0].i;
+    const nsDue = project ? daysFromToday(project.nextStepDue) : null;
+    an.nsOn = !project || !(project.nextStep || "").trim() || (nsDue !== null && nsDue < 0) || an.done.some(d => d.on && (d.id === "__next" || mtOverlap(d.text, project.nextStep).r >= .8));
+  } else { an.ns = -1; an.nsOn = false; }
+}
+
+/* ---------- Which project is this meeting about? ---------- */
+function mtMatch(parsed, fileName){
+  const all = parsed.sentences.map(x => x.s).concat(parsed.items.map(i => i.t)).join(" ");
+  const head = `${parsed.title} ${fileName || ""}`;
+  const toks = new Set(mtTokens(all)), headToks = new Set(mtTokens(head));
+  const res = state.projects.filter(p => !p.archived).map(p => {
+    let s = 0; const why = [];
+    const code = String(p.code || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (code && new RegExp(`\\b${code}\\b`, "i").test(head + " " + all)){ s += 100; why.push(`Projektcode ${p.code}`); }
+    const tt = mtTokens(p.title); const inHead = tt.filter(w => headToks.has(w)), inText = tt.filter(w => toks.has(w));
+    if (tt.length){ s += 30 * inHead.length / tt.length + 14 * inText.length / tt.length; }
+    if (inHead.length || inText.length) why.push(`Titelwörter: ${[...new Set(inHead.concat(inText))].slice(0, 4).join(", ")}`);
+    mtTokens([p.department, p.techStack, p.sponsor, p.region].join(" ")).forEach(w => { if (toks.has(w)) s += 1.5; });
+    const tm = splitList(p.team).map(n => n.toLowerCase());
+    const common = parsed.participants.filter(n => tm.some(k => k === n.toLowerCase()));
+    if (common.length){ s += 3 * common.length; why.push(`${plural(common.length, "Teilnehmer", "Teilnehmende")} im Projektteam`); }
+    openTasks(p).forEach(t => { if (mtOverlap(t.text, all).n >= 2) s += 2; });
+    if (p.focus) s += 1; if (isActive(p)) s += 1;
+    return { p, s: Math.round(s), why };
+  }).sort((a, b) => b.s - a.s);
+  return res;
+}
+
+/* ---------- Copilot (optional, higher accuracy) ---------- */
+function mtCopilotPrompt(){
+  const p = mt.target !== "new" ? state.projects.find(x => x.id === mt.target) : null;
+  const tasks = p ? openTasks(p).map(t => `- ${t.text}${t.owner ? ` (${t.owner})` : ""}`) : [];
+  return [`Werte das Transkript des Meetings „${mt.parsed.title}“ vom ${fmtDay(mt.parsed.date)} aus${p ? ` für das Projekt ${p.code} „${p.title}“` : ""}.`,
+    `Antworte ausschließlich mit JSON in genau diesem Format, ohne weiteren Text:`,
+    `{"summary":["Kernpunkt"],"actions":[{"text":"Was zu tun ist","owner":"Vorname Nachname","due":"JJJJ-MM-TT"}],"decisions":["Entscheidung"],"openDecisions":["Was noch entschieden werden muss"],"blockers":["Was das Projekt aufhält"],"risks":["Risiko"],"done":["Was als erledigt gemeldet wurde"],"goLive":"JJJJ-MM-TT","status":"green|amber|red","phase":"intake|analyse|konzept|build|test|golive|hypercare|done","project":{"title":"","description":"","goal":"","department":""}}`,
+    `Regeln:`,
+    `- Nur was im Meeting wirklich gesagt wurde. Leere Felder leer lassen.`,
+    `- owner nur, wenn eine Person die Aufgabe übernommen hat oder sie ihr zugewiesen wurde.`,
+    `- Relative Termine („bis Freitag“, „nächste Woche“) in ein Datum umrechnen. Bezug ist das Meetingdatum ${mt.parsed.date} (${fmtDay(mt.parsed.date)}).`,
+    `- summary: höchstens 5 Punkte, je ein Satz. Sprache: Deutsch.`,
+    p ? `- project nur ausfüllen, wenn es ein neues Projekt ist. Hier leer lassen.` : `- project: Titel, Beschreibung (Ist-Situation), Ziel und Fachbereich des besprochenen Vorhabens.`,
+    ...(tasks.length ? [`Offene Aufgaben im Projekt, für "done" abgleichen:`, ...tasks] : []),
+  ].join("\n");
+}
+function mtFromCopilot(text){
+  const m = String(text || "").match(/\{[\s\S]*\}/);
+  if (!m) throw new Error("In der Antwort wurde kein JSON gefunden. Bitte die komplette Copilot-Antwort einfügen.");
+  let j; try { j = JSON.parse(m[0]); } catch { throw new Error("Die Copilot-Antwort ist kein gültiges JSON. Bitte nur den JSON-Block einfügen."); }
+  const arr = v => Array.isArray(v) ? v.map(x => typeof x === "string" ? x.trim() : x).filter(Boolean) : [];
+  const day = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || "")) ? v : "";
+  const src = { who: "Copilot", ts: "", q: "" };
+  const p = mt.target !== "new" ? state.projects.find(x => x.id === mt.target) : null;
+  const people = mtPeople(mt.parsed);
+  const an = { actions:[], decisions:[], open:[], blockers:[], done:[], resolved:null, phase:null, goLive:null, health:null, summary: arr(j.summary).map(String).slice(0, 8), team:null, ns:-1, nsOn:false, copilot:true };
+  arr(j.actions).forEach(a => { const t = typeof a === "string" ? a : String(a.text || ""); if (!t.trim()) return; let o = typeof a === "object" ? String(a.owner || "").trim() : "";
+    const hit = people.find(n => n.toLowerCase() === o.toLowerCase() || firstName(n).toLowerCase() === firstName(o).toLowerCase()); an.actions.push({ text: t.trim().slice(0, 300), owner: hit || o, due: day(a.due), on: true, src }); });
+  arr(j.decisions).forEach(t => an.decisions.push({ text: String(t).slice(0, 400), on: true, src }));
+  arr(j.openDecisions).forEach(t => an.open.push({ text: String(t).slice(0, 400), on: true, src }));
+  arr(j.blockers).forEach(t => an.blockers.push({ text: String(t).slice(0, 400), kind: "blocker", on: true, src }));
+  arr(j.risks).forEach(t => an.blockers.push({ text: String(t).slice(0, 400), kind: "risk", on: false, src }));
+  if (day(j.goLive) && (!p || j.goLive !== p.targetDate)) an.goLive = { date: j.goLive, on: true, src };
+  if (j.phase && PH_INDEX.hasOwnProperty(j.phase) && (!p || PH_INDEX[j.phase] > phaseIdx(p))) an.phase = { key: j.phase, on: !p || PH_INDEX[j.phase] === phaseIdx(p) + 1, src };
+  if (HEALTH[j.status] && (!p || (j.status !== p.health && p.health !== "paused"))) an.health = { h: j.status, on: true, why: "Einschätzung von Copilot" };
+  // done items against open tasks
+  const doneList = arr(j.done).map(String);
+  if (p){
+    const cands = openTasks(p).map(t => ({ id: t.id, text: t.text }));
+    if ((p.nextStep || "").trim()) cands.push({ id: "__next", text: p.nextStep });
+    cands.forEach(c => { let best = null; doneList.forEach(d => { const o = mtOverlap(c.text, d); if (o.n >= 1 && o.r >= .34 && (!best || o.r > best.r)) best = { r: o.r, d }; });
+      if (best) an.done.push({ id: c.id, text: c.text, on: best.r >= .5, src: { who: "Copilot", ts: "", q: best.d } }); });
+  }
+  const known = splitList(p ? p.team : "").map(n => n.toLowerCase());
+  const add = mt.parsed.participants.filter(n => !known.includes(n.toLowerCase()) && !isMine(n));
+  if (add.length) an.team = { names: add, on: true };
+  const pr = j.project && typeof j.project === "object" ? j.project : {};
+  if (mt.target === "new"){
+    ["title", "description", "goal", "department"].forEach(k => { if (String(pr[k] || "").trim()) mt.newp[k] = String(pr[k]).trim().slice(0, k === "title" ? 160 : 1000); });
+  }
+  const acts = an.actions.map((a, i) => ({ a, i }));
+  if (acts.length){ acts.sort((x, y) => (x.a.due || "9999").localeCompare(y.a.due || "9999") || x.i - y.i); an.ns = acts[0].i;
+    an.nsOn = !p || !(p.nextStep || "").trim() || (daysFromToday(p.nextStepDue) ?? 0) < 0 || an.done.some(d => d.id === "__next" && d.on); }
+  return an;
+}
+
+/* ---------- New project from a meeting ---------- */
+function mtNewDraft(parsed){
+  const sents = parsed.sentences.map(x => x.s).filter(s => !RX_SMALLTALK.test(s) && mtWords(s).length >= 6);
+  const pick = (rx, n) => sents.filter(s => rx.test(s) && !RX_OPEN.test(s) && !/\?\s*$/.test(s)).slice(0, n).map(mtShort).join(" ");
+  const all = sents.join(" ") + " " + parsed.title;
+  const dept = MT_DEPTS.find(([rx]) => rx.test(all));
+  return {
+    title: parsed.title && parsed.title !== "Meeting" ? parsed.title : "",
+    description: pick(/\b(aktuell|heute|derzeit|momentan|problem|manuell|händisch|von hand|dauert|aufwand|prozess|currently|manual|today)\b/i, 2),
+    goal: pick(/\b(ziel|soll(en)?|wollen|damit|reduzieren|senken|sparen|schneller|automatisch|automatisieren|goal|aim|reduce|save)\b/i, 2),
+    department: dept ? dept[1] : "",
+  };
+}
+
+/* ---------- Dialog ---------- */
+let mt = null;   // { stage:"input"|"review", parsed, an, target, matches, newp, fileName, preset, cp }
+function mtClose(){ mt = null; $("#drawer-slot").innerHTML = ""; document.body.style.overflow = ""; }
+function mtOpen(presetId){
+  drawer = null; rqDrawer = null;
+  mt = { stage: "input", preset: presetId || "", cp: { open:false, err:"" } };
+  mtRender();
+}
+async function mtLoadFile(file, presetId){
+  try {
+    const r = await mtReadFile(file);
+    mtStart(r.text, r.name, r.kind, presetId);
+  } catch (err){ toast(err.message || "Die Datei konnte nicht gelesen werden."); }
+}
+function mtStart(text, fileName, kind, presetId){
+  drawer = null; rqDrawer = null;
+  const json = /"(actions|summary|decisions)"\s*:/.test(text) ? mtJsonParsed(text) : null;
+  const parsed = json || mtParse(text, fileName, kind);
+  if (!parsed.sentences.length && !parsed.items.length){ toast("In der Datei wurde kein Gesprächstext gefunden."); return; }
+  const matches = mtMatch(parsed, fileName);
+  const preset = presetId || (mt && mt.preset) || "";
+  const best = matches[0];
+  const target = preset && state.projects.some(p => p.id === preset) ? preset : (best && best.s >= 12 ? best.p.id : "new");
+  mt = { stage: "review", parsed, matches, fileName: fileName || "", target, preset, newp: mtNewDraft(parsed), cp: { open:false, err:"" } };
+  mtAnalyzeTarget();
+  if (json){ try { mt.an = mtFromCopilot(text); } catch (err){ toast(err.message); } }
+  mtRender();
+}
+function mtJsonParsed(text){
+  const m = String(text).match(/\{[\s\S]*\}/); if (!m) return null;
+  let j; try { j = JSON.parse(m[0]); } catch { return null; }
+  const pr = j.project && typeof j.project === "object" ? j.project : {};
+  const acts = Array.isArray(j.actions) ? j.actions : [];
+  const owners = [...new Set(acts.map(a => a && typeof a === "object" ? String(a.owner || "").trim() : "").filter(Boolean))];
+  const lines = [].concat(j.summary || [], acts.map(a => typeof a === "string" ? a : a && a.text), j.decisions || [], j.blockers || [], pr.title || [], pr.description || []).filter(x => typeof x === "string" && x.trim());
+  return { title: String(pr.title || "Meeting").slice(0, 160), date: todayISO(), minutes: 0, participants: owners, sentences: lines.map(s => ({ s, who: "", ts: "" })), items: [], kind: "copilot", chars: text.length };
+}
+function mtAnalyzeTarget(){
+  const p = mt.target === "new" ? null : state.projects.find(x => x.id === mt.target);
+  mt.an = mtAnalyze(mt.parsed, p);
+}
+const mtSrc = s => s && s.q ? `<div class="mt-src">${s.who ? `<b>${esc(s.who)}</b>${s.ts ? ` · ${esc(s.ts)}` : ""}: ` : ""}„${esc(s.q)}“</div>` : "";
+function mtRender(){
+  const slot = $("#drawer-slot");
+  document.body.style.overflow = "hidden";
+  if (mt.stage === "input"){
+    const pre = mt.preset ? state.projects.find(p => p.id === mt.preset) : null;
+    slot.innerHTML = `<div class="scrim" data-action="mt-close"></div>
+    <aside class="drawer mt" role="dialog" aria-modal="true" aria-labelledby="mt-h">
+      <div class="d-head"><div class="grow"><div class="eyebrow">${pre ? `<span class="mono">${esc(pre.code)}</span> · ${esc(pre.title)}` : "Projekt anlegen oder aktualisieren"}</div><h2 id="mt-h" style="font-size:22px">Meeting einlesen</h2></div><button class="btn ghost" data-action="mt-close" aria-label="Schließen">✕</button></div>
+      <div class="d-body">
+        <label class="mt-drop" id="mt-drop" for="mt-file">${ico("fileText")}<b>Teams-Transkript hierher ziehen oder auswählen</b><span>.vtt oder .docx aus Teams („Transkript herunterladen“), oder eine Mitschrift als .txt</span></label>
+        <input type="file" id="mt-file" accept=".vtt,.docx,.txt,.md,text/plain,text/vtt" hidden>
+        <section class="d-sec"><h2>Oder Text einfügen</h2>
+          <p class="muted" style="margin:0;font-size:13.5px">Zum Beispiel die KI-Notizen und Folgeaufgaben aus der Teams-Besprechungszusammenfassung, eine Copilot-Antwort oder deine eigene Mitschrift.</p>
+          <textarea id="mt-text" class="mt-paste" placeholder="Ricardo Serrano: Stand Datenexport ist da, Qualität passt.&#10;Tobias Backhaus: Ich kläre bis Freitag den API-Zugang mit der IT.&#10;Wir haben entschieden, mit Region Nordwest zu starten."></textarea>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn primary" data-action="mt-text">Auswerten</button><span class="muted" style="font-size:12.5px">Strg+Enter</span></div>
+        </section>
+        <div class="mt-privacy">${ico("shield")}<span>Die Auswertung läuft nur in diesem Browser. Das Transkript wird nicht gespeichert und nirgends hochgeladen. Ins Projekt kommt nur, was du im nächsten Schritt bestätigst.</span></div>
+      </div>
+    </aside>`;
+    setTimeout(() => $("#mt-text") && $("#mt-text").focus(), 30);
+    return;
+  }
+  const { parsed, an } = mt;
+  const p = mt.target === "new" ? null : state.projects.find(x => x.id === mt.target);
+  const people = mtPeople(parsed);
+  const cb = (path, on) => `<input type="checkbox" data-mtk="${path}.on" ${on ? "checked" : ""}>`;
+  const projOpts = mt.matches.slice(0, 30).map(m => `<option value="${esc(m.p.id)}" ${mt.target === m.p.id ? "selected" : ""}>${esc(m.p.code)} · ${esc(m.p.title || "Ohne Titel")}${m.s >= 12 && m === mt.matches[0] ? " (erkannt)" : ""}</option>`).join("");
+  const best = mt.matches[0];
+  const why = p && best && best.p.id === p.id && best.why.length ? `Erkannt über ${best.why.join(" · ")}` : p ? "Von dir gewählt" : (best && best.s > 0 ? `Kein Projekt eindeutig erkannt. Am ähnlichsten: ${best.p.code} ${best.p.title}` : "Noch kein passendes Projekt im Radar.");
+  const sec = (title, n, body, extra) => `<section class="d-sec"><div class="section-head" style="margin:0"><h2>${title}${n !== null ? ` <span class="count num">${n}</span>` : ""}</h2>${extra || ""}</div>${body}</section>`;
+  const actions = an.actions.length ? `<div class="mt-rows">${an.actions.map((a, i) => `<div class="mt-row ${a.on ? "" : "off"}">
+      ${cb(`actions.${i}`, a.on)}
+      <div class="mt-main"><input class="mt-in" data-mtk="actions.${i}.text" value="${esc(a.text)}" aria-label="Aufgabe">
+        <div class="mt-meta"><input class="mt-owner" data-mtk="actions.${i}.owner" value="${esc(a.owner)}" list="mt-people" placeholder="Wer?" aria-label="Verantwortlich"><input type="date" class="mt-due" data-mtk="actions.${i}.due" value="${esc(a.due)}" aria-label="Fällig">
+        <label class="mt-ns"><input type="radio" name="mt-ns" data-mtns="${i}" ${an.ns === i && an.nsOn ? "checked" : ""}>Als nächster Schritt</label></div>${mtSrc(a.src)}</div></div>`).join("")}
+      <label class="mt-ns" style="padding:6px 0 0 30px"><input type="radio" name="mt-ns" data-mtns="-1" ${!(an.ns >= 0 && an.nsOn) ? "checked" : ""}>Nächsten Schritt nicht ändern${p && p.nextStep ? `: <span class="muted">„${esc(p.nextStep)}“</span>` : ""}</label></div>`
+    : `<div class="muted" style="font-size:14px">Keine Aufgaben erkannt. Tipp: Formulierungen wie „Ich kläre bis Freitag …“ oder „Kannst du bitte … schicken?“ werden erkannt.</div>`;
+  const list = (key, label, items, render) => items.length ? sec(label, items.length, `<div class="mt-rows">${items.map((it, i) => `<div class="mt-row ${it.on ? "" : "off"}">${cb(`${key}.${i}`, it.on)}<div class="mt-main">${render ? render(it, i) : `<textarea class="mt-in" rows="1" data-mtk="${key}.${i}.text">${esc(it.text)}</textarea>`}${mtSrc(it.src)}</div></div>`).join("")}</div>`) : "";
+  const done = p && an.done.length ? sec("Als erledigt erkannt", an.done.length, `<div class="mt-rows">${an.done.map((d, i) => `<div class="mt-row ${d.on ? "" : "off"}">${cb(`done.${i}`, d.on)}<div class="mt-main"><div><s>${esc(d.text)}</s> ${d.id === "__next" ? `<span class="tag" style="background:var(--surface-2)">nächster Schritt</span>` : ""}</div>${mtSrc(d.src)}</div></div>`).join("")}</div>`) : "";
+  const changes = [];
+  if (an.phase) changes.push(`<div class="mt-row ${an.phase.on ? "" : "off"}">${cb("phase", an.phase.on)}<div class="mt-main"><div>Phase → <b>${esc(PHASES[PH_INDEX[an.phase.key]].long)}</b>${p ? ` <span class="muted">(bisher ${esc(PHASES[phaseIdx(p)].long)})</span>` : ""}</div>${mtSrc(an.phase.src)}</div></div>`);
+  if (an.goLive) changes.push(`<div class="mt-row ${an.goLive.on ? "" : "off"}">${cb("goLive", an.goLive.on)}<div class="mt-main"><div>Go-live → <input type="date" class="mt-due" data-mtk="goLive.date" value="${esc(an.goLive.date)}">${p && p.targetDate ? ` <span class="muted">(bisher ${esc(fmtDay(p.targetDate))})</span>` : ""}</div>${mtSrc(an.goLive.src)}</div></div>`);
+  if (an.health) changes.push(`<div class="mt-row ${an.health.on ? "" : "off"}">${cb("health", an.health.on)}<div class="mt-main"><div>Status → ${healthHtml(an.health.h)} <span class="muted">${esc(an.health.why)}</span></div></div></div>`);
+  if (an.resolved && p && (p.blockers || "").trim()) changes.push(`<div class="mt-row ${an.resolved.on ? "" : "off"}">${cb("resolved", an.resolved.on)}<div class="mt-main"><div>Bisherigen Blocker entfernen: <span class="muted">„${esc(p.blockers)}“</span></div>${mtSrc(an.resolved.src)}</div></div>`);
+  if (an.team) changes.push(`<div class="mt-row ${an.team.on ? "" : "off"}">${cb("team", an.team.on)}<div class="mt-main"><div>Ins Projektteam übernehmen: <b>${esc(an.team.names.join(", "))}</b></div></div></div>`);
+  const n = mtCount();
+  slot.innerHTML = `<div class="scrim" data-action="mt-close"></div>
+  <aside class="drawer mt" role="dialog" aria-modal="true" aria-labelledby="mt-title">
+    <div class="d-head"><div class="grow">
+      <div class="eyebrow">Meeting auswerten · ${esc({ vtt:"Teams-Transkript", docx:"Word-Transkript", text:"Text" }[parsed.kind] || "Text")}${mt.fileName ? ` · ${esc(mt.fileName)}` : ""}</div>
+      <input class="d-title" id="mt-title" data-mtk="title" value="${esc(parsed.title)}" aria-label="Meeting-Titel">
+      <div class="mt-facts"><label>${ico("clock")}<input type="date" data-mtk="date" value="${esc(parsed.date)}" aria-label="Meetingdatum"></label>${parsed.minutes ? `<span>${parsed.minutes} min</span>` : ""}${parsed.participants.length ? `<span>${ico("users")}${esc(parsed.participants.slice(0, 6).join(", "))}${parsed.participants.length > 6 ? ` +${parsed.participants.length - 6}` : ""}</span>` : ""}</div>
+    </div><button class="btn ghost" data-action="mt-close" aria-label="Schließen">✕</button></div>
+    <div class="d-body">
+      <section class="d-sec mt-target"><div class="section-head" style="margin:0"><h2>Projekt</h2>${an.copilot ? `<span class="tag qw">Ausgewertet mit Copilot</span>` : ""}</div>
+        <select id="mt-target" aria-label="Projekt">${projOpts}<option value="new" ${mt.target === "new" ? "selected" : ""}>+ Neues Projekt aus diesem Meeting anlegen</option></select>
+        <div class="muted" style="font-size:13px">${esc(why)}</div>
+        ${mt.target === "new" ? `<div class="form">
+          <div class="f full"><label for="mt-np-title">Projekttitel</label><input id="mt-np-title" data-mtnp="title" value="${esc(mt.newp.title)}" placeholder="z. B. Angebotsanfragen automatisch vorsortieren"></div>
+          <div class="f"><label for="mt-np-dept">Fachbereich</label><input id="mt-np-dept" data-mtnp="department" value="${esc(mt.newp.department)}" list="dl-mt-dept"></div>
+          <div class="f"><label>Start</label><input value="${esc(fmtDay(parsed.date))}" disabled></div>
+          <div class="f full"><label for="mt-np-desc">Beschreibung</label><textarea id="mt-np-desc" data-mtnp="description" placeholder="Was ist das Problem heute?">${esc(mt.newp.description)}</textarea></div>
+          <div class="f full"><label for="mt-np-goal">Ziel & Nutzen</label><textarea id="mt-np-goal" data-mtnp="goal" placeholder="Was soll besser werden?">${esc(mt.newp.goal)}</textarea></div>
+        </div>` : ""}
+      </section>
+      ${sec("Kernpunkte", an.summary.length, `<label class="mt-row" style="align-items:center">${cb("sum", an.sumOn !== false)}<span style="font-size:13.5px">Als Meeting-Protokoll im Projektverlauf speichern</span></label>
+        <textarea class="mt-sum" data-mtk="summaryText" rows="${Math.max(3, an.summary.length + 1)}" placeholder="Ein Punkt pro Zeile">${esc(an.summary.join("\n"))}</textarea>`)}
+      ${sec("Aufgaben", an.actions.length, actions, `<span class="muted" style="font-size:12.5px">Owner und Fälligkeit aus dem Gespräch, bitte prüfen</span>`)}
+      ${done}
+      ${list("decisions", "Entscheidungen", an.decisions)}
+      ${list("open", "Offene Entscheidungen", an.open)}
+      ${list("blockers", "Blocker & Risiken", an.blockers, (b, i) => `<textarea class="mt-in" rows="1" data-mtk="blockers.${i}.text">${esc(b.text)}</textarea><span class="tag ${b.kind === "blocker" ? "risk" : ""}" style="${b.kind === "blocker" ? "" : "background:var(--surface-2);color:var(--ink-2)"};align-self:flex-start">${b.kind === "blocker" ? "Blocker" : "Risiko"}</span>`)}
+      ${changes.length ? sec("Projektstand", null, `<div class="mt-rows">${changes.join("")}</div>`) : ""}
+      <section class="d-sec mt-cp"><div class="section-head" style="margin:0"><h2>${ico("sparkles")}Genauer mit Copilot <span class="muted" style="font-weight:400;font-size:13px">optional</span></h2><button class="btn small" data-action="mt-cp-toggle">${mt.cp.open ? "Ausblenden" : "So geht's"}</button></div>
+        ${mt.cp.open ? `<ol class="mt-steps">
+          <li>Prompt kopieren und in Microsoft Copilot einfügen, am besten im Chat der Besprechung in Teams (dort kennt Copilot das Transkript). Sonst das Transkript dazu einfügen.</li>
+          <li>Die Antwort von Copilot komplett kopieren und hier einfügen. Die Vorschläge oben werden dann durch das Copilot-Ergebnis ersetzt.</li></ol>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="mt-cp-copy">Prompt kopieren</button></div>
+          <textarea id="mt-cp-answer" class="mt-paste" style="min-height:110px" placeholder='{"summary":[…],"actions":[…]}'></textarea>
+          ${mt.cp.err ? `<div class="gate-note">${esc(mt.cp.err)}</div>` : ""}
+          <div><button class="btn small primary" data-action="mt-cp-apply">Copilot-Antwort übernehmen</button></div>` : `<p class="muted" style="margin:0;font-size:13.5px">Die lokale Auswertung erkennt typische Formulierungen. Bei langen oder unstrukturierten Meetings liefert Copilot im CWS-Tenant genauere Aufgaben und Zusammenfassungen.</p>`}
+      </section>
+    </div>
+    <div class="d-foot"><span class="muted" id="mt-count" style="font-size:13px">${esc(n)}</span>
+      <div style="display:flex;gap:8px"><button class="btn" data-action="mt-back">Anderes Meeting</button><button class="btn primary" data-action="mt-apply">${mt.target === "new" ? "Projekt anlegen" : "Ins Projekt übernehmen"}</button></div></div>
+    <datalist id="mt-people">${people.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
+    <datalist id="dl-mt-dept">${[...new Set(state.projects.map(x => x.department).filter(Boolean))].map(v => `<option value="${esc(v)}">`).join("")}</datalist>
+  </aside>`;
+  document.querySelectorAll(".mt textarea.mt-in").forEach(autoGrow);
+}
+function autoGrow(el){ el.style.height = "auto"; el.style.height = Math.min(el.scrollHeight + 2, 220) + "px"; }
+function mtCount(){
+  if (!mt || !mt.an) return "";
+  const an = mt.an, on = a => a.filter(x => x.on).length;
+  const parts = [];
+  const a = on(an.actions); if (a) parts.push(plural(a, "Aufgabe", "Aufgaben"));
+  const d = on(an.done); if (d && mt.target !== "new") parts.push(`${d} erledigt`);
+  const de = on(an.decisions); if (de) parts.push(plural(de, "Entscheidung", "Entscheidungen"));
+  const b = on(an.blockers); if (b) parts.push(plural(b, "Blocker/Risiko", "Blocker/Risiken"));
+  return parts.length ? `Übernimmt ${parts.join(", ")}` : "Nur das Protokoll wird gespeichert";
+}
+function mtSet(path, v){
+  const k = path.split("."); let o = mt.an;
+  if (k[0] === "title"){ mt.parsed.title = v; return; }
+  if (k[0] === "date"){ if (/^\d{4}-\d{2}-\d{2}$/.test(v)) mt.parsed.date = v; return; }
+  if (k[0] === "sum"){ mt.an.sumOn = v; return; }
+  if (k[0] === "summaryText"){ mt.an.summary = String(v).split("\n").map(s => s.trim()).filter(Boolean); return; }
+  for (let i = 0; i < k.length - 1; i++){ o = o[k[i]]; if (o == null) return; }
+  o[k[k.length - 1]] = v;
+}
+const mtJoin = (old, add) => { const have = String(old || "").trim(); const lines = add.filter(x => !have.toLowerCase().includes(x.toLowerCase().slice(0, 40))); return [have, ...lines].filter(Boolean).join("\n"); };
+async function mtApply(){
+  const { parsed, an } = mt;
+  const isNew = mt.target === "new";
+  let p;
+  if (isNew){
+    if (!mt.newp.title.trim()){ toast("Bitte einen Projekttitel eingeben."); $("#mt-np-title") && $("#mt-np-title").focus(); return; }
+    p = blankProject();
+    Object.assign(p, { title: mt.newp.title.trim(), department: mt.newp.department.trim(), description: mt.newp.description.trim(), goal: mt.newp.goal.trim(), startDate: parsed.date });
+    if (an.phase && an.phase.on) p.phase = an.phase.key;
+    pushLog(p, logEntry(`Projekt aus Meeting „${parsed.title}“ angelegt`, "system"));
+  } else {
+    const cur = state.projects.find(x => x.id === mt.target); if (!cur){ toast("Projekt nicht gefunden."); return; }
+    p = clone(cur);
+  }
+  p.tasks = p.tasks || []; p.decisions = p.decisions || []; p.meetings = p.meetings || [];
+  const meetingId = rid(); const counts = { a:0, d:0, b:0, x:0 };
+  // done first, so a finished next step can be replaced
+  if (!isNew) an.done.filter(d => d.on).forEach(d => {
+    if (d.id === "__next"){ pushLog(p, logEntry(`Nächster Schritt erledigt: ${p.nextStep}`, "system")); p.nextStep = ""; p.nextStepDue = ""; counts.x++; return; }
+    const tk = p.tasks.find(t => t.id === d.id); if (!tk || tk.status === TASK_DONE) return;
+    tk.status = TASK_DONE; tk.doneAt = nowISO(); counts.x++;
+    pushLog(p, logEntry(`Aufgabe erledigt (Meeting): ${tk.text}${tk.owner ? ` (${tk.owner})` : ""}`, "system"));
+    advanceNextStep(p, tk);
+  });
+  let nsTask = null;
+  an.actions.forEach((a, i) => {
+    if (!a.on || !a.text.trim()) return;
+    const dup = openTasks(p).find(t => mtOverlap(a.text, t.text).r >= .8 && mtOverlap(t.text, a.text).r >= .8);
+    if (dup){ if (!dup.due && a.due) dup.due = a.due; if (!dup.owner && a.owner) dup.owner = a.owner.trim(); if (i === an.ns) nsTask = dup; return; }
+    const t = { id: rid(), text: a.text.trim().slice(0, 500), owner: (a.owner || "").trim().slice(0, 80), due: /^\d{4}-\d{2}-\d{2}$/.test(a.due) ? a.due : "", status: TASK_OPEN, note: "", createdAt: nowISO(), doneAt: "", meetingId };
+    p.tasks.push(t); counts.a++;
+    if (i === an.ns) nsTask = t;
+  });
+  if (an.nsOn && nsTask){ p.nextStep = nsTask.text; p.nextStepDue = nsTask.due || ""; pushLog(p, logEntry(`Nächster Schritt: ${nsTask.text}${nsTask.due ? ` (bis ${fmtDay(nsTask.due)})` : ""}`, "system")); }
+  else if (!(p.nextStep || "").trim()) advanceNextStep(p, null);
+  const decs = an.decisions.filter(d => d.on && d.text.trim());
+  decs.forEach(d => { p.decisions.unshift({ id: rid(), text: d.text.trim().slice(0, 400), date: parsed.date, meetingId }); pushLog(p, logEntry(`Entscheidung: ${d.text.trim()}`, "system")); counts.d++; });
+  const open = an.open.filter(d => d.on && d.text.trim()).map(d => d.text.trim());
+  if (open.length) p.openDecisions = mtJoin(p.openDecisions, open);
+  if (an.resolved && an.resolved.on && !isNew && (p.blockers || "").trim()){ pushLog(p, logEntry(`Blocker gelöst: ${p.blockers}`, "system")); p.blockers = ""; }
+  const bl = an.blockers.filter(b => b.on && b.text.trim()).map(b => (b.kind === "risk" ? "Risiko: " : "") + b.text.trim());
+  if (bl.length){ p.blockers = mtJoin(p.blockers, bl); counts.b = bl.length; }
+  if (!isNew && an.phase && an.phase.on && PH_INDEX[an.phase.key] > phaseIdx(p)){ p.phase = an.phase.key; if (p.phase === "done") p.doneAt = nowISO(); pushLog(p, logEntry(`Phase: ${PHASES[PH_INDEX[p.phase]].long} (aus Meeting)`, "system")); }
+  if (an.goLive && an.goLive.on && /^\d{4}-\d{2}-\d{2}$/.test(an.goLive.date)){ if (!isNew && p.targetDate) pushLog(p, logEntry(`Go-live: ${fmtDay(p.targetDate)} → ${fmtDay(an.goLive.date)}`, "system")); p.targetDate = an.goLive.date; }
+  if (an.health && an.health.on){ p.health = an.health.h; if (!isNew) pushLog(p, logEntry(`Status: ${HEALTH[an.health.h].label} (aus Meeting)`, "system")); }
+  if (an.team && an.team.on) p.team = [...splitList(p.team), ...an.team.names].join(", ");
+  const summary = an.sumOn === false ? [] : an.summary.slice(0, 10);
+  p.meetings.unshift({ id: meetingId, date: parsed.date, title: parsed.title.slice(0, 160), participants: parsed.participants.slice(0, 30), minutes: parsed.minutes || 0, summary, counts: { a: counts.a, d: counts.d, b: counts.b, x: counts.x }, source: an.copilot ? "copilot" : parsed.kind, at: nowISO() });
+  p.meetings = p.meetings.slice(0, 50); p.decisions = p.decisions.slice(0, 200);
+  const facts = [counts.a && plural(counts.a, "neue Aufgabe", "neue Aufgaben"), counts.x && `${counts.x} erledigt`, counts.d && plural(counts.d, "Entscheidung", "Entscheidungen"), counts.b && plural(counts.b, "Blocker/Risiko", "Blocker/Risiken")].filter(Boolean).join(", ");
+  const logTxt = `Meeting „${parsed.title}“ (${fmtDay(parsed.date)})${facts ? `: ${facts}` : ""}${summary.length ? `. ${summary.slice(0, 3).join(" · ")}` : ""}`;
+  pushLog(p, logEntry(logTxt.length > 700 ? logTxt.slice(0, 697) + " …" : logTxt, "update"));
+  p.updatedAt = nowISO(); if (isNew) p.createdAt = nowISO();
+  await Store.saveProject(p);
+  mtClose(); render();
+  toast(isNew ? `${p.code} „${p.title}“ aus dem Meeting angelegt` : `${p.code}: Meeting übernommen${facts ? ` (${facts})` : ""}`);
+  openDrawer(p.id, { tab: counts.a || counts.x ? "tasks" : "overview" });
+}
+
+/* ---------- Next step moves on by itself ---------- */
+function advanceNextStep(p, doneTask){
+  const ns = (p.nextStep || "").trim();
+  const finished = doneTask && ns && (ns.toLowerCase() === doneTask.text.trim().toLowerCase() || (mtOverlap(ns, doneTask.text).r >= .8 && mtOverlap(doneTask.text, ns).r >= .8));
+  if (ns && !finished) return false;
+  const nxt = openTasks(p).sort(byDue)[0];
+  if (!nxt){ if (finished){ p.nextStep = ""; p.nextStepDue = ""; } return false; }
+  p.nextStep = nxt.text; p.nextStepDue = nxt.due || "";
+  pushLog(p, logEntry(`Nächster Schritt rückt nach: ${nxt.text}${nxt.due ? ` (bis ${fmtDay(nxt.due)})` : ""}`, "system"));
+  return true;
+}
+
+/* ---------- Status suggestion from the facts ---------- */
+function suggestHealth(p){
+  if (!isActive(p) || p.health === "paused") return null;
+  const why = [];
+  const ns = daysFromToday(p.nextStepDue);
+  const od = openTasks(p).filter(taskOverdue).length;
+  const s = schedule(p); const delay = s.delay || 0;
+  const gl = daysFromToday(p.targetDate);
+  const blocker = !!(p.blockers || "").trim();
+  let h = "green";
+  if (ns !== null && ns < -7){ h = "red"; why.push(`nächster Schritt ${-ns} Tage überfällig`); }
+  if (gl !== null && gl < 0 && phaseIdx(p) < PH_INDEX.golive){ h = "red"; why.push("Go-live-Datum überschritten"); }
+  if (delay > 21){ h = "red"; why.push(`${delay} Tage Verzug`); }
+  if (od >= 2 && blocker){ h = "red"; why.push(`${od} Aufgaben überfällig und ein Blocker`); }
+  if (h === "green"){
+    if (blocker){ h = "amber"; why.push("offener Blocker"); }
+    if (od){ h = "amber"; why.push(plural(od, "Aufgabe überfällig", "Aufgaben überfällig")); }
+    if (ns !== null && ns < 0){ h = "amber"; why.push("nächster Schritt überfällig"); }
+    if (delay >= 7){ h = "amber"; why.push(`${delay} Tage Verzug`); }
+  }
+  if (h === p.health) return null;
+  if (h === "green" && p.health !== "green"){ return { h, why: ["keine überfälligen Punkte, kein Blocker, im Zeitplan"] }; }
+  return { h, why };
+}
+
+/* ---------- Agenda for the next meeting ---------- */
+function agendaText(p){
+  const last = (p.meetings || [])[0];
+  const since = last ? last.at || last.date : null;
+  const doneSince = (p.tasks || []).filter(t => t.status === TASK_DONE && t.doneAt && (!since || t.doneAt >= since));
+  const open = openTasks(p).sort((a, b) => (taskOverdue(b) - taskOverdue(a)) || byDue(a, b));
+  const rs = readinessStats(p);
+  const s = schedule(p);
+  const L = [`Agenda · ${p.code} ${p.title} · ${fmtDay(todayISO())}`, ""];
+  let n = 1;
+  L.push(`${n++}. Stand: ${PHASES[phaseIdx(p)].long}, ${progress(p)} %, Status ${(HEALTH[p.health] || HEALTH.green).label}${s.delay ? `, ${fmtDelay(s.delay)}` : ""}${p.targetDate ? `, Go-live ${fmtDay(p.targetDate)}` : ""}`);
+  if (doneSince.length) L.push(`${n++}. Erledigt seit ${last ? "dem letzten Meeting" : "Start"}:`, ...doneSince.map(t => `   - ${t.text}${t.owner ? ` (${t.owner})` : ""}`));
+  if (open.length) L.push(`${n++}. Offene Aufgaben:`, ...open.slice(0, 12).map(t => `   - ${t.text}${t.owner ? ` → ${t.owner}` : ""}${t.due ? `, fällig ${fmtDay(t.due)}` : ""}${taskOverdue(t) ? " (überfällig)" : ""}`));
+  if ((p.blockers || "").trim()) L.push(`${n++}. Blocker und Risiken:`, ...p.blockers.split("\n").filter(Boolean).map(b => `   - ${b}`));
+  if ((p.openDecisions || "").trim()) L.push(`${n++}. Zu entscheiden:`, ...p.openDecisions.split("\n").filter(Boolean).map(b => `   - ${b}`));
+  if (rs && rs.critOpen.length && phaseIdx(p) <= PH_INDEX.konzept) L.push(`${n++}. Offene kritische Readiness-Fragen:`, ...rs.critOpen.slice(0, 6).map(i => `   - Nr. ${i.nr}: ${deUi(i.q)}`));
+  L.push(`${n++}. Nächste Schritte, Owner und Termine festlegen`);
+  return L.join("\n");
+}
+
+/* ---------- Quick capture (Ctrl+K) ---------- */
+let qc = null;  // { text, pid }
+function qcOpen(){
+  if (mt) return;
+  qc = { text: "", pid: drawer && drawer.id ? drawer.id : "" };
+  const slot = $("#qc-slot");
+  slot.innerHTML = `<div class="qc-scrim" data-action="qc-close"></div>
+  <div class="qc" role="dialog" aria-modal="true" aria-label="Schnell erfassen">
+    <div class="qc-in">${ico("zap")}<input id="qc-input" autocomplete="off" spellcheck="false" placeholder="z. B. AI-003 Abnahme erledigt, nächster Schritt: Go-live vorbereiten bis Freitag @Tobias"></div>
+    <div class="qc-body" id="qc-body"></div>
+  </div>`;
+  qcPreview();
+  $("#qc-input").focus();
+}
+function qcClose(){ qc = null; $("#qc-slot").innerHTML = ""; }
+function qcProject(text){
+  const code = text.match(/\b(AI-\d{1,4})\b/i);
+  if (code){ const p = state.projects.find(x => x.code.toLowerCase() === code[1].toLowerCase()); if (p) return { p, code: code[0] }; }
+  let best = null;
+  state.projects.filter(p => !p.archived).forEach(p => { const o = mtOverlap(p.title, text); const sc = o.n * 2 + o.r; if (o.n >= 1 && (o.n >= 2 || o.r >= .5) && (!best || sc > best.sc)) best = { p, sc }; });
+  return best ? { p: best.p } : null;
+}
+function qcParse(text, p){
+  const ref = todayISO(); const people = mtPeople({ participants: [] });
+  const ops = []; let rest = [];
+  const segs = text.split(/\s*(?:;|\n|,\s*(?=(?:nächster schritt|ns|next step|aufgabe|todo|to-do|task|entscheidung|decision|blocker|risiko|status|go-?live|phase)\b))\s*/i).map(s => s.trim()).filter(Boolean);
+  segs.forEach(seg => {
+    let m;
+    const date = mtDate(seg, ref);
+    const strip = s => (date ? mtStripDate(s, date.raw) : s).replace(/@[\p{L}][\p{L}.'-]*(\s+[\p{Lu}][\p{L}.'-]*)?/u, "").replace(/\s{2,}/g, " ").trim().replace(/[,;:]$/, "");
+    if ((m = seg.match(/^(?:nächster schritt|ns|next step)\s*:?\s*(.+)$/i))){ ops.push({ k: "next", text: strip(m[1]), due: date ? date.iso : "", owner: mtFindPerson(m[1], people) }); return; }
+    if ((m = seg.match(/^(?:aufgabe|todo|to-do|task)\s*:?\s*(.+)$/i)) || /@[\p{L}]/u.test(seg)){ const body = m ? m[1] : seg; ops.push({ k: "task", text: strip(body), due: date ? date.iso : "", owner: mtFindPerson(body, people) }); return; }
+    if ((m = seg.match(/^(?:entscheidung|decision|entschieden|beschlossen)\s*:?\s*(.+)$/i))){ ops.push({ k: "decision", text: m[1].trim() }); return; }
+    if ((m = seg.match(/^(?:blocker|blockiert)\s*:?\s*(.+)$/i))){ ops.push({ k: "blocker", text: m[1].trim() }); return; }
+    if ((m = seg.match(/^risiko\s*:?\s*(.+)$/i))){ ops.push({ k: "blocker", text: "Risiko: " + m[1].trim() }); return; }
+    if ((m = seg.match(/^status\s*:?\s*(rot|kritisch|red|gelb|gefährdet|amber|grün|im plan|green|on track|pausiert|paused)\b/i))){ const v = m[1].toLowerCase(); ops.push({ k: "health", h: /rot|krit|red/.test(v) ? "red" : /gelb|gefähr|amber/.test(v) ? "amber" : /paus/.test(v) ? "paused" : "green" }); return; }
+    if (/^go-?live\b/i.test(seg) && date){ ops.push({ k: "golive", date: date.iso }); return; }
+    if ((m = seg.match(/^phase\s*:?\s*(.+)$/i))){ const k = m[1].trim().toLowerCase(); const ph = PHASES.find(x => x.key === k || x.label.toLowerCase().startsWith(k) || x.long.toLowerCase().startsWith(k)); if (ph){ ops.push({ k: "phase", key: ph.key }); return; } }
+    if (p && (RX_DONE.test(seg) || RX_PAST.test(seg))){
+      const cands = openTasks(p).map(t => ({ t, o: mtOverlap(t.text, seg) })).filter(x => x.o.n >= 1 && x.o.r >= .5).sort((a, b) => b.o.r - a.o.r);
+      if (cands.length){ ops.push({ k: "done", id: cands[0].t.id, text: cands[0].t.text }); rest.push(seg); return; }
+      if ((p.nextStep || "").trim() && mtOverlap(p.nextStep, seg).r >= .5){ ops.push({ k: "done", id: "__next", text: p.nextStep }); rest.push(seg); return; }
+    }
+    // Spoken style: "Tobias klärt bis Freitag den Zugang", "Ich schicke morgen die Zahlen"
+    const an = mtAnalyze({ participants: [], sentences: [{ s: seg, who: myProfile().name, ts: "" }], items: [], date: ref, title: "" }, null);
+    if (an.actions.length){ const a = an.actions[0]; ops.push({ k: "task", text: a.text, due: a.due, owner: a.owner }); return; }
+    if (an.decisions.length){ ops.push({ k: "decision", text: seg }); return; }
+    rest.push(seg);
+  });
+  const note = rest.join(", ").trim();
+  if (note && note.length > 2) ops.unshift({ k: "update", text: note.charAt(0).toUpperCase() + note.slice(1) });
+  return ops;
+}
+function qcPreview(){
+  if (!qc) return;
+  const raw = qc.text.trim();
+  let hit = raw ? qcProject(raw) : null;
+  if (qc.pid && !(hit && hit.code)) hit = { p: state.projects.find(x => x.id === qc.pid) };
+  const p = hit && hit.p;
+  const text = hit && hit.code ? raw.replace(hit.code, "").replace(/^[\s:,-]+/, "") : raw;
+  const ops = text ? qcParse(text, p) : [];
+  qc.ops = ops; qc.p = p;
+  const label = { update: "Update im Verlauf", task: "Aufgabe", next: "Nächster Schritt", decision: "Entscheidung", blocker: "Blocker", health: "Status", golive: "Go-live", phase: "Phase", done: "Erledigt" };
+  const line = o => {
+    const extra = o.k === "task" || o.k === "next" ? `${o.owner ? ` · ${esc(o.owner)}` : ""}${o.due ? ` · bis ${esc(fmtDay(o.due))}` : ""}` : "";
+    const body = o.k === "health" ? healthHtml(o.h) : o.k === "golive" ? esc(fmtDay(o.date)) : o.k === "phase" ? esc(PHASES[PH_INDEX[o.key]].long) : o.k === "done" ? `<s>${esc(o.text)}</s>` : esc(o.text);
+    return `<div class="qc-op"><span class="qc-k ${o.k}">${esc(label[o.k])}</span><span>${body}${extra}</span></div>`;
+  };
+  const projSel = `<select id="qc-proj" aria-label="Projekt"><option value="">Projekt wählen …</option>${state.projects.filter(x => !x.archived).map(x => `<option value="${esc(x.id)}" ${p && p.id === x.id ? "selected" : ""}>${esc(x.code)} · ${esc(x.title || "Ohne Titel")}</option>`).join("")}</select>`;
+  $("#qc-body").innerHTML = raw ? `<div class="qc-proj">${projSel}${p && !qc.pid ? `<span class="muted" style="font-size:12.5px">${hit.code ? "per Code erkannt" : "am Titel erkannt"}</span>` : ""}</div>
+      ${ops.map(line).join("")}
+      <div class="qc-foot"><span class="muted">Enter übernimmt · Esc schließt</span>${p ? "" : `<span style="color:var(--warn)">Bitte ein Projekt wählen</span>`}</div>`
+    : `<div class="qc-help"><b>Ein Satz genügt.</b> Das Radar erkennt Projekt, Aufgabe, Owner und Termin.
+      <ul><li><span class="mono">AI-003 Abnahme erledigt</span> hakt die passende Aufgabe ab</li>
+      <li><span class="mono">nächster Schritt: Go-live vorbereiten bis 15.10.</span></li>
+      <li><span class="mono">Tobias klärt bis Freitag den API-Zugang</span> oder <span class="mono">@Tobias …</span> wird eine Aufgabe</li>
+      <li><span class="mono">Entscheidung: Start mit Region Nordwest</span> · <span class="mono">Blocker: …</span> · <span class="mono">Status gelb</span> · <span class="mono">Go-live 30.11.</span></li></ul>
+      <div class="muted">Mehrere Punkte mit Semikolon trennen. Ohne Stichwort wird der Text ein Update im Verlauf.</div></div>`;
+}
+async function qcApply(){
+  if (!qc || !qc.ops || !qc.ops.length) return;
+  const p = qc.p; if (!p){ $("#qc-proj") && $("#qc-proj").focus(); return; }
+  const ops = qc.ops; const done = [];
+  await patchProject(p.id, x => {
+    x.tasks = x.tasks || []; x.decisions = x.decisions || [];
+    ops.forEach(o => {
+      if (o.k === "update"){ pushLog(x, logEntry(o.text, "update")); done.push("Update"); }
+      if (o.k === "task" && o.text){ x.tasks.push({ id: rid(), text: o.text.slice(0, 500), owner: (o.owner || "").slice(0, 80), due: o.due || "", status: TASK_OPEN, note: "", createdAt: nowISO(), doneAt: "" }); pushLog(x, logEntry(`Aufgabe: ${o.text}${o.owner ? ` → ${o.owner}` : ""}${o.due ? ` (bis ${fmtDay(o.due)})` : ""}`, "system")); done.push("Aufgabe"); }
+      if (o.k === "next" && o.text){ x.nextStep = o.text; x.nextStepDue = o.due || ""; pushLog(x, logEntry(`Nächster Schritt: ${o.text}${o.due ? ` (bis ${fmtDay(o.due)})` : ""}`, "system")); done.push("nächster Schritt"); }
+      if (o.k === "decision" && o.text){ x.decisions.unshift({ id: rid(), text: o.text.slice(0, 400), date: todayISO(), meetingId: "" }); pushLog(x, logEntry(`Entscheidung: ${o.text}`, "system")); done.push("Entscheidung"); }
+      if (o.k === "blocker" && o.text){ x.blockers = mtJoin(x.blockers, [o.text]); pushLog(x, logEntry(`Blocker: ${o.text}`, "system")); done.push("Blocker"); }
+      if (o.k === "health" && x.health !== o.h){ x.health = o.h; pushLog(x, logEntry(`Status: ${HEALTH[o.h].label}`, "system")); done.push("Status"); }
+      if (o.k === "golive"){ x.targetDate = o.date; pushLog(x, logEntry(`Go-live: ${fmtDay(o.date)}`, "system")); done.push("Go-live"); }
+      if (o.k === "phase" && x.phase !== o.key){ x.phase = o.key; if (o.key === "done") x.doneAt = nowISO(); pushLog(x, logEntry(`Phase: ${PHASES[PH_INDEX[o.key]].long}`, "system")); done.push("Phase"); }
+      if (o.k === "done"){
+        if (o.id === "__next"){ pushLog(x, logEntry(`Nächster Schritt erledigt: ${x.nextStep}`, "system")); x.nextStep = ""; x.nextStepDue = ""; advanceNextStep(x, null); }
+        else { const tk = x.tasks.find(t => t.id === o.id); if (tk && tk.status !== TASK_DONE){ tk.status = TASK_DONE; tk.doneAt = nowISO(); pushLog(x, logEntry(`Aufgabe erledigt: ${tk.text}`, "system")); advanceNextStep(x, tk); } }
+        done.push("erledigt");
+      }
+    });
+  });
+  qcClose();
+  toast(`${p.code}: ${[...new Set(done)].join(", ")} gespeichert`);
+}
+
+/* ---------- Events for meetings, quick capture, agenda, decisions ---------- */
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-action]"); if (!t) return;
+  const a = t.dataset.action;
+  if (a === "mt-open"){ mtOpen(t.dataset.id || ""); return; }
+  if (a === "mt-close"){ mtClose(); return; }
+  if (a === "mt-back"){ const pre = mt && mt.preset; mtOpen(pre); return; }
+  if (a === "mt-text"){ const v = $("#mt-text").value; if (!v.trim()){ $("#mt-text").focus(); return; } mtStart(v, "", "text", mt && mt.preset); return; }
+  if (a === "mt-apply"){ t.disabled = true; try { await mtApply(); } finally { t.disabled = false; } return; }
+  if (a === "mt-cp-toggle"){ mt.cp.open = !mt.cp.open; mtRender(); if (mt.cp.open) $(".mt-cp").scrollIntoView({ block: "start" }); return; }
+  if (a === "mt-cp-copy"){ await copyText(mtCopilotPrompt(), "Prompt kopiert. In Copilot einfügen."); return; }
+  if (a === "mt-cp-apply"){
+    try { mt.an = mtFromCopilot($("#mt-cp-answer").value); mt.cp = { open: false, err: "" }; mtRender(); toast("Copilot-Ergebnis übernommen. Bitte prüfen."); }
+    catch (err){ mt.cp.err = err.message; const keep = $("#mt-cp-answer").value; mtRender(); $("#mt-cp-answer").value = keep; }
+    return;
+  }
+  if (a === "qc-open"){ qcOpen(); return; }
+  if (a === "qc-close"){ qcClose(); return; }
+  if (a === "agenda"){ const p = state.projects.find(x => x.id === t.dataset.id); if (p) await copyText(agendaText(p), "Agenda kopiert. In die Teams-Einladung oder den Chat einfügen."); return; }
+  if (a === "health-accept"){
+    const p = state.projects.find(x => x.id === t.dataset.id); const sg = p && suggestHealth(p); if (!sg) return;
+    await patchProject(p.id, x => { x.health = sg.h; pushLog(x, logEntry(`Status: ${HEALTH[sg.h].label} (Vorschlag: ${sg.why.join(", ")})`, "system")); });
+    toast(`${p.code}: Status ${HEALTH[sg.h].label}`); return;
+  }
+  if (a === "ns-accept"){
+    const p = state.projects.find(x => x.id === t.dataset.id); if (!p) return;
+    await patchProject(p.id, x => { advanceNextStep(x, null); });
+    if (drawer){ const cur = state.projects.find(x => x.id === p.id); const a1 = $("#d-nextStep"), a2 = $("#d-nextStepDue"); if (a1) a1.value = cur.nextStep; if (a2) a2.value = cur.nextStepDue; }
+    toast("Nächster Schritt übernommen"); return;
+  }
+  if (a === "dec-add"){
+    const inp = $("#d-dec-new"); const v = inp ? inp.value.trim() : ""; if (!v){ inp && inp.focus(); return; }
+    const p = currentDrawerProject(); if (!p || drawer.draft){ toast("Bitte zuerst das Projekt anlegen."); return; }
+    await patchProject(p.id, x => { x.decisions = [{ id: rid(), text: v.slice(0, 400), date: todayISO(), meetingId: "" }].concat(x.decisions || []); pushLog(x, logEntry(`Entscheidung: ${v}`, "system")); });
+    toast("Entscheidung festgehalten"); return;
+  }
+  if (a === "dec-del"){
+    if (!t.dataset.sure){ t.dataset.sure = "1"; t.textContent = "Löschen?"; t.style.color = "var(--crit)"; return; }
+    const p = currentDrawerProject(); if (!p) return; const id = t.dataset.did;
+    await patchProject(p.id, x => { x.decisions = (x.decisions || []).filter(d => d.id !== id); }); return;
+  }
+});
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.id === "mt-file"){ const f = t.files && t.files[0]; if (f) mtLoadFile(f, mt && mt.preset); return; }
+  if (t.id === "mt-target" && mt){ mt.target = t.value; mtAnalyzeTarget(); mtRender(); return; }
+  if (t.dataset && t.dataset.mtk && mt){
+    const v = t.type === "checkbox" ? t.checked : t.value;
+    mtSet(t.dataset.mtk, v);
+    if (t.type === "checkbox"){ const row = t.closest(".mt-row"); if (row) row.classList.toggle("off", !t.checked); }
+    $("#mt-count") && ($("#mt-count").textContent = mtCount());
+    return;
+  }
+  if (t.dataset && t.dataset.mtns && mt){ const i = +t.dataset.mtns; mt.an.nsOn = i >= 0; if (i >= 0) mt.an.ns = i; return; }
+  if (t.id === "qc-proj" && qc){ qc.pid = t.value; qcPreview(); $("#qc-input").focus(); return; }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.dataset && t.dataset.mtk && mt && t.type !== "checkbox" && t.type !== "date"){ mtSet(t.dataset.mtk, t.value); if (t.tagName === "TEXTAREA" && t.classList.contains("mt-in")) autoGrow(t); return; }
+  if (t.dataset && t.dataset.mtnp && mt){ mt.newp[t.dataset.mtnp] = t.value; return; }
+  if (t.id === "qc-input" && qc){ qc.text = t.value; if (!t.value.trim() && !(drawer && drawer.id)) qc.pid = ""; qcPreview(); return; }
+});
+document.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")){ e.preventDefault(); if (qc) qcClose(); else qcOpen(); return; }
+  if (qc && e.key === "Escape"){ e.stopImmediatePropagation(); qcClose(); return; }
+  if (qc && e.key === "Enter" && e.target.id === "qc-input"){ e.preventDefault(); qcApply(); return; }
+  if (mt && e.key === "Escape"){ e.stopImmediatePropagation(); mtClose(); return; }
+  if (mt && e.key === "Enter" && (e.ctrlKey || e.metaKey) && e.target.id === "mt-text"){ e.preventDefault(); $('[data-action="mt-text"]').click(); return; }
+  if (e.key === "Enter" && e.target.id === "d-dec-new"){ e.preventDefault(); $('[data-action="dec-add"]').click(); }
+}, true);
+// Drag and drop anywhere: transcripts open the meeting dialog, .xlsx and .json go through the normal import
+let dragDepth = 0;
+const isFileDrag = e => e.dataTransfer && [...(e.dataTransfer.types || [])].includes("Files");
+document.addEventListener("dragenter", e => { if (!isFileDrag(e)) return; e.preventDefault(); dragDepth++; document.body.classList.add("dragging"); });
+document.addEventListener("dragleave", e => { if (!isFileDrag(e)) return; dragDepth = Math.max(0, dragDepth - 1); if (!dragDepth) document.body.classList.remove("dragging"); });
+document.addEventListener("dragover", e => { if (isFileDrag(e)) e.preventDefault(); });
+document.addEventListener("drop", async e => {
+  if (!isFileDrag(e)) return;
+  e.preventDefault(); dragDepth = 0; document.body.classList.remove("dragging");
+  const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (!f) return;
+  if (/\.(vtt|docx|txt|md)$/i.test(f.name)){ const pre = (mt && mt.preset) || (drawer && drawer.id) || ""; await mtLoadFile(f, pre); return; }
+  if (/\.(xlsx|json)$/i.test(f.name)){ await handleImportFile(f); return; }
+  toast("Dieses Dateiformat kennt das Radar nicht.");
+});
 
 /* ================== Events ================== */
 document.addEventListener("click", async e => {
@@ -2544,12 +3648,12 @@ document.addEventListener("click", async e => {
   if (a === "import-merge"){ applyImport("merge"); return; }
   if (a === "import-cancel"){ pendingImport = null; render(); return; }
   if (a === "open"){ openDrawer(t.dataset.id, { focus: t.dataset.focus, tab: t.dataset.tab }); return; }
-  if (a === "rd-create"){ await drawerMutate(x => { x.readiness = templateReadiness(); }, () => "Readiness check created (standard, 29 questions)"); renderPanes(currentDrawerProject()); setDrawerTab("readiness"); return; }
+  if (a === "rd-create"){ await drawerMutate(x => { x.readiness = templateReadiness(); }, () => "Readiness-Check angelegt (Standard, 29 Fragen)"); renderPanes(currentDrawerProject()); setDrawerTab("readiness"); return; }
   if (a === "rd-excel"){ const f = $("#rd-excel-file"); f.value = ""; f.click(); return; }
   if (a === "rd-excel-cancel"){ drawer.rdPending = null; renderDrawerDynamic(); return; }
   if (a === "rd-excel-confirm"){
     const pend = drawer.rdPending; drawer.rdPending = null; if (!pend) return;
-    await drawerMutate(x => { x.readiness = pend.data.readiness; if (pend.data.tools.length) x.tools = pend.data.tools; if (!x.team && pend.data.team) x.team = pend.data.team; }, () => `Readiness check imported from Excel: ${pend.file}`);
+    await drawerMutate(x => { x.readiness = pend.data.readiness; if (pend.data.tools.length) x.tools = pend.data.tools; if (!x.team && pend.data.team) x.team = pend.data.team; }, () => `Readiness-Check aus Excel übernommen: ${pend.file}`);
     renderPanes(currentDrawerProject()); toast("Checkliste importiert"); return;
   }
   if (a === "rd-area"){ drawer.rdFilter.area = drawer.rdFilter.area === t.dataset.area ? "" : t.dataset.area; renderReadinessList(currentDrawerProject()); $("#rd-list-sec").scrollIntoView({ block:"start" }); return; }
@@ -2571,7 +3675,7 @@ document.addEventListener("click", async e => {
   }
   if (a === "tl-add"){ await drawerMutate(x => { x.tools = (x.tools || []).concat({ id:rid(), tool:"", purpose:"", access:"", available:"", phase:"", owner:"", next:"" }); }); renderToolsList(currentDrawerProject()); const ins = document.querySelectorAll('#tl-list textarea[data-tfield="tool"]'); ins[ins.length-1] && ins[ins.length-1].focus(); return; }
   if (a === "tl-del"){
-    if (!t.dataset.sure){ t.dataset.sure = "1"; t.textContent = "Delete?"; t.style.color = "var(--crit)"; return; }
+    if (!t.dataset.sure){ t.dataset.sure = "1"; t.textContent = "Löschen?"; t.style.color = "var(--crit)"; return; }
     const id = t.dataset.tid; await drawerMutate(x => { x.tools = x.tools.filter(v => v.id !== id); }); renderToolsList(currentDrawerProject()); return;
   }
   if (a === "tl-csv"){
@@ -2581,7 +3685,7 @@ document.addEventListener("click", async e => {
   }
   if (a === "new"){ openDrawer(null); return; }
   if (a === "close-drawer"){
-    if (drawer && drawer.dirty && !drawer.leaveOk){ drawer.leaveOk = true; $("#d-savestate").innerHTML = `<b style="color:var(--warn)">Unsaved changes. Click again to discard.</b>`; return; }
+    if (drawer && drawer.dirty && !drawer.leaveOk){ drawer.leaveOk = true; $("#d-savestate").innerHTML = `<b style="color:var(--warn)">Ungespeicherte Änderungen. Zum Verwerfen noch einmal klicken.</b>`; return; }
     closeDrawer(); return;
   }
   if (a === "save-project"){
@@ -2589,11 +3693,11 @@ document.addEventListener("click", async e => {
     const next = clone(p); readForm(next);
     if (!next.title){ $("#d-title").focus(); $("#d-savestate").innerHTML = `<b style="color:var(--crit)">Bitte einen Projekttitel eingeben.</b>`; return; }
     next.updatedAt = nowISO(); if (state.me.id) next.updatedBy = state.me.id;
-    if (drawer.draft){ pushLog(next, logEntry("Project created", "system")); next.createdAt = nowISO(); if (state.me.id) next.createdBy = state.me.id; }
+    if (drawer.draft){ pushLog(next, logEntry("Projekt angelegt", "system")); next.createdAt = nowISO(); if (state.me.id) next.createdBy = state.me.id; }
     await Store.saveProject(next);
     toast(drawer.draft ? `${next.code} angelegt` : "Gespeichert");
     drawer.draft = null; drawer.id = next.id; drawer.dirty = false; drawer.leaveOk = false;
-    $("#d-save") && ($("#d-save").textContent = "Save");
+    $("#d-save") && ($("#d-save").textContent = "Speichern");
     render(); return;
   }
   if (a === "add-update"){
@@ -2632,7 +3736,7 @@ document.addEventListener("click", async e => {
   if (a === "rq-open"){ openRequest(t.dataset.id); return; }
   if (a === "rq-close"){ closeRequest(); return; }
   if (a === "rq-filter"){ ui.rq.filter = t.dataset.v; saveUi(); renderRequests(); return; }
-  if (a === "rq-save"){ const wasNew = !!(rqDrawer && rqDrawer.draft); const r = await saveRequestFromForm(); if (r){ toast(wasNew ? `${r.code} hinzugefügt` : "Gespeichert"); render(); renderRequestDynamic(); t.textContent = "Save"; } return; }
+  if (a === "rq-save"){ const wasNew = !!(rqDrawer && rqDrawer.draft); const r = await saveRequestFromForm(); if (r){ toast(wasNew ? `${r.code} hinzugefügt` : "Gespeichert"); render(); renderRequestDynamic(); t.textContent = "Speichern"; } return; }
   if (a === "rq-status"){
     const v = t.dataset.v; const r = await saveRequestFromForm(x => { x.status = v; });
     if (r){ toast(`${r.code}: ${RQ_STATUS[v]}`); render(); renderRequestDynamic(); const sb = $('[data-action="rq-save"]'); if (sb) sb.textContent = "Speichern"; } return;
@@ -2657,9 +3761,9 @@ document.addEventListener("click", async e => {
   if (a === "task-add"){ await addTaskFromCard(t.dataset.id); return; }
   if (a === "tk-add"){ await addTaskFromDrawer(); return; }
   if (a === "tk-del"){
-    if (!t.dataset.sure){ t.dataset.sure = "1"; t.textContent = "Really delete?"; t.style.color = "var(--crit)"; return; }
+    if (!t.dataset.sure){ t.dataset.sure = "1"; t.textContent = "Wirklich löschen?"; t.style.color = "var(--crit)"; return; }
     const tid = t.dataset.tid; let txt = "";
-    await drawerMutate(x => { const tk = (x.tasks || []).find(v => v.id === tid); txt = tk ? tk.text : ""; x.tasks = (x.tasks || []).filter(v => v.id !== tid); }, () => `Task deleted: ${txt}`);
+    await drawerMutate(x => { const tk = (x.tasks || []).find(v => v.id === tid); txt = tk ? tk.text : ""; x.tasks = (x.tasks || []).filter(v => v.id !== tid); }, () => `Aufgabe gelöscht: ${txt}`);
     return;
   }
   if (a === "tk-copy"){
@@ -2696,7 +3800,7 @@ document.addEventListener("click", async e => {
   }
   if (a === "focus"){
     const id = t.dataset.id; const cur = state.projects.find(x => x.id === id); if (!cur) return;
-    await patchProject(id, x => { x.focus = !x.focus; pushLog(x, logEntry(x.focus ? "Marked as in progress" : "Unmarked as in progress", "system")); });
+    await patchProject(id, x => { x.focus = !x.focus; pushLog(x, logEntry(x.focus ? "Als in Arbeit markiert" : "Nicht mehr in Arbeit markiert", "system")); });
     toast(cur.focus ? `${cur.code} ist nicht mehr markiert` : `${cur.code} als in Arbeit markiert`); return;
   }
 });
@@ -2735,17 +3839,7 @@ document.addEventListener("change", async e => {
   }
   if (t.id === "import-file"){
     const file = t.files && t.files[0]; if (!file) return;
-    try {
-      if (/\.xlsx$/i.test(file.name)){ await importExcelAsProject(file); return; }
-      const text = await file.text();
-      let raw = null; try { raw = JSON.parse(text); } catch {}
-      const rqs = raw && parseRequestFile(raw);
-      if (rqs){ const n = addRequests(rqs); ui.view = "anfragen"; ui.rq.filter = "offen"; saveUi(); render(); toast(n ? `${plural(n,"Anfrage","Anfragen")} importiert` : "Diese Anfrage gibt es schon"); return; }
-      const data = parseBackup(text);
-      pendingImport = data;
-      if (!state.projects.length && !state.requests.length) applyImport("replace"); else { render(); window.scrollTo(0,0); }
-    } catch (err){ toast(err.message || "Die Datei konnte nicht gelesen werden."); }
-    return;
+    await handleImportFile(file); return;
   }
   if (t.dataset && t.dataset.ovgate){
     const id = t.dataset.id, key = t.dataset.ovgate, val = t.checked; const ph = key.replace(/-\d+$/, ""), k = +key.split("-").pop();
@@ -2755,7 +3849,7 @@ document.addEventListener("change", async e => {
   if (t.dataset && t.dataset.ovf){
     const id = t.dataset.id, f = t.dataset.ovf, v = t.value.trim(); const cur = state.projects.find(x => x.id === id);
     if (!cur || (cur[f] || "") === v) return;
-    await patchProject(id, x => { x[f] = v; if (f === "nextStep" && v) pushLog(x, logEntry(`Next step: ${v}`, "system")); });
+    await patchProject(id, x => { x[f] = v; if (f === "nextStep" && v) pushLog(x, logEntry(`Nächster Schritt: ${v}`, "system")); });
     toast(f === "nextStep" ? `${cur.code}: nächster Schritt gespeichert` : `${cur.code}: Fälligkeit gespeichert`); return;
   }
   if (t.dataset && t.dataset.ovupd) return;
@@ -2763,7 +3857,7 @@ document.addEventListener("change", async e => {
   if (t.dataset && t.dataset.task){
     const id = t.dataset.id, tid = t.dataset.task, val = t.checked; let txt = "", who = "";
     await patchProject(id, x => { const tk = (x.tasks || []).find(v => v.id === tid); if (!tk) return; tk.status = val ? TASK_DONE : TASK_OPEN; tk.doneAt = val ? nowISO() : ""; txt = tk.text; who = tk.owner;
-      pushLog(x, logEntry(`${val ? "Task done" : "Task reopened"}: ${tk.text}${tk.owner ? ` (${tk.owner})` : ""}`, "system")); });
+      pushLog(x, logEntry(`${val ? "Aufgabe erledigt" : "Aufgabe wieder geöffnet"}: ${tk.text}${tk.owner ? ` (${tk.owner})` : ""}`, "system")); if (val) advanceNextStep(x, tk); });
     toast(val ? `Erledigt: ${txt}${who ? ` (${firstName(who)})` : ""}` : `Wieder geöffnet: ${txt}`); return;
   }
   if (t.dataset && t.dataset.tkfield && drawer){
@@ -2777,14 +3871,14 @@ document.addEventListener("change", async e => {
     if ((curTk[f] || "") === v) return;
     await drawerMutate(x => {
       const tk = (x.tasks || []).find(k => k.id === tid); if (!tk) return;
-      if (f === "status"){ tk.status = v; tk.doneAt = v === TASK_DONE ? (tk.doneAt || nowISO()) : ""; }
+      if (f === "status"){ tk.status = v; tk.doneAt = v === TASK_DONE ? (tk.doneAt || nowISO()) : ""; if (v === TASK_DONE) advanceNextStep(x, tk); }
       else tk[f] = v;
     }, x => {
       const tk = x.tasks.find(k => k.id === tid); if (!tk) return "";
-      if (f === "owner") return v ? `Task assigned: ${tk.text} → ${v}` : `Task unassigned: ${tk.text}`;
-      if (f === "status") return `Task ${TASK_STATUS[tk.status]}: ${tk.text}${tk.owner ? ` → ${tk.owner}` : ""}`;
-      if (f === "note") return v ? `Status note on “${tk.text}”: ${v}` : `Status note cleared: ${tk.text}`;
-      if (f === "due") return `Deadline ${v ? fmtDay(v) : "cleared"}: ${tk.text}`;
+      if (f === "owner") return v ? `Aufgabe zugewiesen: ${tk.text} → ${v}` : `Aufgabe ohne Zuständigkeit: ${tk.text}`;
+      if (f === "status") return `Aufgabe ${TASK_STATUS[tk.status]}: ${tk.text}${tk.owner ? ` → ${tk.owner}` : ""}`;
+      if (f === "note") return v ? `Statusnotiz zu „${tk.text}“: ${v}` : `Statusnotiz entfernt: ${tk.text}`;
+      if (f === "due") return `Fälligkeit ${v ? fmtDay(v) : "entfernt"}: ${tk.text}`;
       return "";
     });
     return;
@@ -2807,7 +3901,7 @@ document.addEventListener("change", async e => {
   if (t.id === "ov-done"){ ui.ov.done = t.checked; saveUi(); renderOverview(); return; }
   if (t.dataset && t.dataset.plan && drawer){
     const k = t.dataset.plan, v = t.value;
-    await drawerMutate(x => { x.plan = Object.assign({}, x.plan); if (v) x.plan[k] = v; else delete x.plan[k]; }, () => `Schedule ${PHASES[PH_INDEX[k]].long}: ${v ? "until " + fmtDay(v) : "automatic"}`);
+    await drawerMutate(x => { x.plan = Object.assign({}, x.plan); if (v) x.plan[k] = v; else delete x.plan[k]; }, () => `Zeitplan ${PHASES[PH_INDEX[k]].long}: ${v ? "bis " + fmtDay(v) : "automatisch"}`);
     return;
   }
   if (t.id === "f-dept"){ ui.f.dept = t.value; } else if (t.id === "f-sponsor"){ ui.f.sponsor = t.value; } else if (t.id === "f-health"){ ui.f.health = t.value; } else if (t.id === "f-phase"){ ui.f.phase = t.value; } else if (t.id === "f-archived"){ ui.f.archived = t.checked; } else return;
@@ -2817,7 +3911,7 @@ document.addEventListener("input", e => {
   const t = e.target;
   if (t.id === "f-search"){ ui.f.q = t.value; saveUi(); renderPortfolio(); return; }
   if (rqDrawer && t.dataset && t.dataset.rq){ renderRequestDynamic(); return; }
-  if (drawer && t.dataset && t.dataset.field){ if (!drawer.dirty){ drawer.dirty = true; drawer.leaveOk = false; $("#d-savestate").textContent = "Unsaved changes"; } }
+  if (drawer && t.dataset && t.dataset.field){ if (!drawer.dirty){ drawer.dirty = true; drawer.leaveOk = false; $("#d-savestate").textContent = "Ungespeicherte Änderungen"; } }
 });
 document.addEventListener("submit", async e => {
   const f = e.target;
