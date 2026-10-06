@@ -73,12 +73,12 @@ One line, the radar works out the rest and shows a preview before saving:
 
 ## Interfaces & access checklist (always Excel)
 
-Every project has a button "Zugangs-Checkliste (Excel)": on the project card in the overview ("Checkliste"), in the project under "Teilen", and in the tab "Tools & Zugriff". Right after creating a project, that tab shows "Checkliste erstellen".
+Every project can download "Checkliste (Excel)": on the live-status card, on the portfolio board and in the project table, under "Teilen", and in the tab "Tools & Zugriff". The file is built from that project's own profile, tasks, decisions, meetings and linked request. The download does not write anything back into the project. "Vor dem Speichern prüfen" still lets you untick rows and save them into the project first.
 
 - **Tailored to the project:** the radar reads the project profile, tasks, decisions, read-in meetings, the linked project request and readiness answers. It recognises systems such as SAP, ERP, Salesforce/CRM, shared mailboxes (Exchange/Outlook), SharePoint, Teams bots, Azure OpenAI, Copilot Studio, Power Platform, n8n, Power BI, databases, SFTP/CSV, ticket systems, HR systems, DATEV, OCR, D&B, routing services, telephony and EDI, plus unknown systems named like "Zugriff auf Advantext" or "XY-API".
 - **Per system the concrete checks:** API/interface, technical user or access, licence, test environment and approval, each with owner role and the phase it is needed in. Basics for every AI project are added (Entra ID app registration, Key Vault, test/production, IT security, data protection, AI Inventory, logging; works council when employee or applicant data is involved).
 - **Due dates from the schedule:** an item is due when the phase that needs it starts (at least one week from today).
-- **Review first:** untick what is not needed, add systems by hand, remove untouched template rows. Then "übernehmen & Excel laden".
+- **Download first:** "Excel herunterladen" writes the tailored workbook immediately. Untouched template rows are left out of the file. To keep the rows in the radar, use "Vor dem Speichern prüfen", untick what is not needed, add systems by hand, then "übernehmen & Excel laden".
 - **The Excel file** (`<code>_Schnittstellen-Zugaenge_<date>.xlsx`): sheet "Übersicht" with project data and live counts (available, missing, unclear, overdue, ready %, by type), sheet "Checkliste" with filter, frozen header, dropdowns for "Vorhanden?" and "Art", colours by status and red for overdue, plus the source each item was detected in.
 - **Round trip:** fill the list with IT, then "Bearbeitete Excel einlesen" in the project. Rows are matched by a hidden ID column; new rows are added.
 - **Meetings:** systems named in a meeting show up in the meeting review under "Systeme & Zugänge" and go straight into the checklist.

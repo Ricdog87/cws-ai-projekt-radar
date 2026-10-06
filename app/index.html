@@ -230,8 +230,10 @@ a.btn{text-decoration:none}
 .col{background:var(--surface-2);border-radius:var(--radius);padding:10px;display:flex;flex-direction:column;gap:8px;min-height:120px}
 .col-head{display:flex;justify-content:space-between;align-items:center;padding:2px 2px 6px;border-bottom:3px solid var(--phc);font:600 14px/1.2 var(--f-display)}
 .col-head span{font:500 12px/1 var(--f-mono);color:var(--muted)}
-.bcard{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:10px 11px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;border-left:4px solid var(--stripe,var(--line));width:100%}
+.bcard{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:10px 11px;text-align:left;display:flex;flex-direction:column;gap:6px;border-left:4px solid var(--stripe,var(--line));width:100%}
 .bcard:hover{border-color:var(--brand);border-left-color:var(--stripe,var(--brand))}
+.bcard-open{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:6px;width:100%}
+.bcard-open:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .bcard .t{font-weight:600;font-size:14px;line-height:1.3}
 .bcard .s{font-size:12.5px;color:var(--muted)}
 .prog{height:5px;background:var(--line);border-radius:3px;overflow:hidden}
@@ -1718,7 +1720,7 @@ function renderPortfolio(){
     rows.sort((a,b) => { const x = val(a), y = val(b); return (typeof x === "number" ? x - y : String(x||"").localeCompare(String(y||""),"de")) * dir; });
     const th = (key, label) => `<th data-sort="${key}" ${ui.sort.key===key ? `aria-sort="${ui.sort.dir==="asc"?"ascending":"descending"}"` : ""}>${label}</th>`;
     body.innerHTML = `<div class="panel table-scroll"><table class="pt"><thead><tr>
-      ${th("code","ID")}${th("title","Projekt")}${th("department","Fachbereich")}${th("sponsor","Sponsor")}${th("phase","Phase")}${th("health","Status")}${th("prog","Fortschritt")}${th("rd","Readiness")}${th("due","Nächster Schritt")}${th("target","Go-live")}${th("upd","Letztes Update")}${th("score","Dringlichkeit")}
+      ${th("code","ID")}${th("title","Projekt")}${th("department","Fachbereich")}${th("sponsor","Sponsor")}${th("phase","Phase")}${th("health","Status")}${th("prog","Fortschritt")}${th("rd","Readiness")}${th("due","Nächster Schritt")}${th("target","Go-live")}${th("upd","Letztes Update")}${th("score","Dringlichkeit")}<th>Checkliste</th>
     </tr></thead><tbody>${rows.map(r => { const p = r.p; const due = daysFromToday(p.nextStepDue); return `<tr data-action="open" data-id="${esc(p.id)}" tabindex="0">
       <td class="mono">${esc(p.code)}</td>
       <td><div class="p-title">${esc(p.title || "Ohne Titel")}</div>${p.example ? `<span class="chip example">Beispiel</span>` : ""}${p.archived ? `<span class="chip">Archiviert</span>` : ""}</td>
@@ -1729,12 +1731,14 @@ function renderPortfolio(){
       <td style="min-width:200px">${esc(p.nextStep||"–")}${p.nextStepDue ? `<div class="num ${due<0?"overdue":"muted"}" style="font-size:12.5px">fällig ${esc(fmtDay(p.nextStepDue))}</div>` : ""}</td>
       <td class="num">${esc(fmtDay(p.targetDate))}</td>
       <td class="num muted">${esc(lastActivity(p) ? fmtDay(lastActivity(p).slice(0,10)) : "–")}</td>
-      <td class="num">${r.score}</td></tr>`; }).join("") || `<tr><td colspan="12" class="empty">Keine Projekte passen zu diesen Filtern.</td></tr>`}</tbody></table></div>`;
+      <td class="num">${r.score}</td>
+      <td><button type="button" class="btn ghost small" data-action="acc-xlsx" data-id="${esc(p.id)}" title="Checkliste aus den Angaben dieses Projekts als Excel">Excel</button></td></tr>`; }).join("") || `<tr><td colspan="13" class="empty">Keine Projekte passen zu diesen Filtern.</td></tr>`}</tbody></table></div>`;
   }
 }
 function boardCard(p){
   const due = daysFromToday(p.nextStepDue); const pr = progress(p);
-  return `<button class="bcard" style="--stripe:${stripe(p)}" data-action="open" data-id="${esc(p.id)}">
+  return `<div class="bcard" style="--stripe:${stripe(p)}">
+    <button type="button" class="bcard-open" data-action="open" data-id="${esc(p.id)}">
     <div class="bfoot"><span class="mono">${esc(p.code)}</span><span>${esc(PRIO[p.priority]||"")}</span></div>
     <div class="t">${esc(p.title || "Ohne Titel")}</div>
     <div class="s">${esc(p.department || "–")} · ${esc(p.sponsor || "Sponsor fehlt")}</div>
@@ -1742,7 +1746,9 @@ function boardCard(p){
     ${(() => { const rs = readinessStats(p); return rs && phaseIdx(p) <= PH_INDEX.konzept ? `<div>${recBadge(rs, true)}</div>` : ""; })()}
     <div class="bfoot"><span>${healthHtml(p.health)}</span><span class="num ${due !== null && due < 0 ? "overdue" : ""}">${p.nextStepDue ? "fällig " + esc(fmtShort(p.nextStepDue)) : ""}</span></div>
     ${p.example ? `<span class="chip example" style="align-self:flex-start">Beispiel</span>` : ""}
-  </button>`;
+    </button>
+    <button type="button" class="btn ghost small" data-action="acc-xlsx" data-id="${esc(p.id)}" title="Checkliste aus den Angaben dieses Projekts als Excel">Checkliste (Excel)</button>
+  </div>`;
 }
 
 /* ================== Project overview: schedule & timeline ================== */
@@ -1916,7 +1922,7 @@ function renderOverview(){
       <div class="ov-blk"><div class="ov-blk-h">Letztes Update</div>
         <div class="ov-last ${stale ? "stale" : ""}">${last ? `${esc(last.text)} <small>· ${esc(fmtDay(String(last.at).slice(0, 10)))}</small>` : `<span class="muted">Noch kein Update erfasst.</span>`}${stale ? `<br><b>${plural(age, "Tag", "Tage")} ohne Update</b>` : ""}</div>
         <div class="ov-in"><input type="text" data-ovupd="${id}" placeholder="Kurzes Update, Enter zum Erfassen" aria-label="Kurzes Update"><button class="btn small" data-action="ov-log" data-id="${id}">Erfassen</button></div></div>
-      <div class="ov-foot"><span class="muted" style="font-size:12.5px">${esc([p.department, p.lead].filter(Boolean).join(" · "))}</span><span style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn ghost small" data-action="acc-open" data-id="${id}" title="Checkliste für Schnittstellen, Zugänge, Lizenzen und Freigaben als Excel">${ico("fileText")}Checkliste</button><button class="btn ghost small" data-action="open" data-id="${id}">Details öffnen</button></span></div>
+      <div class="ov-foot"><span class="muted" style="font-size:12.5px">${esc([p.department, p.lead].filter(Boolean).join(" · "))}</span><span style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn ghost small" data-action="acc-xlsx" data-id="${id}" title="Checkliste aus den Angaben dieses Projekts als Excel">${ico("fileText")}Checkliste (Excel)</button><button class="btn ghost small" data-action="open" data-id="${id}">Details öffnen</button></span></div>
     </div>`;
   }).join("");
 }
@@ -2282,7 +2288,7 @@ function openDrawer(id, opts){
         ${drawer.draft ? "" : `<section class="d-sec" data-pane="overview">
           <h2>Teilen</h2>
           <p style="margin:0;color:var(--ink-2);font-size:14px">Schick den aktuellen Stand an Stakeholder, Projektbeteiligte oder Leads. Nichts wird hochgeladen; du entscheidest, wer ihn bekommt.</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="share-copy" data-id="${esc(cur.id)}">Status für Teams / E-Mail kopieren</button><button class="btn small" data-action="share-html" data-id="${esc(cur.id)}">Status-Einseiter laden</button><button class="btn small" data-action="acc-open" data-id="${esc(cur.id)}">${ico("fileText")}Zugangs-Checkliste (Excel)</button></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="share-copy" data-id="${esc(cur.id)}">Status für Teams / E-Mail kopieren</button><button class="btn small" data-action="share-html" data-id="${esc(cur.id)}">Status-Einseiter laden</button><button class="btn small" data-action="acc-xlsx" data-id="${esc(cur.id)}">${ico("fileText")}Checkliste (Excel)</button></div>
         </section>`}
         ${drawer.draft ? "" : `<section class="d-sec" data-pane="overview" id="d-dec-sec"></section>`}
         <section class="d-sec" data-pane="overview" id="d-update-sec">
@@ -2487,7 +2493,7 @@ function renderToolsSummary(p){
   const el = $("#tl-summary"); if (!el) return;
   renderAccGen(p);
   const ts = toolStats(p);
-  el.innerHTML = `<div class="section-head" style="margin:0"><h2>Tools, Lizenzen & Zugriff</h2><span style="display:flex;gap:8px"><button class="btn small" data-action="tl-add">+ Tool / Zugriff</button>${ts.total ? `<button class="btn small" data-action="acc-xlsx">Excel herunterladen</button>` : ""}</span></div>
+  el.innerHTML = `<div class="section-head" style="margin:0"><h2>Tools, Lizenzen & Zugriff</h2><span style="display:flex;gap:8px"><button class="btn small" data-action="tl-add">+ Tool / Zugriff</button><button class="btn small" data-action="acc-xlsx">Checkliste (Excel)</button></span></div>
     <div class="pill-row"><span class="health h-green"><i aria-hidden="true">●</i>${ts.ja} vorhanden</span><span class="health h-amber"><i aria-hidden="true">▲</i>${ts.teil + ts.unklar} teilweise / unklar</span><span class="health h-red"><i aria-hidden="true">■</i>${ts.nein} fehlt</span><span>${ts.leer} nicht bewertet</span><span>${ts.nb} nicht benötigt</span></div>
     <div class="muted" style="font-size:12.5px">Nur Zugriffe bewerten, die aus dem bestätigten Pilotumfang und der Zielarchitektur folgen. Ein fehlender Zugriff wird erst zur Anfrage, wenn die Komponente nachweislich gebraucht wird.</div>`;
 }
@@ -3884,9 +3890,9 @@ function renderAccGen(p){
     const smart = (p.tools || []).some(t => t.cat);
     el.innerHTML = drawer.draft ? `<div class="muted" style="font-size:14px">Nach dem Anlegen erstellt das Radar hier die Checkliste für Schnittstellen und Zugänge.</div>` : `<div class="acc-cta">
       <span class="aicon">${ico("fileText")}</span>
-      <div><b>${smart ? "Checkliste für Schnittstellen & Zugänge aktualisieren" : "Checkliste für Schnittstellen & Zugänge erstellen"}</b>
-      <span>Das Radar liest Projektprofil, Aufgaben, Entscheidungen, Meetings und Anfrage, erkennt Systeme wie SAP, Salesforce oder Postfächer und legt je System die nötigen APIs, Zugänge, Lizenzen und Freigaben an. Ergebnis: eine formatierte Excel-Liste.</span></div>
-      <div class="acc-cta-btns">${ro ? "" : `<button class="btn primary" data-action="acc-gen">${smart ? "Aktualisieren" : "Checkliste erstellen"}</button>`}<button class="btn" data-action="acc-xlsx">Excel herunterladen</button>${ro ? "" : `<button class="btn" data-action="acc-import">Bearbeitete Excel einlesen</button>`}</div></div>`;
+      <div><b>Checkliste für dieses Projekt als Excel</b>
+      <span>Das Radar liest Profil, Aufgaben, Entscheidungen, Meetings und die verknüpfte Anfrage, erkennt die genannten Systeme und setzt je System Schnittstelle, Zugang, Lizenz, Umgebung und Freigabe. Der Download schreibt nichts ins Projekt. Leere Vorlagenzeilen bleiben draußen.</span></div>
+      <div class="acc-cta-btns"><button class="btn primary" data-action="acc-xlsx">Excel herunterladen</button>${ro ? "" : `<button class="btn" data-action="acc-gen">${smart ? "Anpassen und speichern" : "Vor dem Speichern prüfen"}</button><button class="btn" data-action="acc-import">Bearbeitete Excel einlesen</button>`}</div></div>`;
     return;
   }
   const groups = {};
@@ -4076,13 +4082,23 @@ function accXlsx(p){
   ];
   return zipStore(files);
 }
+function accExportTools(p){
+  const reviewing = !!(drawer && drawer.accGen && drawer.id === p.id);
+  const plan = reviewing ? drawer.accGen : accPlan(p);
+  let existing = (p.tools || []).slice();
+  if (!reviewing || plan.removeTpl) existing = existing.filter(t => !accIsTemplateRow(t));
+  const extra = plan.items.filter(i => i.on).flatMap(i => i.rows.map(r => Object.assign({}, r)));
+  return { rows: existing.concat(extra), extra: extra.length };
+}
 function accDownload(p){
-  if (!(p.tools || []).length){ toast("Noch keine Einträge. Zuerst „Checkliste erstellen“."); return; }
-  const blob = accXlsx(p);
+  const exp = accExportTools(p);
+  if (!exp.rows.length){ toast("Aus diesem Projekt ließ sich keine Checkliste ableiten."); return; }
+  const blob = accXlsx(Object.assign({}, p, { tools: exp.rows }));
   const url = URL.createObjectURL(blob); const a = document.createElement("a");
   a.href = url; a.download = `${safeName(p.code)}_Schnittstellen-Zugaenge_${todayISO()}.xlsx`;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
-  toast(`Excel-Checkliste mit ${plural(p.tools.length, "Punkt", "Punkten")} im Ordner Downloads gespeichert`);
+  const neu = exp.extra ? `, davon ${plural(exp.extra, "Punkt", "Punkte")} aus den Angaben dieses Projekts` : "";
+  toast(`Excel-Checkliste mit ${plural(exp.rows.length, "Punkt", "Punkten")}${neu} im Ordner Downloads`);
 }
 // Read an edited checklist back: rows with an ID update the radar, rows without ID are added
 async function accImport(file){
