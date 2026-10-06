@@ -71,6 +71,19 @@ One line, the radar works out the rest and shows a preview before saving:
 - **Agenda for the next meeting:** one click copies an agenda (status, done since the last meeting, open and overdue tasks, blockers, decisions needed, critical readiness questions) for the Teams invite.
 - **Decision log** per project ("Entscheidungen & Meetings"), filled from meetings, quick capture or by hand, with all read-in meetings and their key points.
 
+## Interfaces & access checklist (always Excel)
+
+Every project has a button "Zugangs-Checkliste (Excel)": on the project card in the overview ("Checkliste"), in the project under "Teilen", and in the tab "Tools & Zugriff". Right after creating a project, that tab shows "Checkliste erstellen".
+
+- **Tailored to the project:** the radar reads the project profile, tasks, decisions, read-in meetings, the linked project request and readiness answers. It recognises systems such as SAP, ERP, Salesforce/CRM, shared mailboxes (Exchange/Outlook), SharePoint, Teams bots, Azure OpenAI, Copilot Studio, Power Platform, n8n, Power BI, databases, SFTP/CSV, ticket systems, HR systems, DATEV, OCR, D&B, routing services, telephony and EDI, plus unknown systems named like "Zugriff auf Advantext" or "XY-API".
+- **Per system the concrete checks:** API/interface, technical user or access, licence, test environment and approval, each with owner role and the phase it is needed in. Basics for every AI project are added (Entra ID app registration, Key Vault, test/production, IT security, data protection, AI Inventory, logging; works council when employee or applicant data is involved).
+- **Due dates from the schedule:** an item is due when the phase that needs it starts (at least one week from today).
+- **Review first:** untick what is not needed, add systems by hand, remove untouched template rows. Then "übernehmen & Excel laden".
+- **The Excel file** (`<code>_Schnittstellen-Zugaenge_<date>.xlsx`): sheet "Übersicht" with project data and live counts (available, missing, unclear, overdue, ready %, by type), sheet "Checkliste" with filter, frozen header, dropdowns for "Vorhanden?" and "Art", colours by status and red for overdue, plus the source each item was detected in.
+- **Round trip:** fill the list with IT, then "Bearbeitete Excel einlesen" in the project. Rows are matched by a hidden ID column; new rows are added.
+- **Meetings:** systems named in a meeting show up in the meeting review under "Systeme & Zugänge" and go straight into the checklist.
+- Open access items with a due date in the past show in "Needs attention" and in the meeting agenda.
+
 ## Project requests from business units
 
 1. Share **`app/request.html`** with the business units (Teams, e-mail or SharePoint). It opens in any browser, no installation, no login.
@@ -167,7 +180,7 @@ Data from earlier German versions of the radar imports as is; stored values stay
 - Fonts (SIL Open Font License), embedded as Base64:
   - Inter for text and headings, as in the AI Governance Portal.
   - IBM Plex Mono for project IDs.
-- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`). Decisions live in `project.decisions[]` (`text`, `date`, `meetingId`), read-in meetings in `project.meetings[]` (`date`, `title`, `participants`, `minutes`, `summary`, `counts`, `source`); transcripts themselves are never stored. All are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
+- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`). Tools/access rows in `project.tools[]` carry optional `cat`, `kind`, `iface`, `due`, `src`, `pers`. Decisions live in `project.decisions[]` (`text`, `date`, `meetingId`), read-in meetings in `project.meetings[]` (`date`, `title`, `participants`, `minutes`, `summary`, `counts`, `source`); transcripts themselves are never stored. All are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
 
 ## Governance
 
