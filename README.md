@@ -2,7 +2,7 @@
 
 Daily steering dashboard for all AI projects at CWS, end to end from intake to closure, plus the intake point for new use cases from the business units.
 
-**Runs locally in the browser, no cloud.** The dashboard UI is German. See "Run locally".
+**Runs in the browser, data stays in the browser.** Locally via `Start-Radar.cmd` or as a web link via Vercel (interim). The dashboard UI is German. See "Run locally" and "Web link (Vercel)".
 
 ## What's inside
 
@@ -165,6 +165,17 @@ While real CWS data is entered, the radar runs **locally only**. No server, no c
 - When importing a backup you choose: **Add / update** (existing projects stay) or **Replace all**.
 
 Data from earlier German versions of the radar imports as is; stored values stayed the same.
+
+## Web link (Vercel, interim)
+
+Until CWS GitHub and Azure access are in place, the radar is deployed from this repository to Vercel (personal account). Every push to `main` goes live automatically.
+
+- **Only `app/` is published** (`vercel.json` → `outputDirectory: "app"`). README, `docs/`, sample data and Cursor rules are not reachable via the link.
+- Addresses: `/` is the radar, `/request` the request form for business units. Share the request link instead of sending the file.
+- **Data still lives only in the browser** of whoever opens the link (localStorage of that web address). Nothing is sent to Vercel or anywhere else; a Content Security Policy blocks every network request (`connect-src 'none'`), and search engines are told not to index (`X-Robots-Tag`).
+- Each person and each address has their own data. The web link does **not** see the data from `http://localhost:8765`. To move: "Sichern" on localhost, then "Importieren" on the web link.
+- The link is public. Anyone who has it sees an empty radar, not your projects. Do not put real project data into the repository.
+- Vercel settings: leave "Root Directory" empty (repository root), framework "Other". `vercel.json` takes care of the rest.
 
 ## Tech
 
