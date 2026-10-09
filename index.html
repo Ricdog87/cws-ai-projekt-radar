@@ -547,6 +547,20 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
 .tl-due{border:1px solid var(--line);border-radius:6px;padding:2px 4px;font-size:12px;margin-top:4px;width:100%;background:var(--surface)}
 .tl-due.late{border-color:var(--crit);color:var(--crit)}
 @media (max-width:720px){ .acc-kind{min-width:0;margin-right:6px} }
+.nh-grp{padding:10px 0;border-top:1px solid var(--line);display:grid;gap:8px}
+.nh-grp:first-child{border-top:0;padding-top:2px}
+.nh-h{display:flex;gap:10px;align-items:center}
+.nh-h .grow{flex:1;min-width:0;display:grid}
+.nh-h small{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wk-list{display:flex;flex-direction:column}
+.wk-row{padding:9px 0;border-top:1px solid var(--line);display:grid;gap:6px}
+.wk-row:first-child{border-top:0;padding-top:2px}
+.wk-t{border:0;background:none;padding:0;text-align:left;font-weight:600;font-size:14px;color:var(--ink);cursor:pointer}
+.wk-t:hover{color:var(--cws-red)}
+.wk-t .mono{font-size:12px;color:var(--muted);margin-right:4px}
+.tk-sg{display:block;margin-top:4px;border:1px dashed var(--line-strong);background:var(--tint);color:var(--tint-ink);border-radius:6px;padding:2px 8px;font-size:12px;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tm-table select{min-width:150px}
+.tm-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 /* ---------- Drawer ---------- */
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.5);z-index:40}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(980px,100%);background:var(--bg);z-index:41;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px)}
@@ -699,10 +713,10 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
     <button class="nav" data-view="anfragen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>Projektanfragen</span><em class="count num" id="count-rq"></em></button>
     <button class="nav" data-view="portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg><span>Portfolio</span><em class="count num" id="count-portfolio">0</em></button>
     <div class="side-label">Daten</div>
-    <button class="nav" data-action="mt-open" title="Teams-Transkript oder Meeting-Notizen einlesen: Aufgaben, Entscheidungen und nächste Schritte landen im Projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Meeting einlesen</span></button>
+    <button class="nav" data-action="mt-open" title="Teams-Transkript, PDF, PowerPoint, Word oder E-Mail einlesen: Aufgaben, Erledigtes und Entscheidungen landen im Projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Dokument einlesen</span></button>
     <button class="nav" data-action="import" title="Excel-Checkliste (.xlsx), Anfrage (.json) oder Sicherung (.json) laden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><span>Importieren</span></button>
     <button class="nav" data-action="export" title="Alle Daten als Sicherungsdatei speichern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Sichern</span></button>
-    <input type="file" id="import-file" accept=".json,.xlsx,.vtt,.docx,.txt,application/json" hidden>
+    <input type="file" id="import-file" accept=".json,.xlsx,.vtt,.docx,.txt,.pdf,.pptx,.eml,.msg,application/json" hidden>
   </nav>
   <div class="side-foot">
     <div class="sync" id="sync"><i></i><span>Wird geladen …</span></div>
@@ -717,7 +731,7 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
     <div class="top-right">
       <span class="env-pill" id="env-pill" title="Alle Daten bleiben in diesem Browser auf diesem Computer."><i></i><span>Lokal</span></span>
       <button class="qc-btn" data-action="qc-open" title="Update, Aufgabe oder Entscheidung in einem Satz erfassen (Strg+K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span>Schnell erfassen …</span><kbd>Strg K</kbd></button>
-      <button class="btn" data-action="mt-open" title="Teams-Transkript oder Notizen einlesen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Meeting einlesen</span></button>
+      <button class="btn" data-action="mt-open" title="Teams-Transkript, PDF, PowerPoint, Word oder E-Mail einlesen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Dokument einlesen</span></button>
       <button class="btn primary" id="btn-new" data-action="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span>Projekt</span></button>
       <button class="me" id="me-chip" data-action="profile" aria-label="Profil"></button>
     </div>
@@ -802,6 +816,16 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
     </div>
     <div class="section two-col">
       <div>
+        <div class="section-head"><h2>Nachhaken</h2><span class="muted" id="nh-count" style="font-size:13px"></span></div>
+        <div class="panel" id="nachhaken"></div>
+      </div>
+      <div>
+        <div class="section-head"><h2>Diese Woche</h2><button class="btn small" data-action="wk-copy">Wochenrückblick kopieren</button></div>
+        <div class="panel" id="week"></div>
+      </div>
+    </div>
+    <div class="section two-col">
+      <div>
         <div class="section-head"><h2>Offene Nachverfolgungen</h2><span class="muted" style="font-size:13px">aus Readiness-Checks, nach Fälligkeit</span></div>
         <div class="panel" id="actions"></div>
       </div>
@@ -827,7 +851,7 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
     <div class="ov-stats" id="tm-stats"></div>
     <div class="tm-grid" id="tm-people"></div>
     <div class="section">
-      <div class="section-head"><h2>Teammitglieder</h2><span class="muted" style="font-size:13px">Dein AI-Team und die Projektbeteiligten. Namen bleiben in diesem Browser.</span></div>
+      <div class="section-head"><h2>Teammitglieder</h2><span class="muted" style="font-size:13px">Dein AI-Team und die Projektbeteiligten mit ihren Zuständigkeiten.</span></div>
       <div class="panel" id="tm-members"></div>
     </div>
   </section>
@@ -1330,7 +1354,8 @@ function sanitizeMeetings(m){
 function sanitizeTeam(t){
   if (!Array.isArray(t)) return [];
   const str = v => String(v ?? "").trim().slice(0, 80);
-  return t.filter(m => m && typeof m === "object" && str(m.name)).map(m => ({ id: ID_OK.test(str(m.id)) ? str(m.id) : rid(), name: str(m.name), role: str(m.role), country: str(m.country) }));
+  return t.filter(m => m && typeof m === "object" && str(m.name)).map(m => ({ id: ID_OK.test(str(m.id)) ? str(m.id) : rid(), name: str(m.name), role: str(m.role), country: str(m.country),
+    skills: String(m.skills ?? "").trim().slice(0, 300), kind: m.kind === "kontakt" ? "kontakt" : "team", from: /^\d{4}-\d{2}-\d{2}$/.test(m.from || "") ? m.from : "" }));
 }
 function mergeTeam(a, b){
   const out = (a || []).slice();
@@ -1698,7 +1723,7 @@ function render(){
   try {
     renderChrome();
     if (!state.loaded){ return; }
-    if (ui.view === "heute") renderHeute();
+    if (ui.view === "heute"){ renderHeute(); renderSmartToday(); }
     if (ui.view === "portfolio") renderPortfolio();
     if (ui.view === "overview") renderOverview();
     if (ui.view === "anfragen") renderRequests();
@@ -1841,7 +1866,7 @@ function renderHeute(){
     kpi(doneYear, "Abgeschlossen", `Projekte in ${year}`, "check", false, { phase:"done" }),
   ].join("");
   $("#acards").innerHTML = `
-    <button class="acard" data-action="mt-open"><span class="aicon">${ico("fileText")}</span><span><b>Meeting einlesen</b><span>Transkript oder Notizen rein, Aufgaben und Entscheidungen ins Projekt</span></span></button>
+    <button class="acard" data-action="mt-open"><span class="aicon">${ico("fileText")}</span><span><b>Dokument einlesen</b><span>Transkript, PDF, PowerPoint oder E-Mail rein, Aufgaben und Entscheidungen ins Projekt</span></span></button>
     <button class="acard" data-action="new"><span class="aicon">${ico("filePlus")}</span><span><b>Projekt anlegen</b><span>Aufnahme starten oder Readiness-Checkliste (Excel) importieren</span></span></button>
     <button class="acard" data-action="goto" data-view="anfragen"><span class="aicon">${ico("inbox")}</span><span><b>Projektanfragen</b><span>${(() => { const n = state.requests.filter(r => r.status === "neu").length, o = state.requests.filter(rqOpen).length, m = nextMeeting(); return m ? `Nächste Bewertung: ${fmtMeeting(m.meetingAt)} · ${m.code}` : n ? `${plural(n,"neue Anfrage","neue Anfragen")} zur Prüfung` : o ? `${plural(o,"offene Anfrage","offene Anfragen")} in Prüfung` : "Keine offenen Anfragen"; })()}</span></span></button>
     <button class="acard" data-action="goto" data-view="overview"><span class="aicon">${ico("gantt")}</span><span><b>Projektübersicht</b><span>Alle Projekte auf einer Zeitachse: Phase, Fortschritt, Verzug, Go-live</span></span></button>`;
@@ -2197,8 +2222,8 @@ function renderTeam(){
   if (unassigned.length) people.unshift({ name:"", m:null, list: unassigned.sort(byTask) });
   $("#tm-people").innerHTML = people.length ? people.map(({ name, m, list }) => {
     const od = list.filter(x => taskOverdue(x.t)).length;
-    const sub = m ? [m.role, m.country].filter(Boolean).join(" · ") : name ? "Nicht in der Teamliste" : "Diese Aufgaben jemandem zuweisen";
     const you = name && key(name) === me;
+    const sub = you && !m ? "Deine Aufgaben" : m ? [m.role, tmSkills(m).length ? "zuständig für " + tmSkills(m).join(", ") : "", m.kind === "kontakt" ? "Ansprechpartner" : "", m.from && m.from > todayISO() ? "startet " + fmtDay(m.from) : "", m.country].filter(Boolean).join(" · ") : name ? "Nicht in der Teamliste" : "Diese Aufgaben jemandem zuweisen";
     return `<div class="tm-card ${od ? "alert" : ""}">
       <div class="tm-h"><span class="avatar">${esc(name ? initials(name) : "?")}</span><div class="grow"><b>${esc(name || "Nicht zugewiesen")}${you ? ` <span class="task-st arbeit">Du</span>` : ""}</b><small>${esc(sub)}</small></div><span class="tm-n">${list.length} offen${od ? ` · <b>${od} überfällig</b>` : ""}</span></div>
       ${list.length ? `<div class="tm-tasks">${list.map(({ p, t }) => taskLine(p, t, true)).join("")}</div>` : `<div class="muted" style="font-size:13px">Keine offenen Aufgaben.</div>`}
@@ -2206,10 +2231,14 @@ function renderTeam(){
     </div>`; }).join("")
     : `<div class="panel empty" style="padding:28px 18px;grid-column:1/-1">Noch keine Aufgaben. Lege sie auf den Projektkarten in der Übersicht oder im Projekt unter „Aufgaben“ an und weise sie jemandem zu.</div>`;
   const cnt = name => items.filter(x => key(x.t.owner) === key(name)).length;
-  $("#tm-members").innerHTML = `<div class="table-scroll"><table class="tt tm-table" style="min-width:640px"><thead><tr><th>Name</th><th>Rolle</th><th>Land / Standort</th><th>Offene Aufgaben</th><th></th></tr></thead><tbody>
-    ${members.map(m => `<tr><td><input data-tmfield="name" data-mid="${esc(m.id)}" value="${esc(m.name)}" aria-label="Name"></td><td><input data-tmfield="role" data-mid="${esc(m.id)}" value="${esc(m.role)}" aria-label="Rolle"></td><td><input data-tmfield="country" data-mid="${esc(m.id)}" value="${esc(m.country)}" aria-label="Land"></td>
+  const kindSel = (attr, v) => `<select ${attr} aria-label="Art">${Object.entries(TM_KIND).map(([k, l]) => `<option value="${k}" ${v === k ? "selected" : ""}>${l}</option>`).join("")}</select>`;
+  $("#tm-members").innerHTML = `<div class="tm-tools"><button class="btn small" data-action="tm-placeholder">+ Platzhalter für neue Stelle (z. B. AI Automation Expert ab Q1)</button><span class="muted" style="font-size:12.5px">„Zuständig für“ sind Stichworte wie „Salesforce, CRM“ oder „Datenschutz“. Das Radar schlägt die Person dann bei passenden Aufgaben, Dokumenten und Zugängen vor.</span></div>
+  <div class="table-scroll"><table class="tt tm-table" style="min-width:980px"><thead><tr><th>Name</th><th>Rolle</th><th>Zuständig für</th><th>Art</th><th>Start ab</th><th>Land / Standort</th><th>Offen</th><th></th></tr></thead><tbody>
+    ${members.map(m => `<tr><td><input data-tmfield="name" data-mid="${esc(m.id)}" value="${esc(m.name)}" aria-label="Name"></td><td><input data-tmfield="role" data-mid="${esc(m.id)}" value="${esc(m.role)}" aria-label="Rolle"></td>
+      <td><input data-tmfield="skills" data-mid="${esc(m.id)}" value="${esc(m.skills || "")}" placeholder="z. B. Salesforce, CRM" aria-label="Zuständig für"></td><td>${kindSel(`data-tmfield="kind" data-mid="${esc(m.id)}"`, m.kind || "team")}</td>
+      <td><input type="date" data-tmfield="from" data-mid="${esc(m.id)}" value="${esc(m.from || "")}" aria-label="Start ab"></td><td><input data-tmfield="country" data-mid="${esc(m.id)}" value="${esc(m.country)}" aria-label="Land"></td>
       <td class="num">${cnt(m.name)}</td><td><button class="btn ghost small" data-action="tm-del" data-mid="${esc(m.id)}">Entfernen</button></td></tr>`).join("")}
-    <tr><td><input id="tm-new-name" placeholder="Vor- und Nachname" aria-label="Name des neuen Mitglieds"></td><td><input id="tm-new-role" placeholder="z. B. AI Engineer" aria-label="Rolle des neuen Mitglieds"></td><td><input id="tm-new-country" placeholder="z. B. Polen" aria-label="Land des neuen Mitglieds"></td><td></td><td><button class="btn primary small" data-action="tm-add">Hinzufügen</button></td></tr>
+    <tr><td><input id="tm-new-name" placeholder="Vor- und Nachname" aria-label="Name des neuen Mitglieds"></td><td><input id="tm-new-role" placeholder="z. B. Salesforce Owner" aria-label="Rolle des neuen Mitglieds"></td><td><input id="tm-new-skills" placeholder="z. B. Salesforce, CRM" aria-label="Zuständig für"></td><td>${kindSel(`id="tm-new-kind"`, "team")}</td><td><input type="date" id="tm-new-from" aria-label="Start ab"></td><td><input id="tm-new-country" placeholder="z. B. Polen" aria-label="Land des neuen Mitglieds"></td><td></td><td><button class="btn primary small" data-action="tm-add">Hinzufügen</button></td></tr>
   </tbody></table></div>`;
 }
 function renderPlan(p){
@@ -2541,7 +2570,7 @@ function openDrawer(id, opts){
         </section>`}
         ${drawer.draft ? "" : `<section class="d-sec" data-pane="overview" id="d-dec-sec"></section>`}
         <section class="d-sec" data-pane="overview" id="d-update-sec">
-          <div class="section-head" style="margin:0"><h2>Updates & Verlauf</h2>${drawer.draft || ro ? "" : `<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" data-action="mt-open" data-id="${esc(cur.id)}">${ico("fileText")}Meeting einlesen</button><button class="btn small" data-action="agenda" data-id="${esc(cur.id)}">Agenda fürs nächste Meeting kopieren</button></div>`}</div>
+          <div class="section-head" style="margin:0"><h2>Updates & Verlauf</h2>${drawer.draft || ro ? "" : `<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" data-action="mt-open" data-id="${esc(cur.id)}">${ico("fileText")}Dokument einlesen</button><button class="btn small" data-action="agenda" data-id="${esc(cur.id)}">Agenda fürs nächste Meeting kopieren</button></div>`}</div>
           ${ro ? "" : `<div class="upd"><textarea id="d-update" placeholder="Was ist passiert? z. B. „SAP-Datenexport da, Qualität ist gut.“"></textarea><div><button class="btn primary small" data-action="add-update">Update speichern</button></div></div>`}
           <div class="log" id="d-log"></div>
         </section>
@@ -2642,7 +2671,7 @@ function renderSmartHints(p, ro){
   dec.innerHTML = `<div class="section-head" style="margin:0"><h2>Entscheidungen & Meetings</h2><span class="muted" style="font-size:13px">${plural(decs.length, "Entscheidung", "Entscheidungen")} · ${plural(mts.length, "Meeting", "Meetings")}</span></div>
     ${ro ? "" : `<div class="tk-add" style="grid-template-columns:1fr auto"><input id="d-dec-new" placeholder="Entscheidung festhalten, z. B. „Pilot startet mit Region Nordwest“" aria-label="Neue Entscheidung"><button class="btn small" data-action="dec-add">Festhalten</button></div>`}
     ${decs.length ? `<div class="dec-list">${decs.slice(0, 12).map(d => `<div class="dec"><span class="d">${esc(d.date ? fmtShort(d.date) : "")}</span><span>${esc(d.text)}</span>${ro ? "" : `<button data-action="dec-del" data-did="${esc(d.id)}" aria-label="Entscheidung löschen">✕</button>`}</div>`).join("")}</div>` : `<div class="muted" style="font-size:13.5px">Noch keine Entscheidungen. Sie kommen automatisch aus eingelesenen Meetings oder per Strg+K („Entscheidung: …“).</div>`}
-    ${mts.length ? `<div>${mts.slice(0, 8).map(m => `<details class="mtg"><summary><span class="d">${esc(m.date ? fmtShort(m.date) : "")}</span><b>${esc(m.title || "Meeting")}</b><span class="muted" style="font-size:12.5px">${esc([m.participants.length ? plural(m.participants.length, "Person", "Personen") : "", m.minutes ? m.minutes + " min" : "", m.counts.a ? plural(m.counts.a, "Aufgabe", "Aufgaben") : "", m.counts.d ? plural(m.counts.d, "Entscheidung", "Entscheidungen") : ""].filter(Boolean).join(" · "))}</span></summary>${m.summary.length ? `<ul>${m.summary.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}${m.participants.length ? `<div class="muted" style="font-size:12.5px">${esc(m.participants.join(", "))}</div>` : ""}</details>`).join("")}</div>` : ""}`;
+    ${mts.length ? `<div>${mts.slice(0, 8).map(m => `<details class="mtg"><summary><span class="d">${esc(m.date ? fmtShort(m.date) : "")}</span><b>${esc(m.title || "Meeting")}</b>${m.source && MT_KIND_LABEL[m.source] ? `<span class="tag" style="background:var(--surface-2);color:var(--ink-2)">${esc(MT_KIND_LABEL[m.source])}</span>` : ""}<span class="muted" style="font-size:12.5px">${esc([m.participants.length ? plural(m.participants.length, "Person", "Personen") : "", m.minutes ? m.minutes + " min" : "", m.counts.a ? plural(m.counts.a, "Aufgabe", "Aufgaben") : "", m.counts.d ? plural(m.counts.d, "Entscheidung", "Entscheidungen") : ""].filter(Boolean).join(" · "))}</span></summary>${m.summary.length ? `<ul>${m.summary.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}${m.participants.length ? `<div class="muted" style="font-size:12.5px">${esc(m.participants.join(", "))}</div>` : ""}</details>`).join("")}</div>` : ""}`;
 }
 function readForm(target){
   document.querySelectorAll("#drawer-slot [data-field]").forEach(el => {
@@ -2767,12 +2796,12 @@ function renderTasksPane(p){
   const row = t => `<tr class="${taskOverdue(t) ? "late" : ""}">
     <td><input type="checkbox" data-task="${esc(t.id)}" data-id="${esc(p.id)}" ${t.status === TASK_DONE ? "checked" : ""} aria-label="Erledigt: ${esc(t.text)}"></td>
     <td><input data-tkfield="text" data-tid="${esc(t.id)}" value="${esc(t.text)}" aria-label="Aufgabe"><input data-tkfield="note" data-tid="${esc(t.id)}" value="${esc(t.note || "")}" placeholder="Statusnotiz" aria-label="Statusnotiz" style="margin-top:4px"></td>
-    <td><input data-tkfield="owner" data-tid="${esc(t.id)}" value="${esc(t.owner)}" list="dl-team" placeholder="Wer?" aria-label="Owner"></td>
+    <td><input data-tkfield="owner" data-tid="${esc(t.id)}" value="${esc(t.owner)}" list="dl-team" placeholder="Wer?" aria-label="Owner">${!t.owner ? ((sg) => sg ? `<button class="tk-sg" data-action="tk-sugg" data-tid="${esc(t.id)}" data-who="${esc(sg.name)}" title="Zuständig für ${esc(sg.why)}">→ ${esc(sg.name)}</button>` : "")(suggestOwner(t.text)) : ""}</td>
     <td><select data-tkfield="status" data-tid="${esc(t.id)}" aria-label="Status">${Object.keys(TASK_STATUS).map(k => `<option value="${k}" ${t.status === k ? "selected" : ""}>${esc(TASK_STATUS[k])}</option>`).join("")}</select></td>
     <td><input type="date" data-tkfield="due" data-tid="${esc(t.id)}" value="${esc(t.due)}" aria-label="Fälligkeit"></td>
-    <td><button class="btn ghost small" data-action="tk-del" data-tid="${esc(t.id)}">Löschen</button></td></tr>`;
+    <td style="white-space:nowrap"><button class="btn ghost small" data-action="tk-deleg" data-tid="${esc(t.id)}" title="Teams-Nachricht zum Delegieren kopieren">Delegieren</button><button class="btn ghost small" data-action="tk-del" data-tid="${esc(t.id)}">Löschen</button></td></tr>`;
   el.innerHTML = `<div class="section-head" style="margin:0"><h2>Aufgaben</h2>${open.length ? `<button class="btn small" data-action="tk-copy">Offene Aufgaben kopieren</button>` : ""}</div>
-    <div class="tk-add"><input id="tk-new-text" placeholder="Was ist zu tun? z. B. @Ricardo API klären" aria-label="Neue Aufgabe"><input id="tk-new-owner" list="dl-team" placeholder="Wer? oder @ im Text" aria-label="Zuweisen an"><input type="date" id="tk-new-due" aria-label="Fälligkeit"><button class="btn primary small" data-action="tk-add">Aufgabe hinzufügen</button></div>
+    <div class="tk-add"><input id="tk-new-text" placeholder="Was ist zu tun? z. B. @Jonas API klären" aria-label="Neue Aufgabe"><input id="tk-new-owner" list="dl-team" placeholder="Wer? oder @ im Text" aria-label="Zuweisen an"><input type="date" id="tk-new-due" aria-label="Fälligkeit"><button class="btn primary small" data-action="tk-add">Aufgabe hinzufügen</button></div>
     ${open.length ? `<div class="table-scroll"><table class="tt tk-table" style="min-width:760px"><thead><tr><th></th><th>Aufgabe</th><th>Owner</th><th>Status</th><th>Fällig</th><th></th></tr></thead><tbody>${open.map(row).join("")}</tbody></table></div>` : `<div class="muted" style="font-size:14px">Keine offenen Aufgaben.</div>`}
     ${done.length ? `<details><summary class="muted" style="font-size:13px;cursor:pointer">${plural(done.length, "erledigte Aufgabe", "erledigte Aufgaben")}</summary><div style="display:grid;gap:5px;margin-top:8px">${done.map(t => taskLine(p, t)).join("")}</div></details>` : ""}
     <div class="muted" style="font-size:12.5px">Weise jemanden aus Team &amp; Aufgaben zu und setze eine Frist. In Arbeit und Wartet zeigen den Stand. Die Statusnotiz ist eine Zeile, kein Chat. Das Gespräch bleibt in Teams.</div>`;
@@ -2931,7 +2960,7 @@ function projectFromExcel(x, fileName){
 
 async function handleImportFile(file){
   try {
-    if (/\.(vtt|docx|txt|md)$/i.test(file.name)){ await mtLoadFile(file, ""); return; }
+    if (/\.(vtt|docx|txt|md|pdf|pptx|eml|msg)$/i.test(file.name)){ await mtLoadFile(file, ""); return; }
     if (/\.xlsx$/i.test(file.name)){ await importExcelAsProject(file); return; }
     const text = await file.text();
     let raw = null; try { raw = JSON.parse(text); } catch {}
@@ -3021,13 +3050,15 @@ function mtDate(text, refISO){
 }
 function mtStripDate(text, raw){
   if (!raw) return text;
-  const rx = new RegExp(`\\s*\\b(?:bis(?: zum| spätestens)?|am|zum|spätestens|by|until|on|due)?\\s*${raw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i");
-  return text.replace(rx, "").replace(/\s{2,}/g, " ").replace(/\s+([,.!?])/g, "$1").trim();
+  const r0 = raw.replace(/\.$/, "");
+  const rx = new RegExp(`\\s*\\(?\\s*\\b(?:bis(?: zum| spätestens)?|am|zum|spätestens|by|until|on|due)?\\s*${r0.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\.?\\s*\\)?`, "i");
+  return text.replace(rx, " ").replace(/\s{2,}/g, " ").replace(/\s+([,.!?])/g, "$1").trim();
 }
 
 /* ---------- Reading files ---------- */
+const MT_KIND_LABEL = { vtt:"Teams-Transkript", docx:"Word", pdf:"PDF", pptx:"PowerPoint", email:"E-Mail", text:"Text", copilot:"Copilot" };
 async function mtReadFile(file){
-  const name = file.name || "Meeting";
+  const name = file.name || "Dokument";
   if (/\.docx$/i.test(name)){
     let get;
     try { get = await unzip(await file.arrayBuffer()); } catch { throw new Error("Die Word-Datei konnte nicht gelesen werden."); }
@@ -3043,12 +3074,24 @@ async function mtReadFile(file){
         else if (el.localName === "tab") s += "\t";
         else if (el.localName === "br" || el.localName === "cr") s += "\n";
       }
+      const style = (p.getElementsByTagNameNS(W, "pStyle")[0] || { getAttribute: () => "" }).getAttribute("w:val") || "";
+      if (s.trim() && p.getElementsByTagNameNS(W, "numPr").length) s = "- " + s.trim();
+      else if (s.trim() && /heading|berschrift|title|titel/i.test(style)) s = "## " + s.trim();
       lines.push(s);
     }
     return { text: lines.join("\n"), name, kind:"docx" };
   }
+  if (/\.pdf$/i.test(name) || file.type === "application/pdf"){
+    const t = await pdfText(await file.arrayBuffer());
+    if (!t.trim()) throw new Error("In der PDF wurde kein Text gefunden. Gescannte PDFs (nur Bilder) kann das Radar nicht lesen.");
+    return { text: t, name, kind:"pdf" };
+  }
+  if (/\.pptx$/i.test(name)){ const r = await pptxText(await file.arrayBuffer()); return { text: r.text, name, kind:"pptx", title: r.title, date: r.date }; }
+  if (/\.msg$/i.test(name)){ const m = msgParse(await file.arrayBuffer()); const r = mailToText(m); return { text: r.text, name, kind:"email", title: r.title, to: m.to, date: m.date }; }
+  if (/\.eml$/i.test(name) || file.type === "message/rfc822"){ const m = emlParse(await file.text()); const r = mailToText(m); return { text: r.text, name, kind:"email", title: r.title, to: m.to, date: m.date }; }
+  if (/\.(ppt|doc|pps)$/i.test(name)) throw new Error("Ältere Office-Formate (.ppt, .doc) bitte als .pptx bzw. .docx speichern.");
   if (/\.(vtt|txt|md|text|srt)$/i.test(name) || /^text\//.test(file.type || "")) return { text: await file.text(), name, kind: /\.vtt$/i.test(name) ? "vtt" : "text" };
-  throw new Error("Bitte ein Teams-Transkript (.vtt oder .docx) oder eine Textdatei (.txt) wählen.");
+  throw new Error("Dieses Format kennt das Radar nicht. Möglich sind Teams-Transkript (.vtt, .docx), PDF, PowerPoint (.pptx), Word (.docx), E-Mail (.msg, .eml) und Text.");
 }
 
 /* ---------- Parsing: speakers, sections, sentences ---------- */
@@ -3069,6 +3112,7 @@ function mtParse(text, fileName, kind){
   const lines = raw.split("\n");
   const segs = [], items = [];
   let who = "", ts = "", section = "", maxMin = 0, title = "", date = "", minutes = 0, expect = false;
+  const docLike = /^(pdf|pptx|docx|email)$/.test(kind || "");
   const declared = [];
   const vtt = kind === "vtt" || /^\s*WEBVTT/.test(raw) || /\d{2}:\d{2}[:.]\d{2}[.,]\d{3}\s+-->/.test(raw);
   // Speaker candidates in "Name: text" lines: only names used at least twice count as speakers
@@ -3095,8 +3139,8 @@ function mtParse(text, fileName, kind){
     if (/(started|stopped) transcription|transkription (gestartet|beendet)|hat die transkription|^(transcript|transkript|besprechungstranskript|meeting transcript)$/i.test(lt)) continue;
     // Header lines of a Teams .docx transcript or notes: title, date, duration, participants
     if (!segs.length && !items.length && i < 8){
-      const dm = mtHeaderDate(lt);
-      if (dm && !date){ date = dm; continue; }
+      const dm = mtHeaderDate(lt.replace(/^(datum|date|stand|am)\s*:?\s*/i, ""));
+      if (dm && !date && lt.length < 60){ date = dm; continue; }
       const dur = lt.match(/^(?:(\d+)\s*h\s*)?(\d+)\s*m(?:in)?(?:\s*\d+\s*s)?$/i);
       if (dur){ minutes = (+dur[1] || 0) * 60 + +dur[2]; continue; }
       const nextNon = (lines.slice(i + 1).find(x => x.trim()) || "").trim();
@@ -3112,16 +3156,22 @@ function mtParse(text, fileName, kind){
     if (sh && looksLikeName(sh[1])){ who = sh[1].trim(); ts = sh[2]; maxMin = Math.max(maxMin, tsToMin(ts)); section = ""; continue; }
     // "[00:01:23] Name: text" or "Name: text"
     const ct = lt.match(/^\[?(\d{1,2}:\d{2}(?::\d{2})?)\]?\s+([^:]{2,48}):\s+(.+)$/) || lt.match(/^()([^:\t]{2,48}):\s+(.+)$/);
-    if (ct && looksLikeName(ct[2]) && (colonNames[ct[2].trim()] >= 2 || ct[1])){ who = ct[2].trim(); if (ct[1]){ ts = ct[1]; maxMin = Math.max(maxMin, tsToMin(ts)); } section = ""; add(who, ct[3], ts); continue; }
+    if (ct && looksLikeName(ct[2]) && (colonNames[ct[2].trim()] >= 2 || ct[1] || declared.some(d => d.toLowerCase() === ct[2].trim().toLowerCase()))){ who = ct[2].trim(); if (ct[1]){ ts = ct[1]; maxMin = Math.max(maxMin, tsToMin(ts)); } section = ""; add(who, ct[3], ts); continue; }
     // Headings of notes or a Copilot / Teams recap
     const hd = lt.replace(/^#+\s*|^\*\*|\*\*:?$|:$/g, "").trim();
     const nextLine = (lines.slice(i + 1).find(x => x.trim()) || "").trim();
-    const bareHeading = lt.split(/\s+/).length <= 4 && !/[.!?,]$/.test(lt) && MT_SECTION.some(([rx]) => rx.test(lt)) && /^(?:[-*•–·▪◦]|\d{1,2}[.)]|\[[ xX]\]|☐|☑|✓|✔)\s+/.test(nextLine);
+    const bareHeading = lt.split(/\s+/).length <= 4 && !/[.!?,]$/.test(lt) && MT_SECTION.some(([rx]) => rx.test(lt)) && (docLike || /^(?:[-*•–·▪◦\uF0B7\uF0A7]|\d{1,2}[.)]|\[[ xX]\]|☐|☑|✓|✔)\s+/.test(nextLine));
     const isHeading = (/^#{1,4}\s/.test(lt) || /^\*\*[^*]+\*\*:?$/.test(lt) || (/:$/.test(lt) && lt.length < 60) || bareHeading) && !/^[-*•]/.test(lt);
     if (isHeading){ const sec = MT_SECTION.find(([rx]) => rx.test(hd)); section = sec ? sec[1] : ""; continue; }
-    const bl = lt.match(/^(?:[-*•–·▪◦]|\d{1,2}[.)]|\[[ xX]\]|☐|☑|✓|✔)\s+(.+)$/);
+    const bl = lt.match(/^(?:[-*•–·▪◦\uF0B7\uF0A7\u25CF]|\d{1,2}[.)]|\[[ xX]\]|☐|☑|✓|✔)\s*(.+)$/);
     if (bl && section){ items.push({ type: section, t: bl[1].replace(/\*\*/g, "").trim(), who }); continue; }
+    if (!bl && section && docLike && lt.length < 220 && !/^##?\s/.test(lt)){
+      const last = items[items.length - 1];
+      if (last && last.type === section && !/[.!?:]$/.test(last.t) && /^[\p{Ll}(]/u.test(lt)) last.t += " " + lt; else items.push({ type: section, t: lt.replace(/\*\*/g, ""), who });
+      continue;
+    }
     if (!bl) section = "";
+    if (docLike && !section && (/^##?\s/.test(lt) || (lt.length < 70 && !/[.!?:,;]$/.test(lt) && lt.split(/\s+/).length <= 8 && !bl))){ const last = segs[segs.length - 1]; if (last && !/[.!?]$/.test(last.t)) last.t += "."; segs.push({ who, t: lt.replace(/^##?\s*/, "") + ".", ts, section: "" }); continue; }
     add(who, bl ? bl[1] : lt, ts);
   }
   // Meeting date and title from a Teams file name: "Projekt X-20261005_143022-Meeting Recording.vtt"
@@ -3135,8 +3185,8 @@ function mtParse(text, fileName, kind){
   const participants = Object.keys(talk).sort((a, b) => talk[b] - talk[a]);
   declared.forEach(n => { if (!participants.some(x => x.toLowerCase() === n.toLowerCase())) participants.push(n); });
   const sentences = [];
-  segs.forEach(s => s.t.split(/(?<=[.!?])\s+(?=[\p{Lu}\d„"])/u).forEach(x => { x = x.trim(); if (x) sentences.push({ s: x, who: s.who, ts: s.ts }); }));
-  return { title, date: date || todayISO(), minutes: minutes || Math.round(maxMin), participants, sentences, items, kind: vtt ? "vtt" : (kind || "text"), chars: raw.length };
+  segs.forEach(s => s.t.split(/(?<=[.!?])(?<!\b\d{1,2}\.)\s+(?=[\p{Lu}\d„"])/u).forEach(x => { x = x.trim(); if (x) sentences.push({ s: x, who: s.who, ts: s.ts }); }));
+  return { title, date: date || todayISO(), minutes: minutes || Math.round(maxMin), participants, sentences, items, to: [], kind: vtt ? "vtt" : (kind || "text"), chars: raw.length };
 }
 function mtHeaderDate(s){
   let m = s.match(new RegExp(`^(\\d{1,2})\\.\\s*(${MT_MON_RX})\\.?\\s+(\\d{4})`, "i"));
@@ -3255,12 +3305,16 @@ function mtAnalyze(parsed, project){
     let t = mtCleanAction(text);
     if (d) t = mtStripDate(t, d.raw);
     t = mtNeutral(t.replace(/\(\s*\)/g, "").replace(/\s{2,}/g, " ").trim(), owner);
-    t = t.replace(/[.!]+$/, ""); t = t.charAt(0).toUpperCase() + t.slice(1);
+    t = t.replace(/[.!]+$/, ""); if (!/^\S*\d/.test(t) && !/^\p{Ll}\p{Lu}/u.test(t)) t = t.charAt(0).toUpperCase() + t.slice(1);
     if (mtTokens(t).length < 2 || !uniq("a", t)) return;
-    an.actions.push({ text: t, owner: owner || "", due: d ? d.iso : "", on: strong !== false, src: src(sent) });
+    let sug = "";
+    if (!owner){ const sg = suggestOwner(t); if (sg){ owner = sg.name; sug = sg.why + (sg.later ? ` · ab ${fmtShort(sg.later)}` : ""); } }
+    an.actions.push({ text: t, owner: owner || "", due: d ? d.iso : "", on: strong !== false, src: src(sent), sug });
   };
   // 1. Structured notes and recaps: bullets under headings
   parsed.items.forEach(it => {
+    const lab = it.t.match(/^(entscheidung|beschluss|decision|aufgabe|to-?do|action item|risiko|risk|blocker|offen|offene frage)\s*:\s*(.+)$/i);
+    if (lab){ const k = lab[1].toLowerCase(); it = { type: /entsch|beschl|decision/.test(k) ? "decisions" : /aufgabe|todo|to-do|action/.test(k) ? "actions" : /offen/.test(k) ? "open" : "blockers", t: lab[2], who: it.who }; }
     const sent = { s: it.t, who: it.who || "", ts: "" };
     if (it.type === "actions"){
       let t = it.t, owner = "";
@@ -3285,13 +3339,15 @@ function mtAnalyze(parsed, project){
     const s = x.s, low = s.toLowerCase(); const words = mtWords(s).length;
     if (words < 4) return;
     const q = /\?\s*$/.test(s);
+    const lab = s.match(/^(entscheidung|beschluss|decision)\s*:\s*(.+)$/i);
+    if (lab){ if (uniq("d", lab[2])) an.decisions.push({ text: mtShort(lab[2]), on: true, src: src(x) }); return; }
     const past = RX_PAST.test(s) && !RX_FUTURE_ME.test(s);
     let isAction = false;
     if (!past){
       let owner = "";
       if (RX_REQUEST.test(s)){
         const voc = mtFindPerson(s, people);
-        owner = voc && voc !== x.who ? voc : (others(x.who).length === 1 ? others(x.who)[0] : "");
+        owner = voc && voc !== x.who ? voc : (parsed.to && parsed.to.length === 1 && parsed.to[0] !== x.who ? parsed.to[0] : (others(x.who).length === 1 ? others(x.who)[0] : ""));
         addAction(s, owner, x); isAction = true;
       } else if (!q && RX_SELF.test(s) && (RX_FUTURE_ME.test(s) || (RX_COMMIT_VERB.test(s) && (mtDate(s, ref) || /\b(noch|dann|gleich|direkt|nachher|morgen|mal)\b/i.test(s))))){
         addAction(s, x.who || me, x); isAction = true;
@@ -3320,6 +3376,9 @@ function mtAnalyze(parsed, project){
       scored.push({ i: idx, s, sc });
     }
   });
+  if (!an.summary.length && /^(email|pdf|pptx|docx)$/.test(parsed.kind)){
+    an.summary = parsed.sentences.map(x => x.s).filter(s => mtWords(s).length >= 6 && !RX_SMALLTALK.test(s) && !/^(hallo|hi|liebe|lieber|sehr geehrte|guten (morgen|tag))\b/i.test(s) && !/\?\s*$/.test(s)).slice(0, 3).map(mtShort);
+  }
   if (!an.summary.length){
     an.summary = scored.filter(x => x.sc >= 2).sort((a, b) => b.sc - a.sc).slice(0, 5).sort((a, b) => a.i - b.i).map(x => mtShort(x.s));
   }
@@ -3522,7 +3581,9 @@ function mtFromCopilot(text){
   const people = mtPeople(mt.parsed);
   const an = { actions:[], decisions:[], open:[], blockers:[], done:[], resolved:null, phase:null, goLive:null, health:null, summary: arr(j.summary).map(String).slice(0, 8), team:null, ns:-1, nsOn:false, copilot:true };
   arr(j.actions).forEach(a => { const t = typeof a === "string" ? a : String(a.text || ""); if (!t.trim()) return; let o = typeof a === "object" ? String(a.owner || "").trim() : "";
-    const hit = people.find(n => n.toLowerCase() === o.toLowerCase() || firstName(n).toLowerCase() === firstName(o).toLowerCase()); an.actions.push({ text: t.trim().slice(0, 300), owner: hit || o, due: day(a.due), on: true, src }); });
+    const hit = people.find(n => n.toLowerCase() === o.toLowerCase() || firstName(n).toLowerCase() === firstName(o).toLowerCase());
+    let owner = hit || o, sug = ""; if (!owner){ const sg = suggestOwner(t); if (sg){ owner = sg.name; sug = sg.why; } }
+    an.actions.push({ text: t.trim().slice(0, 300), owner, due: day(a.due), on: true, src, sug }); });
   arr(j.decisions).forEach(t => an.decisions.push({ text: String(t).slice(0, 400), on: true, src }));
   arr(j.openDecisions).forEach(t => an.open.push({ text: String(t).slice(0, 400), on: true, src }));
   arr(j.blockers).forEach(t => an.blockers.push({ text: String(t).slice(0, 400), kind: "blocker", on: true, src }));
@@ -3585,22 +3646,30 @@ function mtOpen(presetId){
   mt = { stage: "input", preset: presetId || "", cp: { open:true, err:"" } };
   mtRender();
 }
-async function mtLoadFile(file, presetId){
+async function mtLoadFile(file, presetId, queue){
+  queue = queue || [];
   try {
     const r = await mtReadFile(file);
-    mtStart(r.text, r.name, r.kind, presetId);
-  } catch (err){ toast(err.message || "Die Datei konnte nicht gelesen werden."); }
+    mtStart(r.text, r.name, r.kind, presetId, r, queue);
+  } catch (err){
+    toast(`${file.name}: ${err.message || "Die Datei konnte nicht gelesen werden."}`);
+    if (queue.length) setTimeout(() => mtLoadFile(queue[0], presetId, queue.slice(1)), 1200);
+  }
 }
-function mtStart(text, fileName, kind, presetId){
-  drawer = null; rqDrawer = null;
+function mtLoadFiles(files, presetId){ const list = [...(files || [])]; if (list.length) mtLoadFile(list[0], presetId, list.slice(1)); }
+function mtStart(text, fileName, kind, presetId, extra, queue){
+  drawer = null; rqDrawer = null; extra = extra || {}; queue = queue || [];
   const json = /"(actions|summary|decisions)"\s*:/.test(text) ? mtJsonParsed(text) : null;
   const parsed = json || mtParse(text, fileName, kind);
-  if (!parsed.sentences.length && !parsed.items.length){ toast("In der Datei wurde kein Gesprächstext gefunden."); return; }
+  if (extra.title) parsed.title = extra.title;
+  if (extra.date) parsed.date = extra.date;
+  if (extra.to) parsed.to = extra.to;
+  if (!parsed.sentences.length && !parsed.items.length){ toast(`${fileName || "Text"}: kein auswertbarer Text gefunden.`); if (queue.length) mtLoadFile(queue[0], presetId, queue.slice(1)); return; }
   const matches = mtMatch(parsed, fileName);
   const preset = presetId || (mt && mt.preset) || "";
   const best = matches[0];
   const target = preset && state.projects.some(p => p.id === preset) ? preset : (best && best.s >= 12 ? best.p.id : "new");
-  mt = { stage: "review", parsed, matches, fileName: fileName || "", target, preset, newp: mtNewDraft(parsed), cp: { open: true, err: "" } };
+  mt = { stage: "review", parsed, matches, fileName: fileName || "", target, preset, queue, newp: mtNewDraft(parsed), cp: { open: true, err: "" } };
   mtAnalyzeTarget();
   if (json){ try { mt.an = mtFromCopilot(text); } catch (err){ toast(err.message); } }
   mtRender();
@@ -3626,13 +3695,13 @@ function mtRender(){
     const pre = mt.preset ? state.projects.find(p => p.id === mt.preset) : null;
     slot.innerHTML = `<div class="scrim" data-action="mt-close"></div>
     <aside class="drawer mt" role="dialog" aria-modal="true" aria-labelledby="mt-h">
-      <div class="d-head"><div class="grow"><div class="eyebrow">${pre ? `<span class="mono">${esc(pre.code)}</span> · ${esc(pre.title)}` : "Projekt anlegen oder aktualisieren"}</div><h2 id="mt-h" style="font-size:22px">Meeting einlesen</h2></div><button class="btn ghost" data-action="mt-close" aria-label="Schließen">✕</button></div>
+      <div class="d-head"><div class="grow"><div class="eyebrow">${pre ? `<span class="mono">${esc(pre.code)}</span> · ${esc(pre.title)}` : "Projekt anlegen oder aktualisieren"}</div><h2 id="mt-h" style="font-size:22px">Dokument einlesen</h2></div><button class="btn ghost" data-action="mt-close" aria-label="Schließen">✕</button></div>
       <div class="d-body">
-        <label class="mt-drop" id="mt-drop" for="mt-file">${ico("fileText")}<b>Teams-Transkript hierher ziehen oder auswählen</b><span>.vtt oder .docx aus Teams („Transkript herunterladen“), oder eine Mitschrift als .txt</span></label>
-        <input type="file" id="mt-file" accept=".vtt,.docx,.txt,.md,text/plain,text/vtt" hidden>
+        <label class="mt-drop" id="mt-drop" for="mt-file">${ico("fileText")}<b>Dateien hierher ziehen oder auswählen</b><span>Teams-Transkript (.vtt, .docx), PDF, PowerPoint (.pptx), Word, E-Mail (.msg aus Outlook, .eml) oder Text. Mehrere Dateien auf einmal gehen auch.</span></label>
+        <input type="file" id="mt-file" accept=".vtt,.docx,.txt,.md,.pdf,.pptx,.eml,.msg,text/plain,text/vtt,application/pdf" multiple hidden>
         <section class="d-sec"><h2>Oder sprechen / Text einfügen</h2>
           <p class="muted" style="margin:0;font-size:13.5px">Diktieren, Teams-/Copilot-Zusammenfassung einfügen oder Mitschrift tippen. Danach auswerten – oder unten den Copilot-Weg für genauere Aufgaben.</p>
-          <textarea id="mt-text" class="mt-paste" placeholder="Ricardo Serrano: Stand Datenexport ist da, Qualität passt.&#10;Tobias Backhaus: Ich kläre bis Freitag den API-Zugang mit der IT.&#10;Wir haben entschieden, mit Region Nordwest zu starten."></textarea>
+          <textarea id="mt-text" class="mt-paste" placeholder="Lea Beispiel: Stand Datenexport ist da, Qualität passt.&#10;Jonas Beispiel: Ich kläre bis Freitag den API-Zugang mit der IT.&#10;Wir haben entschieden, mit Region Nordwest zu starten."></textarea>
           <div class="mt-actions"><button class="btn primary" data-action="mt-text">Auswerten</button>${SpeechDict.btnHtml("mt-text")}<span class="muted" style="font-size:12.5px">Strg+Enter</span></div>
         </section>
         <section class="d-sec mt-cp"><div class="section-head" style="margin:0"><h2>${ico("sparkles")}Mit Microsoft Copilot</h2></div>
@@ -3663,7 +3732,7 @@ function mtRender(){
   const actions = an.actions.length ? `<div class="mt-rows">${an.actions.map((a, i) => `<div class="mt-row ${a.on ? "" : "off"}">
       ${cb(`actions.${i}`, a.on)}
       <div class="mt-main"><input class="mt-in" data-mtk="actions.${i}.text" value="${esc(a.text)}" aria-label="Aufgabe">
-        <div class="mt-meta"><input class="mt-owner" data-mtk="actions.${i}.owner" value="${esc(a.owner)}" list="mt-people" placeholder="Wer?" aria-label="Verantwortlich"><input type="date" class="mt-due" data-mtk="actions.${i}.due" value="${esc(a.due)}" aria-label="Fällig">
+        <div class="mt-meta"><input class="mt-owner" data-mtk="actions.${i}.owner" value="${esc(a.owner)}" list="mt-people" placeholder="Wer?" aria-label="Verantwortlich">${a.sug ? `<span class="tag" style="background:var(--tint);color:var(--tint-ink)" title="Vorschlag aus den Zuständigkeiten im Team">Vorschlag · ${esc(a.sug)}</span>` : ""}<input type="date" class="mt-due" data-mtk="actions.${i}.due" value="${esc(a.due)}" aria-label="Fällig">
         <label class="mt-ns"><input type="radio" name="mt-ns" data-mtns="${i}" ${an.ns === i && an.nsOn ? "checked" : ""}>Als nächster Schritt</label></div>${mtSrc(a.src)}</div></div>`).join("")}
       <label class="mt-ns" style="padding:6px 0 0 30px"><input type="radio" name="mt-ns" data-mtns="-1" ${!(an.ns >= 0 && an.nsOn) ? "checked" : ""}>Nächsten Schritt nicht ändern${p && p.nextStep ? `: <span class="muted">„${esc(p.nextStep)}“</span>` : ""}</label></div>`
     : `<div class="muted" style="font-size:14px">Keine Aufgaben erkannt. Tipp: Formulierungen wie „Ich kläre bis Freitag …“ oder „Kannst du bitte … schicken?“ werden erkannt.</div>`;
@@ -3679,7 +3748,7 @@ function mtRender(){
   slot.innerHTML = `<div class="scrim" data-action="mt-close"></div>
   <aside class="drawer mt" role="dialog" aria-modal="true" aria-labelledby="mt-title">
     <div class="d-head"><div class="grow">
-      <div class="eyebrow">Meeting auswerten · ${esc({ vtt:"Teams-Transkript", docx:"Word-Transkript", text:"Text" }[parsed.kind] || "Text")}${mt.fileName ? ` · ${esc(mt.fileName)}` : ""}</div>
+      <div class="eyebrow">Dokument auswerten · ${esc(MT_KIND_LABEL[parsed.kind] || "Text")}${mt.fileName ? ` · ${esc(mt.fileName)}` : ""}${mt.queue && mt.queue.length ? ` · danach noch ${plural(mt.queue.length, "Datei", "Dateien")}` : ""}</div>
       <input class="d-title" id="mt-title" data-mtk="title" value="${esc(parsed.title)}" aria-label="Meeting-Titel">
       <div class="mt-facts"><label>${ico("clock")}<input type="date" data-mtk="date" value="${esc(parsed.date)}" aria-label="Meetingdatum"></label>${parsed.minutes ? `<span>${parsed.minutes} min</span>` : ""}${parsed.participants.length ? `<span>${ico("users")}${esc(parsed.participants.slice(0, 6).join(", "))}${parsed.participants.length > 6 ? ` +${parsed.participants.length - 6}` : ""}</span>` : ""}</div>
     </div><button class="btn ghost" data-action="mt-close" aria-label="Schließen">✕</button></div>
@@ -3716,7 +3785,7 @@ function mtRender(){
       </section>
     </div>
     <div class="d-foot"><span class="muted" id="mt-count" style="font-size:13px">${esc(n)}</span>
-      <div style="display:flex;gap:8px"><button class="btn" data-action="mt-back">Anderes Meeting</button><button class="btn primary" data-action="mt-apply">${mt.target === "new" ? "Projekt anlegen" : "Ins Projekt übernehmen"}</button></div></div>
+      <div style="display:flex;gap:8px">${mt.queue && mt.queue.length ? `<button class="btn" data-action="mt-skip">Überspringen</button>` : `<button class="btn" data-action="mt-back">Anderes Dokument</button>`}<button class="btn primary" data-action="mt-apply">${mt.target === "new" ? "Projekt anlegen" : "Ins Projekt übernehmen"}</button></div></div>
     <datalist id="mt-people">${people.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
     <datalist id="dl-mt-dept">${[...new Set(state.projects.map(x => x.department).filter(Boolean))].map(v => `<option value="${esc(v)}">`).join("")}</datalist>
   </aside>`;
@@ -3801,12 +3870,14 @@ async function mtApply(){
   p.meetings.unshift({ id: meetingId, date: parsed.date, title: parsed.title.slice(0, 160), participants: parsed.participants.slice(0, 30), minutes: parsed.minutes || 0, summary, systems: (an.systemsAll || []).slice(0, 30), counts: { a: counts.a, d: counts.d, b: counts.b, x: counts.x }, source: an.copilot ? "copilot" : parsed.kind, at: nowISO() });
   p.meetings = p.meetings.slice(0, 50); p.decisions = p.decisions.slice(0, 200);
   const facts = [counts.a && plural(counts.a, "neue Aufgabe", "neue Aufgaben"), counts.x && `${counts.x} erledigt`, counts.d && plural(counts.d, "Entscheidung", "Entscheidungen"), counts.b && plural(counts.b, "Blocker/Risiko", "Blocker/Risiken")].filter(Boolean).join(", ");
-  const logTxt = `Meeting „${parsed.title}“ (${fmtDay(parsed.date)})${facts ? `: ${facts}` : ""}${summary.length ? `. ${summary.slice(0, 3).join(" · ")}` : ""}`;
+  const logTxt = `${parsed.kind === "vtt" || parsed.kind === "copilot" ? "Meeting" : MT_KIND_LABEL[parsed.kind] || "Dokument"} „${parsed.title}“ (${fmtDay(parsed.date)})${facts ? `: ${facts}` : ""}${summary.length ? `. ${summary.slice(0, 3).join(" · ")}` : ""}`;
   pushLog(p, logEntry(logTxt.length > 700 ? logTxt.slice(0, 697) + " …" : logTxt, "update"));
   p.updatedAt = nowISO(); if (isNew) p.createdAt = nowISO();
   await Store.saveProject(p);
+  const queue = mt.queue || [], preset = mt.preset;
   mtClose(); render();
-  toast(isNew ? `${p.code} „${p.title}“ aus dem Meeting angelegt` : `${p.code}: Meeting übernommen${facts ? ` (${facts})` : ""}`);
+  toast(isNew ? `${p.code} „${p.title}“ angelegt` : `${p.code}: ${MT_KIND_LABEL[parsed.kind] || "Dokument"} übernommen${facts ? ` (${facts})` : ""}`);
+  if (queue.length){ setTimeout(() => mtLoadFile(queue[0], preset, queue.slice(1)), 400); return; }
   openDrawer(p.id, { tab: counts.a || counts.x ? "tasks" : "overview" });
 }
 
@@ -3921,6 +3992,7 @@ function qcParse(text, p){
   });
   const note = rest.join(", ").trim();
   if (note && note.length > 2) ops.unshift({ k: "update", text: note.charAt(0).toUpperCase() + note.slice(1) });
+  ops.forEach(o => { if ((o.k === "task" || o.k === "next") && !o.owner){ const sg = suggestOwner(o.text); if (sg){ o.owner = sg.name; o.sug = sg.why; } } });
   return ops;
 }
 function qcPreview(){
@@ -3934,7 +4006,7 @@ function qcPreview(){
   qc.ops = ops; qc.p = p;
   const label = { update: "Update im Verlauf", task: "Aufgabe", next: "Nächster Schritt", decision: "Entscheidung", blocker: "Blocker", health: "Status", golive: "Go-live", phase: "Phase", done: "Erledigt" };
   const line = o => {
-    const extra = o.k === "task" || o.k === "next" ? `${o.owner ? ` · ${esc(o.owner)}` : ""}${o.due ? ` · bis ${esc(fmtDay(o.due))}` : ""}` : "";
+    const extra = o.k === "task" || o.k === "next" ? `${o.owner ? ` · ${esc(o.owner)}${o.sug ? ` <span class="muted">(Vorschlag: ${esc(o.sug)})</span>` : ""}` : ""}${o.due ? ` · bis ${esc(fmtDay(o.due))}` : ""}` : "";
     const body = o.k === "health" ? healthHtml(o.h) : o.k === "golive" ? esc(fmtDay(o.date)) : o.k === "phase" ? esc(PHASES[PH_INDEX[o.key]].long) : o.k === "done" ? `<s>${esc(o.text)}</s>` : esc(o.text);
     return `<div class="qc-op"><span class="qc-k ${o.k}">${esc(label[o.k])}</span><span>${body}${extra}</span></div>`;
   };
@@ -3982,6 +4054,7 @@ document.addEventListener("click", async e => {
   if (a === "mt-open"){ mtOpen(t.dataset.id || ""); return; }
   if (a === "mt-close"){ mtClose(); return; }
   if (a === "mt-back"){ const pre = mt && mt.preset; mtOpen(pre); return; }
+  if (a === "mt-skip"){ const q = (mt && mt.queue) || [], pre = mt && mt.preset; mtClose(); if (q.length) mtLoadFile(q[0], pre, q.slice(1)); return; }
   if (a === "mt-text"){ SpeechDict.stop(); const v = $("#mt-text").value; if (!v.trim()){ $("#mt-text").focus(); return; } mtStart(v, "", "text", mt && mt.preset); return; }
   if (a === "mt-apply"){ t.disabled = true; try { await mtApply(); } finally { t.disabled = false; } return; }
   if (a === "dict-toggle"){ SpeechDict.toggle(t.dataset.target || ""); return; }
@@ -4059,7 +4132,7 @@ document.addEventListener("click", async e => {
 });
 document.addEventListener("change", e => {
   const t = e.target;
-  if (t.id === "mt-file"){ const f = t.files && t.files[0]; if (f) mtLoadFile(f, mt && mt.preset); return; }
+  if (t.id === "mt-file"){ if (t.files && t.files.length) mtLoadFiles(t.files, mt && mt.preset); return; }
   if (t.id === "mt-target" && mt){ mt.target = t.value; mtAnalyzeTarget(); mtRender(); return; }
   if (t.dataset && t.dataset.mtk && mt){
     const v = t.type === "checkbox" ? t.checked : t.value;
@@ -4094,10 +4167,10 @@ document.addEventListener("dragover", e => { if (isFileDrag(e)) e.preventDefault
 document.addEventListener("drop", async e => {
   if (!isFileDrag(e)) return;
   e.preventDefault(); dragDepth = 0; document.body.classList.remove("dragging");
-  const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (!f) return;
-  if (/\.(vtt|docx|txt|md)$/i.test(f.name)){ const pre = (mt && mt.preset) || (drawer && drawer.id) || ""; await mtLoadFile(f, pre); return; }
-  if (/\.(xlsx|json)$/i.test(f.name)){ await handleImportFile(f); return; }
-  toast("Dieses Dateiformat kennt das Radar nicht.");
+  const files = [...(e.dataTransfer.files || [])]; if (!files.length) return;
+  const docs = files.filter(f => /\.(vtt|docx|txt|md|pdf|pptx|eml|msg)$/i.test(f.name)), other = files.filter(f => !docs.includes(f));
+  for (const f of other){ if (/\.(xlsx|json)$/i.test(f.name)) await handleImportFile(f); else toast(`${f.name}: Dieses Dateiformat kennt das Radar nicht.`); }
+  if (docs.length){ const pre = (mt && mt.preset) || (drawer && drawer.id) || ""; mtLoadFiles(docs, pre); }
 });
 
 /* ================== Interfaces & access checklist (always Excel) ================== */
@@ -4274,7 +4347,8 @@ function accDue(p, phaseLabel){
   return d < min ? min : d;
 }
 function accRows(p, e, src, sig){
-  return e.rows.filter(r => !accHas(p, e.name, r[1])).map(([kind, check, owner, phase]) => ({ id: rid(), tool: e.name, purpose: e.use || "", access: check, available: "", phase, owner, next: "",
+  const who = suggestOwner(`${e.name} ${e.key} ${e.cat || ""}`);
+  return e.rows.filter(r => !accHas(p, e.name, r[1])).map(([kind, check, owner, phase]) => ({ id: rid(), tool: e.name, purpose: e.use || "", access: check, available: "", phase, owner: who ? `${who.name} (${owner})` : owner, next: "",
     cat: e.cat, kind, iface: e.iface || "", due: accDue(p, phase), src: src || "", pers: e.pers || e.key === "b-dsb" || (e.key === "b-br") ? (sig.pers || e.hr ? "Ja" : "") : "" }));
 }
 function accPlan(p){
@@ -4575,6 +4649,469 @@ document.addEventListener("change", async e => {
 document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "acc-add"){ e.preventDefault(); $('[data-action="acc-add"]').click(); } }, true);
 document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "db-key"){ e.preventDefault(); const b = document.querySelector('[data-action="db-login"]'); if (b) b.click(); } });
 
+/* ================== Documents: PDF, PowerPoint, Word, e-mail (.eml/.msg) → text ================== */
+// All parsers run locally in the browser without a library. They return plain text that the
+// meeting analysis (mtParse/mtAnalyze) understands: "## Heading", "- bullet", "Name: text".
+
+async function inflateBytes(bytes, format){
+  // Collect what we get even if the stream has trailing junk (common in PDFs)
+  const out = []; let total = 0;
+  try {
+    const reader = new Blob([bytes]).stream().pipeThrough(new DecompressionStream(format)).getReader();
+    for (;;){ const { done, value } = await reader.read(); if (done) break; out.push(value); total += value.length; }
+  } catch {}
+  const u8 = new Uint8Array(total); let o = 0; out.forEach(c => { u8.set(c, o); o += c.length; });
+  return u8;
+}
+const latin1 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return s; };
+const CP1252 = new TextDecoder("windows-1252");
+
+/* ---------- PDF ---------- */
+function ascii85(u8){
+  const s = latin1(u8).replace(/^<~/, "").replace(/~>[\s\S]*$/, "").replace(/\s+/g, "");
+  const out = []; let tuple = [];
+  for (const ch of s){
+    if (ch === "z" && !tuple.length){ out.push(0, 0, 0, 0); continue; }
+    const c = ch.charCodeAt(0) - 33; if (c < 0 || c > 84) continue;
+    tuple.push(c);
+    if (tuple.length === 5){ let v = 0; for (const t of tuple) v = v * 85 + t; out.push((v >>> 24) & 255, (v >>> 16) & 255, (v >>> 8) & 255, v & 255); tuple = []; }
+  }
+  if (tuple.length){ const n = tuple.length; while (tuple.length < 5) tuple.push(84); let v = 0; for (const t of tuple) v = v * 85 + t; const b = [(v >>> 24) & 255, (v >>> 16) & 255, (v >>> 8) & 255, v & 255]; out.push(...b.slice(0, n - 1)); }
+  return Uint8Array.from(out);
+}
+function pdfValue(str, key){
+  const m = new RegExp(`/${key}(?![A-Za-z0-9])\\s*`).exec(str); if (!m) return null;
+  let i = m.index + m[0].length; const c = str[i];
+  const balanced = (open, close) => { let d = 0, j = i; for (; j < str.length; j++){ if (str.startsWith(open, j)){ d++; j += open.length - 1; } else if (str.startsWith(close, j)){ d--; if (!d) return str.slice(i, j + close.length); j += close.length - 1; } } return str.slice(i); };
+  if (str.startsWith("<<", i)) return balanced("<<", ">>");
+  if (c === "[") return balanced("[", "]");
+  const r = /^(\d+)\s+(\d+)\s+R/.exec(str.slice(i, i + 30)); if (r) return r[0];
+  const t = /^\/[^\s/<>\[\]()]+|^[^\s/<>\[\]()]+/.exec(str.slice(i)); return t ? t[0] : null;
+}
+const pdfRef = v => { const m = /^(\d+)\s+\d+\s+R/.exec(v || ""); return m ? +m[1] : null; };
+const pdfRefs = v => [...String(v || "").matchAll(/(\d+)\s+\d+\s+R/g)].map(m => +m[1]);
+function pdfCmap(text){
+  const map = new Map(); let width = 1;
+  const cs = /begincodespacerange\s*<([0-9a-fA-F]+)>/.exec(text); if (cs) width = Math.max(1, cs[1].length / 2);
+  const hex2str = h => { let s = ""; for (let i = 0; i + 3 < h.length + 1; i += 4) s += String.fromCharCode(parseInt(h.slice(i, i + 4).padEnd(4, "0"), 16)); return s; };
+  for (const blk of text.matchAll(/beginbfchar([\s\S]*?)endbfchar/g)) for (const m of blk[1].matchAll(/<([0-9a-fA-F]+)>\s*<([0-9a-fA-F]+)>/g)){ map.set(parseInt(m[1], 16), hex2str(m[2])); width = Math.max(width, m[1].length / 2); }
+  for (const blk of text.matchAll(/beginbfrange([\s\S]*?)endbfrange/g)){
+    for (const m of blk[1].matchAll(/<([0-9a-fA-F]+)>\s*<([0-9a-fA-F]+)>\s*(<[0-9a-fA-F]+>|\[[^\]]*\])/g)){
+      const lo = parseInt(m[1], 16), hi = parseInt(m[2], 16); width = Math.max(width, m[1].length / 2);
+      if (m[3][0] === "["){ [...m[3].matchAll(/<([0-9a-fA-F]+)>/g)].forEach((d, k) => map.set(lo + k, hex2str(d[1]))); }
+      else { const base = m[3].slice(1, -1); const last = parseInt(base.slice(-4), 16); for (let c = lo; c <= hi && c - lo < 65536; c++) map.set(c, hex2str(base.slice(0, -4)) + String.fromCharCode(last + c - lo)); }
+    }
+  }
+  return { map, width };
+}
+async function pdfText(buf){
+  const u8 = new Uint8Array(buf); const s = latin1(u8);
+  if (!s.startsWith("%PDF")) throw new Error("Das ist keine PDF-Datei.");
+  if (/\/Encrypt\s/.test(s)) throw new Error("Die PDF ist geschützt. Bitte eine ungeschützte Version speichern oder den Text kopieren und einfügen.");
+  const objs = new Map();
+  for (const m of s.matchAll(/(\d+)\s+(\d+)\s+obj\b/g)){
+    const num = +m[1], start = m.index + m[0].length;
+    const end = s.indexOf("endobj", start); if (end < 0) continue;
+    const body = s.slice(start, end);
+    const si = body.search(/\bstream(\r\n|\n|\r)/);
+    if (si >= 0 && body.lastIndexOf(">>", si) > 0){
+      const dict = body.slice(0, si);
+      const nl = body.slice(si).match(/^stream(\r\n|\n|\r)/)[0].length;
+      const dataStart = start + si + nl;
+      const lenV = pdfValue(dict, "Length"); let len = /^\d+$/.test(lenV || "") ? +lenV : -1;
+      if (len < 0 || dataStart + len > u8.length){ const es = s.indexOf("endstream", dataStart); len = es > 0 ? es - dataStart : 0; }
+      objs.set(num, { dict, raw: u8.subarray(dataStart, dataStart + len) });
+    } else objs.set(num, { dict: body });
+  }
+  const data = async o => {
+    if (!o || !o.raw) return null; if (o.dec) return o.dec;
+    const fv = pdfValue(o.dict, "Filter") || ""; const filters = [...fv.matchAll(/\/(\w+)/g)].map(m => m[1]);
+    let b = o.raw;
+    for (const f of filters){
+      if (f === "FlateDecode" || f === "Fl") b = await inflateBytes(b, "deflate");
+      else if (f === "ASCII85Decode" || f === "A85") b = ascii85(b);
+      else if (f === "ASCIIHexDecode" || f === "AHx"){ const h = latin1(b).replace(/[^0-9a-fA-F]/g, ""); b = Uint8Array.from(h.match(/../g) || [], x => parseInt(x, 16)); }
+      else { b = new Uint8Array(0); break; }
+    }
+    o.dec = b; return b;
+  };
+  // Object streams
+  for (const [, o] of [...objs]){
+    if (!/\/Type\s*\/ObjStm/.test(o.dict)) continue;
+    const t = latin1(await data(o) || new Uint8Array(0)); const first = +(pdfValue(o.dict, "First") || 0), n = +(pdfValue(o.dict, "N") || 0);
+    const head = t.slice(0, first).trim().split(/\s+/).map(Number);
+    for (let k = 0; k < n; k++){ const num = head[2 * k], off = head[2 * k + 1], next = k + 1 < n ? head[2 * k + 3] : t.length - first; if (!objs.has(num)) objs.set(num, { dict: t.slice(first + off, first + next) }); }
+  }
+  const get = n => objs.get(n);
+  const deref = v => { const r = pdfRef(v); return r != null ? (get(r) || {}).dict || "" : v || ""; };
+  // Page tree, with inherited resources
+  const pages = [];
+  const rootRef = [...s.matchAll(/\/Root\s+(\d+)\s+\d+\s+R/g)].map(m => +m[1]).pop();
+  const walk = (n, res, seen) => {
+    if (seen.has(n)) return; seen.add(n);
+    const o = get(n); if (!o) return; const d = o.dict;
+    const r = pdfValue(d, "Resources") || res;
+    if (/\/Type\s*\/Pages\b/.test(d)) pdfRefs(pdfValue(d, "Kids")).forEach(k => walk(k, r, seen));
+    else if (/\/Type\s*\/Page\b/.test(d)) pages.push({ d, res: r });
+  };
+  if (rootRef != null){ const pr = pdfRef(pdfValue((get(rootRef) || {}).dict || "", "Pages")); if (pr != null) walk(pr, null, new Set()); }
+  if (!pages.length) [...objs.entries()].filter(([, o]) => /\/Type\s*\/Page\b/.test(o.dict)).sort((a, b) => a[0] - b[0]).forEach(([, o]) => pages.push({ d: o.dict, res: pdfValue(o.dict, "Resources") }));
+  const fontCache = new Map();
+  const font = async ref => {
+    if (fontCache.has(ref)) return fontCache.get(ref);
+    const d = (get(ref) || {}).dict || ""; let f = { cmap: null };
+    const tu = pdfRef(pdfValue(d, "ToUnicode"));
+    if (tu != null){ const b = await data(get(tu)); if (b) f.cmap = pdfCmap(latin1(b)); }
+    else if (/Identity-H|Identity-V/.test(d)) f.cid = true;
+    fontCache.set(ref, f); return f;
+  };
+  const decode = (bytes, f) => {
+    if (f && f.cmap && f.cmap.map.size){ const w = f.cmap.width; let out = ""; for (let i = 0; i + w <= bytes.length; i += w){ let c = 0; for (let k = 0; k < w; k++) c = c * 256 + bytes[i + k]; out += f.cmap.map.get(c) ?? ""; } return out; }
+    if (f && f.cid) return "";
+    return CP1252.decode(new Uint8Array(bytes));
+  };
+  const out = [];
+  for (const pg of pages){
+    const resD = deref(pg.res);
+    const fontsD = deref(pdfValue(resD, "Font"));
+    const fonts = {}; for (const m of String(fontsD).matchAll(/\/([^\s/<>\[\]()]+)\s+(\d+)\s+\d+\s+R/g)) fonts[m[1]] = await font(+m[2]);
+    const cv = pdfValue(pg.d, "Contents"); let refs = pdfRefs(cv);
+    if (refs.length === 1 && get(refs[0]) && !get(refs[0]).raw) refs = pdfRefs(get(refs[0]).dict);
+    let content = "";
+    for (const r of refs){ const b = await data(get(r)); if (b) content += latin1(b) + "\n"; }
+    out.push(pdfContentText(content, fonts, decode));
+  }
+  return out.map(t => t.replace(/[ \t]+/g, " ").replace(/ +([.,;:!?)])/g, "$1").replace(/ *\n */g, "\n").replace(/(\p{Ll})-\n(\p{Ll})/gu, "$1$2").replace(/\n{3,}/g, "\n\n").trim()).filter(Boolean).join("\n\n");
+}
+function pdfContentText(c, fonts, decode){
+  let i = 0, out = "", cur = null, stack = [], lastY = null; const n = c.length;
+  const ws = ch => ch === " " || ch === "\n" || ch === "\r" || ch === "\t" || ch === "\f" || ch === "\0";
+  const readLit = () => {
+    const bytes = []; let depth = 1; i++;
+    while (i < n && depth){
+      let ch = c[i];
+      if (ch === "\\"){ i++; ch = c[i]; const esc = { n: 10, r: 13, t: 9, b: 8, f: 12, "(": 40, ")": 41, "\\": 92 };
+        if (ch in esc){ bytes.push(esc[ch]); i++; } else if (/[0-7]/.test(ch)){ let o = ""; while (o.length < 3 && /[0-7]/.test(c[i])) o += c[i++]; bytes.push(parseInt(o, 8) & 255); } else if (ch === "\r" || ch === "\n"){ i++; if (ch === "\r" && c[i] === "\n") i++; } else { bytes.push(ch.charCodeAt(0) & 255); i++; }
+        continue; }
+      if (ch === "(") depth++; else if (ch === ")"){ depth--; if (!depth){ i++; break; } }
+      bytes.push(ch.charCodeAt(0) & 255); i++;
+    }
+    return { s: bytes };
+  };
+  const readHex = () => { i++; let h = ""; while (i < n && c[i] !== ">"){ if (!ws(c[i])) h += c[i]; i++; } i++; if (h.length % 2) h += "0"; const b = []; for (let k = 0; k < h.length; k += 2) b.push(parseInt(h.slice(k, k + 2), 16)); return { s: b }; };
+  const show = v => { if (v && v.s) out += decode(v.s, cur); };
+  while (i < n){
+    const ch = c[i];
+    if (ws(ch)){ i++; continue; }
+    if (ch === "%"){ while (i < n && c[i] !== "\n" && c[i] !== "\r") i++; continue; }
+    if (ch === "("){ stack.push(readLit()); continue; }
+    if (ch === "<" && c[i + 1] !== "<"){ stack.push(readHex()); continue; }
+    if (ch === "<" && c[i + 1] === "<"){ i += 2; stack.push("<<"); continue; }
+    if (ch === ">" && c[i + 1] === ">"){ i += 2; stack.push(">>"); continue; }
+    if (ch === "["){ i++; stack.push("["); continue; }
+    if (ch === "]"){ i++; const arr = []; while (stack.length && stack[stack.length - 1] !== "[") arr.unshift(stack.pop()); stack.pop(); stack.push({ a: arr }); continue; }
+    if (ch === "/"){ let j = i + 1; while (j < n && !ws(c[j]) && !"/[]()<>{}%".includes(c[j])) j++; stack.push({ name: c.slice(i + 1, j) }); i = j; continue; }
+    let j = i; while (j < n && !ws(c[j]) && !"/[]()<>{}%".includes(c[j])) j++;
+    if (j === i){ i++; continue; }
+    const tok = c.slice(i, j); i = j;
+    if (/^[-+.\d]+$/.test(tok)){ stack.push(+tok); continue; }
+    switch (tok){
+      case "BI": { const e = c.indexOf("EI", i); i = e < 0 ? n : e + 2; break; }
+      case "Tf": { const nm = stack[stack.length - 2]; cur = nm && nm.name ? fonts[nm.name] || null : null; break; }
+      case "Tj": show(stack[stack.length - 1]); break;
+      case "'": out += "\n"; show(stack[stack.length - 1]); break;
+      case "\"": out += "\n"; show(stack[stack.length - 1]); break;
+      case "TJ": { const a = stack[stack.length - 1]; if (a && a.a) a.a.forEach(x => { if (typeof x === "number"){ if (x < -180) out += " "; } else show(x); }); break; }
+      case "Td": case "TD": { const ty = stack[stack.length - 1], tx = stack[stack.length - 2]; if (typeof ty === "number" && Math.abs(ty) > 0.5) out += "\n"; else if (typeof tx === "number" && tx > 1 && !/\s$/.test(out)) out += " "; break; }
+      case "T*": out += "\n"; break;
+      case "Tm": { const y = stack[stack.length - 1]; if (typeof y === "number"){ if (lastY !== null && Math.abs(y - lastY) > 0.5) out += "\n"; else if (!/\s$/.test(out)) out += " "; lastY = y; } break; }
+      case "ET": if (!/\s$/.test(out)) out += " "; break;
+    }
+    stack = [];
+  }
+  return out;
+}
+
+/* ---------- PowerPoint (.pptx) ---------- */
+async function pptxText(buf){
+  let get;
+  try { get = await unzip(buf); } catch { throw new Error("Die PowerPoint-Datei konnte nicht gelesen werden."); }
+  const xml = s => new DOMParser().parseFromString(s || "<x/>", "application/xml");
+  const A = "http://schemas.openxmlformats.org/drawingml/2006/main", P = "http://schemas.openxmlformats.org/presentationml/2006/main";
+  const out = []; let title = "", deckDate = "";
+  for (let n = 1; n <= 300; n++){
+    const sx = await get(`ppt/slides/slide${n}.xml`); if (sx == null){ if (n > 1) break; else continue; }
+    const doc = xml(sx); let head = ""; const lines = [];
+    for (const sp of doc.getElementsByTagNameNS(P, "sp")){
+      const ph = sp.getElementsByTagNameNS(P, "ph")[0]; const type = ph ? ph.getAttribute("type") || "" : "";
+      const paras = [...sp.getElementsByTagNameNS(A, "p")].map(p => [...p.getElementsByTagNameNS(A, "t")].map(t => t.textContent).join("").trim()).filter(Boolean);
+      if (!paras.length) continue;
+      if (/title|ctrTitle/i.test(type) && !head){ head = paras.join(" "); continue; }
+      paras.forEach(t => lines.push(t));
+    }
+    for (const tbl of doc.getElementsByTagNameNS(A, "tbl")) for (const tr of tbl.getElementsByTagNameNS(A, "tr")){ const cells = [...tr.getElementsByTagNameNS(A, "tc")].map(tc => [...tc.getElementsByTagNameNS(A, "t")].map(t => t.textContent).join(" ").trim()).filter(Boolean); if (cells.length) lines.push(cells.join(" | ")); }
+    const nx = await get(`ppt/notesSlides/notesSlide${n}.xml`);
+    const notes = nx ? [...xml(nx).getElementsByTagNameNS(A, "p")].map(p => [...p.getElementsByTagNameNS(A, "t")].map(t => t.textContent).join("").trim()).filter(t => t && !/^\d+$/.test(t)) : [];
+    if (!title && head) title = head;
+    if (n === 1 && !deckDate){ const dm = [head, ...lines].map(l => (l.match(new RegExp(`\\b\\d{1,2}\\.\\s*(${MT_MON_RX})\\s+\\d{4}|\\b\\d{1,2}\\.\\d{1,2}\\.\\d{4}`, "i")) || [])[0]).find(Boolean); if (dm) deckDate = mtHeaderDate(dm); }
+    out.push(`## ${head || `Folie ${n}`}`, ...lines.map(l => `- ${l}`), ...(notes.length ? ["Notizen:", ...notes.map(l => `- ${l}`)] : []), "");
+  }
+  if (!out.length) throw new Error("In der PowerPoint-Datei wurde kein Text gefunden.");
+  return { text: (title ? title + "\n\n" : "") + out.join("\n"), title, date: deckDate };
+}
+
+/* ---------- E-mail: names and body ---------- */
+function mailName(s){
+  s = String(s || "").replace(/["']/g, "").trim();
+  const addr = (s.match(/<([^>]+)>/) || [])[1] || (/@/.test(s) && !/\s/.test(s) ? s : "");
+  let name = s.replace(/<[^>]*>/g, "").trim();
+  if (!name && addr){ name = addr.split("@")[0].replace(/[._-]+/g, " ").replace(/\d+/g, "").trim().replace(/\b\p{L}/gu, c => c.toUpperCase()); }
+  const lf = name.match(/^([^,]+),\s*([^,]+)$/); if (lf) name = `${lf[2].trim()} ${lf[1].trim()}`;
+  name = name.replace(/\s*\((?:extern|external|[^)]*cws[^)]*)\)\s*/gi, " ").replace(/\s{2,}/g, " ").trim();
+  return name;
+}
+const mailNames = s => String(s || "").split(/;|,(?=(?:[^"]*"[^"]*")*[^"]*$)(?![^<]*>)/).map(mailName).filter(Boolean);
+function mailBodyClean(body){
+  const lines = String(body || "").replace(/\r\n?/g, "\n").split("\n");
+  const out = [];
+  for (let i = 0; i < lines.length; i++){
+    const l = lines[i];
+    if (/^\s*>/.test(l)) continue;
+    if (/^-{2,}\s*(Original|Ursprüngliche)/i.test(l) || (/^(Von|From|Gesendet|Sent|De)\s*:/i.test(l) && out.join("").trim().length > 20) || /^(Am|On) .{4,120}(schrieb|wrote)\s*.*:\s*$/i.test(l) || /^_{6,}\s*$/.test(l)) break;
+    if (/^\s*(viele|beste|liebe|freundliche) grüße|^\s*mit freundlichen grüßen|^\s*(best|kind|warm) regards|^\s*regards,?\s*$|^\s*(vg|lg|bg|br|mfg)[,.]?\s*$|^\s*gruß\b|^\s*cheers\b|^\s*thanks( and regards)?,?\s*$/i.test(l)) break;
+    out.push(l);
+  }
+  return out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+function mailToText(m){
+  // Turn a parsed mail into text the analysis understands: the sender speaks, recipients are participants
+  const body = mailBodyClean(m.body);
+  const who = m.from || "Absender";
+  const subject = String(m.subject || "").replace(/^\s*((re|aw|wg|fw|fwd|antw)\s*:\s*)+/i, "").trim();
+  const lines = [subject || "E-Mail", m.date ? m.date : "", ""];
+  if (m.to.length || m.cc.length) lines.push(`Teilnehmende: ${[who, ...m.to, ...m.cc].join(", ")}`, "");
+  body.split(/\n{2,}/).forEach(par => {
+    const t = par.split("\n").map(x => x.trim()).filter(Boolean);
+    if (!t.length) return;
+    if (t.some(x => /^([-*•–·]|\d{1,2}[.)])\s+/.test(x)) || (t.length > 1 && /:$/.test(t[0]))) lines.push(...t, "");
+    else lines.push(`${who}: ${t.join(" ")}`, "");
+  });
+  return { text: lines.join("\n"), title: subject, to: m.to, from: who };
+}
+function emlParse(raw){
+  const txt = String(raw).replace(/\r\n?/g, "\n");
+  const split = txt.indexOf("\n\n"); const headRaw = txt.slice(0, split < 0 ? txt.length : split).replace(/\n[ \t]+/g, " ");
+  const hdr = {}; headRaw.split("\n").forEach(l => { const m = l.match(/^([\w-]+):\s*(.*)$/); if (m) hdr[m[1].toLowerCase()] = mimeWords(m[2]); });
+  const date = hdr.date ? new Date(hdr.date) : null;
+  const body = mimeBody(hdr, txt.slice(split < 0 ? txt.length : split + 2));
+  return { subject: hdr.subject || "", from: mailName(hdr.from), to: mailNames(hdr.to), cc: mailNames(hdr.cc), date: date && !isNaN(date) ? isoDay(date) : "", body };
+}
+function mimeWords(s){
+  return s.replace(/=\?([^?]+)\?([bBqQ])\?([^?]*)\?=/g, (_, cs, enc, data) => {
+    try {
+      const bytes = enc.toUpperCase() === "B" ? Uint8Array.from(atob(data), c => c.charCodeAt(0)) : Uint8Array.from(data.replace(/_/g, " ").replace(/=([0-9A-F]{2})/gi, (m, h) => String.fromCharCode(parseInt(h, 16))), c => c.charCodeAt(0));
+      return new TextDecoder(/utf-?8/i.test(cs) ? "utf-8" : "windows-1252").decode(bytes);
+    } catch { return data; }
+  }).replace(/\?=\s+=\?/g, "");
+}
+function mimeBody(hdr, body){
+  const ct = hdr["content-type"] || "text/plain"; const te = (hdr["content-transfer-encoding"] || "").toLowerCase();
+  const cs = (ct.match(/charset="?([^";\s]+)/i) || [])[1] || "utf-8";
+  if (/^multipart\//i.test(ct)){
+    const b = (ct.match(/boundary="?([^";]+)"?/i) || [])[1]; if (!b) return body;
+    const parts = body.split("--" + b).slice(1).filter(p => !/^--/.test(p));
+    let plain = "", html = "";
+    for (const p of parts){
+      const s = p.replace(/^\n/, ""); const k = s.indexOf("\n\n"); const h = {};
+      s.slice(0, k < 0 ? s.length : k).replace(/\n[ \t]+/g, " ").split("\n").forEach(l => { const m = l.match(/^([\w-]+):\s*(.*)$/); if (m) h[m[1].toLowerCase()] = m[2]; });
+      const pct = h["content-type"] || "text/plain";
+      if (/attachment/i.test(h["content-disposition"] || "")) continue;
+      const v = mimeBody(h, s.slice(k < 0 ? s.length : k + 2));
+      if (/^multipart\//i.test(pct) || /^text\/plain/i.test(pct)){ if (!plain) plain = v; }
+      else if (/^text\/html/i.test(pct) && !html) html = v;
+    }
+    return plain || html;
+  }
+  let bytes;
+  if (te === "base64"){ try { bytes = Uint8Array.from(atob(body.replace(/\s+/g, "")), c => c.charCodeAt(0)); } catch { bytes = null; } }
+  else if (te === "quoted-printable"){ const s = body.replace(/=\n/g, "").replace(/=([0-9A-F]{2})/gi, (m, h) => String.fromCharCode(parseInt(h, 16))); bytes = Uint8Array.from(s, c => c.charCodeAt(0) & 255); }
+  let text = bytes ? (() => { try { return new TextDecoder(cs).decode(bytes); } catch { return new TextDecoder("utf-8").decode(bytes); } })() : body;
+  if (/^text\/html/i.test(ct)) text = htmlToText(text);
+  return text;
+}
+function htmlToText(h){
+  const doc = new DOMParser().parseFromString(String(h || ""), "text/html");
+  doc.querySelectorAll("style,script,head").forEach(e => e.remove());
+  doc.querySelectorAll("br").forEach(e => e.replaceWith("\n"));
+  doc.querySelectorAll("li").forEach(e => e.prepend("- "));
+  doc.querySelectorAll("p,div,li,tr,h1,h2,h3,h4,blockquote").forEach(e => e.append("\n"));
+  return (doc.body ? doc.body.textContent : "").replace(/ /g, " ").replace(/[ \t]+/g, " ").replace(/\n /g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+/* ---------- Outlook .msg (Compound File Binary) ---------- */
+function msgParse(buf){
+  const dv = new DataView(buf), u8 = new Uint8Array(buf);
+  if (dv.getUint32(0, true) !== 0xE011CFD0) throw new Error("Das ist keine Outlook-Nachricht (.msg).");
+  const ss = 1 << dv.getUint16(30, true), mss = 1 << dv.getUint16(32, true);
+  const nFat = dv.getUint32(44, true), dirStart = dv.getUint32(48, true), cutoff = dv.getUint32(56, true), miniFatStart = dv.getUint32(60, true);
+  let difat = []; for (let k = 0; k < 109; k++) difat.push(dv.getUint32(76 + 4 * k, true));
+  let dif = dv.getUint32(68, true), guard = 0;
+  while (dif < 0xFFFFFFFA && guard++ < 1000){ const off = (dif + 1) * ss; for (let k = 0; k < ss / 4 - 1; k++) difat.push(dv.getUint32(off + 4 * k, true)); dif = dv.getUint32(off + ss - 4, true); }
+  difat = difat.filter(x => x < 0xFFFFFFFA).slice(0, nFat);
+  const fat = []; difat.forEach(sec => { const off = (sec + 1) * ss; for (let k = 0; k < ss / 4; k++) fat.push(dv.getUint32(off + 4 * k, true)); });
+  const chain = (start, table) => { const out = []; let s = start, g = 0; while (s < 0xFFFFFFFA && g++ < 1e6 && s < table.length + 1){ out.push(s); s = table[s]; } return out; };
+  const readBig = (start, size) => { const out = new Uint8Array(Math.max(0, size)); let o = 0; for (const s of chain(start, fat)){ const off = (s + 1) * ss; const take = Math.min(ss, size - o); if (take <= 0) break; out.set(u8.subarray(off, off + take), o); o += take; } return out; };
+  const dirBytes = readBig(dirStart, chain(dirStart, fat).length * ss);
+  const dvd = new DataView(dirBytes.buffer);
+  const entries = [];
+  for (let off = 0; off + 128 <= dirBytes.length; off += 128){
+    const nl = dvd.getUint16(off + 64, true); let name = ""; for (let k = 0; k + 2 < nl; k += 2) name += String.fromCharCode(dvd.getUint16(off + k, true));
+    entries.push({ name, type: dirBytes[off + 66], left: dvd.getUint32(off + 68, true), right: dvd.getUint32(off + 72, true), child: dvd.getUint32(off + 76, true), start: dvd.getUint32(off + 116, true), size: dvd.getUint32(off + 120, true) });
+  }
+  const root = entries[0];
+  const miniStream = root ? readBig(root.start, root.size) : new Uint8Array(0);
+  const miniFat = []; if (miniFatStart < 0xFFFFFFFA){ const mf = readBig(miniFatStart, chain(miniFatStart, fat).length * ss); const d = new DataView(mf.buffer); for (let k = 0; k + 4 <= mf.length; k += 4) miniFat.push(d.getUint32(k, true)); }
+  const read = e => {
+    if (e.size < cutoff){ const out = new Uint8Array(e.size); let o = 0; for (const s of chain(e.start, miniFat)){ const take = Math.min(mss, e.size - o); if (take <= 0) break; out.set(miniStream.subarray(s * mss, s * mss + take), o); o += take; } return out; }
+    return readBig(e.start, e.size);
+  };
+  const kids = idx => { const out = []; const walk = i => { if (i >= entries.length || i === 0xFFFFFFFF) return; const e = entries[i]; if (!e) return; walk(e.left); out.push(e); walk(e.right); }; walk(idx); return out; };
+  const top = kids(root.child);
+  const prop = (id, kind) => {
+    const u = top.find(e => e.name === `__substg1.0_${id}001F`); if (u) return new TextDecoder("utf-16le").decode(read(u)).replace(/\0+$/, "");
+    const a = top.find(e => e.name === `__substg1.0_${id}001E`); if (a) return CP1252.decode(read(a)).replace(/\0+$/, "");
+    if (kind === "bin"){ const b = top.find(e => e.name === `__substg1.0_${id}0102`); if (b) return read(b); }
+    return "";
+  };
+  let date = "";
+  const pe = top.find(e => e.name === "__properties_version1.0");
+  if (pe){ const p = read(pe); const d = new DataView(p.buffer, p.byteOffset, p.byteLength);
+    for (let off = 32; off + 16 <= p.length; off += 16){ const type = d.getUint16(off, true), id = d.getUint16(off + 2, true);
+      if (type === 0x0040 && (id === 0x0039 || id === 0x0E06)){ const ft = d.getUint32(off + 8, true) + d.getUint32(off + 12, true) * 4294967296; const dt = new Date(ft / 10000 - 11644473600000); if (!isNaN(dt) && dt.getFullYear() > 1990){ date = isoDay(dt); if (id === 0x0039) break; } } } }
+  let body = prop("1000");
+  if (!body.trim()){ const h = prop("1013", "bin"); if (h && h.length) body = htmlToText(new TextDecoder("utf-8").decode(h)); }
+  const sender = prop("0C1A") || prop("0042") || mailName(prop("0C1F") || prop("5D01"));
+  const split = s => String(s || "").split(";").map(x => mailName(x)).filter(Boolean);
+  return { subject: prop("0037"), from: mailName(sender), to: split(prop("0E04")), cc: split(prop("0E03")), date, body };
+}
+
+/* ================== Smart delegation: responsibilities, suggestions, follow-up ================== */
+// Team members carry optional responsibilities ("Salesforce, CRM"), a kind (AI team or contact in another
+// department) and a start date (e.g. a new hire from Q1). The radar suggests the right person for a task.
+const TM_KIND = { team: "AI-Team", kontakt: "Ansprechpartner" };
+const tmSkills = m => String(m.skills || "").split(/[,;]/).map(s => s.trim()).filter(Boolean);
+const tmStarted = m => !m.from || m.from <= todayISO();
+function suggestOwner(text, extra){
+  const hay = `${text || ""} ${extra || ""}`; if (!hay.trim()) return null;
+  const toks = mtTokens(hay);
+  let best = null;
+  team().forEach(m => {
+    let score = 0, why = "";
+    tmSkills(m).forEach(sk => {
+      const cat = ACC_CATALOG.find(e => e.rx.test(sk) || accNorm(e.name) === accNorm(sk));
+      const hit = cat ? cat.rx.test(hay) : (() => { const st = mtTokens(sk); return st.length && st.every(w => toks.some(x => x === w || (w.length >= 4 && (x.startsWith(w) || w.startsWith(x))))); })();
+      if (hit){ score += 2 + sk.length / 20; if (!why) why = sk; }
+    });
+    if (score && (!best || score > best.score)) best = { name: m.name, why, score, later: !tmStarted(m) ? m.from : "" };
+  });
+  return best;
+}
+function delegateText(p, t, kind){
+  const me = firstName(myProfile().name);
+  const who = firstName(t.owner) || "zusammen";
+  const due = t.due ? ` bis ${fmtDay(t.due)}` : "";
+  if (kind === "remind"){
+    return `Hallo ${who},\n\nkurze Nachfrage zu „${t.text}“ (${p.code} ${p.title})${t.due ? `, fällig ${fmtDay(t.due)}` : ""}. Wie ist der Stand, und brauchst du noch etwas von mir?\n\nDanke dir!${me ? "\n" + me : ""}`;
+  }
+  const ctx = [p.nextStep && p.nextStep !== t.text ? `Nächster Schritt im Projekt: ${p.nextStep}` : "", p.goal ? `Ziel: ${p.goal}` : ""].filter(Boolean).join("\n");
+  return `Hallo ${who},\n\nkannst du bitte folgende Aufgabe übernehmen${due}?\n\n${t.text}\nProjekt: ${p.code} ${p.title} (${PHASES[phaseIdx(p)].long})${ctx ? "\n" + ctx : ""}\n\nGib mir gern kurz Bescheid, ob das passt. Danke dir!${me ? "\n" + me : ""}`;
+}
+function followUps(){
+  const items = state.projects.filter(isActive).flatMap(p => openTasks(p).filter(t => t.owner && !isMine(t.owner)).map(t => ({ p, t, d: t.due ? daysFromToday(t.due) : null })));
+  return items.filter(x => (x.d !== null && x.d <= 2) || x.t.status === TASK_WAIT).sort((a, b) => (a.d ?? 99) - (b.d ?? 99));
+}
+function renderFollowUps(){
+  const el = $("#nachhaken"); if (!el) return;
+  const list = followUps();
+  const groups = {}; list.forEach(x => { (groups[x.t.owner] = groups[x.t.owner] || []).push(x); });
+  const names = Object.keys(groups).sort((a, b) => groups[b].filter(x => x.d !== null && x.d < 0).length - groups[a].filter(x => x.d !== null && x.d < 0).length || a.localeCompare(b));
+  $("#nh-count").textContent = list.length ? `${plural(list.length, "Aufgabe", "Aufgaben")} bei ${plural(names.length, "Person", "Personen")}` : "";
+  el.innerHTML = names.length ? names.map(n => { const m = team().find(x => x.name.toLowerCase() === n.toLowerCase()); return `<div class="nh-grp">
+      <div class="nh-h"><span class="avatar">${esc(initials(n))}</span><div class="grow"><b>${esc(n)}</b><small>${esc(m ? [m.role, tmSkills(m).join(", ")].filter(Boolean).join(" · ") : "")}</small></div><button class="btn small" data-action="nh-copy" data-owner="${esc(n)}">Erinnerung kopieren</button></div>
+      <div class="tm-tasks">${groups[n].map(({ p, t }) => taskLine(p, t, true)).join("")}</div></div>`; }).join("")
+    : `<div class="empty" style="padding:14px 4px">Nichts nachzuhaken. Aufgaben anderer, die in zwei Tagen fällig, überfällig oder auf „Wartet“ sind, erscheinen hier.</div>`;
+}
+/* ---------- This week ---------- */
+function weekFacts(){
+  const since = Date.now() - 7 * DAY, sinceDay = isoDay(new Date(since));
+  return state.projects.filter(p => !p.archived).map(p => {
+    const done = (p.tasks || []).filter(t => t.status === TASK_DONE && t.doneAt && new Date(t.doneAt).getTime() >= since);
+    const added = (p.tasks || []).filter(t => t.createdAt && new Date(t.createdAt).getTime() >= since && t.status !== TASK_DONE);
+    const decs = (p.decisions || []).filter(d => d.date && d.date >= sinceDay);
+    const docs = (p.meetings || []).filter(m => (m.at && new Date(m.at).getTime() >= since) || (m.date && m.date >= sinceDay));
+    const log = (p.updates || []).filter(u => new Date(u.at).getTime() >= since);
+    const phase = log.filter(u => /^Phase:/.test(u.text)).map(u => u.text.replace(/^Phase:\s*/, "").replace(/\s*\(.*$/, ""));
+    const status = log.filter(u => /^Status:/.test(u.text)).map(u => u.text.replace(/^Status:\s*/, "").replace(/\s*\(.*$/, ""));
+    const created = p.createdAt && new Date(p.createdAt).getTime() >= since;
+    return { p, done, added, decs, docs, phase, status, created, any: done.length + added.length + decs.length + docs.length + phase.length + status.length + (created ? 1 : 0) };
+  }).filter(x => x.any).sort((a, b) => b.any - a.any);
+}
+function weekText(){
+  const f = weekFacts(); const me = myProfile();
+  const sum = k => f.reduce((n, x) => n + x[k].length, 0);
+  const L = [`Wochenrückblick AI-Projekte · ${fmtDay(isoDay(new Date(Date.now() - 6 * DAY)))} bis ${fmtDay(todayISO())}${me.name ? ` · ${me.name}` : ""}`, "",
+    `${plural(sum("done"), "Aufgabe", "Aufgaben")} erledigt, ${sum("added")} neu, ${plural(sum("decs"), "Entscheidung", "Entscheidungen")}, ${plural(sum("docs"), "Dokument", "Dokumente")} ausgewertet.`, ""];
+  f.forEach(x => {
+    L.push(`${x.p.code} ${x.p.title} (${(HEALTH[x.p.health] || HEALTH.green).label}, ${PHASES[phaseIdx(x.p)].long})`);
+    if (x.created) L.push("  - Neu angelegt");
+    x.phase.forEach(t => L.push(`  - Phase: ${t}`));
+    x.done.slice(0, 5).forEach(t => L.push(`  - Erledigt: ${t.text}${t.owner ? ` (${t.owner})` : ""}`));
+    x.decs.slice(0, 3).forEach(d => L.push(`  - Entscheidung: ${d.text}`));
+    if (x.p.nextStep) L.push(`  - Als Nächstes: ${x.p.nextStep}${x.p.nextStepDue ? ` (bis ${fmtDay(x.p.nextStepDue)})` : ""}`);
+    if ((x.p.blockers || "").trim()) L.push(`  - Blocker: ${x.p.blockers.split("\n")[0]}`);
+    L.push("");
+  });
+  if (!f.length) L.push("Keine Änderungen in den letzten 7 Tagen.");
+  return L.join("\n").trim();
+}
+function renderWeek(){
+  const el = $("#week"); if (!el) return;
+  const f = weekFacts();
+  el.innerHTML = f.length ? `<div class="wk-list">${f.slice(0, 10).map(x => `<div class="wk-row"><button class="wk-t" data-action="open" data-id="${esc(x.p.id)}"><span class="mono">${esc(x.p.code)}</span> ${esc(x.p.title || "Ohne Titel")}</button>
+      <div class="chips">${x.created ? `<span class="chip">neu angelegt</span>` : ""}${x.phase.map(t => `<span class="chip">Phase: ${esc(t)}</span>`).join("")}${x.done.length ? `<span class="chip ok">${x.done.length} erledigt</span>` : ""}${x.added.length ? `<span class="chip">${x.added.length} neue Aufgaben</span>` : ""}${x.decs.length ? `<span class="chip warn">${plural(x.decs.length, "Entscheidung", "Entscheidungen")}</span>` : ""}${x.docs.length ? `<span class="chip">${plural(x.docs.length, "Dokument", "Dokumente")}</span>` : ""}${x.status.map(t => `<span class="chip">Status: ${esc(t)}</span>`).join("")}</div></div>`).join("")}</div>`
+    : `<div class="empty" style="padding:14px 4px">In den letzten 7 Tagen hat sich nichts geändert.</div>`;
+}
+function renderSmartToday(){ if (ui.view !== "heute" || !state.projects.length) return; renderFollowUps(); renderWeek(); }
+
+/* ---------- Events ---------- */
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-action]"); if (!t) return;
+  const a = t.dataset.action;
+  if (a === "nh-copy"){
+    const n = t.dataset.owner; const list = followUps().filter(x => x.t.owner === n);
+    const me = firstName(myProfile().name);
+    const text = list.length === 1 ? delegateText(list[0].p, list[0].t, "remind") : `Hallo ${firstName(n)},\n\nkurze Nachfrage zu deinen offenen Punkten:\n${list.map(({ p, t }) => `- ${t.text} (${p.code})${t.due ? `, fällig ${fmtDay(t.due)}` : ""}${taskOverdue(t) ? " – überfällig" : ""}`).join("\n")}\n\nWie ist der Stand, und brauchst du etwas von mir?\n\nDanke dir!${me ? "\n" + me : ""}`;
+    await copyText(text, `Erinnerung für ${firstName(n)} kopiert. In Teams einfügen.`); return;
+  }
+  if (a === "wk-copy"){ await copyText(weekText(), "Wochenrückblick kopiert. In Teams oder eine E-Mail einfügen."); return; }
+  if (a === "tk-deleg"){
+    const p = currentDrawerProject(); const tk = p && (p.tasks || []).find(x => x.id === t.dataset.tid); if (!tk) return;
+    if (!tk.owner){ toast("Erst jemanden als Owner eintragen."); const inp = document.querySelector(`[data-tkfield="owner"][data-tid="${CSS.escape(tk.id)}"]`); inp && inp.focus(); return; }
+    await copyText(delegateText(p, tk, isMine(tk.owner) ? "self" : "deleg"), `Nachricht an ${firstName(tk.owner)} kopiert. In Teams einfügen.`); return;
+  }
+  if (a === "tk-sugg"){
+    const p = currentDrawerProject(); const tid = t.dataset.tid, who = t.dataset.who; if (!p || !who) return;
+    await drawerMutate(x => { const tk = (x.tasks || []).find(k => k.id === tid); if (tk) tk.owner = who; }, x => { const tk = x.tasks.find(k => k.id === tid); return tk ? `Aufgabe zugewiesen: ${tk.text} → ${who}` : ""; });
+    toast(`Zugewiesen an ${firstName(who)}`); return;
+  }
+  if (a === "tm-placeholder"){
+    const y = new Date().getFullYear() + 1;
+    const name = "AI Automation Expert (neu)";
+    if (team().some(m => m.name.toLowerCase() === name.toLowerCase())){ toast("Der Platzhalter ist schon im Team."); return; }
+    state.meta.team = team().concat({ id: rid(), name, role: "AI Automation Expert", country: "", skills: "Automatisierung, n8n, Power Automate, Workflows, KI-Agent", kind: "team", from: `${y}-01-01` });
+    await Store.saveMeta(); toast("Platzhalter angelegt. Name später einfach überschreiben, die Aufgaben wandern mit."); render(); return;
+  }
+});
+
 /* ================== Events ================== */
 document.addEventListener("click", async e => {
   const t = e.target.closest("[data-action]"); if (!t) return;
@@ -4756,7 +5293,7 @@ document.addEventListener("click", async e => {
   if (a === "tm-add"){
     const name = $("#tm-new-name").value.trim(); if (!name){ $("#tm-new-name").focus(); return; }
     if (team().some(m => m.name.toLowerCase() === name.toLowerCase())){ toast(`${name} ist schon im Team`); return; }
-    state.meta.team = team().concat({ id: rid(), name, role: $("#tm-new-role").value.trim(), country: $("#tm-new-country").value.trim() });
+    state.meta.team = team().concat({ id: rid(), name, role: $("#tm-new-role").value.trim(), country: $("#tm-new-country").value.trim(), skills: $("#tm-new-skills").value.trim(), kind: $("#tm-new-kind").value === "kontakt" ? "kontakt" : "team", from: $("#tm-new-from").value || "" });
     await Store.saveMeta(); toast(`${name} zum Team hinzugefügt`); render(); $("#tm-new-name") && $("#tm-new-name").focus(); return;
   }
   if (a === "tm-del"){

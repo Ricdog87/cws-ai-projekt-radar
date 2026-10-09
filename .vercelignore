@@ -1,0 +1,8 @@
+# Only the app and its API are deployed. Docs, sample data, Cursor rules,
+# local tooling and anything else in this repository stay private.
+/*
+!api
+!index.html
+!request.html
+!package.json
+!vercel.json

@@ -1,3 +1,23 @@
-.vercel
+# Project data (CWS internal) never belongs in the repository
+*Backup*.json
+*Sicherung*.json
+AI-Request_*.json
+AI-Anfrage_*.json
+*_Readiness_*.csv
+*_Tools-Access_*.csv
+*_Tools-Zugaenge_*.csv
+*.xlsx
+*.xlsm
+backups/
+sicherungen/
+data/radar.sqlite
+data/radar.sqlite-wal
+data/radar.sqlite-shm
 node_modules/
+.vercel/
+# Meeting transcripts contain personal data: never commit them (the fictional sample is the exception)
+*.vtt
+*.docx
+!data/Beispiel-Meeting*.vtt
+.vercel
 package-lock.json
