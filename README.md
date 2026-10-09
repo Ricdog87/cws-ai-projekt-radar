@@ -2,7 +2,7 @@
 
 Daily steering dashboard for all AI projects at CWS, end to end from intake to closure, plus the intake point for new use cases from the business units.
 
-**Runs locally in the browser, no cloud.** The dashboard UI is German. See "Run locally".
+**Runs in the browser, data stays in the browser.** Locally via `Start-Radar.cmd` or as a web link via Vercel (interim). The dashboard UI is German. See "Run locally" and "Web link (Vercel)".
 
 ## What's inside
 
@@ -34,11 +34,11 @@ Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the s
 - **Portfolio:** board by phase or table with status and readiness pills.
 - **Header:** path "Project Radar / …", status "Local", "+ Project" and your profile (name, role).
 
-## Less admin: meetings in, updates out
+## Less admin: documents in, updates out
 
 The radar is built so you type as little as possible. Three ways to keep projects current:
 
-**1. Read in a meeting** ("Meeting einlesen": top bar, sidebar, "Heute", or in a project next to "Updates & Verlauf")
+**1. Read in documents** ("Dokument einlesen": top bar, sidebar, "Heute", or in a project next to "Updates & Verlauf")
 
 - Drop a Teams transcript (`.vtt` or `.docx` from "Download transcript"), a `.txt` file, or paste text: the AI notes and follow-up tasks from the Teams meeting recap, a Copilot answer, or your own notes. Drag and drop onto the page works too.
 - The radar finds the project (project code, title words, participants in the project team) or suggests a new project with title, business unit, description and goal taken from the conversation.
@@ -53,6 +53,21 @@ The radar is built so you type as little as possible. Three ways to keep project
 - **Privacy:** the transcript is analysed only in this browser, never uploaded and never stored. Only the points you confirm end up in the project (meeting title, date, participants, key points, tasks, decisions).
 - **More accuracy, optional:** "Genauer mit Copilot" copies a prompt for Microsoft Copilot (best in the Teams meeting chat, where Copilot knows the transcript). Paste Copilot's JSON answer back and the review fills with Copilot's result. A Copilot answer can also be pasted straight into "Meeting einlesen".
 - Try it: `data/Beispiel-Meeting Rechnungseingang-20261005_100000.vtt` with the sample projects loaded.
+
+Supported, all read locally in the browser without a library:
+
+| Format | What the radar takes from it |
+|---|---|
+| Teams transcript `.vtt` / `.docx` | Speakers, timestamps, who committed to what |
+| Teams recap, Copilot answer, notes (paste or `.txt`) | Headings like "Folgeaufgaben", "Entscheidungen", "Risiken" with their bullets |
+| PDF (exported from Word, PowerPoint, browser, reports) | Text, headings and lists; scanned image-only PDFs have no text |
+| PowerPoint `.pptx` | Slide titles, bullets, tables and speaker notes; first slide gives title and date |
+| Word `.docx` | Headings and list items |
+| E-mail `.msg` (Outlook, drag the mail to the desktop first) / `.eml` | Subject, date, sender and recipients; quoted history and signature are cut. "Kannst du bitte …" goes to the single recipient, "Ich kümmere mich …" to the sender |
+
+- Several files at once: they are reviewed one after another ("danach noch 2 Dateien", "Überspringen").
+- Each document is listed in the project under "Entscheidungen & Meetings" with its type.
+- Lines like "Entscheidung: …", "Aufgabe: …", "Risiko: …" are recognised anywhere.
 
 **2. Quick capture** (`Strg+K` or "Schnell erfassen" in the top bar)
 
@@ -70,6 +85,23 @@ One line, the radar works out the rest and shows a preview before saving:
 - **Next step moves on by itself:** when you tick off the task that is the next step, the next open task by due date takes its place. Without a next step the radar suggests one from the open tasks.
 - **Agenda for the next meeting:** one click copies an agenda (status, done since the last meeting, open and overdue tasks, blockers, decisions needed, critical readiness questions) for the Teams invite.
 - **Decision log** per project ("Entscheidungen & Meetings"), filled from meetings, quick capture or by hand, with all read-in meetings and their key points.
+
+## Smart delegation
+
+In "Team & Aufgaben" every person can carry:
+
+- **Zuständig für:** keywords such as `Salesforce, CRM`, `Datenschutz`, `n8n, Automatisierung`. Systems from the access catalog are recognised with their synonyms.
+- **Art:** AI team or contact in another department.
+- **Start ab:** for new hires. "+ Platzhalter für neue Stelle" creates e.g. "AI Automation Expert (neu)" starting 1 January; overwrite the name later and all tasks follow.
+
+The radar then suggests the right person, marked "Vorschlag", for tasks from documents and quick capture without an owner, for unassigned tasks in a project ("→ Name") and as owner of access checklist rows (e.g. Salesforce rows go to the Salesforce owner). "Delegieren" on a task copies a ready Teams message with task, due date, project and goal.
+
+Names are typed in by you and live only in your browser (and your backups), never in the code or on the web link.
+
+**Heute** adds two blocks:
+
+- **Nachhaken:** tasks of other people that are overdue, due within two days or on "Wartet", grouped by person, with "Erinnerung kopieren".
+- **Diese Woche:** what changed per project in the last 7 days (new, done, new tasks, decisions, documents, phase and status), with "Wochenrückblick kopieren" for your lead.
 
 ## Interfaces & access checklist (always Excel)
 
@@ -166,6 +198,17 @@ While real CWS data is entered, the radar runs **on this computer only**. Nothin
 
 Data from earlier German versions of the radar imports as is; stored values stayed the same.
 
+## Web link (Vercel, interim)
+
+Until CWS GitHub and Azure access are in place, the radar is deployed from this repository to Vercel (personal account). Every push to `main` goes live automatically.
+
+- **Only `app/` is published** (`vercel.json` → `outputDirectory: "app"`). README, `docs/`, sample data and Cursor rules are not reachable via the link.
+- Addresses: `/` is the radar, `/request` the request form for business units. Share the request link instead of sending the file.
+- **Data still lives only in the browser** of whoever opens the link (localStorage of that web address). Nothing is sent to Vercel or anywhere else; a Content Security Policy blocks every network request (`connect-src 'none'`), and search engines are told not to index (`X-Robots-Tag`).
+- Each person and each address has their own data. The web link does **not** see the data from `http://localhost:8765`. To move: "Sichern" on localhost, then "Importieren" on the web link.
+- The link is public. Anyone who has it sees an empty radar, not your projects. Do not put real project data into the repository.
+- Vercel settings: "Root Directory" either empty (then `vercel.json` publishes `app/`) or `app` (then `app/vercel.json` applies). Both files carry the same security headers; keep them in sync.
+
 ## Tech
 
 - `app/index.html`: the whole app in one file, no build step, no external dependencies.
@@ -180,7 +223,7 @@ Data from earlier German versions of the radar imports as is; stored values stay
 - Fonts (SIL Open Font License), embedded as Base64:
   - Inter for text and headings, as in the AI Governance Portal.
   - IBM Plex Mono for project IDs.
-- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`). Tools/access rows in `project.tools[]` carry optional `cat`, `kind`, `iface`, `due`, `src`, `pers`. Decisions live in `project.decisions[]` (`text`, `date`, `meetingId`), read-in meetings in `project.meetings[]` (`date`, `title`, `participants`, `minutes`, `summary`, `counts`, `source`); transcripts themselves are never stored. All are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
+- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`, optional `skills`, `kind` `team`/`kontakt`, `from`). Tools/access rows in `project.tools[]` carry optional `cat`, `kind`, `iface`, `due`, `src`, `pers`. Decisions live in `project.decisions[]` (`text`, `date`, `meetingId`), read-in meetings in `project.meetings[]` (`date`, `title`, `participants`, `minutes`, `summary`, `counts`, `source`); transcripts themselves are never stored. All are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
 
 ## Governance
 
