@@ -1,29 +1,32 @@
-import { migrateLegacyIfNeeded, readUserDoc, totalRev, writeUserDoc } from "./_lib/blob.js";
-import { authenticate, authEnabled, canSeeProject, canWriteProject, configuredUsers, publicUsers } from "./_lib/users.js";
+import {
+  claimRev,
+  currentRev,
+  migrateLegacyIfNeeded,
+  readInbox,
+  readUserDoc,
+  syncInboxes,
+  writeUserDoc,
+} from "./_lib/blob.js";
+import { authenticate, authEnabled, canWriteProject, publicUsers } from "./_lib/users.js";
 
 function cleanList(list, max) {
   if (!Array.isArray(list) || list.length > max) return null;
   return list.filter((x) => x && typeof x === "object" && typeof x.id === "string" && x.id.length <= 80);
 }
 
-async function viewFor(user, mineOverride = null) {
+async function viewFor(user, mineOverride = null, revOverride = null) {
   await migrateLegacyIfNeeded();
   const mine = mineOverride || (await readUserDoc(user.id));
+  const inbox = await readInbox(user.id);
   const projects = [...(mine.projects || [])];
   const seen = new Set(projects.map((p) => p.id));
-  let rev = mine.rev || 0;
-  for (const u of configuredUsers()) {
-    if (u.id === user.id) continue;
-    const other = await readUserDoc(u.id);
-    rev += other.rev || 0;
-    for (const p of other.projects) {
-      if (!p || seen.has(p.id) || !canSeeProject(p, user)) continue;
-      projects.push(p);
-      seen.add(p.id);
-    }
+  for (const p of inbox) {
+    if (!p || seen.has(p.id)) continue;
+    projects.push(p);
+    seen.add(p.id);
   }
   return {
-    rev,
+    rev: revOverride != null ? revOverride : await currentRev(),
     updatedAt: mine.updatedAt || null,
     projects,
     requests: mine.requests || [],
@@ -38,11 +41,10 @@ async function applyPut(body, user) {
   const incomingRequests = cleanList(body.requests, 2000);
   if (!incomingProjects || !incomingRequests) return { error: 400 };
 
-  const currentRev = await totalRev();
   const clientRev = Number(body.rev);
-  if (!Number.isInteger(clientRev) || clientRev !== currentRev) {
-    return { conflict: true };
-  }
+  if (!Number.isInteger(clientRev) || clientRev < 0) return { conflict: true };
+  const claimed = await claimRev(clientRev);
+  if (claimed == null) return { conflict: true };
 
   const mineProjects = incomingProjects
     .filter((p) => !p.ownerId || p.ownerId === user.id)
@@ -57,7 +59,7 @@ async function applyPut(body, user) {
 
   const prev = await readUserDoc(user.id);
   const mineDoc = {
-    rev: (prev.rev || 0) + 1,
+    rev: claimed,
     updatedAt: new Date().toISOString(),
     projects: mineProjects,
     requests: mineRequests,
@@ -71,6 +73,7 @@ async function applyPut(body, user) {
         : { ...(prev.meta || {}), me: { name: user.name, role: user.role } },
   };
   await writeUserDoc(user.id, mineDoc);
+  await syncInboxes(user.id, mineProjects);
 
   // Collaborators may update projects they can see but do not own.
   const byOwner = new Map();
@@ -90,15 +93,12 @@ async function applyPut(body, user) {
       changed = true;
     }
     if (!changed) continue;
-    await writeUserDoc(ownerId, {
-      ...ownerDoc,
-      rev: (ownerDoc.rev || 0) + 1,
-      updatedAt: new Date().toISOString(),
-      projects: [...map.values()],
-    });
+    const next = { ...ownerDoc, updatedAt: new Date().toISOString(), projects: [...map.values()] };
+    await writeUserDoc(ownerId, next);
+    await syncInboxes(ownerId, next.projects);
   }
 
-  return { ok: true, mineDoc };
+  return { ok: true, mineDoc, rev: claimed };
 }
 
 export default async function handler(req, res) {
@@ -132,7 +132,7 @@ export default async function handler(req, res) {
       res.status(409).json(await viewFor(user));
       return;
     }
-    res.status(200).json(await viewFor(user, result.mineDoc));
+    res.status(200).json(await viewFor(user, result.mineDoc, result.rev));
     return;
   }
 
