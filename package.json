@@ -4,6 +4,6 @@
   "description": "CWS AI Projekt-Radar – multi-user live storage on Vercel",
   "type": "module",
   "dependencies": {
-    "@vercel/blob": "^2.3.3"
+    "@vercel/blob": "^2.6.1"
   }
 }
