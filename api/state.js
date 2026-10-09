@@ -1,64 +1,102 @@
-import { emptyDoc, readDoc, writeDoc } from "./_lib/blob.js";
-import { authenticate, authEnabled, canSeeProject, canWriteProject, publicUsers } from "./_lib/users.js";
+import { migrateLegacyIfNeeded, readUserDoc, totalRev, writeUserDoc } from "./_lib/blob.js";
+import { authenticate, authEnabled, canSeeProject, canWriteProject, configuredUsers, publicUsers } from "./_lib/users.js";
 
 function cleanList(list, max) {
   if (!Array.isArray(list) || list.length > max) return null;
   return list.filter((x) => x && typeof x === "object" && typeof x.id === "string" && x.id.length <= 80);
 }
 
-function viewFor(doc, user) {
+async function viewFor(user) {
+  await migrateLegacyIfNeeded();
+  const mine = await readUserDoc(user.id);
+  const projects = [...mine.projects];
+  const seen = new Set(projects.map((p) => p.id));
+  for (const u of configuredUsers()) {
+    if (u.id === user.id) continue;
+    const other = await readUserDoc(u.id);
+    for (const p of other.projects) {
+      if (!p || seen.has(p.id) || !canSeeProject(p, user)) continue;
+      projects.push(p);
+      seen.add(p.id);
+    }
+  }
   return {
-    rev: doc.rev || 0,
-    updatedAt: doc.updatedAt || null,
-    projects: (doc.projects || []).filter((p) => canSeeProject(p, user)),
-    requests: (doc.requests || []).filter((r) => r && (r.ownerId === user.id || !r.ownerId)),
-    meta: doc.meta || emptyDoc().meta,
+    rev: await totalRev(),
+    updatedAt: mine.updatedAt || null,
+    projects,
+    requests: mine.requests || [],
+    meta: mine.meta || { me: { name: user.name, role: user.role }, team: [] },
     users: publicUsers(),
     user,
   };
 }
 
-function mergePut(current, body, user) {
+async function applyPut(body, user) {
   const incomingProjects = cleanList(body.projects, 2000);
   const incomingRequests = cleanList(body.requests, 2000);
   if (!incomingProjects || !incomingRequests) return { error: 400 };
 
-  const others = (current.projects || []).filter((p) => p.ownerId && p.ownerId !== user.id);
-  const otherMap = new Map(others.map((p) => [p.id, p]));
-  for (const p of incomingProjects) {
-    if (p.ownerId && p.ownerId !== user.id) {
-      const existing = otherMap.get(p.id);
-      if (existing && canWriteProject(existing, user)) otherMap.set(p.id, { ...p, ownerId: existing.ownerId });
-      continue;
-    }
+  const currentRev = await totalRev();
+  const clientRev = Number(body.rev);
+  if (!Number.isInteger(clientRev) || clientRev !== currentRev) {
+    return { conflict: true };
   }
-  const mine = incomingProjects
+
+  const mineProjects = incomingProjects
     .filter((p) => !p.ownerId || p.ownerId === user.id)
     .map((p) => ({
       ...p,
       ownerId: user.id,
       sharedWith: Array.isArray(p.sharedWith) ? p.sharedWith.filter((id) => typeof id === "string").slice(0, 20) : [],
     }));
-
-  const otherReqs = (current.requests || []).filter((r) => r.ownerId && r.ownerId !== user.id);
-  const myReqs = incomingRequests
+  const mineRequests = incomingRequests
     .filter((r) => !r.ownerId || r.ownerId === user.id)
     .map((r) => ({ ...r, ownerId: user.id }));
 
-  const meta =
-    body.meta && typeof body.meta === "object" && !Array.isArray(body.meta)
-      ? {
-          ...current.meta,
-          me: { name: user.name, role: user.role },
-          team: Array.isArray(body.meta.team) ? body.meta.team : current.meta?.team || [],
-        }
-      : { ...(current.meta || emptyDoc().meta), me: { name: user.name, role: user.role } };
-
-  return {
-    projects: [...otherMap.values(), ...mine],
-    requests: [...otherReqs, ...myReqs],
-    meta,
+  const prev = await readUserDoc(user.id);
+  const mineDoc = {
+    rev: (prev.rev || 0) + 1,
+    updatedAt: new Date().toISOString(),
+    projects: mineProjects,
+    requests: mineRequests,
+    meta:
+      body.meta && typeof body.meta === "object" && !Array.isArray(body.meta)
+        ? {
+            ...prev.meta,
+            me: { name: user.name, role: user.role },
+            team: Array.isArray(body.meta.team) ? body.meta.team : prev.meta?.team || [],
+          }
+        : { ...(prev.meta || {}), me: { name: user.name, role: user.role } },
   };
+  await writeUserDoc(user.id, mineDoc);
+
+  // Collaborators may update projects they can see but do not own.
+  const byOwner = new Map();
+  for (const p of incomingProjects) {
+    if (!p.ownerId || p.ownerId === user.id) continue;
+    if (!byOwner.has(p.ownerId)) byOwner.set(p.ownerId, []);
+    byOwner.get(p.ownerId).push(p);
+  }
+  for (const [ownerId, list] of byOwner) {
+    const ownerDoc = await readUserDoc(ownerId);
+    let changed = false;
+    const map = new Map(ownerDoc.projects.map((p) => [p.id, p]));
+    for (const p of list) {
+      const existing = map.get(p.id);
+      if (!existing || !canWriteProject(existing, user)) continue;
+      map.set(p.id, { ...p, ownerId });
+      changed = true;
+    }
+    if (!changed) continue;
+    await writeUserDoc(ownerId, {
+      ...ownerDoc,
+      rev: (ownerDoc.rev || 0) + 1,
+      updatedAt: new Date().toISOString(),
+      projects: [...map.values()],
+    });
+  }
+
+  return { ok: true };
 }
 
 export default async function handler(req, res) {
@@ -78,32 +116,21 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const doc = (await readDoc()) || emptyDoc();
-    res.status(200).json(viewFor(doc, user));
+    res.status(200).json(await viewFor(user));
     return;
   }
 
   if (req.method === "PUT") {
-    const current = (await readDoc()) || emptyDoc();
-    const clientRev = Number(req.body && req.body.rev);
-    if (!Number.isInteger(clientRev) || clientRev !== (current.rev || 0)) {
-      res.status(409).json(viewFor(current, user));
-      return;
-    }
-    const merged = mergePut(current, req.body || {}, user);
-    if (merged.error) {
+    const result = await applyPut(req.body || {}, user);
+    if (result.error) {
       res.status(400).json({ error: "Der Stand hat nicht die erwartete Form." });
       return;
     }
-    const saved = {
-      rev: (current.rev || 0) + 1,
-      updatedAt: new Date().toISOString(),
-      projects: merged.projects,
-      requests: merged.requests,
-      meta: merged.meta,
-    };
-    await writeDoc(saved);
-    res.status(200).json(viewFor(saved, user));
+    if (result.conflict) {
+      res.status(409).json(await viewFor(user));
+      return;
+    }
+    res.status(200).json(await viewFor(user));
     return;
   }
 
