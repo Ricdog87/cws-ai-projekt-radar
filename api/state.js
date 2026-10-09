@@ -7,7 +7,7 @@ import {
   syncInboxes,
   writeUserDoc,
 } from "./_lib/blob.js";
-import { authenticate, authEnabled, canWriteProject, publicUsers } from "./_lib/users.js";
+import { authenticate, authEnabled, canSeeProject, canWriteProject, configuredUsers, publicUsers } from "./_lib/users.js";
 
 function cleanList(list, max) {
   if (!Array.isArray(list) || list.length > max) return null;
@@ -24,6 +24,16 @@ async function viewFor(user, mineOverride = null, revOverride = null) {
     if (!p || seen.has(p.id)) continue;
     projects.push(p);
     seen.add(p.id);
+  }
+  // Fallback: also scan other users (only two accounts – keeps assigned projects visible if the inbox lags).
+  for (const u of configuredUsers()) {
+    if (u.id === user.id) continue;
+    const other = await readUserDoc(u.id);
+    for (const p of other.projects || []) {
+      if (!p || seen.has(p.id) || !canSeeProject(p, user)) continue;
+      projects.push(p);
+      seen.add(p.id);
+    }
   }
   return {
     rev: revOverride != null ? revOverride : await currentRev(),
