@@ -6,14 +6,16 @@ function cleanList(list, max) {
   return list.filter((x) => x && typeof x === "object" && typeof x.id === "string" && x.id.length <= 80);
 }
 
-async function viewFor(user) {
+async function viewFor(user, mineOverride = null) {
   await migrateLegacyIfNeeded();
-  const mine = await readUserDoc(user.id);
-  const projects = [...mine.projects];
+  const mine = mineOverride || (await readUserDoc(user.id));
+  const projects = [...(mine.projects || [])];
   const seen = new Set(projects.map((p) => p.id));
+  let rev = mine.rev || 0;
   for (const u of configuredUsers()) {
     if (u.id === user.id) continue;
     const other = await readUserDoc(u.id);
+    rev += other.rev || 0;
     for (const p of other.projects) {
       if (!p || seen.has(p.id) || !canSeeProject(p, user)) continue;
       projects.push(p);
@@ -21,7 +23,7 @@ async function viewFor(user) {
     }
   }
   return {
-    rev: await totalRev(),
+    rev,
     updatedAt: mine.updatedAt || null,
     projects,
     requests: mine.requests || [],
@@ -96,7 +98,7 @@ async function applyPut(body, user) {
     });
   }
 
-  return { ok: true };
+  return { ok: true, mineDoc };
 }
 
 export default async function handler(req, res) {
@@ -130,7 +132,7 @@ export default async function handler(req, res) {
       res.status(409).json(await viewFor(user));
       return;
     }
-    res.status(200).json(await viewFor(user));
+    res.status(200).json(await viewFor(user, result.mineDoc));
     return;
   }
 
