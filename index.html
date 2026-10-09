@@ -1150,13 +1150,39 @@ function toast(msg){
 }
 
 /* ================== Derived values ================== */
-function phaseIdx(p){ return PH_INDEX[p.phase] ?? 0; }
-function gateList(p, key){ const ph = PHASES[PH_INDEX[key]]; return ph.gates.map((_,i)=>!!(p.gates && p.gates[`${key}-${i}`])); }
+function phaseIdx(p){ return PH_INDEX[p && p.phase] ?? 0; }
+function gateList(p, key){
+  const ph = PHASES[PH_INDEX[key] ?? phaseIdx(p)] || PHASES[0];
+  return (ph.gates || []).map((_, i) => !!(p && p.gates && p.gates[`${ph.key}-${i}`]));
+}
 function progress(p){
   const i = phaseIdx(p);
-  if (p.phase === "done") return 100;
-  const g = gateList(p, p.phase); const frac = g.length ? g.filter(Boolean).length / g.length : 0;
-  return Math.min(99, Math.round((i + frac) / (PHASES.length-1) * 100));
+  if (p && p.phase === "done") return 100;
+  const key = (p && PH_INDEX.hasOwnProperty(p.phase)) ? p.phase : PHASES[i].key;
+  const g = gateList(p, key); const frac = g.length ? g.filter(Boolean).length / g.length : 0;
+  return Math.min(99, Math.round((i + frac) / (PHASES.length - 1) * 100));
+}
+/** Fill missing fields so API stubs and old local saves never crash the overview. */
+function normalizeProject(p){
+  if (!p || typeof p !== "object") return blankProject();
+  const x = Object.assign(blankProject(), p);
+  if (!ID_OK.test(String(x.id || ""))) x.id = uid();
+  x.title = String(x.title || "");
+  x.focus = !!p.focus;
+  x.plan = (p.plan && typeof p.plan === "object") ? p.plan : {};
+  x.gates = (p.gates && typeof p.gates === "object") ? p.gates : {};
+  x.updates = Array.isArray(p.updates) ? p.updates : [];
+  x.tasks = Array.isArray(p.tasks) ? p.tasks : [];
+  x.decisions = Array.isArray(p.decisions) ? p.decisions : [];
+  x.meetings = Array.isArray(p.meetings) ? p.meetings : [];
+  x.tools = Array.isArray(p.tools) ? p.tools : (x.tools || []);
+  x.sharedWith = Array.isArray(p.sharedWith) ? p.sharedWith.filter(id => typeof id === "string") : [];
+  if (!PH_INDEX.hasOwnProperty(x.phase)) x.phase = "intake";
+  if (!HEALTH[x.health]) x.health = "green";
+  if (!x.startDate) x.startDate = todayISO();
+  if (!x.createdAt) x.createdAt = nowISO();
+  if (!x.updatedAt) x.updatedAt = x.createdAt;
+  return x;
 }
 function isActive(p){ return !p.archived && p.phase !== "done"; }
 function lastActivity(p){ return p.updatedAt || p.createdAt || null; }
@@ -1385,7 +1411,12 @@ const Store = {
   readLocal(){
     try {
       const raw = JSON.parse(localStorage.getItem(LOCAL_KEY) || "null");
-      if (raw){ state.projects = Array.isArray(raw.projects) ? raw.projects : []; state.requests = Array.isArray(raw.requests) ? raw.requests : []; if (raw.meta) state.meta = raw.meta; state.backupAt = raw.backupAt || null; }
+      if (raw){
+        state.projects = Array.isArray(raw.projects) ? raw.projects.map(normalizeProject) : [];
+        state.requests = Array.isArray(raw.requests) ? raw.requests : [];
+        if (raw.meta) state.meta = raw.meta;
+        state.backupAt = raw.backupAt || null;
+      }
     } catch { state.storageBlocked = true; }
   },
   cache(){
@@ -1406,30 +1437,40 @@ const Store = {
   },
   async connect(){
     if (location.protocol === "file:"){ this.useLocal(); return; }
-    let health = null;
-    try { const r = await fetch("/api/health", { cache: "no-store" }); if (r.ok) health = await r.json(); } catch { /* no server */ }
-    if (!health || !health.storage){ this.useLocal(); return; }
-    state.authRequired = !!health.auth;
-    if (health.auth){
-      try {
-        const lr = await fetch("/api/login", { cache: "no-store" });
-        if (lr.ok){ const j = await lr.json(); state.users = j.users || []; }
-      } catch { /* ignore */ }
-      if (!this.creds().user || !this.creds().key){ state.mode = "local"; state.needsKey = true; render(); return; }
-      const ok = await this.login();
-      if (!ok){ state.mode = "local"; state.needsKey = true; render(); return; }
+    state.mode = "connecting";
+    renderChrome();
+    const timed = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
+    try {
+      let health = null;
+      try { const r = await timed(fetch("/api/health", { cache: "no-store" }), 8000); if (r.ok) health = await r.json(); } catch { /* no server */ }
+      if (!health || !health.storage){ this.useLocal(); return; }
+      state.authRequired = !!health.auth;
+      if (health.auth){
+        try {
+          const lr = await timed(fetch("/api/login", { cache: "no-store" }), 8000);
+          if (lr.ok){ const j = await lr.json(); state.users = j.users || []; }
+        } catch { /* ignore */ }
+        if (!this.creds().user || !this.creds().key){ state.mode = "local"; state.needsKey = true; render(); return; }
+        const ok = await timed(this.login(), 8000);
+        if (!ok){ state.mode = "local"; state.needsKey = true; render(); return; }
+      }
+      let remote;
+      try { remote = await timed(this.pull(), 20000); }
+      catch { toast("Server antwortet langsam. Lokaler Stand bleibt sichtbar."); this.useLocal(); return; }
+      if (remote === 401){ state.mode = "local"; state.needsKey = true; state.authRequired = true; render(); return; }
+      if (!remote){ this.useLocal(); return; }
+      const localCount = state.projects.length + state.requests.length;
+      const remoteEmpty = !(remote.projects || []).length && !(remote.requests || []).length;
+      if (remoteEmpty && localCount > 0){
+        state.offerLocal = true; state.mode = "db"; state.needsKey = false; this.rev = remote.rev || 0; state.dbRev = this.rev;
+        this.startPoll(); render(); return;
+      }
+      this.apply(remote); state.mode = "db"; state.needsKey = false; state.offerLocal = false;
+      this.cache(); this.startPoll(); render();
+    } catch {
+      toast("Verbindung fehlgeschlagen. Lokaler Stand bleibt sichtbar.");
+      this.useLocal();
     }
-    const remote = await this.pull();
-    if (remote === 401){ state.mode = "local"; state.needsKey = true; state.authRequired = true; render(); return; }
-    if (!remote){ this.useLocal(); return; }
-    const localCount = state.projects.length + state.requests.length;
-    const remoteEmpty = !(remote.projects || []).length && !(remote.requests || []).length;
-    if (remoteEmpty && localCount > 0 && !health.auth){
-      state.offerLocal = true; state.mode = "db"; state.needsKey = false; this.rev = remote.rev || 0; state.dbRev = this.rev;
-      this.startPoll(); render(); return;
-    }
-    this.apply(remote); state.mode = "db"; state.needsKey = false; state.offerLocal = false;
-    this.cache(); this.startPoll(); render();
   },
   async login(){
     try {
@@ -1446,7 +1487,7 @@ const Store = {
     } catch { return false; }
   },
   apply(doc){
-    state.projects = Array.isArray(doc.projects) ? doc.projects : [];
+    state.projects = Array.isArray(doc.projects) ? doc.projects.map(normalizeProject) : [];
     state.requests = Array.isArray(doc.requests) ? doc.requests : [];
     if (doc.meta) state.meta = doc.meta;
     if (Array.isArray(doc.users)) state.users = doc.users;
@@ -1646,14 +1687,19 @@ function pushLog(p, entry){ p.updates = [entry].concat(p.updates || []).slice(0,
 
 /* ================== Rendering ================== */
 function render(){
-  renderChrome();
-  if (!state.loaded){ return; }
-  if (ui.view === "heute") renderHeute();
-  if (ui.view === "portfolio") renderPortfolio();
-  if (ui.view === "overview") renderOverview();
-  if (ui.view === "anfragen") renderRequests();
-  if (ui.view === "team") renderTeam();
-  if (drawer) renderDrawerDynamic();
+  try {
+    renderChrome();
+    if (!state.loaded){ return; }
+    if (ui.view === "heute") renderHeute();
+    if (ui.view === "portfolio") renderPortfolio();
+    if (ui.view === "overview") renderOverview();
+    if (ui.view === "anfragen") renderRequests();
+    if (ui.view === "team") renderTeam();
+    if (drawer) renderDrawerDynamic();
+  } catch (err) {
+    console.error(err);
+    toast("Anzeige konnte nicht geladen werden. Bitte Seite neu laden.");
+  }
 }
 
 const VIEW_LABEL = { overview:"Projektübersicht", heute:"Heute", team:"Team & Aufgaben", anfragen:"Projektanfragen", portfolio:"Portfolio" };
