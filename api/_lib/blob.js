@@ -16,7 +16,7 @@ export function emptyDoc() {
 
 export async function readDoc() {
   try {
-    const result = await get(STATE, { access: "private" });
+    const result = await get(STATE, { access: "private", abortCache: true });
     if (!result || result.statusCode === 404 || !result.stream) return null;
     const text = await new Response(result.stream).text();
     const doc = JSON.parse(text);
@@ -43,7 +43,7 @@ export async function writeDoc(doc) {
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: "application/json",
-    cacheControlMaxAge: 60,
+    cacheControlMaxAge: 0,
   });
   const name = `${HISTORY}/${String(doc.rev).padStart(6, "0")}.json`;
   try {
