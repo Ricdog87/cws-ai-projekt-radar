@@ -1,9 +1,11 @@
-import { get, list, put } from "@vercel/blob";
+import { del, get, list, put } from "@vercel/blob";
 import { configuredUsers, matchName } from "./users.js";
 
 const LEGACY = "radar/state.json";
-const userPath = (id) => `radar/users/${id}.json`;
-const foreignPath = (id) => `radar/foreign/${id}.json`;
+const legacyUserPath = (id) => `radar/users/${id}.json`;
+const legacyForeignPath = (id) => `radar/foreign/${id}.json`;
+const userPrefix = (id) => `radar/users/${id}/`;
+const foreignPrefix = (id) => `radar/foreign/${id}/`;
 
 export function emptyUserDoc() {
   return {
@@ -15,9 +17,20 @@ export function emptyUserDoc() {
   };
 }
 
+function normalizeUserDoc(raw) {
+  if (!raw || typeof raw !== "object") return emptyUserDoc();
+  return {
+    rev: Number(raw.rev) || 0,
+    updatedAt: raw.updatedAt || null,
+    projects: Array.isArray(raw.projects) ? raw.projects : [],
+    requests: Array.isArray(raw.requests) ? raw.requests : [],
+    meta: raw.meta && typeof raw.meta === "object" ? raw.meta : emptyUserDoc().meta,
+  };
+}
+
 async function readJson(pathname) {
   try {
-    const result = await get(pathname, { access: "private", abortCache: true });
+    const result = await get(pathname, { access: "private", useCache: false });
     if (!result || result.statusCode === 404 || !result.stream) return null;
     const text = await new Response(result.stream).text();
     const doc = JSON.parse(text);
@@ -31,47 +44,112 @@ async function readJson(pathname) {
   }
 }
 
-async function writeJson(pathname, doc) {
+async function writeJson(pathname, doc, { overwrite = false } = {}) {
   await put(pathname, JSON.stringify(doc), {
     access: "private",
     addRandomSuffix: false,
-    allowOverwrite: true,
+    allowOverwrite: overwrite,
     contentType: "application/json",
     cacheControlMaxAge: 0,
   });
 }
 
+async function listAll(prefix) {
+  const out = [];
+  let cursor;
+  do {
+    const page = await list({ prefix, limit: 1000, cursor });
+    out.push(...(page.blobs || []));
+    cursor = page.hasMore ? page.cursor : undefined;
+  } while (cursor);
+  return out;
+}
+
+function revFromUserPath(pathname, userId) {
+  const base = userPrefix(userId);
+  if (!pathname.startsWith(base)) return -1;
+  const name = pathname.slice(base.length);
+  const m = /^r(\d+)\.json$/.exec(name);
+  return m ? parseInt(m[1], 10) : -1;
+}
+
+async function latestUnderPrefix(prefix, scoreFn) {
+  const blobs = await listAll(prefix);
+  let best = null;
+  let bestScore = -1;
+  for (const b of blobs) {
+    const score = scoreFn(b);
+    if (score > bestScore) {
+      bestScore = score;
+      best = b;
+    }
+  }
+  return best;
+}
+
+async function pruneOld(prefix, keepPathname, maxKeep = 8) {
+  try {
+    const blobs = await listAll(prefix);
+    const others = blobs
+      .filter((b) => b.pathname !== keepPathname)
+      .sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    const drop = others.slice(Math.max(0, maxKeep - 1));
+    if (!drop.length) return;
+    await del(drop.map((b) => b.url));
+  } catch {
+    /* best-effort cleanup */
+  }
+}
+
 export async function readUserDoc(userId) {
-  const raw = await readJson(userPath(userId));
-  if (!raw) return emptyUserDoc();
-  return {
-    rev: Number(raw.rev) || 0,
-    updatedAt: raw.updatedAt || null,
-    projects: Array.isArray(raw.projects) ? raw.projects : [],
-    requests: Array.isArray(raw.requests) ? raw.requests : [],
-    meta: raw.meta && typeof raw.meta === "object" ? raw.meta : emptyUserDoc().meta,
-  };
+  const latest = await latestUnderPrefix(userPrefix(userId), (b) => revFromUserPath(b.pathname, userId));
+  if (latest) {
+    const raw = await readJson(latest.pathname);
+    if (raw) return normalizeUserDoc(raw);
+  }
+  const legacy = await readJson(legacyUserPath(userId));
+  return normalizeUserDoc(legacy);
 }
 
 export async function writeUserDoc(userId, doc) {
-  await writeJson(userPath(userId), {
-    rev: doc.rev || 0,
+  const rev = Number(doc.rev) || 0;
+  const pathname = `${userPrefix(userId)}r${String(rev).padStart(8, "0")}.json`;
+  const payload = {
+    rev,
     updatedAt: doc.updatedAt || null,
     projects: doc.projects || [],
     requests: doc.requests || [],
     meta: doc.meta || emptyUserDoc().meta,
-  });
+  };
+  try {
+    await writeJson(pathname, payload, { overwrite: false });
+  } catch (err) {
+    const msg = String((err && err.message) || err || "");
+    if (/already exists|409|conflict|overwrite/i.test(msg) || (err && (err.statusCode === 409 || err.status === 409))) {
+      await writeJson(pathname, payload, { overwrite: true });
+    } else {
+      throw err;
+    }
+  }
+  await pruneOld(userPrefix(userId), pathname);
 }
 
 export async function readForeign(userId) {
-  const raw = await readJson(foreignPath(userId));
+  const latest = await latestUnderPrefix(foreignPrefix(userId), (b) => {
+    const t = Date.parse(b.uploadedAt || 0);
+    return Number.isNaN(t) ? 0 : t;
+  });
+  let raw = null;
+  if (latest) raw = await readJson(latest.pathname);
+  if (!raw) raw = await readJson(legacyForeignPath(userId));
   if (!raw || !Array.isArray(raw.projects)) return [];
   return raw.projects.filter((p) => p && typeof p === "object" && p.id);
 }
 
-/** Publish copies of shared/assigned projects into a separate foreign file per assignee. */
+/** Publish copies of shared/assigned projects into a separate foreign folder per assignee. */
 export async function publishShared(ownerId, ownedProjects) {
   const users = configuredUsers();
+  const stamp = Date.now();
   for (const u of users) {
     if (u.id === ownerId) continue;
     const keepFromOthers = (await readForeign(u.id)).filter((p) => p.ownerId && p.ownerId !== ownerId);
@@ -83,16 +161,22 @@ export async function publishShared(ownerId, ownedProjects) {
       }
       if (share) mineForThem.push(p);
     }
-    await writeJson(foreignPath(u.id), {
-      updatedAt: new Date().toISOString(),
-      projects: [...keepFromOthers, ...mineForThem],
-    });
+    const pathname = `${foreignPrefix(u.id)}t${stamp}.json`;
+    await writeJson(
+      pathname,
+      {
+        updatedAt: new Date().toISOString(),
+        projects: [...keepFromOthers, ...mineForThem],
+      },
+      { overwrite: false },
+    );
+    await pruneOld(foreignPrefix(u.id), pathname);
   }
 }
 
 export async function currentRev() {
   try {
-    const { blobs } = await list({ prefix: "radar/revs/", limit: 1000 });
+    const blobs = await listAll("radar/revs/");
     let max = 0;
     for (const b of blobs || []) {
       const n = parseInt(String(b.pathname).split("/").pop() || "0", 10);
@@ -117,7 +201,10 @@ export async function claimRev(clientRev) {
     return next;
   } catch (err) {
     const msg = String((err && err.message) || err || "");
-    if (/already exists|409|conflict|overwrite|must not exist|precondition|412/i.test(msg) || (err && (err.statusCode === 409 || err.status === 409))) {
+    if (
+      /already exists|409|conflict|overwrite|must not exist|precondition|412/i.test(msg) ||
+      (err && (err.statusCode === 409 || err.status === 409))
+    ) {
       return null;
     }
     throw err;
@@ -127,8 +214,12 @@ export async function claimRev(clientRev) {
 export async function migrateLegacyIfNeeded() {
   const users = configuredUsers();
   if (!users.length) return;
-  const any = await readJson(userPath(users[0].id));
-  if (any) return;
+  const first = await readUserDoc(users[0].id);
+  if (first.projects.length || first.rev > 0) return;
+  const anyVersioned = await listAll(userPrefix(users[0].id));
+  if (anyVersioned.length) return;
+  const flat = await readJson(legacyUserPath(users[0].id));
+  if (flat) return;
   const legacy = await readJson(LEGACY);
   if (!legacy || !Array.isArray(legacy.projects)) return;
   for (const u of users) {
@@ -136,7 +227,9 @@ export async function migrateLegacyIfNeeded() {
       .filter((p) => p && (p.ownerId === u.id || (!p.ownerId && u.id === users[0].id)))
       .map((p) => ({ ...p, ownerId: u.id }));
     const requests = Array.isArray(legacy.requests)
-      ? legacy.requests.filter((r) => r && (r.ownerId === u.id || (!r.ownerId && u.id === users[0].id))).map((r) => ({ ...r, ownerId: u.id }))
+      ? legacy.requests
+          .filter((r) => r && (r.ownerId === u.id || (!r.ownerId && u.id === users[0].id)))
+          .map((r) => ({ ...r, ownerId: u.id }))
       : [];
     const doc = {
       rev: 1,
