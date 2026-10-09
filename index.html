@@ -484,6 +484,13 @@ table.pt{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px}
 .mt-sum{width:100%;border:1px solid var(--line-strong);border-radius:var(--radius);padding:8px 10px;font:14px/1.5 var(--f-body);background:var(--surface);resize:vertical}
 .mt-cp h2{display:inline-flex;align-items:center;gap:8px}
 .mt-cp h2 svg{width:18px;height:18px;color:var(--cws-red)}
+.mt-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn.dict{display:inline-flex;align-items:center;gap:6px}
+.btn.dict svg{width:16px;height:16px}
+.btn.dict.on{background:var(--tint);border-color:var(--cws-red);color:var(--cws-red);box-shadow:0 0 0 2px rgba(234,0,70,.18)}
+.btn.dict.on i.pulse{width:8px;height:8px;border-radius:50%;background:var(--cws-red);display:inline-block;animation:dict-pulse 1.1s ease-in-out infinite}
+@keyframes dict-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.85)}}
+.qc-in .btn.dict{flex:none;margin-left:4px;padding:8px 10px}
 .mt-steps{margin:0;padding-left:20px;font-size:13.5px;color:var(--ink-2);display:grid;gap:4px}
 .qc-scrim{position:fixed;inset:0;background:rgba(20,20,20,.35);z-index:60}
 .qc{position:fixed;top:12vh;left:50%;transform:translateX(-50%);width:min(680px,calc(100% - 32px));background:var(--surface);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.25);z-index:61;overflow:hidden;border:1px solid var(--line)}
@@ -1070,7 +1077,8 @@ const ICONS = {
   plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',
   fileText:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
   zap:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
-  sparkles:'<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/>'
+  sparkles:'<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/>',
+  mic:'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>'
 };
 const ico = (n, cls) => `<svg ${cls ? `class="${cls}" ` : ""}viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
 const STALE_DAYS = 10;
@@ -3381,26 +3389,132 @@ function mtMatch(parsed, fileName){
   return res;
 }
 
+/* ---------- Dictation (Web Speech API, browser-side) ---------- */
+const SpeechDict = {
+  rec: null, targetId: "", base: "",
+  supported(){ return !!(window.SpeechRecognition || window.webkitSpeechRecognition); },
+  stop(){
+    try { if (this.rec){ this.rec.onend = null; this.rec.stop(); } } catch { /* ignore */ }
+    this.rec = null; this.targetId = ""; this.base = "";
+    document.querySelectorAll(".btn.dict.on").forEach(b => {
+      b.classList.remove("on"); b.setAttribute("aria-pressed", "false");
+      b.innerHTML = `${ico("mic")}<span>Diktieren</span>`;
+    });
+  },
+  btnHtml(targetId){
+    if (!this.supported()) return `<span class="muted" style="font-size:12.5px" title="In Edge oder Chrome mit Mikrofonzugriff verfügbar">Diktat: Edge/Chrome</span>`;
+    const on = this.targetId === targetId && !!this.rec;
+    return `<button type="button" class="btn dict ${on ? "on" : ""}" data-action="dict-toggle" data-target="${esc(targetId)}" aria-pressed="${on ? "true" : "false"}" title="Ins Mikrofon sprechen. Der Text erscheint im Feld.">${on ? `<i class="pulse" aria-hidden="true"></i><span>Hört zu …</span>` : `${ico("mic")}<span>Diktieren</span>`}</button>`;
+  },
+  toggle(targetId){
+    if (!this.supported()){ toast("Diktat braucht Edge oder Chrome mit Mikrofonzugriff."); return; }
+    if (this.rec && this.targetId === targetId){ this.stop(); toast("Diktat beendet."); return; }
+    this.stop();
+    const el = document.getElementById(targetId);
+    if (!el){ toast("Textfeld nicht gefunden."); return; }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SR();
+    rec.lang = "de-DE";
+    rec.continuous = true;
+    rec.interimResults = true;
+    this.base = el.value || "";
+    this.targetId = targetId;
+    this.rec = rec;
+    let finalChunk = "";
+    rec.onresult = ev => {
+      let interim = "";
+      for (let i = ev.resultIndex; i < ev.results.length; i++){
+        const t = ev.results[i][0].transcript;
+        if (ev.results[i].isFinal) finalChunk += t;
+        else interim += t;
+      }
+      const glue = (a, b) => {
+        a = String(a || ""); b = String(b || "").trim();
+        if (!b) return a;
+        if (!a) return b;
+        const needSpace = !/\s$/.test(a) && !/^[.,;:!?]/.test(b);
+        return a + (needSpace ? " " : "") + b;
+      };
+      el.value = glue(glue(this.base, finalChunk), interim);
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      if (el.id === "qc-input" && typeof qcPreview === "function"){ if (qc) qc.text = el.value; qcPreview(); }
+    };
+    rec.onerror = ev => {
+      const map = { "not-allowed": "Mikrofonzugriff verweigert. Bitte in den Browser-Einstellungen erlauben.", "no-speech": "Nichts gehört – nochmal versuchen.", "audio-capture": "Kein Mikrofon gefunden.", "network": "Spracherkennung braucht Netz (Edge/Chrome)." };
+      toast(map[ev.error] || ("Diktat: " + (ev.error || "Fehler")));
+      this.stop();
+    };
+    rec.onend = () => { if (this.rec === rec) this.stop(); };
+    try {
+      rec.start();
+      document.querySelectorAll(`[data-action="dict-toggle"][data-target="${CSS.escape(targetId)}"]`).forEach(b => {
+        b.classList.add("on"); b.setAttribute("aria-pressed", "true");
+        b.innerHTML = `<i class="pulse" aria-hidden="true"></i><span>Hört zu …</span>`;
+      });
+      toast("Mikrofon an – sprich, Tippen bleibt möglich. Nochmal klicken zum Stoppen.");
+    } catch (err) {
+      this.stop();
+      toast("Diktat konnte nicht starten. Edge oder Chrome mit HTTPS nutzen.");
+    }
+  },
+};
+
 /* ---------- Copilot (optional, higher accuracy) ---------- */
+function mtTranscriptSnippet(maxChars){
+  if (!mt || !mt.parsed) return "";
+  const lines = (mt.parsed.sentences || []).map(s => (s.who ? s.who + ": " : "") + s.s).filter(Boolean);
+  const bullets = (mt.parsed.items || []).map(it => "• " + (typeof it === "string" ? it : it.text || "")).filter(x => x.length > 2);
+  let t = [...lines, ...bullets].join("\n").trim();
+  if (!t) t = String(($('#mt-text') && $('#mt-text').value) || "").trim();
+  const lim = maxChars || 12000;
+  if (t.length > lim) t = t.slice(0, lim) + "\n… [Transkript gekürzt]";
+  return t;
+}
 function mtCopilotPrompt(){
-  const p = mt.target !== "new" ? state.projects.find(x => x.id === mt.target) : null;
+  const p = mt && mt.target !== "new" ? state.projects.find(x => x.id === mt.target) : null;
+  const title = (mt && mt.parsed && mt.parsed.title) || "Meeting";
+  const date = (mt && mt.parsed && mt.parsed.date) || todayISO();
   const tasks = p ? openTasks(p).map(t => `- ${t.text}${t.owner ? ` (${t.owner})` : ""}`) : [];
-  return [`Werte das Transkript des Meetings „${mt.parsed.title}“ vom ${fmtDay(mt.parsed.date)} aus${p ? ` für das Projekt ${p.code} „${p.title}“` : ""}.`,
-    `Antworte ausschließlich mit JSON in genau diesem Format, ohne weiteren Text:`,
-    `{"summary":["Kernpunkt"],"actions":[{"text":"Was zu tun ist","owner":"Vorname Nachname","due":"JJJJ-MM-TT"}],"decisions":["Entscheidung"],"openDecisions":["Was noch entschieden werden muss"],"blockers":["Was das Projekt aufhält"],"risks":["Risiko"],"done":["Was als erledigt gemeldet wurde"],"systems":["Systeme, Software und Schnittstellen, die gebraucht werden"],"goLive":"JJJJ-MM-TT","status":"green|amber|red","phase":"intake|analyse|konzept|build|test|golive|hypercare|done","project":{"title":"","description":"","goal":"","department":""}}`,
+  const teamHint = [...new Set([...(state.users || []).map(u => u.name), ...team().map(m => m.name), myProfile().name].filter(Boolean))].slice(0, 12);
+  const snippet = mtTranscriptSnippet(10000);
+  return [
+    `Du bist Projektassistent für den CWS AI Projekt-Radar.`,
+    `Werte das Meeting „${title}“ vom ${fmtDay(date)} aus${p ? ` für Projekt ${p.code} „${p.title}“ (Phase: ${PHASES[phaseIdx(p)].long}, Status: ${(HEALTH[p.health] || HEALTH.green).label})` : " (neues oder noch nicht zugeordnetes Vorhaben)"}.`,
+    ``,
+    `Antworte NUR mit einem JSON-Objekt. Kein Markdown, keine Code-Fences, kein Text davor oder danach.`,
+    `Schema:`,
+    `{"summary":["Kernpunkt"],"actions":[{"text":"Aufgabe im Infinitiv","owner":"Vorname Nachname oder leer","due":"JJJJ-MM-TT oder leer"}],"decisions":["Getroffene Entscheidung"],"openDecisions":["Noch offen"],"blockers":["Blocker"],"risks":["Risiko"],"done":["Als erledigt genannt"],"nextStep":"Ein klarer nächster Schritt","nextStepDue":"JJJJ-MM-TT oder leer","systems":["Systeme/APIs"],"goLive":"JJJJ-MM-TT oder leer","status":"green|amber|red|","phase":"intake|analyse|konzept|build|test|golive|hypercare|done|","project":{"title":"","description":"","goal":"","department":""}}`,
+    ``,
     `Regeln:`,
-    `- Nur was im Meeting wirklich gesagt wurde. Leere Felder leer lassen.`,
-    `- owner nur, wenn eine Person die Aufgabe übernommen hat oder sie ihr zugewiesen wurde.`,
-    `- Relative Termine („bis Freitag“, „nächste Woche“) in ein Datum umrechnen. Bezug ist das Meetingdatum ${mt.parsed.date} (${fmtDay(mt.parsed.date)}).`,
-    `- summary: höchstens 5 Punkte, je ein Satz. Sprache: Deutsch.`,
-    p ? `- project nur ausfüllen, wenn es ein neues Projekt ist. Hier leer lassen.` : `- project: Titel, Beschreibung (Ist-Situation), Ziel und Fachbereich des besprochenen Vorhabens.`,
-    ...(tasks.length ? [`Offene Aufgaben im Projekt, für "done" abgleichen:`, ...tasks] : []),
+    `- Nur Inhalt aus dem Meeting. Unbekanntes Feld weglassen oder leer lassen.`,
+    `- Sprache: Deutsch. Aufgaben als Infinitiv („API-Zugang klären“), nicht als Zitat.`,
+    `- owner nur bei klarer Zuweisung; bekannte Namen wenn passend: ${teamHint.join(", ") || "—"}.`,
+    `- Relative Termine („Freitag“, „nächste Woche“) als Datum. Bezug: Meetingdatum ${date} (${fmtDay(date)}).`,
+    `- summary: max. 5 kurze Sätze. actions: konkrete To-dos. nextStep: der wichtigste nächste Schritt.`,
+    p ? `- project leer lassen (Projekt existiert schon). done mit offenen Aufgaben abgleichen.` : `- project ausfüllen (Titel, Ist-Situation, Ziel, Fachbereich).`,
+    ...(tasks.length ? [`Offene Aufgaben zum Abgleich in "done":`, ...tasks] : []),
+    ``,
+    `Transkript / Notizen:`,
+    snippet || "(Kein Transkripttext – nutze den Meeting-Kontext aus dem Chat, falls vorhanden.)",
   ].join("\n");
 }
+function mtExtractJson(text){
+  let s = String(text || "").trim();
+  if (!s) throw new Error("Keine Copilot-Antwort eingefügt.");
+  s = s.replace(/^\uFEFF/, "");
+  const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence) s = fence[1].trim();
+  const start = s.indexOf("{");
+  const end = s.lastIndexOf("}");
+  if (start < 0 || end <= start) throw new Error("Kein JSON gefunden. Copilot-Antwort komplett einfügen (oder nur den { … }-Block).");
+  s = s.slice(start, end + 1);
+  // Common Copilot quirks: trailing commas, smart quotes
+  s = s.replace(/[“”„]/g, '"').replace(/[‘’]/g, "'").replace(/,\s*([}\]])/g, "$1");
+  try { return JSON.parse(s); }
+  catch { throw new Error("JSON ungültig. In Copilot nochmal „nur JSON, ohne Markdown“ anfordern und die komplette Antwort einfügen."); }
+}
 function mtFromCopilot(text){
-  const m = String(text || "").match(/\{[\s\S]*\}/);
-  if (!m) throw new Error("In der Antwort wurde kein JSON gefunden. Bitte die komplette Copilot-Antwort einfügen.");
-  let j; try { j = JSON.parse(m[0]); } catch { throw new Error("Die Copilot-Antwort ist kein gültiges JSON. Bitte nur den JSON-Block einfügen."); }
+  const j = mtExtractJson(text);
   const arr = v => Array.isArray(v) ? v.map(x => typeof x === "string" ? x.trim() : x).filter(Boolean) : [];
   const day = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || "")) ? v : "";
   const src = { who: "Copilot", ts: "", q: "" };
@@ -3434,9 +3548,18 @@ function mtFromCopilot(text){
   if (mt.target === "new"){
     ["title", "description", "goal", "department"].forEach(k => { if (String(pr[k] || "").trim()) mt.newp[k] = String(pr[k]).trim().slice(0, k === "title" ? 160 : 1000); });
   }
-  const acts = an.actions.map((a, i) => ({ a, i }));
-  if (acts.length){ acts.sort((x, y) => (x.a.due || "9999").localeCompare(y.a.due || "9999") || x.i - y.i); an.ns = acts[0].i;
-    an.nsOn = !p || !(p.nextStep || "").trim() || (daysFromToday(p.nextStepDue) ?? 0) < 0 || an.done.some(d => d.id === "__next" && d.on); }
+  const nextTxt = String(j.nextStep || "").trim();
+  if (nextTxt){
+    const due = day(j.nextStepDue);
+    let idx = an.actions.findIndex(a => mtOverlap(a.text, nextTxt).r >= .45);
+    if (idx < 0){ an.actions.unshift({ text: nextTxt.slice(0, 300), owner: "", due, on: true, src }); idx = 0; }
+    else if (due && !an.actions[idx].due) an.actions[idx].due = due;
+    an.ns = idx; an.nsOn = true;
+  } else {
+    const acts = an.actions.map((a, i) => ({ a, i }));
+    if (acts.length){ acts.sort((x, y) => (x.a.due || "9999").localeCompare(y.a.due || "9999") || x.i - y.i); an.ns = acts[0].i;
+      an.nsOn = !p || !(p.nextStep || "").trim() || (daysFromToday(p.nextStepDue) ?? 0) < 0 || an.done.some(d => d.id === "__next" && d.on); }
+  }
   return an;
 }
 
@@ -3456,10 +3579,10 @@ function mtNewDraft(parsed){
 
 /* ---------- Dialog ---------- */
 let mt = null;   // { stage:"input"|"review", parsed, an, target, matches, newp, fileName, preset, cp }
-function mtClose(){ mt = null; $("#drawer-slot").innerHTML = ""; document.body.style.overflow = ""; }
+function mtClose(){ SpeechDict.stop(); mt = null; $("#drawer-slot").innerHTML = ""; document.body.style.overflow = ""; }
 function mtOpen(presetId){
-  drawer = null; rqDrawer = null;
-  mt = { stage: "input", preset: presetId || "", cp: { open:false, err:"" } };
+  drawer = null; rqDrawer = null; SpeechDict.stop();
+  mt = { stage: "input", preset: presetId || "", cp: { open:true, err:"" } };
   mtRender();
 }
 async function mtLoadFile(file, presetId){
@@ -3477,7 +3600,7 @@ function mtStart(text, fileName, kind, presetId){
   const preset = presetId || (mt && mt.preset) || "";
   const best = matches[0];
   const target = preset && state.projects.some(p => p.id === preset) ? preset : (best && best.s >= 12 ? best.p.id : "new");
-  mt = { stage: "review", parsed, matches, fileName: fileName || "", target, preset, newp: mtNewDraft(parsed), cp: { open:false, err:"" } };
+  mt = { stage: "review", parsed, matches, fileName: fileName || "", target, preset, newp: mtNewDraft(parsed), cp: { open: true, err: "" } };
   mtAnalyzeTarget();
   if (json){ try { mt.an = mtFromCopilot(text); } catch (err){ toast(err.message); } }
   mtRender();
@@ -3507,12 +3630,23 @@ function mtRender(){
       <div class="d-body">
         <label class="mt-drop" id="mt-drop" for="mt-file">${ico("fileText")}<b>Teams-Transkript hierher ziehen oder auswählen</b><span>.vtt oder .docx aus Teams („Transkript herunterladen“), oder eine Mitschrift als .txt</span></label>
         <input type="file" id="mt-file" accept=".vtt,.docx,.txt,.md,text/plain,text/vtt" hidden>
-        <section class="d-sec"><h2>Oder Text einfügen</h2>
-          <p class="muted" style="margin:0;font-size:13.5px">Zum Beispiel die KI-Notizen und Folgeaufgaben aus der Teams-Besprechungszusammenfassung, eine Copilot-Antwort oder deine eigene Mitschrift.</p>
+        <section class="d-sec"><h2>Oder sprechen / Text einfügen</h2>
+          <p class="muted" style="margin:0;font-size:13.5px">Diktieren, Teams-/Copilot-Zusammenfassung einfügen oder Mitschrift tippen. Danach auswerten – oder unten den Copilot-Weg für genauere Aufgaben.</p>
           <textarea id="mt-text" class="mt-paste" placeholder="Ricardo Serrano: Stand Datenexport ist da, Qualität passt.&#10;Tobias Backhaus: Ich kläre bis Freitag den API-Zugang mit der IT.&#10;Wir haben entschieden, mit Region Nordwest zu starten."></textarea>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn primary" data-action="mt-text">Auswerten</button><span class="muted" style="font-size:12.5px">Strg+Enter</span></div>
+          <div class="mt-actions"><button class="btn primary" data-action="mt-text">Auswerten</button>${SpeechDict.btnHtml("mt-text")}<span class="muted" style="font-size:12.5px">Strg+Enter</span></div>
         </section>
-        <div class="mt-privacy">${ico("shield")}<span>Die Auswertung läuft nur in diesem Browser. Das Transkript wird nicht gespeichert und nirgends hochgeladen. Ins Projekt kommt nur, was du im nächsten Schritt bestätigst.</span></div>
+        <section class="d-sec mt-cp"><div class="section-head" style="margin:0"><h2>${ico("sparkles")}Mit Microsoft Copilot</h2></div>
+          <ol class="mt-steps">
+            <li>Optional Notizen hier eintippen oder diktieren (werden mit dem Prompt mitgeschickt).</li>
+            <li><b>Prompt kopieren</b> → in Microsoft Copilot oder den Teams-Meeting-Chat einfügen (dort kennt Copilot oft schon das Transkript).</li>
+            <li>Copilot-Antwort komplett zurück hier einfügen → <b>Übernehmen &amp; prüfen</b>.</li>
+          </ol>
+          <div class="mt-actions"><button class="btn small" data-action="mt-cp-copy-input">Prompt kopieren</button>${SpeechDict.btnHtml("mt-cp-answer-input")}</div>
+          <textarea id="mt-cp-answer-input" class="mt-paste" style="min-height:110px" placeholder='Copilot-Antwort hier einfügen – z. B. {"summary":[…],"actions":[…]}'></textarea>
+          ${mt.cp && mt.cp.err ? `<div class="gate-note">${esc(mt.cp.err)}</div>` : ""}
+          <div class="mt-actions"><button class="btn small primary" data-action="mt-cp-apply-input">Übernehmen &amp; prüfen</button></div>
+        </section>
+        <div class="mt-privacy">${ico("shield")}<span>Auswertung und Übernahme laufen in diesem Browser; ins Projekt kommt nur, was du bestätigst. <b>Diktat</b> nutzt die Spracherkennung von Edge/Chrome (kurze Audio-Verarbeitung beim Anbieter). Transkripte werden nicht im Radar gespeichert.</span></div>
       </div>
     </aside>`;
     setTimeout(() => $("#mt-text") && $("#mt-text").focus(), 30);
@@ -3570,14 +3704,15 @@ function mtRender(){
       ${list("blockers", "Blocker & Risiken", an.blockers, (b, i) => `<textarea class="mt-in" rows="1" data-mtk="blockers.${i}.text">${esc(b.text)}</textarea><span class="tag ${b.kind === "blocker" ? "risk" : ""}" style="${b.kind === "blocker" ? "" : "background:var(--surface-2);color:var(--ink-2)"};align-self:flex-start">${b.kind === "blocker" ? "Blocker" : "Risiko"}</span>`)}
       ${an.systems && an.systems.length ? sec("Systeme & Zugänge", an.systems.length, `<div class="muted" style="font-size:13px">Kommen in die Zugangs-Checkliste des Projekts (Excel), je System mit API, Zugang, Lizenz und Freigabe.</div><div class="mt-rows">${an.systems.map((x, i) => `<div class="mt-row ${x.on ? "" : "off"}">${cb(`systems.${i}`, x.on)}<div class="mt-main"><div><b>${esc(x.name)}</b> <span class="muted">${esc(x.e.cat)}${x.e.iface ? " · " + esc(x.e.iface) : ""}</span></div><div class="muted" style="font-size:12.5px">${esc(x.e.rows.map(r => r[1]).join(" · "))}</div>${x.src ? `<div class="mt-src">${esc(x.src)}</div>` : ""}</div></div>`).join("")}</div>`) : ""}
       ${changes.length ? sec("Projektstand", null, `<div class="mt-rows">${changes.join("")}</div>`) : ""}
-      <section class="d-sec mt-cp"><div class="section-head" style="margin:0"><h2>${ico("sparkles")}Genauer mit Copilot <span class="muted" style="font-weight:400;font-size:13px">optional</span></h2><button class="btn small" data-action="mt-cp-toggle">${mt.cp.open ? "Ausblenden" : "So geht's"}</button></div>
+      <section class="d-sec mt-cp"><div class="section-head" style="margin:0"><h2>${ico("sparkles")}Genauer mit Copilot</h2><button class="btn small" data-action="mt-cp-toggle">${mt.cp.open ? "Ausblenden" : "Öffnen"}</button></div>
         ${mt.cp.open ? `<ol class="mt-steps">
-          <li>Prompt kopieren und in Microsoft Copilot einfügen, am besten im Chat der Besprechung in Teams (dort kennt Copilot das Transkript). Sonst das Transkript dazu einfügen.</li>
-          <li>Die Antwort von Copilot komplett kopieren und hier einfügen. Die Vorschläge oben werden dann durch das Copilot-Ergebnis ersetzt.</li></ol>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="mt-cp-copy">Prompt kopieren</button></div>
-          <textarea id="mt-cp-answer" class="mt-paste" style="min-height:110px" placeholder='{"summary":[…],"actions":[…]}'></textarea>
+          <li><b>Prompt kopieren</b> – enthält Regeln und das Transkript (gekürzt). Am besten im Teams-Meeting-Chat bei Copilot einfügen.</li>
+          <li>Copilot-Antwort <b>komplett</b> hier einfügen (JSON oder Text mit JSON). Markdown-Codeblöcke werden erkannt.</li>
+          <li><b>Übernehmen</b> ersetzt die Vorschläge oben – du prüfst und bestätigst wie gewohnt.</li></ol>
+          <div class="mt-actions"><button class="btn small" data-action="mt-cp-copy">Prompt kopieren</button>${SpeechDict.btnHtml("mt-cp-answer")}<button class="btn small" data-action="mt-cp-paste-try" title="Zwischenablage lesen, wenn der Browser es erlaubt">Aus Zwischenablage</button></div>
+          <textarea id="mt-cp-answer" class="mt-paste" style="min-height:110px" placeholder='{"summary":[…],"actions":[…],"nextStep":"…"}'></textarea>
           ${mt.cp.err ? `<div class="gate-note">${esc(mt.cp.err)}</div>` : ""}
-          <div><button class="btn small primary" data-action="mt-cp-apply">Copilot-Antwort übernehmen</button></div>` : `<p class="muted" style="margin:0;font-size:13.5px">Die lokale Auswertung erkennt typische Formulierungen. Bei langen oder unstrukturierten Meetings liefert Copilot im CWS-Tenant genauere Aufgaben und Zusammenfassungen.</p>`}
+          <div class="mt-actions"><button class="btn small primary" data-action="mt-cp-apply">Copilot-Antwort übernehmen</button></div>` : `<p class="muted" style="margin:0;font-size:13.5px">Lokale Auswertung erkennt typische Formulierungen. Copilot liefert bei langen Meetings genauere Aufgaben, Owner und den nächsten Schritt.</p>`}
       </section>
     </div>
     <div class="d-foot"><span class="muted" id="mt-count" style="font-size:13px">${esc(n)}</span>
@@ -3737,18 +3872,19 @@ function agendaText(p){
 /* ---------- Quick capture (Ctrl+K) ---------- */
 let qc = null;  // { text, pid }
 function qcOpen(){
+  SpeechDict.stop();
   if (mt) return;
   qc = { text: "", pid: drawer && drawer.id ? drawer.id : "" };
   const slot = $("#qc-slot");
   slot.innerHTML = `<div class="qc-scrim" data-action="qc-close"></div>
   <div class="qc" role="dialog" aria-modal="true" aria-label="Schnell erfassen">
-    <div class="qc-in">${ico("zap")}<input id="qc-input" autocomplete="off" spellcheck="false" placeholder="z. B. AI-003 Abnahme erledigt, nächster Schritt: Go-live vorbereiten bis Freitag @Tobias"></div>
+    <div class="qc-in">${ico("zap")}<input id="qc-input" autocomplete="off" spellcheck="false" placeholder="z. B. AI-003 Abnahme erledigt, nächster Schritt: Go-live vorbereiten bis Freitag @Tobias">${SpeechDict.btnHtml("qc-input")}</div>
     <div class="qc-body" id="qc-body"></div>
   </div>`;
   qcPreview();
   $("#qc-input").focus();
 }
-function qcClose(){ qc = null; $("#qc-slot").innerHTML = ""; }
+function qcClose(){ SpeechDict.stop(); qc = null; $("#qc-slot").innerHTML = ""; }
 function qcProject(text){
   const code = text.match(/\b(AI-\d{1,4})\b/i);
   if (code){ const p = state.projects.find(x => x.code.toLowerCase() === code[1].toLowerCase()); if (p) return { p, code: code[0] }; }
@@ -3846,13 +3982,53 @@ document.addEventListener("click", async e => {
   if (a === "mt-open"){ mtOpen(t.dataset.id || ""); return; }
   if (a === "mt-close"){ mtClose(); return; }
   if (a === "mt-back"){ const pre = mt && mt.preset; mtOpen(pre); return; }
-  if (a === "mt-text"){ const v = $("#mt-text").value; if (!v.trim()){ $("#mt-text").focus(); return; } mtStart(v, "", "text", mt && mt.preset); return; }
+  if (a === "mt-text"){ SpeechDict.stop(); const v = $("#mt-text").value; if (!v.trim()){ $("#mt-text").focus(); return; } mtStart(v, "", "text", mt && mt.preset); return; }
   if (a === "mt-apply"){ t.disabled = true; try { await mtApply(); } finally { t.disabled = false; } return; }
-  if (a === "mt-cp-toggle"){ mt.cp.open = !mt.cp.open; mtRender(); if (mt.cp.open) $(".mt-cp").scrollIntoView({ block: "start" }); return; }
-  if (a === "mt-cp-copy"){ await copyText(mtCopilotPrompt(), "Prompt kopiert. In Copilot einfügen."); return; }
+  if (a === "dict-toggle"){ SpeechDict.toggle(t.dataset.target || ""); return; }
+  if (a === "mt-cp-toggle"){ mt.cp.open = !mt.cp.open; const keep = $("#mt-cp-answer") && $("#mt-cp-answer").value; mtRender(); if (mt.cp.open){ $(".mt-cp") && $(".mt-cp").scrollIntoView({ block: "start" }); if (keep && $("#mt-cp-answer")) $("#mt-cp-answer").value = keep; } return; }
+  if (a === "mt-cp-copy" || a === "mt-cp-copy-input"){
+    if (mt && mt.stage === "input" && !mt.parsed){
+      const raw = (($("#mt-text") && $("#mt-text").value) || "").trim();
+      mt.parsed = raw ? mtParse(raw, "", "text") : { title: "Meeting", date: todayISO(), minutes: 0, participants: [], sentences: [], items: [], kind: "text", chars: 0 };
+      mt.target = (mt.preset && state.projects.some(p => p.id === mt.preset)) ? mt.preset : "new";
+    }
+    await copyText(mtCopilotPrompt(), "Prompt kopiert. In Microsoft Copilot oder den Teams-Meeting-Chat einfügen.");
+    return;
+  }
+  if (a === "mt-cp-paste-try"){
+    try {
+      const txt = await navigator.clipboard.readText();
+      const el = $("#mt-cp-answer"); if (el){ el.value = txt; el.focus(); }
+      toast("Zwischenablage eingefügt.");
+    } catch { toast("Zwischenablage nicht lesbar – bitte mit Strg+V einfügen."); }
+    return;
+  }
   if (a === "mt-cp-apply"){
-    try { mt.an = mtFromCopilot($("#mt-cp-answer").value); mt.cp = { open: false, err: "" }; mtRender(); toast("Copilot-Ergebnis übernommen. Bitte prüfen."); }
-    catch (err){ mt.cp.err = err.message; const keep = $("#mt-cp-answer").value; mtRender(); $("#mt-cp-answer").value = keep; }
+    SpeechDict.stop();
+    try { mt.an = mtFromCopilot($("#mt-cp-answer").value); mt.cp = { open: true, err: "" }; mtRender(); toast("Copilot-Ergebnis übernommen. Bitte prüfen und bestätigen."); }
+    catch (err){ mt.cp.err = err.message; const keep = $("#mt-cp-answer").value; mtRender(); if ($("#mt-cp-answer")) $("#mt-cp-answer").value = keep; }
+    return;
+  }
+  if (a === "mt-cp-apply-input"){
+    SpeechDict.stop();
+    const answer = ($("#mt-cp-answer-input") && $("#mt-cp-answer-input").value) || "";
+    const notes = ($("#mt-text") && $("#mt-text").value) || "";
+    try {
+      mtExtractJson(answer); // validate early
+      const seed = notes.trim() || answer;
+      mtStart(seed, "", "text", mt && mt.preset);
+      mt.an = mtFromCopilot(answer);
+      mt.cp = { open: true, err: "" };
+      mtRender();
+      toast("Copilot-Ergebnis übernommen. Bitte prüfen und bestätigen.");
+    } catch (err) {
+      mt.cp = mt.cp || { open: true, err: "" };
+      mt.cp.err = err.message;
+      const keepA = answer, keepN = notes;
+      mtRender();
+      if ($("#mt-cp-answer-input")) $("#mt-cp-answer-input").value = keepA;
+      if ($("#mt-text")) $("#mt-text").value = keepN;
+    }
     return;
   }
   if (a === "qc-open"){ qcOpen(); return; }
