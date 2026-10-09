@@ -3,7 +3,7 @@ import { configuredUsers, matchName } from "./users.js";
 
 const LEGACY = "radar/state.json";
 const userPath = (id) => `radar/users/${id}.json`;
-const inboxPath = (id) => `radar/inbox/${id}.json`;
+const foreignPath = (id) => `radar/foreign/${id}.json`;
 
 export function emptyUserDoc() {
   return {
@@ -54,50 +54,42 @@ export async function readUserDoc(userId) {
 }
 
 export async function writeUserDoc(userId, doc) {
-  await writeJson(userPath(userId), doc);
+  await writeJson(userPath(userId), {
+    rev: doc.rev || 0,
+    updatedAt: doc.updatedAt || null,
+    projects: doc.projects || [],
+    requests: doc.requests || [],
+    meta: doc.meta || emptyUserDoc().meta,
+  });
 }
 
-export async function readInbox(userId) {
-  const raw = await readJson(inboxPath(userId));
+export async function readForeign(userId) {
+  const raw = await readJson(foreignPath(userId));
   if (!raw || !Array.isArray(raw.projects)) return [];
   return raw.projects.filter((p) => p && typeof p === "object" && p.id);
 }
 
-export async function writeInbox(userId, projects) {
-  await writeJson(inboxPath(userId), { updatedAt: new Date().toISOString(), projects });
-}
-
-/** Keep a copy of shared / assigned projects in the other person's inbox. */
-export async function syncInboxes(ownerId, ownedProjects) {
+/** Publish copies of shared/assigned projects into a separate foreign file per assignee. */
+export async function publishShared(ownerId, ownedProjects) {
   const users = configuredUsers();
-  const byUser = new Map(users.map((u) => [u.id, []]));
-  for (const p of ownedProjects) {
-    const targets = new Set();
-    if (Array.isArray(p.sharedWith)) p.sharedWith.forEach((id) => targets.add(id));
-    for (const t of p.tasks || []) {
-      if (!t || t.status === "erledigt") continue;
-      const hit = users.find((u) => u.id !== ownerId && matchName(t.owner, u.name));
-      if (hit) targets.add(hit.id);
-    }
-    for (const id of targets) {
-      if (id === ownerId || !byUser.has(id)) continue;
-      byUser.get(id).push(p);
-    }
-  }
   for (const u of users) {
     if (u.id === ownerId) continue;
-    const existing = await readInbox(u.id);
-    const map = new Map(existing.map((p) => [p.id, p]));
-    // Drop previous copies owned by this owner, then add current ones.
-    for (const [id, p] of map) {
-      if (p.ownerId === ownerId) map.delete(id);
+    const keepFromOthers = (await readForeign(u.id)).filter((p) => p.ownerId && p.ownerId !== ownerId);
+    const mineForThem = [];
+    for (const p of ownedProjects) {
+      let share = Array.isArray(p.sharedWith) && p.sharedWith.includes(u.id);
+      if (!share) {
+        share = (p.tasks || []).some((t) => t && t.status !== "erledigt" && matchName(t.owner, u.name));
+      }
+      if (share) mineForThem.push(p);
     }
-    for (const p of byUser.get(u.id) || []) map.set(p.id, p);
-    await writeInbox(u.id, [...map.values()]);
+    await writeJson(foreignPath(u.id), {
+      updatedAt: new Date().toISOString(),
+      projects: [...keepFromOthers, ...mineForThem],
+    });
   }
 }
 
-/** Monotonic revision: create-only markers so two writers cannot claim the same rev. */
 export async function currentRev() {
   try {
     const { blobs } = await list({ prefix: "radar/revs/", limit: 1000 });
@@ -125,16 +117,13 @@ export async function claimRev(clientRev) {
     return next;
   } catch (err) {
     const msg = String((err && err.message) || err || "");
-    if (/already exists|409|conflict|overwrite/i.test(msg) || (err && (err.statusCode === 409 || err.status === 409))) {
+    if (/already exists|409|conflict|overwrite|must not exist|precondition|412/i.test(msg) || (err && (err.statusCode === 409 || err.status === 409))) {
       return null;
     }
-    // Some SDK versions use a different error – treat failed exclusive create as conflict.
-    if (/must not exist|precondition|412/i.test(msg)) return null;
     throw err;
   }
 }
 
-/** One-time: split the old shared document into per-user files. */
 export async function migrateLegacyIfNeeded() {
   const users = configuredUsers();
   if (!users.length) return;
@@ -143,19 +132,21 @@ export async function migrateLegacyIfNeeded() {
   const legacy = await readJson(LEGACY);
   if (!legacy || !Array.isArray(legacy.projects)) return;
   for (const u of users) {
-    const projects = legacy.projects.filter((p) => p && (p.ownerId === u.id || (!p.ownerId && u.id === users[0].id)));
+    const projects = legacy.projects
+      .filter((p) => p && (p.ownerId === u.id || (!p.ownerId && u.id === users[0].id)))
+      .map((p) => ({ ...p, ownerId: u.id }));
     const requests = Array.isArray(legacy.requests)
-      ? legacy.requests.filter((r) => r && (r.ownerId === u.id || (!r.ownerId && u.id === users[0].id)))
+      ? legacy.requests.filter((r) => r && (r.ownerId === u.id || (!r.ownerId && u.id === users[0].id))).map((r) => ({ ...r, ownerId: u.id }))
       : [];
     const doc = {
       rev: 1,
       updatedAt: legacy.updatedAt || new Date().toISOString(),
-      projects: projects.map((p) => ({ ...p, ownerId: u.id })),
-      requests: requests.map((r) => ({ ...r, ownerId: u.id })),
+      projects,
+      requests,
       meta: u.id === users[0].id && legacy.meta ? legacy.meta : { me: { name: u.name, role: u.role }, team: [] },
     };
     await writeUserDoc(u.id, doc);
-    await syncInboxes(u.id, doc.projects);
+    await publishShared(u.id, projects);
   }
   if (!(await currentRev())) {
     await put("radar/revs/1", "1", {
