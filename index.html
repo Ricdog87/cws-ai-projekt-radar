@@ -102,6 +102,7 @@ h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.015em;tex
 .env-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink-2);white-space:nowrap}
 .env-pill i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
 .env-pill.warn i{background:var(--warn)}
+.banner input,.banner select{border:1px solid var(--line-strong);border-radius:8px;padding:7px 9px;background:var(--surface);color:var(--ink);min-width:160px}
 .me{display:flex;align-items:center;gap:10px;background:none;border:0;border-left:1px solid var(--line);padding:4px 0 4px 16px;cursor:pointer;text-align:left}
 .avatar{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:600 13px/1 var(--f-body);flex:none}
 .me-txt{display:grid;line-height:1.2}
@@ -1084,7 +1085,15 @@ const state = {
   meta: { me: { name:"", role:"" } },
   loaded: false,
   mode: "connecting",        // db | local | connecting
+  needsKey: false,
+  offerLocal: false,
+  syncing: false,
+  dbRev: 0,
+  dbUpdatedAt: null,
   canWrite: true,
+  authRequired: false,
+  users: [],
+  account: null,             // { id, name, role } when logged in on the live server
   me: { id:null, name:"", avatarUrl:"" },
 };
 const ui = Object.assign({
@@ -1099,9 +1108,18 @@ if (!["overview","heute","team","portfolio","anfragen"].includes(ui.view)) ui.vi
 ui.rq = Object.assign({ filter:"offen" }, ui.rq);
 ui.ov = Object.assign({ range:"all", sort:"focus", done:false }, ui.ov);
 let menuOpen = false, profileOpen = false;
-const myProfile = () => Object.assign({ name:"", role:"" }, state.meta.me || {});
+const myProfile = () => {
+  if (state.account) return { name: state.account.name, role: state.account.role || "" };
+  return Object.assign({ name:"", role:"" }, state.meta.me || {});
+};
 const initials = n => (n.trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0,2).join("") || "?").toUpperCase();
 function isMine(owner){ const me = myProfile().name.trim().toLowerCase(); const o = String(owner||"").trim().toLowerCase(); if (!me || !o) return false; return o.includes(me) || me.includes(o) || o === me.split(/\s+/)[0]; }
+function isMineProject(p){ return !state.account || !p.ownerId || p.ownerId === state.account.id; }
+function projectOwnerLabel(p){
+  if (!p || !p.ownerId || !state.users.length) return "";
+  const u = state.users.find(x => x.id === p.ownerId);
+  return u ? u.name : "";
+}
 let drawer = null;           // { id, draft, dirty, confirmDelete, gateWarn }
 
 /* ================== Helpers ================== */
@@ -1224,7 +1242,8 @@ function blankProject(){
   const t = todayISO();
   return { id: uid(), code: nextCode(), title:"", description:"", goal:"", value:"", sponsor:"", department:"", businessOwner:"", lead: myProfile().name || "", focus:false, plan:{}, priority: 2,
     region:"", team:"", phase:"intake", health:"green", startDate:t, targetDate:"", nextStep:"", nextStepDue:"", blockers:"", openDecisions:"", techStack:"",
-    aiAct:"offen", aiInventoryId:"", crRefs:"", gates:{}, updates:[], tasks:[], decisions:[], meetings:[], readiness: templateReadiness(), tools: templateTools(), archived:false, createdAt:nowISO(), updatedAt:nowISO() };
+    aiAct:"offen", aiInventoryId:"", crRefs:"", gates:{}, updates:[], tasks:[], decisions:[], meetings:[], readiness: templateReadiness(), tools: templateTools(),
+    ownerId: state.account ? state.account.id : "", sharedWith: [], archived:false, createdAt:nowISO(), updatedAt:nowISO() };
 }
 
 /* ================== Team & tasks ================== */
@@ -1236,8 +1255,23 @@ const openTasks = p => (p.tasks || []).filter(t => t.status !== TASK_DONE);
 const taskOverdue = t => t.status !== TASK_DONE && !!t.due && daysFromToday(t.due) < 0;
 const firstName = n => String(n || "").trim().split(/\s+/)[0] || "";
 function ownerNames(){
-  const names = team().map(m => m.name).concat(state.projects.flatMap(p => (p.tasks || []).map(t => t.owner)));
+  const names = (state.users || []).map(u => u.name)
+    .concat(team().map(m => m.name))
+    .concat(state.projects.flatMap(p => (p.tasks || []).map(t => t.owner)));
   const seen = new Set(); return names.filter(n => n && !seen.has(n.toLowerCase()) && seen.add(n.toLowerCase()));
+}
+/** Pull "@Name" from task text into the owner field when the owner is still empty. */
+function resolveTaskOwner(text, owner){
+  let o = String(owner || "").trim();
+  let t = String(text || "").trim();
+  if (o) return { text: t, owner: o };
+  const m = t.match(/@([A-Za-zÄÖÜäöüß][\wÄÖÜäöüß.-]*(?:\s+[A-Za-zÄÖÜäöüß][\wÄÖÜäöüß.-]*)?)/);
+  if (!m) return { text: t, owner: "" };
+  const hint = m[1].trim();
+  const hit = ownerNames().find(n => n.toLowerCase() === hint.toLowerCase() || firstName(n).toLowerCase() === hint.toLowerCase() || n.toLowerCase().startsWith(hint.toLowerCase()));
+  o = hit || hint;
+  t = t.replace(m[0], "").replace(/\s{2,}/g, " ").trim();
+  return { text: t || String(text || "").trim(), owner: o };
 }
 function sanitizeTasks(t){
   if (!Array.isArray(t)) return [];
@@ -1273,8 +1307,9 @@ const byDue = (a, b) => (a.due || "9999").localeCompare(b.due || "9999");
 function taskLine(p, t, withProject){
   const done = t.status === TASK_DONE, late = taskOverdue(t), d = t.due ? daysFromToday(t.due) : null;
   const st = t.status === TASK_WORK || t.status === TASK_WAIT ? t.status : "";
+  const from = withProject && !isMineProject(p) ? projectOwnerLabel(p) : "";
   return `<div class="task ${done ? "done" : ""} ${late ? "late" : ""}"><input type="checkbox" data-task="${esc(t.id)}" data-id="${esc(p.id)}" ${done ? "checked" : ""} aria-label="Erledigt: ${esc(t.text)}">
-    <span class="task-t">${esc(t.text)}${withProject ? ` <button class="task-p" data-action="open" data-id="${esc(p.id)}" data-tab="tasks">${esc(p.code)}</button>` : ""}${t.note ? `<span class="task-note">${esc(t.note)}</span>` : ""}</span>
+    <span class="task-t">${esc(t.text)}${withProject ? ` <button class="task-p" data-action="open" data-id="${esc(p.id)}" data-tab="tasks">${esc(p.code)}</button>` : ""}${from ? ` <span class="task-st arbeit" title="Projekt von ${esc(from)}">von ${esc(firstName(from))}</span>` : ""}${t.note ? `<span class="task-note">${esc(t.note)}</span>` : ""}</span>
     ${st ? `<span class="task-st ${st}">${esc(TASK_STATUS[st])}</span>` : ""}
     ${withProject ? "" : `<span class="who-chip ${t.owner ? "" : "none"}" title="${esc(t.owner || "Nicht zugewiesen")}">${esc(firstName(t.owner) || "Offen")}</span>`}
     ${t.due ? `<span class="task-due" title="${esc(fmtDay(t.due))}">${late ? `${-d} T überfällig` : d === 0 ? "heute" : esc(fmtShort(t.due))}</span>` : ""}</div>`;
@@ -1332,18 +1367,20 @@ footer{color:var(--muted);font-size:12px;margin-top:20px}@media print{body{margi
 ${list.map(block).join("")}<footer>Erstellt mit dem CWS Projekt-Radar. Intern. Drucken oder als PDF speichern mit Strg+P.</footer></body></html>`;
 }
 
-/* ================== Storage: local in the browser ================== */
-/* All data stays on this computer (browser localStorage).
-   Backup and moving to another computer via "Back up" / "Import". */
+/* ================== Storage ================== */
+/* Live (Vercel): shared Blob database with per-user login.
+   Local Node server: one SQLite file on this computer (no login).
+   Opened as a file: this browser only. Backup / Import still moves a copy. */
+const DB_USER = "cws-ai-radar-user";
+const DB_KEY = "cws-ai-radar-key";
 const Store = {
+  rev: 0, timer: null, saving: false, dirty: false, poll: null,
   init(){
-    state.mode = "local";
     this.readLocal();
     state.loaded = true;
-    try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch {}
-    // Pick up changes from a second tab
-    window.addEventListener("storage", e => { if (e.key === LOCAL_KEY){ this.readLocal(); render(); } });
+    window.addEventListener("storage", e => { if (e.key === LOCAL_KEY && state.mode !== "db"){ this.readLocal(); render(); } });
     render();
+    this.connect();
   },
   readLocal(){
     try {
@@ -1351,22 +1388,145 @@ const Store = {
       if (raw){ state.projects = Array.isArray(raw.projects) ? raw.projects : []; state.requests = Array.isArray(raw.requests) ? raw.requests : []; if (raw.meta) state.meta = raw.meta; state.backupAt = raw.backupAt || null; }
     } catch { state.storageBlocked = true; }
   },
-  persistLocal(){
+  cache(){
     try { localStorage.setItem(LOCAL_KEY, JSON.stringify({ projects: state.projects, requests: state.requests, meta: state.meta, backupAt: state.backupAt || null })); state.storageBlocked = false; }
     catch { state.storageBlocked = true; toast("Speichern im Browser ist fehlgeschlagen. Bitte sofort auf „Sichern“ klicken."); }
   },
+  persistLocal(){
+    this.cache();
+    if (state.mode === "db" && !state.offerLocal && !state.needsKey) this.schedulePush();
+  },
+  useLocal(){ state.mode = "local"; state.needsKey = false; state.authRequired = false; state.account = null; render(); },
+  creds(){ return { user: localStorage.getItem(DB_USER) || "", key: localStorage.getItem(DB_KEY) || "" }; },
+  setCreds(userId, code){ localStorage.setItem(DB_USER, userId); localStorage.setItem(DB_KEY, code); },
+  clearCreds(){ localStorage.removeItem(DB_USER); localStorage.removeItem(DB_KEY); state.account = null; },
+  headers(){
+    const { user, key } = this.creds();
+    return { "content-type": "application/json", ...(user ? { "x-radar-user": user } : {}), ...(key ? { "x-radar-key": key } : {}) };
+  },
+  async connect(){
+    if (location.protocol === "file:"){ this.useLocal(); return; }
+    let health = null;
+    try { const r = await fetch("/api/health", { cache: "no-store" }); if (r.ok) health = await r.json(); } catch { /* no server */ }
+    if (!health || !health.storage){ this.useLocal(); return; }
+    state.authRequired = !!health.auth;
+    if (health.auth){
+      try {
+        const lr = await fetch("/api/login", { cache: "no-store" });
+        if (lr.ok){ const j = await lr.json(); state.users = j.users || []; }
+      } catch { /* ignore */ }
+      if (!this.creds().user || !this.creds().key){ state.mode = "local"; state.needsKey = true; render(); return; }
+      const ok = await this.login();
+      if (!ok){ state.mode = "local"; state.needsKey = true; render(); return; }
+    }
+    const remote = await this.pull();
+    if (remote === 401){ state.mode = "local"; state.needsKey = true; state.authRequired = true; render(); return; }
+    if (!remote){ this.useLocal(); return; }
+    const localCount = state.projects.length + state.requests.length;
+    const remoteEmpty = !(remote.projects || []).length && !(remote.requests || []).length;
+    if (remoteEmpty && localCount > 0 && !health.auth){
+      state.offerLocal = true; state.mode = "db"; state.needsKey = false; this.rev = remote.rev || 0; state.dbRev = this.rev;
+      this.startPoll(); render(); return;
+    }
+    this.apply(remote); state.mode = "db"; state.needsKey = false; state.offerLocal = false;
+    this.cache(); this.startPoll(); render();
+  },
+  async login(){
+    try {
+      const r = await fetch("/api/login", { method: "POST", headers: this.headers() });
+      if (!r.ok){ this.clearCreds(); return false; }
+      const j = await r.json();
+      state.account = j.user || null;
+      state.users = j.users || state.users || [];
+      if (state.account){
+        state.meta = Object.assign({}, state.meta, { me: { name: state.account.name, role: state.account.role || "" } });
+        state.me = { id: state.account.id, name: state.account.name, avatarUrl: "" };
+      }
+      return true;
+    } catch { return false; }
+  },
+  apply(doc){
+    state.projects = Array.isArray(doc.projects) ? doc.projects : [];
+    state.requests = Array.isArray(doc.requests) ? doc.requests : [];
+    if (doc.meta) state.meta = doc.meta;
+    if (Array.isArray(doc.users)) state.users = doc.users;
+    if (doc.user){
+      state.account = doc.user;
+      state.meta = Object.assign({}, state.meta, { me: { name: doc.user.name, role: doc.user.role || "" } });
+      state.me = { id: doc.user.id, name: doc.user.name, avatarUrl: "" };
+    }
+    this.rev = doc.rev || 0; state.dbRev = this.rev; state.dbUpdatedAt = doc.updatedAt || null;
+    if (doc.updatedAt) state.backupAt = doc.updatedAt;
+  },
+  async pull(){
+    try {
+      const r = await fetch("/api/state", { cache: "no-store", headers: this.headers() });
+      if (r.status === 401) return 401;
+      if (!r.ok) return null;
+      return await r.json();
+    } catch { return null; }
+  },
+  schedulePush(){ this.dirty = true; clearTimeout(this.timer); this.timer = setTimeout(() => this.push(), 400); },
+  merge(remote, local){
+    const pick = (a, b) => String(a.updatedAt || "") >= String(b.updatedAt || "") ? a : b;
+    const lists = (L, R) => { const m = new Map(); (R || []).forEach(x => { if (x && x.id) m.set(x.id, x); }); (L || []).forEach(x => { if (x && x.id) m.set(x.id, m.has(x.id) ? pick(x, m.get(x.id)) : x); }); return [...m.values()]; };
+    state.projects = lists(local.projects, remote.projects);
+    state.requests = lists(local.requests, remote.requests);
+    state.meta = local.meta || remote.meta;
+    if (Array.isArray(remote.users)) state.users = remote.users;
+    this.rev = remote.rev || 0; state.dbRev = this.rev;
+  },
+  async push(){
+    if (state.mode !== "db") return;
+    if (this.saving){ this.dirty = true; return; }
+    this.saving = true; this.dirty = false; state.syncing = true; renderChrome();
+    const payload = { rev: this.rev, projects: state.projects, requests: state.requests, meta: state.meta };
+    try {
+      const r = await fetch("/api/state", { method: "PUT", headers: this.headers(), body: JSON.stringify(payload) });
+      if (r.status === 409){
+        this.merge(await r.json(), payload); this.saving = false; state.syncing = false;
+        toast("Gleichzeitig gespeichert. Beide Stände sind zusammengeführt.");
+        this.schedulePush(); render(); return;
+      }
+      if (r.status === 401){ state.needsKey = true; state.mode = "local"; state.authRequired = true; toast("Zugangscode ungültig."); }
+      else if (!r.ok){ this.dirty = true; toast("Speichern in der Datenbank ist fehlgeschlagen. Der Stand bleibt in diesem Browser."); }
+      else {
+        const saved = await r.json();
+        this.apply(saved);
+        state.offerLocal = false; this.cache();
+      }
+    } catch { this.dirty = true; toast("Keine Verbindung zur Datenbank. Der Stand bleibt in diesem Browser."); }
+    this.saving = false; state.syncing = false;
+    if (this.dirty && state.mode === "db") this.schedulePush();
+    else renderChrome();
+  },
+  startPoll(){
+    clearInterval(this.poll);
+    this.poll = setInterval(() => this.refresh(), 8000);
+  },
+  async refresh(){
+    if (state.mode !== "db" || this.dirty || this.saving || state.offerLocal || state.needsKey || document.visibilityState === "hidden") return;
+    const remote = await this.pull();
+    if (!remote || remote === 401 || (remote.rev || 0) === this.rev) return;
+    this.apply(remote); this.cache(); render();
+  },
   async saveProject(p){
+    if (state.account && !p.ownerId) p.ownerId = state.account.id;
     const i = state.projects.findIndex(x => x.id === p.id);
     if (i >= 0) state.projects[i] = p; else state.projects.push(p);
     this.persistLocal();
   },
   async deleteProject(id){
-    state.projects = state.projects.filter(p => p.id !== id);
+    const p = state.projects.find(x => x.id === id);
+    if (p && state.account && p.ownerId && p.ownerId !== state.account.id){ toast("Nur der Eigentümer kann dieses Projekt löschen."); return; }
+    state.projects = state.projects.filter(x => x.id !== id);
     this.persistLocal();
   },
   async saveMeta(){ this.persistLocal(); },
   replaceAll(data){
-    state.projects = data.projects; state.requests = data.requests || []; state.meta = data.meta;
+    state.projects = (data.projects || []).map(p => state.account && !p.ownerId ? Object.assign(p, { ownerId: state.account.id }) : p);
+    state.requests = (data.requests || []).map(r => state.account && !r.ownerId ? Object.assign(r, { ownerId: state.account.id }) : r);
+    state.meta = data.meta;
     this.persistLocal();
   }
 };
@@ -1405,6 +1565,8 @@ function parseBackup(text){
     x.tasks = sanitizeTasks(p.tasks);
     x.decisions = sanitizeDecisions(p.decisions);
     x.meetings = sanitizeMeetings(p.meetings);
+    x.ownerId = ID_OK.test(String(p.ownerId || "")) ? String(p.ownerId) : (state.account ? state.account.id : "");
+    x.sharedWith = Array.isArray(p.sharedWith) ? p.sharedWith.filter(id => ID_OK.test(String(id))).map(String) : [];
     if (!PH_INDEX.hasOwnProperty(x.phase)) x.phase = "intake";
     if (!HEALTH[x.health]) x.health = "green";
     return x;
@@ -1509,26 +1671,56 @@ function renderChrome(){
   $("#count-team").textContent = tLate || ""; $("#count-team").hidden = !tLate; $("#count-team").title = tLate ? `${plural(tLate, "Aufgabe", "Aufgaben")} überfällig` : "";
   $("#dl-team").innerHTML = ownerNames().map(n => `<option value="${esc(n)}">`).join("");
   const sync = $("#sync");
-  sync.className = "sync " + (state.storageBlocked ? "warn" : "live");
+  const pill = $("#env-pill");
   const bdays = state.backupAt ? daysSince(state.backupAt) : null;
-  sync.innerHTML = `<i></i><span>${state.storageBlocked ? "Speichern blockiert" : `Lokal gespeichert · ${bdays === null ? "noch nie gesichert" : bdays === 0 ? "heute gesichert" : `vor ${plural(bdays,"Tag","Tagen")} gesichert`}`}</span>`;
-  sync.title = "Alle Daten bleiben in diesem Browser auf diesem Computer. Nichts wird an einen Server gesendet.";
-  $("#env-pill").className = "env-pill " + (state.storageBlocked ? "warn" : "");
+  if (state.mode === "db"){
+    sync.className = "sync " + (state.storageBlocked ? "warn" : "live");
+    const who = state.account ? ` · ${state.account.name}` : "";
+    sync.innerHTML = `<i></i><span>${state.storageBlocked ? "Speichern blockiert" : state.syncing ? "Speichert …" : `Live gespeichert${who}`}</span>`;
+    sync.title = state.account
+      ? "Angemeldet. Du siehst deine Projekte und Aufgaben, die dir zugewiesen sind."
+      : "Gemeinsame Datenbank. Jeder Browser hier sieht denselben Stand.";
+    pill.className = "env-pill"; pill.title = sync.title; pill.querySelector("span").textContent = "Live";
+  } else if (state.needsKey){
+    sync.className = "sync warn";
+    sync.innerHTML = `<i></i><span>Anmeldung nötig</span>`;
+    sync.title = "Mit deinem Zugangscode anmelden, dann siehst du dein Dashboard.";
+    pill.className = "env-pill warn"; pill.title = sync.title; pill.querySelector("span").textContent = "Login";
+  } else if (state.mode === "connecting"){
+    sync.className = "sync"; sync.innerHTML = `<i></i><span>Wird verbunden …</span>`; sync.title = "";
+    pill.className = "env-pill"; pill.title = ""; pill.querySelector("span").textContent = "…";
+  } else {
+    sync.className = "sync " + (state.storageBlocked ? "warn" : "live");
+    sync.innerHTML = `<i></i><span>${state.storageBlocked ? "Speichern blockiert" : `Lokal gespeichert · ${bdays === null ? "noch nie gesichert" : bdays === 0 ? "heute gesichert" : `vor ${plural(bdays,"Tag","Tagen")} gesichert`}`}</span>`;
+    sync.title = "Alle Daten bleiben in diesem Browser auf diesem Computer. Nichts wird an einen Server gesendet.";
+    pill.className = "env-pill " + (state.storageBlocked ? "warn" : ""); pill.title = sync.title; pill.querySelector("span").textContent = "Lokal";
+  }
   const me = myProfile();
   $("#me-chip").innerHTML = `<span class="avatar">${esc(initials(me.name))}</span><span class="me-txt"><b>${esc(me.name || "Profil einrichten")}</b><small>${esc(me.role || "Name und Rolle")}</small></span>`;
   $("#profile-slot").innerHTML = profileOpen ? `<form class="profile-pop" data-form="profile">
       <b>Dein Profil</b>
-      <label>Name<input id="pf-name" value="${esc(me.name)}" placeholder="Vor- und Nachname"></label>
+      ${state.account ? `<p class="muted" style="font-size:12.5px;margin:0">Angemeldet als <b>${esc(state.account.name)}</b>${state.account.role ? " · " + esc(state.account.role) : ""}. Name kommt aus dem Konto.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" data-action="profile">Schließen</button><button class="btn small" type="button" data-action="db-logout">Abmelden</button></div>`
+      : `<label>Name<input id="pf-name" value="${esc(me.name)}" placeholder="Vor- und Nachname"></label>
       <label>Role<input id="pf-role" value="${esc(me.role)}" placeholder="z. B. AI Teamlead"></label>
       <span class="muted" style="font-size:12.5px">Mit deinem Namen hebt „Heute“ Nachverfolgungen hervor, die dir gehören. Neue Projekte setzen dich als Projektleitung.</span>
-      <div style="display:flex;gap:8px"><button class="btn primary small" type="submit">Speichern</button><button class="btn small" type="button" data-action="profile">Abbrechen</button></div>
+      <div style="display:flex;gap:8px"><button class="btn primary small" type="submit">Speichern</button><button class="btn small" type="button" data-action="profile">Abbrechen</button></div>`}
     </form>` : "";
   const banners = [];
+  if (state.needsKey){
+    const opts = (state.users || []).map(u => `<option value="${esc(u.id)}">${esc(u.name)}${u.role ? " · " + esc(u.role) : ""}</option>`).join("");
+    const saved = Store.creds().user;
+    banners.push(`<div class="banner warn"><span><b>Anmelden.</b> Jeder hat ein eigenes Dashboard. Aufgaben mit @Name landen beim Empfänger unter Team &amp; Aufgaben.</span><span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="db-user" aria-label="Konto">${opts || `<option value="">Kein Konto eingerichtet</option>`}</select><input id="db-key" type="password" autocomplete="current-password" placeholder="Zugangscode"><button class="btn small primary" data-action="db-login">Anmelden</button></span></div>`);
+    setTimeout(() => { const s = $("#db-user"); if (s && saved) s.value = saved; }, 0);
+  }
+  if (state.offerLocal){
+    banners.push(`<div class="banner"><span><b>Dieser Browser hat schon Daten</b> (${plural(state.projects.length,"Projekt","Projekte")}, ${plural(state.requests.length,"Anfrage","Anfragen")}). Die Datenbank auf diesem Computer ist noch leer.</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small primary" data-action="db-upload">In die Datenbank übernehmen</button><button class="btn small" data-action="db-skip">Nicht übernehmen</button></span></div>`);
+  }
   if (pendingImport){
     banners.push(`<div class="banner warn"><span><b>Sicherung laden?</b> ${pendingImport.exportedAt ? "Stand " + esc(fmtStamp(pendingImport.exportedAt)) + ", " : ""}${plural(pendingImport.projects.length,"Projekt","Projekte")}. „Hinzufügen / aktualisieren“ behält deine ${plural(state.projects.length,"Projekt","Projekte")} und aktualisiert passende. „Alles ersetzen“ löscht den Rest.</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small primary" data-action="import-merge">Hinzufügen / aktualisieren</button><button class="btn small" data-action="import-confirm">Alles ersetzen</button><button class="btn small" data-action="import-cancel">Abbrechen</button></span></div>`);
   }
   const days = state.backupAt ? daysSince(state.backupAt) : null;
-  if (state.projects.some(p => !p.example) && (days === null || days >= BACKUP_REMIND_DAYS)){
+  if (state.mode !== "db" && state.projects.some(p => !p.example) && (days === null || days >= BACKUP_REMIND_DAYS)){
     banners.push(`<div class="banner warn"><span><b>${days === null ? "Noch keine Sicherung." : `Letzte Sicherung vor ${days} Tagen.`}</b> Deine Daten leben nur in diesem Browser. Wird der Browserverlauf gelöscht, sind sie weg.</span><button class="btn small primary" data-action="export">Jetzt sichern</button></div>`);
   }
   const ex = state.projects.filter(p => p.example).length;
@@ -1547,7 +1739,9 @@ function renderHeute(){
   document.querySelectorAll("#view-heute > .section").forEach(el => el.hidden = empty);
   if (empty){
     $("#heute-title").textContent = "Willkommen im AI Projekt-Radar";
-    $("#heute-sub").textContent = `${dateLabel} · Alle Daten bleiben auf diesem Computer. Nichts wird an einen Server gesendet.`;
+    $("#heute-sub").textContent = state.mode === "db"
+      ? `${dateLabel} · Gemeinsame Datenbank auf diesem Computer. Nichts verlässt den Rechner.`
+      : `${dateLabel} · Alle Daten bleiben auf diesem Computer. Nichts wird an einen Server gesendet.`;
     $("#welcome").innerHTML = `<div class="welcome">
       <h2>So startest du</h2>
       <ol>
@@ -2001,7 +2195,7 @@ function nextMeeting(){
 function blankRequest(){
   return { id: uid(), code: nextRqCode(), status:"neu", type:"unklar", title:"", department:"", site:"", requester:"", requesterEmail:"", problem:"", idea:"", goal:"", systems:"",
     volume:"", minutes:"", urgency:"mittel", deadline:"", dataAvailable:"unklar", personalData:"unklar", affects:"unklar", decides:"unklar", sensitiveUse:"unklar", complexity:"", notes:"", projectId:"", source:"manuell",
-    meetingAt:"", createdAt: nowISO(), updatedAt: nowISO() };
+    ownerId: state.account ? state.account.id : "", meetingAt:"", createdAt: nowISO(), updatedAt: nowISO() };
 }
 function nextRqCode(){
   const nums = state.requests.map(r => parseInt(String(r.code||"").replace(/\D/g,""),10)).filter(n => !isNaN(n));
@@ -2287,8 +2481,9 @@ function openDrawer(id, opts){
         </section>
         ${drawer.draft ? "" : `<section class="d-sec" data-pane="overview">
           <h2>Teilen</h2>
-          <p style="margin:0;color:var(--ink-2);font-size:14px">Schick den aktuellen Stand an Stakeholder, Projektbeteiligte oder Leads. Nichts wird hochgeladen; du entscheidest, wer ihn bekommt.</p>
+          <p style="margin:0;color:var(--ink-2);font-size:14px">Schick den aktuellen Stand an Stakeholder, Projektbeteiligte oder Leads. Aufgaben mit @Name landen beim Empfänger unter Team &amp; Aufgaben.</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="share-copy" data-id="${esc(cur.id)}">Status für Teams / E-Mail kopieren</button><button class="btn small" data-action="share-html" data-id="${esc(cur.id)}">Status-Einseiter laden</button><button class="btn small" data-action="acc-xlsx" data-id="${esc(cur.id)}">${ico("fileText")}Checkliste (Excel)</button></div>
+          ${state.account && state.users.length > 1 && isMineProject(cur) ? `<div style="margin-top:12px"><p class="muted" style="font-size:13px;margin:0 0 8px">Im Radar freigeben – die Person sieht das Projekt und kann mitarbeiten:</p><div style="display:flex;gap:6px;flex-wrap:wrap">${state.users.filter(u => u.id !== state.account.id).map(u => { const on = (cur.sharedWith || []).includes(u.id); return `<button type="button" class="btn ${on ? "primary" : ""} small" data-action="share-user" data-uid="${esc(u.id)}">${on ? "✓ " : ""}${esc(u.name)}</button>`; }).join("")}</div></div>` : (!isMineProject(cur) && projectOwnerLabel(cur) ? `<p class="muted" style="font-size:13px;margin:8px 0 0">Freigegeben bzw. Aufgabe von <b>${esc(projectOwnerLabel(cur))}</b>.</p>` : "")}
         </section>`}
         ${drawer.draft ? "" : `<section class="d-sec" data-pane="overview" id="d-dec-sec"></section>`}
         <section class="d-sec" data-pane="overview" id="d-update-sec">
@@ -2523,13 +2718,14 @@ function renderTasksPane(p){
     <td><input type="date" data-tkfield="due" data-tid="${esc(t.id)}" value="${esc(t.due)}" aria-label="Fälligkeit"></td>
     <td><button class="btn ghost small" data-action="tk-del" data-tid="${esc(t.id)}">Löschen</button></td></tr>`;
   el.innerHTML = `<div class="section-head" style="margin:0"><h2>Aufgaben</h2>${open.length ? `<button class="btn small" data-action="tk-copy">Offene Aufgaben kopieren</button>` : ""}</div>
-    <div class="tk-add"><input id="tk-new-text" placeholder="Was ist zu tun?" aria-label="Neue Aufgabe"><input id="tk-new-owner" list="dl-team" placeholder="Wer?" aria-label="Zuweisen an"><input type="date" id="tk-new-due" aria-label="Fälligkeit"><button class="btn primary small" data-action="tk-add">Aufgabe hinzufügen</button></div>
+    <div class="tk-add"><input id="tk-new-text" placeholder="Was ist zu tun? z. B. @Ricardo API klären" aria-label="Neue Aufgabe"><input id="tk-new-owner" list="dl-team" placeholder="Wer? oder @ im Text" aria-label="Zuweisen an"><input type="date" id="tk-new-due" aria-label="Fälligkeit"><button class="btn primary small" data-action="tk-add">Aufgabe hinzufügen</button></div>
     ${open.length ? `<div class="table-scroll"><table class="tt tk-table" style="min-width:760px"><thead><tr><th></th><th>Aufgabe</th><th>Owner</th><th>Status</th><th>Fällig</th><th></th></tr></thead><tbody>${open.map(row).join("")}</tbody></table></div>` : `<div class="muted" style="font-size:14px">Keine offenen Aufgaben.</div>`}
     ${done.length ? `<details><summary class="muted" style="font-size:13px;cursor:pointer">${plural(done.length, "erledigte Aufgabe", "erledigte Aufgaben")}</summary><div style="display:grid;gap:5px;margin-top:8px">${done.map(t => taskLine(p, t)).join("")}</div></details>` : ""}
     <div class="muted" style="font-size:12.5px">Weise jemanden aus Team &amp; Aufgaben zu und setze eine Frist. In Arbeit und Wartet zeigen den Stand. Die Statusnotiz ist eine Zeile, kein Chat. Das Gespräch bleibt in Teams.</div>`;
 }
 async function addTask(id, text, owner, due){
-  text = String(text || "").trim(); owner = String(owner || "").trim();
+  const resolved = resolveTaskOwner(text, owner);
+  text = resolved.text; owner = resolved.owner;
   if (!text) return false;
   if (!state.projects.some(x => x.id === id)) return false;
   const d = /^\d{4}-\d{2}-\d{2}$/.test(due || "") ? due : "";
@@ -4155,6 +4351,7 @@ document.addEventListener("change", async e => {
   if (t.id === "acc-file"){ const f = t.files && t.files[0]; if (f) await accImport(f); return; }
 });
 document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "acc-add"){ e.preventDefault(); $('[data-action="acc-add"]').click(); } }, true);
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "db-key"){ e.preventDefault(); const b = document.querySelector('[data-action="db-login"]'); if (b) b.click(); } });
 
 /* ================== Events ================== */
 document.addEventListener("click", async e => {
@@ -4165,6 +4362,39 @@ document.addEventListener("click", async e => {
   if (a === "menu"){ menuOpen = !menuOpen; renderChrome(); return; }
   if (a === "collapse"){ ui.collapsed = !ui.collapsed; saveUi(); renderChrome(); return; }
   if (a === "profile"){ profileOpen = !profileOpen; renderChrome(); if (profileOpen) $("#pf-name").focus(); return; }
+  if (a === "db-login"){
+    const userId = ($("#db-user") && $("#db-user").value || "").trim();
+    const v = ($("#db-key") && $("#db-key").value || "").trim();
+    if (!userId){ toast("Bitte ein Konto wählen."); return; }
+    if (!v){ toast("Bitte den Zugangscode eingeben."); return; }
+    Store.setCreds(userId, v);
+    await Store.connect();
+    toast(state.needsKey ? "Zugangscode passt nicht." : `Angemeldet als ${state.account ? state.account.name : "Live"}`);
+    return;
+  }
+  if (a === "db-logout"){
+    Store.clearCreds(); state.needsKey = !!state.authRequired; state.mode = state.authRequired ? "local" : state.mode;
+    if (state.authRequired){ state.projects = []; state.requests = []; }
+    toast("Abgemeldet."); render();
+    if (state.authRequired) await Store.connect();
+    return;
+  }
+  if (a === "db-upload"){ state.offerLocal = false; Store.persistLocal(); toast("Projekte werden übernommen …"); return; }
+  if (a === "db-skip"){
+    try { localStorage.setItem("cws-ai-radar-held-v1", localStorage.getItem(LOCAL_KEY) || ""); } catch {}
+    state.offerLocal = false; state.projects = []; state.requests = []; Store.cache();
+    toast("Die Datenbank bleibt leer. Die Projekte dieses Browsers wurden nicht übernommen.");
+    render(); return;
+  }
+  if (a === "share-user"){
+    const id = t.dataset.uid; const p = currentDrawerProject(); if (!p || !id || !state.account || p.ownerId !== state.account.id) return;
+    await drawerMutate(x => {
+      const list = Array.isArray(x.sharedWith) ? x.sharedWith.slice() : [];
+      const i = list.indexOf(id); if (i >= 0) list.splice(i, 1); else list.push(id);
+      x.sharedWith = list;
+    }, () => "Freigabe aktualisiert");
+    renderPanes(currentDrawerProject()); renderDrawerDynamic(); return;
+  }
   if (a === "export"){ exportBackup(); return; }
   if (a === "import"){ const f = $("#import-file"); f.value = ""; f.click(); return; }
   if (a === "import-confirm"){ applyImport("replace"); return; }
