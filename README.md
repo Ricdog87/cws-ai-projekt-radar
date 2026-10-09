@@ -144,15 +144,15 @@ Built on the pattern of the "Sales Along the Route | Nordwest" checklist:
 
 ## Run locally
 
-While real CWS data is entered, the radar runs **locally only**. No server, no cloud, and the page makes no network request at all (fonts are embedded too).
+While real CWS data is entered, the radar runs **on this computer only**. Nothing is sent to the internet.
 
 1. Clone the repository or download it as ZIP.
 2. **Start via the local link (recommended):** double-click `Start-Radar.cmd`. The radar opens at **http://localhost:8765**.
    - In Cursor: `Ctrl+Shift+B` (task "Start radar"), or in the terminal `.\Start-Radar.cmd`.
-   - The mini server (`start.ps1`) only needs PowerShell. It is only reachable on this computer and sends nothing to the internet. Stop with `Ctrl+C`.
+   - The server (`server/server.mjs`, started by `start.ps1`) keeps one shared database in `data/radar.sqlite`. Every browser on this computer sees the same projects. The file is not committed. Stop with `Ctrl+C`.
    - View inside Cursor: `Ctrl+Shift+P` → "Simple Browser: Show" → `http://localhost:8765`.
 3. **Without a server:** open `app/index.html` by double-clicking it in Edge or Chrome.
-4. Add projects. Everything is saved automatically in this computer's browser.
+4. Add projects. With the database server they are saved in `data/radar.sqlite` and show up in every browser on this computer. Opening `app/index.html` as a file still keeps data in that browser only.
 
 **Important:** the browser keeps data separately per address. `http://localhost:8765` and the double-clicked file see **different** data. Pick one. When switching, "Back up" once and "Import" on the new one. Port 8765 is fixed so the address, and with it the data, stays the same.
 
@@ -170,7 +170,7 @@ Data from earlier German versions of the radar imports as is; stored values stay
 
 - `app/index.html`: the whole app in one file, no build step, no external dependencies.
 - `app/request.html`: standalone request form for business units, creates `{ app:"cws-ai-anfrage", version, request }`.
-- `start.ps1` + `Start-Radar.cmd`: local mini web server on `http://localhost:8765` (PowerShell `HttpListener`, serves only the `app` folder). `.vscode/tasks.json` starts it in Cursor with `Ctrl+Shift+B`.
+- `server/server.mjs`: local server and SQLite database (`data/radar.sqlite`, structure in `db/schema.sql`). `start.ps1` + `Start-Radar.cmd` start it on `http://localhost:8765`. `.vscode/tasks.json` starts it in Cursor with `Ctrl+Shift+B`. Without Node.js, `start.ps1` falls back to a static server and the browser keeps the data itself.
 - CI matched with cws.com/workwear:
   - CWS red `#EA0046`, yellow `#F9E344`, black text on white.
   - Original "CWS | WORKWEAR" logo (embedded PNG) at the top of the sidebar, main actions as red buttons, active navigation in light CWS pink.

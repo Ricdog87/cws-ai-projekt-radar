@@ -1,0 +1,9 @@
+{
+  "name": "cws-ai-projekt-radar",
+  "private": true,
+  "description": "CWS AI Projekt-Radar – multi-user live storage on Vercel",
+  "type": "module",
+  "dependencies": {
+    "@vercel/blob": "^2.3.3"
+  }
+}

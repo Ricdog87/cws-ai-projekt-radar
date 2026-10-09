@@ -10,6 +10,11 @@ AI-Anfrage_*.json
 *.xlsm
 backups/
 sicherungen/
+data/radar.sqlite
+data/radar.sqlite-wal
+data/radar.sqlite-shm
+node_modules/
+.vercel/
 # Meeting transcripts contain personal data: never commit them (the fictional sample is the exception)
 *.vtt
 *.docx

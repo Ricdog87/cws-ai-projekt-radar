@@ -8,6 +8,16 @@ $port   = 8765
 $root   = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot 'app'))
 $prefix = "http://localhost:$port/"
 
+# Prefer the database server (Node). Every browser on this computer then shares one register.
+if (Get-Command node -ErrorAction SilentlyContinue) {
+    Write-Host ""
+    Write-Host "  Starting the shared database on this computer ..." -ForegroundColor Green
+    Start-Process $prefix
+    & node (Join-Path $PSScriptRoot 'server\server.mjs')
+    exit $LASTEXITCODE
+}
+Write-Host "Node.js was not found. Starting without the shared database (data stays in this browser)." -ForegroundColor Yellow
+
 if ($ExecutionContext.SessionState.LanguageMode -ne 'FullLanguage') {
     Write-Host "PowerShell runs in constrained language mode here (company policy). The mini server cannot start this way." -ForegroundColor Red
     exit 2
