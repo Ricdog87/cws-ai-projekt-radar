@@ -1,237 +1,129 @@
-# CWS AI Project Radar
+# CWS AI Projekt-Radar
 
-Daily steering dashboard for all AI projects at CWS, end to end from intake to closure, plus the intake point for new use cases from the business units.
+Das tägliche Steuerungs-Dashboard für alle KI-Projekte bei CWS, von der Idee bis zum Abschluss, und der Eingang für neue Use Cases aus den Fachbereichen.
 
 **Live:** https://cws-ai-projekt-radar.vercel.app
 
-Everyone has their own dashboard (login with an access code). Tasks with `@Name` show up for the recipient under "Team & Aufgaben". Project data lives in the private Vercel Blob store, never in this repository. Locally the radar also runs via `Start-Radar.cmd`. The dashboard UI is German. See "Web link (Vercel)" and "Run locally".
+Jede Person hat ein eigenes Dashboard (Anmeldung mit Zugangscode). Projekte und Aufgaben liegen in einer Datenbank, nicht in diesem Repository. Gespeichert wird automatisch, gesichert wird jeden Tag von selbst. Die Oberfläche ist komplett auf Deutsch, das Anfrageformular lässt sich für internationale Fachbereiche auf Englisch umschalten.
 
-## What's inside
+## Was drin ist
 
-Designed like the **AI Governance Portal** (AI Cockpit) so both tools feel the same. Always light, even when Windows runs in dark mode.
+- **Projektübersicht:** alle KI-Projekte auf einer Zeitachse über die 8 Phasen bis zum Go-live, mit Fortschritt, Verzug und Prognose. „Braucht Aufmerksamkeit“ zeigt das Dringendste zuerst, mit Grund. Live-Karten: Checkliste abhaken, Phase wechseln, Status setzen, nächsten Schritt pflegen, Aufgaben anlegen, Update erfassen, ohne das Projekt zu öffnen.
+- **Heute:** Kennzahlen, **Nächste Schritte** (vom Radar erkannt, ein Klick übernimmt), Pipeline, „Zuerst erledigen“, Nachhaken bei anderen, „Diese Woche“ als Wochenrückblick, die nächsten 14 Tage.
+- **Team & Aufgaben:** eine Karte pro Person mit offenen Aufgaben über alle Projekte. Teammitglieder mit Zuständigkeiten („Salesforce, CRM“, „Datenschutz“), damit das Radar die richtige Person vorschlägt. Platzhalter für neue Stellen.
+- **Projektanfragen:** Use Cases der Fachbereiche mit gebuchtem Bewertungstermin, Potenzial in Stunden pro Monat, Priorisierungsmatrix, mit einem Klick zum Projekt.
+- **Portfolio:** Kacheln nach Phase oder Tabelle.
+- **Verwaltung** (nur Admins): Zugänge, Anfrageformular, Sicherungen, Aktivitätsprotokoll.
 
-- **Project overview (start page):**
-  - All AI projects in parallel on one timeline across the 8 phases up to the go-live.
-  - Current phase with progress, "Today" line, delay hatched, go-live and a forecast go-live when late.
-  - A star marks what you are working on right now ("in progress"); those projects sit at the top.
-  - Range: all, 12, 6 or 3 months.
-  - **Needs attention:** the most urgent projects on top, with the reason (overdue, blocker, delay, no next step, no update for 10 days) and the next step.
-  - **Live status cards:** tick off the checklist of the current phase, move to the next phase, set the status, edit next step and due date, and log a quick update, without opening the project. Everything saves right away and lands in the project history.
-  - **Tasks on the card:** add a task with owner and due date right on the card and tick it off there.
-  - **Status report:** one HTML file with all active projects (status, phase, go-live, next step, blockers, open tasks) to send by e-mail or Teams, or print as PDF.
-  - Built for screen sharing: status, progress and next steps at a glance.
-- **Team & tasks:**
-  - Your AI team and project members with role and country.
-  - One card per person with their open tasks across all projects, overdue first. Each task has an owner, a deadline, a stand (Not started, In progress, Waiting, Done) and one status note. Tasks without an owner sit on top.
-  - "Copy list for Teams / e-mail" sends a person their task list. The note is the project stand; the conversation stays in Teams.
-  - Overdue tasks show in the navigation and move the project up in "Needs attention".
-- **Share a project:** in the project under "Overview → Share": copy the status as text for Teams or e-mail, or download a status one-pager (HTML, printable as PDF).
-- **Today:** daily focus with KPIs, pipeline, "Do first", open follow-ups and the next 14 days, including task deadlines and booked assessment meetings.
-- **Project requests:**
-  - Use cases from business units for workflows, automation and AI agents.
-  - Every request comes with a booked assessment meeting.
-  - Potential in hours per month (cases × minutes), priority from potential, urgency, effort and data availability.
-  - Prioritisation matrix (quick wins, strategic, fill-ins, not now).
-  - Turn into a project with one click.
-- **Portfolio:** board by phase or table with status and readiness pills.
-- **Header:** path "Project Radar / …", status "Live" (connected) or "Lokal", "+ Project" and your profile (name, role).
+## Weniger Verwaltung: Dokumente rein, Ergebnisse raus
 
-## Less admin: documents in, updates out
+**1. Dokument einlesen** (oben rechts, in der Seitenleiste oder per Drag & Drop)
 
-The radar is built so you type as little as possible. Three ways to keep projects current:
+- Teams-Transkript (`.vtt`, `.docx`), Teams-Zusammenfassung, Copilot-Antwort, Notizen, **PDF, PowerPoint, Word, E-Mail** (`.msg`, `.eml`), auch mehrere Dateien auf einmal.
+- Das Radar erkennt das Projekt (Kürzel, Titelwörter, Teilnehmende) oder schlägt ein neues vor.
+- Es findet Aufgaben mit Verantwortlichen und Termin („Ich kläre bis Freitag …“, „Kannst du bitte bis Ende der Woche …“), Erledigtes, Entscheidungen, offene Entscheidungen, Blocker, Risiken, Phasenwechsel, Go-live-Termine, Status und den nächsten Schritt.
+- Alles läuft durch eine Prüfung: falsche Punkte abwählen, Text und Termine anpassen, mit einem Klick übernehmen.
+- **Datenschutz:** Dokumente werden nur im Browser ausgewertet, nie hochgeladen und nie gespeichert. Ins Projekt kommt nur, was du bestätigst.
+- Optional genauer mit Microsoft Copilot: Prompt kopieren, Antwort einfügen.
 
-**1. Read in documents** ("Dokument einlesen": top bar, sidebar, "Heute", or in a project next to "Updates & Verlauf")
+**2. Schnell erfassen** (`Strg+K`): eine Zeile, das Radar macht den Rest. Beispiele: `AI-003 Abnahme erledigt`, `nächster Schritt: Go-live vorbereiten bis 15.10.`, `Jonas klärt bis Freitag den API-Zugang`, `Entscheidung: …`, `Blocker: …`, `Status gelb`, `Go-live 30.11.`.
 
-- Drop a Teams transcript (`.vtt` or `.docx` from "Download transcript"), a `.txt` file, or paste text: the AI notes and follow-up tasks from the Teams meeting recap, a Copilot answer, or your own notes. Drag and drop onto the page works too.
-- The radar finds the project (project code, title words, participants in the project team) or suggests a new project with title, business unit, description and goal taken from the conversation.
-- It suggests, each with the quote and speaker it comes from:
-  - **Tasks** with owner and due date ("Ich kläre bis Freitag …", "Kannst du bitte bis Ende der Woche …", "Jonas macht …"). Relative dates like "bis Freitag", "nächste Woche", "KW 43", "Ende Oktober" are resolved from the meeting date.
-  - **Done** items that match open tasks or the next step.
-  - **Decisions** and **open decisions**, **blockers and risks**, a solved blocker.
-  - **Phase change** ("Abnahme ist durch" → Go-live), **new go-live date**, **status** (blocker or escalation in the meeting), **new participants** for the project team.
-  - **Next step:** the most urgent new task, when the current one is done, overdue or empty.
-  - **Key points** as meeting minutes in the project history.
-- You check everything in one review, untick what is wrong, edit text, owner and dates, and apply with one click.
-- **Privacy:** the transcript is analysed only in this browser, never uploaded and never stored. Only the points you confirm end up in the project (meeting title, date, participants, key points, tasks, decisions).
-- **More accuracy, optional:** "Genauer mit Copilot" copies a prompt for Microsoft Copilot (best in the Teams meeting chat, where Copilot knows the transcript). Paste Copilot's JSON answer back and the review fills with Copilot's result. A Copilot answer can also be pasted straight into "Meeting einlesen".
-- Try it: `data/Beispiel-Meeting Rechnungseingang-20261005_100000.vtt` with the sample projects loaded.
+**3. Das Radar denkt mit: nächste Schritte von selbst**
 
-Supported, all read locally in the browser without a library:
+Für jedes aktive Projekt prüft das Radar, was als Nächstes dran ist, in der Reihenfolge eines erfahrenen Projektleiters:
 
-| Format | What the radar takes from it |
-|---|---|
-| Teams transcript `.vtt` / `.docx` | Speakers, timestamps, who committed to what |
-| Teams recap, Copilot answer, notes (paste or `.txt`) | Headings like "Folgeaufgaben", "Entscheidungen", "Risiken" with their bullets |
-| PDF (exported from Word, PowerPoint, browser, reports) | Text, headings and lists; scanned image-only PDFs have no text |
-| PowerPoint `.pptx` | Slide titles, bullets, tables and speaker notes; first slide gives title and date |
-| Word `.docx` | Headings and list items |
-| E-mail `.msg` (Outlook, drag the mail to the desktop first) / `.eml` | Subject, date, sender and recipients; quoted history and signature are cut. "Kannst du bitte …" goes to the single recipient, "Ich kümmere mich …" to the sender |
+1. Überfällige Aufgaben (bei anderen: „Bei Jonas nachhaken: …“)
+2. Offene Blocker
+3. Go-live überschritten oder in weniger als 14 Tagen bei offenem Test
+4. Kritische Lücken im Readiness-Check
+5. Fehlende Zugänge und Lizenzen
+6. Offene Entscheidungen
+7. Der nächste offene Punkt der Phasen-Checkliste, oder der Phasenwechsel, wenn alles erledigt ist
+8. AI-Inventory-Eintrag nach dem Go-live, Stillstand von mehr als 10 Tagen, fehlender Go-live-Termin
 
-- Several files at once: they are reviewed one after another ("danach noch 2 Dateien", "Überspringen").
-- Each document is listed in the project under "Entscheidungen & Meetings" with its type.
-- Lines like "Entscheidung: …", "Aufgabe: …", "Risiko: …" are recognised anywhere.
+Jeder Vorschlag kommt mit Grund, verantwortlicher Person (aus den Zuständigkeiten im Team) und Termin (in Arbeitstagen). „Übernehmen“ setzt den nächsten Schritt und legt die Aufgabe an, damit sie in Team & Aufgaben und beim Nachhaken auftaucht. „Alle übernehmen“ erledigt das für alle Projekte auf einmal.
 
-**2. Quick capture** (`Strg+K` or "Schnell erfassen" in the top bar)
+Ist ein nächster Schritt erledigt (Aufgabe abgehakt oder Checklisten-Punkt erledigt), rückt der nächste **automatisch** nach: zuerst die nächste offene Aufgabe, sonst der nächste erkannte Schritt. Er ist dann mit „automatisch erkannt“ markiert.
 
-One line, the radar works out the rest and shows a preview before saving:
+Dazu: Statusvorschlag aus den Fakten, Agenda für das nächste Meeting, Entscheidungslog, Teams-Texte zum Delegieren und Erinnern.
 
-- `AI-003 Abnahme erledigt` ticks off the matching task.
-- `nächster Schritt: Go-live vorbereiten bis 15.10.` sets the next step with due date.
-- `Jonas klärt bis Freitag den API-Zugang` or `Aufgabe: … @Jonas` creates a task with owner and due date.
-- `Entscheidung: …`, `Blocker: …`, `Risiko: …`, `Status gelb`, `Go-live 30.11.`, `Phase Test`.
-- Several points separated by `;`. Text without a keyword becomes an update in the history. The project comes from the code, the title words, or the project you have open.
+## Verwaltung (für Admins)
 
-**3. The radar thinks along**
+Alles, was früher in den Vercel-Einstellungen oder in Dateien gepflegt werden musste, liegt jetzt in der App unter **Verwaltung**:
 
-- **Status suggestion** from the facts (overdue next step or tasks, blocker, delay, go-live passed). Shown in the project with one click to accept; "Needs attention" flags projects whose status looks better than it is.
-- **Next step moves on by itself:** when you tick off the task that is the next step, the next open task by due date takes its place. Without a next step the radar suggests one from the open tasks.
-- **Agenda for the next meeting:** one click copies an agenda (status, done since the last meeting, open and overdue tasks, blockers, decisions needed, critical readiness questions) for the Teams invite.
-- **Decision log** per project ("Entscheidungen & Meetings"), filled from meetings, quick capture or by hand, with all read-in meetings and their key points.
+- **Zugänge:** Person anlegen (Name, Rolle, Admin ja/nein). Der Zugangscode wird einmal angezeigt, „Einladung für Teams kopieren“ erzeugt die fertige Nachricht. „Neuer Code“ sperrt den alten sofort auf allen Geräten. „Sperren“ und „Löschen“; beim Löschen gehen Projekte und Anfragen an dich über. Mindestens ein Admin bleibt immer.
+- **Anfrageformular:** Link zum Teilen, Ansprechpartner, E-Mail, Link zur Terminbuchung (z. B. Microsoft Bookings), Termindauer, wer die Anfragen bekommt, Formular offen oder zu.
+- **Sicherungen:** jeden Tag automatisch der Stand vor der ersten Änderung, 30 Tage lang. Herunterladen (als Importdatei) oder mit einem Klick wiederherstellen; der aktuelle Stand wird vorher selbst gesichert. Gesamtsicherung aller Personen als eine Datei.
+- **Aktivität:** wer wann was geändert hat (Projekt angelegt, Phase, Status, nächster Schritt, erledigte Aufgaben, neue Anfragen).
 
-## Smart delegation
+## Projektanfragen der Fachbereiche
 
-In "Team & Aufgaben" every person can carry:
+1. Link zum Formular teilen (Verwaltung → Anfrageformular → „Link kopieren“), z. B. in Teams oder im Intranet.
+2. Der Fachbereich beschreibt den Use Case in eigenen Worten, schätzt Fälle und Minuten pro Fall und beantwortet einfache Fragen zu Daten und Nutzung (Signal für Datenschutz, Betriebsrat und EU AI Act, keine rechtliche Einstufung).
+3. **Bewertungstermin ist Pflicht:** gesendet wird erst mit gebuchtem Termin in der Zukunft.
+4. „Anfrage senden“ legt die Anfrage direkt unter **Projektanfragen** ab, mit Nummer (REQ-…). Ohne Online-Speicher speichert das Formular eine Datei, die über „Importieren“ geladen wird.
+5. Status: Neu → In Prüfung → Angenommen, Zurückgestellt oder Abgelehnt. „Zum Projekt machen“ legt das Projekt in Phase Aufnahme an.
 
-- **Zuständig für:** keywords such as `Salesforce, CRM`, `Datenschutz`, `n8n, Automatisierung`. Systems from the access catalog are recognised with their synonyms.
-- **Art:** AI team or contact in another department.
-- **Start ab:** for new hires. "+ Platzhalter für neue Stelle" creates e.g. "AI Automation Expert (neu)" starting 1 January; overwrite the name later and all tasks follow.
+Schutz gegen Spam: Pflichtfelder, verstecktes Lockfeld für Bots, höchstens 5 Anfragen pro Stunde und Absender, 40 pro Tag.
 
-The radar then suggests the right person, marked "Vorschlag", for tasks from documents and quick capture without an owner, for unassigned tasks in a project ("→ Name") and as owner of access checklist rows (e.g. Salesforce rows go to the Salesforce owner). "Delegieren" on a task copies a ready Teams message with task, due date, project and goal.
+## Projektphasen
 
-Names are typed in by you and live only in your data (your login's storage and your backups), never in the code or in the repository.
+Aufnahme & Idee → **Discovery & Readiness** → Konzept & Freigabe → Umsetzung → Test & Abnahme → Go-live & Rollout → Hypercare → Abgeschlossen
 
-**Heute** adds two blocks:
+Jede Phase hat eine Checkliste (Readiness-Check, Datenschutz, Betriebsrat, AI-Act-Risikoklasse, AI-Inventory-Eintrag …). Ohne eigene Termine verteilt das Radar die Phasen zwischen Start und Go-live, danach 6 Wochen Hypercare und 2 Wochen Abschluss. Liegt heute hinter dem geplanten Ende der aktuellen Phase, zeigt es Verzug und eine Go-live-Prognose.
 
-- **Nachhaken:** tasks of other people that are overdue, due within two days or on "Wartet", grouped by person, with "Erinnerung kopieren".
-- **Diese Woche:** what changed per project in the last 7 days (new, done, new tasks, decisions, documents, phase and status), with "Wochenrückblick kopieren" for your lead.
+**Readiness-Check** (29 Fragen in 9 Bereichen, Kernfragen ★, kritische Fragen): Bereit ab 80 % ohne kritische Lücke, Nicht bereit unter 50 % oder mit kritischer Lücke, dazwischen Bedingtes Go. Excel-Checklisten (deutsche oder englische Spalten) lassen sich importieren.
 
-## Interfaces & access checklist (always Excel)
+**Schnittstellen & Zugänge als Excel:** pro Projekt eine maßgeschneiderte Checkliste (SAP, Salesforce, SharePoint, Azure OpenAI, n8n, Power Platform …) mit API, technischem Nutzer, Lizenz, Testumgebung und Freigabe, Termin aus dem Phasenplan. Mit der IT ausfüllen und wieder einlesen.
 
-Every project can download "Checkliste (Excel)": on the live-status card, on the portfolio board and in the project table, under "Teilen", and in the tab "Tools & Zugriff". The file is built from that project's own profile, tasks, decisions, meetings and linked request. The download does not write anything back into the project. "Vor dem Speichern prüfen" still lets you untick rows and save them into the project first.
+## Backend und Daten
 
-- **Tailored to the project:** the radar reads the project profile, tasks, decisions, read-in meetings, the linked project request and readiness answers. It recognises systems such as SAP, ERP, Salesforce/CRM, shared mailboxes (Exchange/Outlook), SharePoint, Teams bots, Azure OpenAI, Copilot Studio, Power Platform, n8n, Power BI, databases, SFTP/CSV, ticket systems, HR systems, DATEV, OCR, D&B, routing services, telephony and EDI, plus unknown systems named like "Zugriff auf Advantext" or "XY-API".
-- **Per system the concrete checks:** API/interface, technical user or access, licence, test environment and approval, each with owner role and the phase it is needed in. Basics for every AI project are added (Entra ID app registration, Key Vault, test/production, IT security, data protection, AI Inventory, logging; works council when employee or applicant data is involved).
-- **Due dates from the schedule:** an item is due when the phase that needs it starts (at least one week from today).
-- **Download first:** "Excel herunterladen" writes the tailored workbook immediately. Untouched template rows are left out of the file. To keep the rows in the radar, use "Vor dem Speichern prüfen", untick what is not needed, add systems by hand, then "übernehmen & Excel laden".
-- **The Excel file** (`<code>_Schnittstellen-Zugaenge_<date>.xlsx`): sheet "Übersicht" with project data and live counts (available, missing, unclear, overdue, ready %, by type), sheet "Checkliste" with filter, frozen header, dropdowns for "Vorhanden?" and "Art", colours by status and red for overdue, plus the source each item was detected in.
-- **Round trip:** fill the list with IT, then "Bearbeitete Excel einlesen" in the project. Rows are matched by a hidden ID column; new rows are added.
-- **Meetings:** systems named in a meeting show up in the meeting review under "Systeme & Zugänge" and go straight into the checklist.
-- Open access items with a due date in the past show in "Needs attention" and in the meeting agenda.
-
-## Project requests from business units
-
-1. Share **`request.html`** with the business units (Teams, e-mail or SharePoint). It opens in any browser, no installation, no login.
-2. They describe their use case in their own words: type (workflow, automation, AI agent, not sure yet), current situation, their idea for a solution, expected outcome, cases per month, minutes per case, systems, urgency, data, who it concerns, whether it only suggests or decides, and whether it touches hiring, performance, credit or monitoring. Those answers are a signal for the assessment meeting, not an EU AI Act classification. The BPM & AI team does that check, and an AI system is registered in the AI Inventory before go-live.
-3. **They must book an assessment meeting** with you (30 min). The form only saves once a future date is entered and the booking is confirmed.
-4. "Save request" creates `AI-Request_<business-unit>_<date>.json`, which they send to you. Alternatively "Copy as text" for Teams or e-mail.
-5. You load the file in the radar via "Import request" or "Import". Duplicates are detected. The meeting shows up in the request list, in "Today" and in the next 14 days.
-6. Status: New → In review → Accepted, Parked or Rejected. "Turn into project" creates a project in phase "Intake" with all details.
-
-Calls or e-mails can be added directly in the radar with "Add request".
-
-**Settings at the top of `request.html`:**
-
-```js
-const CONTACT_NAME = "the AI Teamlead of the BPM & AI team";
-const CONTACT_EMAIL = "ricardo.serrano@cws.com";
-const BOOKING_URL = "";   // Microsoft Bookings or Outlook "Book time with me" link
-const MEETING_MINUTES = 30;
+```
+Browser (index.html, request.html)
+   │  HTTPS, nur zur eigenen Domain (/api)
+   ▼
+Vercel Functions  api/health · login · state · admin · public
+   │  api/_lib: auth.js (Konten, Codes, Sitzungen) · radar.js (Regeln, Sichtbarkeit, Sicherungen, Protokoll)
+   ▼
+Speicher-Schicht  api/_lib/db.js: PostgreSQL (empfohlen) · Vercel Blob · SQLite (lokal)
 ```
 
-With `BOOKING_URL` set, the form shows an "Open booking calendar" button. Without it, it asks the requester to send a Teams invite to `CONTACT_EMAIL`.
+- **Eine Tabelle** `radar_kv` (Schlüssel, JSON-Wert, Version), gleich in PostgreSQL und SQLite (`db/schema.sql`). Gespeichert wird nur, wenn die Version noch stimmt. Zwei gleichzeitige Änderungen überschreiben sich nicht; die App führt die Stände zusammen.
+- **Sichtbarkeit:** eigene Projekte, freigegebene Projekte („Im Radar freigeben“) und Projekte mit einer offenen Aufgabe auf den eigenen Namen. Änderungen an fremden Projekten landen beim Eigentümer, aber nur, wenn die eigene Fassung neuer ist.
+- **Anmeldung:** Zugangscodes nur als scrypt-Hash gespeichert. Nach der Anmeldung hält der Browser ein signiertes Sitzungs-Token (60 Tage, verlängert sich bei Nutzung), nie den Code. Neuer Code oder Sperren beendet alle Sitzungen der Person.
+- **Sparsamer Abgleich:** offene Tabs fragen alle 15 Sekunden nur, ob sich etwas geändert hat (eine kleine Abfrage), und nur, wenn der Tab sichtbar ist. Nur bei Änderungen kommt der volle Stand. Ohne Verbindung arbeitet die App im Browser weiter und übernimmt die Änderungen, sobald die Verbindung wieder steht.
+- **Sicherheit:** Content Security Policy (nur Anfragen an die eigene Domain), `noindex`, kein Referrer, Mikrofon nur fürs Diktat. `.vercelignore` veröffentlicht nur `index.html`, `request.html`, `api/`, `package.json`, `vercel.json`.
 
-## Project lifecycle
+### Einrichtung (einmalig)
 
-Intake & idea → **Discovery & readiness** → Concept & approval → Build → Test & acceptance → Go-live & rollout → Hypercare → Closed
+1. **Datenbank verbinden:** Vercel → Projekt `cws-ai-projekt-radar` → **Storage** → **Create Database** → **Neon (Postgres)**, Region **Frankfurt (eu-central-1)**, Plan **Free**, mit dem Projekt verbinden. Vercel setzt `DATABASE_URL` selbst. Danach einmal **Redeploy**. Die Tabelle legt das Backend beim ersten Aufruf selbst an. Jede andere PostgreSQL-Datenbank geht auch (Supabase, später Azure Database for PostgreSQL): `DATABASE_URL` setzen, fertig.
+2. **Erster Admin:** `RADAR_USERS` in den Vercel-Einstellungen (JSON-Liste `{ "id", "name", "role", "code", "admin" }`). Beim ersten Start werden die Einträge übernommen; der erste Eintrag ist Admin, wenn keiner `"admin": true` trägt. Alle weiteren Personen legst du in der App unter Verwaltung an.
+3. Ohne `DATABASE_URL` nutzt das Backend Vercel Blob (`BLOB_READ_WRITE_TOKEN`). Das braucht bei täglicher Nutzung einen bezahlten Vercel-Plan, weil der Gratis-Plan nur wenige Schreibvorgänge pro Monat erlaubt.
 
-Each phase has a checklist (readiness check, data protection, works council, AI Act risk class, inventory entry and more). Progress in percent comes from the phase and the completed checklist items.
+Optional: `RADAR_SECRET` (eigener Schlüssel für Sitzungen; sonst erzeugt das Backend ihn selbst), `DATABASE_SSL_INSECURE=1` nur für Datenbanken mit eigenem Zertifikat.
 
-**Schedule:** every phase has a planned end. Without your own dates, the radar spreads the phases automatically between start and go-live, followed by 6 weeks of hypercare and 2 weeks of closure. You set your own dates in the project under "Overview → Schedule". If today is past the planned end of the current phase, the radar shows the delay and a forecast go-live.
+**Beim ersten Login nach dem Umzug** fragt die App: „Dieser Browser hat schon Daten … In die Datenbank übernehmen“. Damit wandert dein Stand aus dem Browser in die Datenbank. Eine Kopie bleibt im Browser.
 
-## Readiness check and access matrix (per project)
+## Lokal starten
 
-Built on the pattern of the "Sales Along the Route | Nordwest" checklist:
+1. Repository klonen oder als ZIP laden.
+2. `Start-Radar.cmd` doppelklicken oder in Cursor `Strg+Shift+B`. Das Radar öffnet sich unter **http://localhost:8765**.
+3. Der lokale Server (`server/server.mjs`, Node.js ab 22.13) nutzt **dasselbe Backend** wie die Web-Version, mit einer SQLite-Datei `data/radar.sqlite` (nie im Repository). Ohne Konten ist man an diesem Computer automatisch angemeldet; Verwaltung, Tagessicherungen und Protokoll gibt es auch lokal. Ein Stand aus der alten lokalen Version wird beim ersten Start übernommen.
+4. Ohne Node.js startet `start.ps1` einen einfachen Webserver; dann bleiben die Daten im Browser. `index.html` lässt sich auch direkt per Doppelklick öffnen.
 
-- **9 areas:** target picture & scope, current process & business rules, data & data quality, architecture & integration, tools/licences/access, security/data protection/AI governance, operations/support/scaling, KPIs/acceptance/decision, roles/dates/next steps.
-- **Per question:** core question ★, critical, type, priority, answer / current state, evidence needed, owner, status (Open, Partial, Resolved, Not relevant), follow-up, due date.
-- **Scoring as in the Excel:** readiness = (resolved + ½ partial) / (all − not relevant).
-  - **READY:** 80 % or more and no critical gap open.
-  - **NOT READY:** below 50 % or at least one critical gap open.
-  - **CONDITIONAL GO:** everything in between.
-  - Plus readiness per area.
-- **Tool & access matrix:** tool/system, purpose, access/licence, available?, phase/dependency, approver/owner, next step/ticket.
-- **Follow-ups with owner and due date** appear in "Today". Overdue follow-ups, NOT READY and critical gaps move a project up.
-- **Critical gaps and readiness** show in the portfolio, the overview and "Today".
-- **Status changes** are logged in the project history.
-- **Export:** readiness and access matrix as CSV, opens directly in Excel.
-- **New projects** start with a default check (29 questions, 15 core, 5 critical) and a default access matrix.
+Lokale Daten und die Web-Version sind getrennt. Zum Umziehen: lokal „Sichern“, online „Importieren“.
 
-### Import an Excel checklist
+## Technik
 
-- **"Import" → choose .xlsx:** the radar creates a new project with title, participants, goal/scope, meeting date, all questions and the access matrix.
-- **In the project under "Readiness → Import Excel":** replaces the check of an existing project.
-- **Recognised format** (German or English headers):
-  - Header row with "Leitfrage"/"Question" and "Status", other columns by name.
-  - Critical questions from the "critical gaps" formula.
-  - Access matrix via the columns "Tool" and "Vorhanden?"/"Available?".
-- The Excel file is only read in the browser and never uploaded.
-
-## Run locally
-
-Locally the radar runs **on this computer only**. Nothing is sent to the internet.
-
-1. Clone the repository or download it as ZIP.
-2. **Start via the local link (recommended):** double-click `Start-Radar.cmd`. The radar opens at **http://localhost:8765**.
-   - In Cursor: `Ctrl+Shift+B` (task "Start radar"), or in the terminal `.\Start-Radar.cmd`.
-   - The server (`server/server.mjs`, started by `start.ps1`) keeps one shared database in `data/radar.sqlite`. Every browser on this computer sees the same projects. The file is not committed. Stop with `Ctrl+C`.
-   - The local server only serves `index.html` and `request.html`; README, `docs/` and `data/` are not reachable.
-   - View inside Cursor: `Ctrl+Shift+P` → "Simple Browser: Show" → `http://localhost:8765`.
-3. **Without a server:** open `index.html` by double-clicking it in Edge or Chrome.
-4. Add projects. With the database server they are saved in `data/radar.sqlite` and show up in every browser on this computer. Opening `index.html` as a file keeps data in that browser only.
-
-**Important:** local data and the web link are separate. `http://localhost:8765`, the double-clicked file and the web link each see **different** data. When switching, "Sichern" once and "Importieren" on the new one. Port 8765 is fixed so the address, and with it the data, stays the same.
-
-**Backing up is a must** in local mode: data lives in browser storage there, and clearing browsing history including "site data" also deletes the radar. On the web link the data is stored per login; a backup is still useful before big imports.
-
-- **Back up** downloads `CWS-AI-Radar_Backup_YYYY-MM-DD.json`. Store it in your CWS OneDrive or SharePoint folder, not in this repository (`.gitignore` blocks backups, request files, CSV exports and Excel files).
-- **Import** loads a backup again, e.g. on a new computer. The radar asks before replacing anything.
-- After 7 days without a backup a reminder appears.
-- To try it out, import `data/sample-projects.json` and remove it later with "Remove samples".
-- When importing a backup you choose: **Add / update** (existing projects stay) or **Replace all**.
-
-Data from earlier German versions of the radar imports as is; stored values stayed the same.
-
-## Web link (Vercel, interim)
-
-Until CWS GitHub and Azure access are in place, the radar is deployed from this repository (`Ricdog87/cws-ai-projekt-radar`, branch `main`) to Vercel (personal account). Every push to `main` goes live automatically; other branches get a preview link.
-
-- **Only the app is published.** `.vercelignore` is an allowlist: `index.html`, `request.html`, `api/`, `package.json`, `vercel.json`. README, `docs/`, `data/`, `server/`, `db/` and the Cursor rules are not reachable via the link. A new file in the root is not published unless it is added there.
-- Addresses: `/` is the radar, `/request` the request form for business units. Share the request link instead of sending the file.
-- **Storage:** `api/state.js` saves each user's projects in the private Vercel Blob store (env `BLOB_READ_WRITE_TOKEN`). Every save carries a revision; if two people save at the same time the server answers `409` and the app merges both stands.
-- **Login:** users come from the env `RADAR_USERS` (JSON list `{ id, name, role, code }`). The app sends `x-radar-user` and `x-radar-key`. Never commit access codes; set them only in the Vercel project settings.
-- **Delegation across logins:** a project shared with a colleague ("Im Radar freigeben", `sharedWith`) or with an open task whose owner matches their login name shows up in their dashboard, and they can work on it. Their changes go back to the owner's project (`ownerId`).
-- **Headers** (`vercel.json`): Content Security Policy (only same-origin requests to `/api`, no external scripts or fonts), `X-Robots-Tag: noindex`, no referrer, microphone only for dictation, API responses `no-store`.
-- Documents, transcripts and Excel files are read in the browser. Only the results you confirm are saved.
-
-## Tech
-
-- `index.html`: the whole app in one file, no build step, no external dependencies. `Store` connects to `/api` when available ("Live") and falls back to localStorage (`cws-ai-radar-v1`, "Lokal").
-- `request.html`: standalone request form for business units, creates `{ app:"cws-ai-anfrage", version, request }`.
-- `api/`: Vercel functions (`health.js`, `login.js`, `state.js`, `_lib/blob.js`, `_lib/users.js`), dependency `@vercel/blob`.
-- `server/server.mjs`: local server and SQLite database (`data/radar.sqlite`, structure in `db/schema.sql`). `start.ps1` + `Start-Radar.cmd` start it on `http://localhost:8765`. `.vscode/tasks.json` starts it in Cursor with `Ctrl+Shift+B`. Without Node.js, `start.ps1` falls back to a static server and the browser keeps the data itself.
-- CI matched with cws.com/workwear:
-  - CWS red `#EA0046`, yellow `#F9E344`, black text on white.
-  - Original "CWS | WORKWEAR" logo (embedded PNG) at the top of the sidebar, main actions as red buttons, active navigation in light CWS pink.
-  - Icons: Lucide (ISC licence), embedded inline.
-  - Browser tab icon from the red part of the logo.
-  - All values are tokens at the top of the second `<style>` block (`--cws-red`, `--cws-yellow`, `--cta` …).
-- Fonts (SIL Open Font License), embedded as Base64:
-  - Inter for text and headings, as in the AI Governance Portal.
-  - IBM Plex Mono for project IDs.
-- Backup format: `{ app, version, exportedAt, projects[], requests[], meta }`. Tasks live in `project.tasks[]` (`text`, `owner`, `due`, `status` `offen`/`arbeit`/`wartet`/`erledigt`, optional `note`). The team lives in `meta.team[]` (`name`, `role`, `country`, optional `skills`, `kind` `team`/`kontakt`, `from`). Tools/access rows in `project.tools[]` carry optional `cat`, `kind`, `iface`, `due`, `src`, `pers`. Decisions live in `project.decisions[]` (`text`, `date`, `meetingId`), read-in meetings in `project.meetings[]` (`date`, `title`, `participants`, `minutes`, `summary`, `counts`, `source`); transcripts themselves are never stored. All are optional; older backups import as is. The status note is the project stand on a task. Conversation stays in Teams. This makes a later move to a central solution (SharePoint list, Dataverse, database) possible without retyping.
+- `index.html`: die ganze App in einer Datei, ohne Build-Schritt und ohne externe Abhängigkeiten (Schriften, Logo und Icons eingebettet).
+- `request.html`: Anfrageformular, Deutsch mit Umschalter auf Englisch.
+- `api/`: Backend für Vercel (Node.js), Abhängigkeiten `pg` und `@vercel/blob`.
+- `server/server.mjs`, `start.ps1`, `Start-Radar.cmd`: lokaler Betrieb.
+- CI wie cws.com/workwear: CWS-Rot `#EA0046`, Gelb `#F9E344`, Schrift Inter, Icons Lucide.
+- Sicherungsformat `{ app, version, exportedAt, projects[], requests[], meta }`. Neue Felder sind immer optional, ältere Sicherungen lassen sich weiter laden.
 
 ## Governance
 
-- Recommendation on how the radar relates to the AI Cockpit (AI Inventory + CR): [docs/ai-cockpit-decision.md](docs/ai-cockpit-decision.md)
-- Sharing and cross-country rollout (local, M365 or standard tool): [docs/rollout-decision.md](docs/rollout-decision.md)
-- Names: team members and project members may be entered by name. Stakeholders, sponsors and business units stay as roles.
+- Verhältnis zum AI Cockpit (AI Inventory + CR): [docs/ai-cockpit-decision.md](docs/ai-cockpit-decision.md)
+- Teilen und länderübergreifender Rollout: [docs/rollout-decision.md](docs/rollout-decision.md)
+- Namen: Teammitglieder und Projektbeteiligte dürfen mit Namen eingetragen werden. Stakeholder, Sponsoren und Fachbereiche bleiben Rollen. Keine echten CWS-Daten ins Repository.

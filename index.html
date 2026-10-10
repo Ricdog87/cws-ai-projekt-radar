@@ -560,6 +560,56 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
 .wk-t .mono{font-size:12px;color:var(--muted);margin-right:4px}
 .tk-sg{display:block;margin-top:4px;border:1px dashed var(--line-strong);background:var(--tint);color:var(--tint-ink);border-radius:6px;padding:2px 8px;font-size:12px;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tm-table select{min-width:150px}
+/* Nächste Schritte */
+.ns-sg{display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:8px}
+.ns-sg .ns-ico{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--tint, #fdeef3);color:var(--cws-red)}
+.ns-sg .ns-ico svg{width:16px;height:16px}
+.ns-sg .ns-t{flex:1;min-width:0;display:grid;gap:2px}
+.ns-sg .ns-t b{font-size:13.5px;font-weight:600;line-height:1.3}
+.ns-sg .ns-t small{font-size:12px;color:var(--ink-2)}
+.ns-sg .btn{flex:none}
+.ns-auto{display:inline-flex;gap:4px;align-items:center;font-size:11.5px;color:var(--ink-2);margin-top:4px}
+.ns-auto svg{width:12px;height:12px;color:var(--cws-red)}
+.ns-list{padding:4px 0}
+.ns-row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:14px;align-items:center;padding:6px 14px 10px;border-bottom:1px solid var(--line)}
+.ns-row:last-child{border-bottom:0}
+.ns-p{text-align:left;background:none;border:0;padding:0;cursor:pointer;display:grid;gap:2px;font:600 14px/1.3 var(--f-body);color:var(--ink)}
+.ns-p .mono{font-weight:500;color:var(--muted)}
+.ns-p small{font-weight:400;font-size:12.5px;color:var(--ink-2)}
+.ns-box{display:grid;gap:0;margin-top:6px}
+.ns-h{display:flex;gap:6px;align-items:center;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.ns-h svg{width:14px;height:14px;color:var(--cws-red)}
+@media (max-width:800px){ .ns-row{grid-template-columns:1fr} .ns-sg{flex-wrap:wrap} }
+/* Verwaltung */
+#view-admin .ov-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.adm-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.adm-wide{grid-column:1/-1}
+.adm-card{padding:18px 20px;display:grid;gap:12px}
+.adm-card h2{margin:0;font:600 17px/1.25 var(--f-display)}
+.adm-card p.muted{margin:0;font-size:13px}
+.adm-table input,.adm-table select{width:100%;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13.5px;background:var(--surface);color:var(--ink)}
+.adm-table td{padding:7px 6px;vertical-align:middle}
+.adm-table tr.off td{color:var(--muted)}
+.adm-table input[type=checkbox],.adm-form input[type=checkbox]{width:auto}
+.adm-acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.adm-new{display:grid;grid-template-columns:1.2fr 1fr auto auto;gap:8px;align-items:center}
+.adm-new input{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;min-width:0}
+.adm-form{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.adm-form label{display:grid;gap:4px;font-size:12.5px;font-weight:500;color:var(--ink-2)}
+.adm-form input,.adm-form select{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;color:var(--ink);background:var(--surface)}
+.adm-form .wide{grid-column:1/-1}
+.adm-link{display:flex;gap:8px;align-items:center;background:var(--surface-2);border-radius:8px;padding:8px 10px}
+.adm-link span{font:500 13px/1.3 var(--f-mono, monospace);word-break:break-all}
+.adm-code{border:2px solid var(--cws-red);border-radius:12px;padding:14px 16px;display:grid;gap:8px;background:var(--tint, #fff5f8)}
+.adm-code b.code{font:700 26px/1.1 var(--f-mono, monospace);letter-spacing:.12em}
+.adm-snap{display:grid;gap:6px}
+.adm-snap .row{display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:6px 0;font-size:13.5px}
+.adm-log{display:grid;gap:0;max-height:420px;overflow:auto}
+.adm-log .row{display:grid;grid-template-columns:110px 130px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.adm-log .row small{color:var(--muted)}
+@media (max-width:1100px){ .adm-grid{grid-template-columns:1fr} #view-admin .ov-stats{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.adm-log .row button.task-p{font:inherit;text-align:left;background:none;border:0;padding:0;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--line-strong)}
+@media (max-width:640px){ .adm-new,.adm-form{grid-template-columns:1fr} .adm-log .row{grid-template-columns:1fr} }
 .tm-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 /* ---------- Drawer ---------- */
 .scrim{position:fixed;inset:0;background:rgba(20,20,20,.5);z-index:40}
@@ -716,6 +766,7 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
     <button class="nav" data-action="mt-open" title="Teams-Transkript, PDF, PowerPoint, Word oder E-Mail einlesen: Aufgaben, Erledigtes und Entscheidungen landen im Projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Dokument einlesen</span></button>
     <button class="nav" data-action="import" title="Excel-Checkliste (.xlsx), Anfrage (.json) oder Sicherung (.json) laden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><span>Importieren</span></button>
     <button class="nav" data-action="export" title="Alle Daten als Sicherungsdatei speichern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg><span>Sichern</span></button>
+    <button class="nav" data-view="admin" id="nav-admin" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span>Verwaltung</span></button>
     <input type="file" id="import-file" accept=".json,.xlsx,.vtt,.docx,.txt,.pdf,.pptx,.eml,.msg,application/json" hidden>
   </nav>
   <div class="side-foot">
@@ -727,7 +778,7 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
 <div class="main">
   <header class="topbar">
     <button class="icon-btn menu-btn" data-action="menu" aria-label="Menü"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button>
-    <div class="crumb">Projekt-Radar / <b id="crumb-cur">Overview</b></div>
+    <div class="crumb">Projekt-Radar / <b id="crumb-cur">Heute</b></div>
     <div class="top-right">
       <span class="env-pill" id="env-pill" title="Alle Daten bleiben in diesem Browser auf diesem Computer."><i></i><span>Lokal</span></span>
       <button class="qc-btn" data-action="qc-open" title="Update, Aufgabe oder Entscheidung in einem Satz erfassen (Strg+K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span>Schnell erfassen …</span><kbd>Strg K</kbd></button>
@@ -781,7 +832,7 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
         <p>Ideen der Fachbereiche für Workflows, Automatisierung und KI-Agenten: prüfen, im Termin bewerten, priorisieren und mit einem Klick zum Projekt machen.</p>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <a class="btn" href="request.html" target="_blank" rel="noopener" title="Diese Datei mit Fachbereichen teilen: app/request.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Anfrageformular öffnen</a>
+        <a class="btn" href="request.html" target="_blank" rel="noopener" title="Das Formular für Fachbereiche. Den Link teilen: Verwaltung → Anfrageformular"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Anfrageformular öffnen</a>
         <button class="btn" data-action="import"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>Anfrage importieren</button>
         <button class="btn primary" data-action="rq-new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Anfrage hinzufügen</button>
       </div>
@@ -791,7 +842,7 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
       <div class="panel ov-panel"><div id="rq-toolbar" class="rq-toolbar"></div><div class="table-scroll" id="rq-list"></div></div>
       <div class="panel" id="rq-matrix"></div>
     </div>
-    <div class="hours" style="margin-top:16px">So kommen Anfragen rein: Fachbereiche füllen <b>app/request.html</b> aus (per Teams, E-Mail oder SharePoint teilen), buchen einen Bewertungstermin, klicken auf „Anfrage speichern“ und schicken die Datei. Hier mit „Anfrage importieren“ laden. Anrufe oder E-Mails direkt mit „Anfrage hinzufügen“ erfassen.</div>
+    <div class="hours" style="margin-top:16px">So kommen Anfragen rein: Fachbereiche öffnen das <b>Anfrageformular</b> (Link unter Verwaltung → Anfrageformular, in Teams oder per E-Mail teilen), beschreiben ihren Use Case und buchen einen Bewertungstermin. Die Anfrage landet sofort hier, ohne Datei und ohne E-Mail. Ohne Online-Speicher speichert das Formular eine Datei, die du über „Importieren“ lädst.</div>
   </section>
 
   <!-- HEUTE -->
@@ -806,6 +857,10 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
     <div class="acards" id="acards"></div>
     <div id="welcome" hidden></div>
     <div class="kpis" id="kpis"></div>
+    <div class="section" id="ns-sec">
+      <div class="section-head"><h2>Nächste Schritte</h2><span class="muted" id="ns-sub" style="font-size:13px">Vom Radar erkannt: was als Nächstes dran ist, mit Grund, Verantwortlichem und Termin</span><span style="flex:1"></span><button class="btn small" data-action="ns-take-all" id="ns-all" hidden>Alle übernehmen</button></div>
+      <div class="panel ns-list" id="ns-list"></div>
+    </div>
     <div class="section">
       <div class="section-head"><h2>Pipeline nach Phase</h2><span class="muted" style="font-size:13px">Phase anklicken, um das Portfolio zu filtern</span></div>
       <div class="panel pipeline" id="pipeline"></div>
@@ -854,6 +909,18 @@ body.dragging::after{content:"Datei loslassen: Transkript, Excel-Checkliste oder
       <div class="section-head"><h2>Teammitglieder</h2><span class="muted" style="font-size:13px">Dein AI-Team und die Projektbeteiligten mit ihren Zuständigkeiten.</span></div>
       <div class="panel" id="tm-members"></div>
     </div>
+  </section>
+
+  <!-- VERWALTUNG -->
+  <section class="view" id="view-admin" hidden>
+    <div class="view-head">
+      <div>
+        <h1>Verwaltung</h1>
+        <p>Zugänge, Anfrageformular und Sicherungen an einem Ort. Alles, was du hier änderst, gilt sofort.</p>
+      </div>
+      <button class="btn small" data-action="adm-reload">Aktualisieren</button>
+    </div>
+    <div id="adm-body"><div class="empty">Wird geladen …</div></div>
   </section>
 
   <!-- PORTFOLIO -->
@@ -1427,17 +1494,22 @@ ${list.map(block).join("")}<footer>Erstellt mit dem CWS Projekt-Radar. Intern. D
 }
 
 /* ================== Storage ================== */
-/* Live (Vercel): shared Blob database with per-user login.
-   Local Node server: one SQLite file on this computer (no login).
+/* Live (Vercel): backend with database and per-user login (api/). After the login the browser keeps
+   only a session token. Local Node server: the same backend with a SQLite file on this computer.
    Opened as a file: this browser only. Backup / Import still moves a copy. */
 const DB_USER = "cws-ai-radar-user";
-const DB_KEY = "cws-ai-radar-key";
+const DB_KEY = "cws-ai-radar-key";      // older versions stored the access code; it is swapped for a token once
+const DB_TOKEN = "cws-ai-radar-token";
+const SAFETY_KEY = "cws-ai-radar-v1-vor-sync";
+const OFFLINE_KEY = "cws-ai-radar-offline-changes"; // set while changes were made without a connection
+const POLL_MS = 15000;
 const Store = {
-  rev: 0, timer: null, saving: false, dirty: false, poll: null,
+  rev: null, base: undefined, timer: null, saving: false, dirty: false, poll: null, pendingRemote: null,
   init(){
     this.readLocal();
     state.loaded = true;
     window.addEventListener("storage", e => { if (e.key === LOCAL_KEY && state.mode !== "db"){ this.readLocal(); render(); } });
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") this.refresh(); });
     render();
     this.connect();
   },
@@ -1459,44 +1531,59 @@ const Store = {
   persistLocal(){
     this.cache();
     if (state.mode === "db" && !state.offerLocal && !state.needsKey) this.schedulePush();
+    else if (location.protocol !== "file:") try { localStorage.setItem(OFFLINE_KEY, nowISO()); } catch { /* the merge then simply does not happen */ }
   },
-  useLocal(){ state.mode = "local"; state.needsKey = false; state.authRequired = false; state.account = null; render(); },
-  creds(){ return { user: localStorage.getItem(DB_USER) || "", key: localStorage.getItem(DB_KEY) || "" }; },
-  setCreds(userId, code){ localStorage.setItem(DB_USER, userId); localStorage.setItem(DB_KEY, code); },
-  clearCreds(){ localStorage.removeItem(DB_USER); localStorage.removeItem(DB_KEY); state.account = null; },
+  useLocal(why){ state.mode = "local"; state.needsKey = false; state.authRequired = false; state.account = null; state.storageError = why || ""; render(); },
+  creds(){ return { user: localStorage.getItem(DB_USER) || "", key: localStorage.getItem(DB_KEY) || "", token: localStorage.getItem(DB_TOKEN) || "" }; },
+  clearCreds(){ localStorage.removeItem(DB_KEY); localStorage.removeItem(DB_TOKEN); state.account = null; },
   headers(){
-    const { user, key } = this.creds();
-    return { "content-type": "application/json", ...(user ? { "x-radar-user": user } : {}), ...(key ? { "x-radar-key": key } : {}) };
+    const { token } = this.creds();
+    return { "content-type": "application/json", ...(token ? { authorization: "Bearer " + token } : {}) };
   },
   async connect(){
     if (location.protocol === "file:"){ this.useLocal(); return; }
-    state.mode = "connecting";
+    state.mode = "connecting"; state.storageError = "";
     renderChrome();
     const timed = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
     try {
       let health = null;
-      try { const r = await timed(fetch("/api/health", { cache: "no-store" }), 8000); if (r.ok) health = await r.json(); } catch { /* no server */ }
-      if (!health || !health.storage){ this.useLocal(); return; }
+      try { const r = await timed(fetch("/api/health", { cache: "no-store" }), 10000); if (r.ok) health = await r.json(); } catch { /* no server */ }
+      if (!health || !health.storage){ this.useLocal(health && health.storageError); return; }
       state.authRequired = !!health.auth;
       if (health.auth){
         try {
           const lr = await timed(fetch("/api/login", { cache: "no-store" }), 8000);
           if (lr.ok){ const j = await lr.json(); state.users = j.users || []; }
         } catch { /* ignore */ }
-        if (!this.creds().user || !this.creds().key){ state.mode = "local"; state.needsKey = true; render(); return; }
-        const ok = await timed(this.login(), 8000);
-        if (!ok){ state.mode = "local"; state.needsKey = true; render(); return; }
+        const c = this.creds();
+        if (!c.token && c.user && c.key) await timed(this.login(c.user, c.key), 8000).catch(() => false);
+        if (!this.creds().token){ state.mode = "local"; state.needsKey = true; render(); return; }
       }
       let remote;
       try { remote = await timed(this.pull(), 20000); }
       catch { toast("Server antwortet langsam. Lokaler Stand bleibt sichtbar."); this.useLocal(); return; }
-      if (remote === 401){ state.mode = "local"; state.needsKey = true; state.authRequired = true; render(); return; }
-      if (!remote){ this.useLocal(); return; }
-      const localCount = state.projects.length + state.requests.length;
-      const remoteEmpty = !(remote.projects || []).length && !(remote.requests || []).length;
-      if (remoteEmpty && localCount > 0){
-        state.offerLocal = true; state.mode = "db"; state.needsKey = false; this.rev = remote.rev || 0; state.dbRev = this.rev;
+      if (remote === 401){ this.clearCreds(); state.mode = "local"; state.needsKey = true; state.authRequired = true; render(); return; }
+      if (!remote || remote.error){ this.useLocal(remote && remote.error); return; }
+      try { localStorage.setItem(SAFETY_KEY, localStorage.getItem(LOCAL_KEY) || ""); } catch { /* full storage: the backup simply stays older */ }
+      const me = remote.user ? remote.user.id : "";
+      const own = state.projects.filter(p => !p.example && (!p.ownerId || p.ownerId === me || p.ownerId === "lokal")).length + state.requests.filter(r => !r.ownerId || r.ownerId === me).length;
+      const firstSync = "base" in remote ? remote.base === null : !(remote.projects || []).length && !(remote.requests || []).length;
+      if (firstSync && own > 0){
+        this.pendingRemote = remote;
+        if (remote.user){ state.account = remote.user; state.me = { id: remote.user.id, name: remote.user.name, avatarUrl: "" }; }
+        state.offerLocal = true; state.mode = "db"; state.needsKey = false; this.rev = remote.rev; this.base = remote.base; state.dbRev = this.rev;
         this.startPoll(); render(); return;
+      }
+      const offline = localStorage.getItem(OFFLINE_KEY);
+      localStorage.removeItem(OFFLINE_KEY);
+      if (offline && own > 0){
+        // Changes made while the connection was down: newer projects win, nothing is dropped
+        this.merge(remote, { projects: state.projects, requests: state.requests, meta: state.meta });
+        if (remote.user){ state.account = remote.user; state.me = { id: remote.user.id, name: remote.user.name, avatarUrl: "" }; }
+        state.mode = "db"; state.needsKey = false; state.offerLocal = false;
+        this.cache(); this.schedulePush(); this.startPoll(); render();
+        toast("Änderungen ohne Verbindung werden jetzt übernommen.");
+        return;
       }
       this.apply(remote); state.mode = "db"; state.needsKey = false; state.offerLocal = false;
       this.cache(); this.startPoll(); render();
@@ -1505,11 +1592,17 @@ const Store = {
       this.useLocal();
     }
   },
-  async login(){
+  async login(userId, code){
     try {
-      const r = await fetch("/api/login", { method: "POST", headers: this.headers() });
-      if (!r.ok){ this.clearCreds(); return false; }
-      const j = await r.json();
+      const r = await fetch("/api/login", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ user: userId, code }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok){
+        if (r.status === 401) localStorage.removeItem(DB_KEY);
+        state.loginError = j.error || "Anmeldung fehlgeschlagen.";
+        return false;
+      }
+      localStorage.setItem(DB_USER, userId); localStorage.setItem(DB_TOKEN, j.token); localStorage.removeItem(DB_KEY);
+      state.loginError = "";
       state.account = j.user || null;
       state.users = j.users || state.users || [];
       if (state.account){
@@ -1517,7 +1610,7 @@ const Store = {
         state.me = { id: state.account.id, name: state.account.name, avatarUrl: "" };
       }
       return true;
-    } catch { return false; }
+    } catch { state.loginError = "Keine Verbindung zum Server."; return false; }
   },
   apply(doc){
     state.projects = Array.isArray(doc.projects) ? doc.projects.map(normalizeProject) : [];
@@ -1529,14 +1622,16 @@ const Store = {
       state.meta = Object.assign({}, state.meta, { me: { name: doc.user.name, role: doc.user.role || "" } });
       state.me = { id: doc.user.id, name: doc.user.name, avatarUrl: "" };
     }
-    this.rev = doc.rev || 0; state.dbRev = this.rev; state.dbUpdatedAt = doc.updatedAt || null;
+    state.localServer = !!doc.local;
+    if (doc.token) try { localStorage.setItem(DB_TOKEN, doc.token); } catch { /* keeps the old token */ }
+    this.rev = doc.rev ?? null; this.base = doc.base; state.dbRev = this.rev; state.dbUpdatedAt = doc.updatedAt || null;
     if (doc.updatedAt) state.backupAt = doc.updatedAt;
   },
-  async pull(){
+  async pull(since){
     try {
-      const r = await fetch("/api/state", { cache: "no-store", headers: this.headers() });
+      const r = await fetch("/api/state" + (since != null ? "?since=" + encodeURIComponent(since) : ""), { cache: "no-store", headers: this.headers() });
       if (r.status === 401) return 401;
-      if (!r.ok) return null;
+      if (!r.ok){ const j = await r.json().catch(() => ({})); return { error: j.error || "" }; }
       return await r.json();
     } catch { return null; }
   },
@@ -1544,45 +1639,52 @@ const Store = {
   merge(remote, local){
     const pick = (a, b) => String(a.updatedAt || "") >= String(b.updatedAt || "") ? a : b;
     const lists = (L, R) => { const m = new Map(); (R || []).forEach(x => { if (x && x.id) m.set(x.id, x); }); (L || []).forEach(x => { if (x && x.id) m.set(x.id, m.has(x.id) ? pick(x, m.get(x.id)) : x); }); return [...m.values()]; };
-    state.projects = lists(local.projects, remote.projects);
+    state.projects = lists(local.projects, remote.projects).map(normalizeProject);
     state.requests = lists(local.requests, remote.requests);
     state.meta = local.meta || remote.meta;
     if (Array.isArray(remote.users)) state.users = remote.users;
-    this.rev = remote.rev || 0; state.dbRev = this.rev;
+    this.rev = remote.rev ?? null; this.base = remote.base; state.dbRev = this.rev;
   },
   async push(){
     if (state.mode !== "db") return;
     if (this.saving){ this.dirty = true; return; }
     this.saving = true; this.dirty = false; state.syncing = true; renderChrome();
     const payload = { rev: this.rev, projects: state.projects, requests: state.requests, meta: state.meta };
+    if (this.base !== undefined) payload.base = this.base;
     try {
       const r = await fetch("/api/state", { method: "PUT", headers: this.headers(), body: JSON.stringify(payload) });
       if (r.status === 409){
         this.merge(await r.json(), payload); this.saving = false; state.syncing = false;
-        toast("Gleichzeitig gespeichert. Beide Stände sind zusammengeführt.");
         this.schedulePush(); render(); return;
       }
-      if (r.status === 401){ state.needsKey = true; state.mode = "local"; state.authRequired = true; toast("Zugangscode ungültig."); }
-      else if (!r.ok){ this.dirty = true; toast("Speichern in der Datenbank ist fehlgeschlagen. Der Stand bleibt in diesem Browser."); }
+      if (r.status === 401){ this.clearCreds(); state.needsKey = true; state.mode = "local"; state.authRequired = true; toast("Bitte neu anmelden. Deine Änderungen bleiben in diesem Browser."); }
+      else if (!r.ok){ this.dirty = true; const j = await r.json().catch(() => ({})); toast(j.error || "Speichern in der Datenbank ist fehlgeschlagen. Der Stand bleibt in diesem Browser."); }
       else {
         const saved = await r.json();
+        const before = state.requests.filter(x => x.status === "neu").length;
         this.apply(saved);
         state.offerLocal = false; this.cache();
+        if (state.requests.filter(x => x.status === "neu").length > before) toast("Neue Projektanfrage eingegangen.");
       }
     } catch { this.dirty = true; toast("Keine Verbindung zur Datenbank. Der Stand bleibt in diesem Browser."); }
     this.saving = false; state.syncing = false;
-    if (this.dirty && state.mode === "db") this.schedulePush();
+    if (this.dirty && state.mode === "db") setTimeout(() => this.schedulePush(), 3000);
     else renderChrome();
   },
   startPoll(){
     clearInterval(this.poll);
-    this.poll = setInterval(() => this.refresh(), 8000);
+    this.poll = setInterval(() => this.refresh(), POLL_MS);
   },
   async refresh(){
     if (state.mode !== "db" || this.dirty || this.saving || state.offerLocal || state.needsKey || document.visibilityState === "hidden") return;
-    const remote = await this.pull();
-    if (!remote || remote === 401 || (remote.rev || 0) === this.rev) return;
+    const remote = await this.pull(this.rev);
+    if (remote === 401){ this.clearCreds(); state.needsKey = true; state.mode = "local"; state.authRequired = true; render(); return; }
+    if (!remote || remote.error || remote.unchanged) return;
+    if (!("base" in remote) && String(remote.rev) === String(this.rev)) return;
+    if (this.dirty || this.saving) return;
+    const before = state.requests.filter(x => x.status === "neu").length;
     this.apply(remote); this.cache(); render();
+    if (state.requests.filter(x => x.status === "neu").length > before) toast("Neue Projektanfrage eingegangen.");
   },
   async saveProject(p){
     if (state.account && !p.ownerId) p.ownerId = state.account.id;
@@ -1728,6 +1830,7 @@ function render(){
     if (ui.view === "overview") renderOverview();
     if (ui.view === "anfragen") renderRequests();
     if (ui.view === "team") renderTeam();
+    if (ui.view === "admin") renderAdmin();
     if (drawer) renderDrawerDynamic();
   } catch (err) {
     console.error(err);
@@ -1735,7 +1838,7 @@ function render(){
   }
 }
 
-const VIEW_LABEL = { overview:"Projektübersicht", heute:"Heute", team:"Team & Aufgaben", anfragen:"Projektanfragen", portfolio:"Portfolio" };
+const VIEW_LABEL = { overview:"Projektübersicht", heute:"Heute", team:"Team & Aufgaben", anfragen:"Projektanfragen", portfolio:"Portfolio", admin:"Verwaltung" };
 function renderChrome(){
   document.querySelectorAll(".nav[data-view]").forEach(n => { if (n.dataset.view === ui.view) n.setAttribute("aria-current","page"); else n.removeAttribute("aria-current"); });
   document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== "view-" + ui.view);
@@ -1749,6 +1852,9 @@ function renderChrome(){
   const tLate = state.projects.filter(isActive).reduce((n, p) => n + openTasks(p).filter(taskOverdue).length, 0);
   $("#count-team").textContent = tLate || ""; $("#count-team").hidden = !tLate; $("#count-team").title = tLate ? `${plural(tLate, "Aufgabe", "Aufgaben")} überfällig` : "";
   $("#dl-team").innerHTML = ownerNames().map(n => `<option value="${esc(n)}">`).join("");
+  const canAdmin = state.mode === "db" && ((state.account && state.account.admin) || state.localServer);
+  $("#nav-admin").hidden = !canAdmin;
+  if (!canAdmin && ui.view === "admin"){ ui.view = "heute"; document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== "view-heute"); }
   const sync = $("#sync");
   const pill = $("#env-pill");
   const bdays = state.backupAt ? daysSince(state.backupAt) : null;
@@ -1781,7 +1887,7 @@ function renderChrome(){
       ${state.account ? `<p class="muted" style="font-size:12.5px;margin:0">Angemeldet als <b>${esc(state.account.name)}</b>${state.account.role ? " · " + esc(state.account.role) : ""}. Name kommt aus dem Konto.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" data-action="profile">Schließen</button><button class="btn small" type="button" data-action="db-logout">Abmelden</button></div>`
       : `<label>Name<input id="pf-name" value="${esc(me.name)}" placeholder="Vor- und Nachname"></label>
-      <label>Role<input id="pf-role" value="${esc(me.role)}" placeholder="z. B. AI Teamlead"></label>
+      <label>Rolle<input id="pf-role" value="${esc(me.role)}" placeholder="z. B. AI Teamlead"></label>
       <span class="muted" style="font-size:12.5px">Mit deinem Namen hebt „Heute“ Nachverfolgungen hervor, die dir gehören. Neue Projekte setzen dich als Projektleitung.</span>
       <div style="display:flex;gap:8px"><button class="btn primary small" type="submit">Speichern</button><button class="btn small" type="button" data-action="profile">Abbrechen</button></div>`}
     </form>` : "";
@@ -1792,8 +1898,11 @@ function renderChrome(){
     banners.push(`<div class="banner warn"><span><b>Anmelden.</b> Jeder hat ein eigenes Dashboard. Aufgaben mit @Name landen beim Empfänger unter Team &amp; Aufgaben.</span><span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="db-user" aria-label="Konto">${opts || `<option value="">Kein Konto eingerichtet</option>`}</select><input id="db-key" type="password" autocomplete="current-password" placeholder="Zugangscode"><button class="btn small primary" data-action="db-login">Anmelden</button></span></div>`);
     setTimeout(() => { const s = $("#db-user"); if (s && saved) s.value = saved; }, 0);
   }
+  if (state.mode === "local" && state.storageError && location.protocol !== "file:"){
+    banners.push(`<div class="banner warn"><span><b>Online-Speicher nicht erreichbar.</b> ${esc(state.storageError)} Änderungen werden übernommen, sobald die Verbindung wieder steht.</span><button class="btn small" data-action="db-retry">Erneut verbinden</button></div>`);
+  }
   if (state.offerLocal){
-    banners.push(`<div class="banner"><span><b>Dieser Browser hat schon Daten</b> (${plural(state.projects.length,"Projekt","Projekte")}, ${plural(state.requests.length,"Anfrage","Anfragen")}). Die Datenbank auf diesem Computer ist noch leer.</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small primary" data-action="db-upload">In die Datenbank übernehmen</button><button class="btn small" data-action="db-skip">Nicht übernehmen</button></span></div>`);
+    banners.push(`<div class="banner"><span><b>Dieser Browser hat schon Daten</b> (${plural(state.projects.length,"Projekt","Projekte")}, ${plural(state.requests.length,"Anfrage","Anfragen")}). In der Datenbank ist für ${state.account ? esc(firstName(state.account.name)) : "diesen Computer"} noch nichts gespeichert. Übernehmen, dann ist alles gesichert und auf jedem Gerät da.</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small primary" data-action="db-upload">In die Datenbank übernehmen</button><button class="btn small" data-action="db-skip">Nicht übernehmen</button></span></div>`);
   }
   if (pendingImport){
     banners.push(`<div class="banner warn"><span><b>Sicherung laden?</b> ${pendingImport.exportedAt ? "Stand " + esc(fmtStamp(pendingImport.exportedAt)) + ", " : ""}${plural(pendingImport.projects.length,"Projekt","Projekte")}. „Hinzufügen / aktualisieren“ behält deine ${plural(state.projects.length,"Projekt","Projekte")} und aktualisiert passende. „Alles ersetzen“ löscht den Rest.</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small primary" data-action="import-merge">Hinzufügen / aktualisieren</button><button class="btn small" data-action="import-confirm">Alles ersetzen</button><button class="btn small" data-action="import-cancel">Abbrechen</button></span></div>`);
@@ -1819,14 +1928,14 @@ function renderHeute(){
   if (empty){
     $("#heute-title").textContent = "Willkommen im AI Projekt-Radar";
     $("#heute-sub").textContent = state.mode === "db"
-      ? `${dateLabel} · Gemeinsame Datenbank auf diesem Computer. Nichts verlässt den Rechner.`
+      ? `${dateLabel} · ${state.localServer ? "Datenbank auf diesem Computer. Nichts verlässt den Rechner." : "Online gespeichert, mit automatischer Tagessicherung."}`
       : `${dateLabel} · Alle Daten bleiben auf diesem Computer. Nichts wird an einen Server gesendet.`;
     $("#welcome").innerHTML = `<div class="welcome">
       <h2>So startest du</h2>
       <ol>
         <li>Lege laufende KI-Projekte mit „+ Projekt“ an oder importiere eine Readiness-Checkliste als Excel: das Projekt entsteht mit allen Fragen und Zugriffen.</li>
         <li>Halte Start, Go-live und Phase aktuell. Die Projektübersicht zeigt dann alle Projekte nebeneinander auf einer Zeitachse, mit Fortschritt und Verzug.</li>
-        <li>Klicke regelmäßig auf „Sichern“. Die Datei landet im Ordner Downloads; lege sie in dein CWS OneDrive.</li>
+        <li>${state.mode === "db" ? "Gespeichert wird automatisch, mit einer Sicherung pro Tag. Zum Auswerten von Meetings einfach Transkript, PDF oder PowerPoint über „Dokument einlesen“ hochladen." : "Klicke regelmäßig auf „Sichern“. Die Datei landet im Ordner Downloads; lege sie in dein CWS OneDrive."}</li>
       </ol>
       <div class="actions"><button class="btn primary" data-action="new">+ Erstes Projekt anlegen</button><button class="btn" data-action="import">Excel-Checkliste oder Sicherung importieren</button></div>
       <div class="muted" style="font-size:13px">„Importieren“ liest eine Readiness-Checkliste (.xlsx) und legt daraus ein Projekt an, oder lädt eine Anfrage oder Sicherung (.json). Zum Ausprobieren: <span class="mono">data/sample-projects.json</span>.</div>
@@ -1925,9 +2034,9 @@ function renderActions(active){
     <div class="task-row">
       <div class="d ${d !== null && d < 0 ? "overdue" : ""}">${d === null ? "kein Datum" : d < 0 ? `${-d} T überfällig` : d === 0 ? "Heute" : esc(fmtShort(i.due))}</div>
       <div><button class="lnk" data-action="open" data-id="${esc(p.id)}" data-tab="readiness">${esc(deUi(i.action || i.q))}</button>
-        <div class="s"><span class="mono">${esc(p.code)}</span> · ${esc(qLabel(i))}${i.critical ? " · kritisch" : ""} · ${esc(i.owner || "Owner fehlt")}${mine ? ` <span class="chip" style="background:var(--tint);color:var(--tint-ink);padding:1px 8px">Du</span>` : ""}</div></div>
+        <div class="s"><span class="mono">${esc(p.code)}</span> · ${esc(qLabel(i))}${i.critical ? " · kritisch" : ""} · ${esc(i.owner || "niemand verantwortlich")}${mine ? ` <span class="chip" style="background:var(--tint);color:var(--tint-ink);padding:1px 8px">Du</span>` : ""}</div></div>
     </div>`).join("") + (all.length > 10 ? `<div class="empty" style="padding:10px 16px">+ ${all.length - 10} weitere in den Projekten</div>` : "")
-    : `<div class="empty">Keine offenen Nachverfolgungen. Owner, Folgeaktion und Datum im Readiness-Check eines Projekts setzen, dann erscheinen sie hier.</div>`;
+    : `<div class="empty">Keine offenen Nachverfolgungen. Verantwortliche, Folgeaktion und Datum im Readiness-Check eines Projekts setzen, dann erscheinen sie hier.</div>`;
 }
 function kpi(n, label, desc, icon, alert, filter){
   const attrs = filter ? `data-action="kpi" data-filter='${esc(JSON.stringify(filter))}'` : `data-action="noop"`;
@@ -2174,24 +2283,24 @@ function renderOverview(){
     return `<div class="ov-card ${p.focus ? "focus" : ""}">
       <div class="ov-l1"><button class="star ${p.focus ? "on" : ""}" data-action="focus" data-id="${id}" title="${p.focus ? "Nicht mehr als in Arbeit markieren" : "Als in Arbeit markieren"}" aria-pressed="${!!p.focus}">${ico("star")}</button><span class="mono muted">${esc(p.code)}</span>${healthHtml(p.health)}${p.focus ? `<span class="inwork">In Arbeit</span>` : ""}<span style="margin-left:auto" class="num muted">${progress(p)} %</span></div>
       <h3><button data-action="open" data-id="${id}">${esc(p.title || "Ohne Titel")}</button></h3>
-      <div><div class="ov-steps">${steps}</div><div style="font-size:12.5px;color:var(--ink-2);margin-top:6px">${done ? `<b style="color:var(--ink)">Closed</b>` : `Phase ${i + 1} von 8: <b style="color:var(--ink)">${esc(ph.long)}</b> bis ${esc(fmtShort(isoDay(s.cur.end)))}`}${s.delay && !paused ? ` · <span style="color:var(--cws-red);font-weight:600">${esc(fmtDelay(s.delay))}</span>` : ""}</div></div>
+      <div><div class="ov-steps">${steps}</div><div style="font-size:12.5px;color:var(--ink-2);margin-top:6px">${done ? `<b style="color:var(--ink)">Abgeschlossen</b>` : `Phase ${i + 1} von 8: <b style="color:var(--ink)">${esc(ph.long)}</b> bis ${esc(fmtShort(isoDay(s.cur.end)))}`}${s.delay && !paused ? ` · <span style="color:var(--cws-red);font-weight:600">${esc(fmtDelay(s.delay))}</span>` : ""}</div></div>
       <dl class="ov-kv">
         <dt>Go-live</dt><dd>${p.targetDate ? esc(fmtDay(p.targetDate)) : "nicht gesetzt"}${s.forecast && !paused && p.targetDate ? ` <span style="color:var(--cws-red)">(Prognose ${esc(fmtDay(isoDay(s.forecast)))})</span>` : ""}</dd>
         ${(p.blockers || "").trim() ? `<dt>Blocker</dt><dd class="crit clamp" title="${esc(p.blockers.trim())}">${esc(p.blockers.trim())}</dd>` : ""}
         ${(p.openDecisions || "").trim() ? `<dt>Entscheidung</dt><dd class="warn clamp" title="${esc(p.openDecisions.trim())}">${esc(p.openDecisions.trim())}</dd>` : ""}
         ${rs && i <= PH_INDEX.konzept ? `<dt>Readiness</dt><dd>${recBadge(rs, true)}${rs.critOpen.length ? ` <span class="muted">${plural(rs.critOpen.length, "kritische Lücke", "kritische Lücken")}</span>` : ""}</dd>` : ""}
       </dl>
-      ${done ? "" : `<div class="ov-blk"><div class="ov-blk-h">Checklist ${esc(ph.label)}<span class="grow"></span><span>${g.length - openG} / ${g.length}</span></div>
+      ${done ? "" : `<div class="ov-blk"><div class="ov-blk-h">Checkliste ${esc(ph.label)}<span class="grow"></span><span>${g.length - openG} / ${g.length}</span></div>
         <div class="gates">${ph.gates.map((txt, k) => `<label class="gate ${g[k] ? "ok" : ""}"><input type="checkbox" data-ovgate="${ph.key}-${k}" data-id="${id}" ${g[k] ? "checked" : ""}><span>${esc(txt)}</span></label>`).join("")}</div>
         ${nextPh ? `<div><button class="btn small ${openG ? "" : "primary"}" data-action="ov-next" data-id="${id}" title="${openG ? `${plural(openG, "Punkt ist", "Punkte sind")} noch offen` : "Alle Punkte erledigt"}">Weiter zu ${esc(nextPh.long)} →</button></div>` : ""}</div>`}
       ${(() => { const open = openTasks(p).sort(byDue); const od = open.filter(taskOverdue).length;
-        return `<div class="ov-blk"><div class="ov-blk-h">Tasks<span class="grow"></span><span>${open.length ? `${open.length} offen` : "keine offen"}${od ? ` · <b style="color:var(--crit)">${od} überfällig</b>` : ""}</span></div>
+        return `<div class="ov-blk"><div class="ov-blk-h">Aufgaben<span class="grow"></span><span>${open.length ? `${open.length} offen` : "keine offen"}${od ? ` · <b style="color:var(--crit)">${od} überfällig</b>` : ""}</span></div>
           ${open.slice(0, 4).map(tk => taskLine(p, tk)).join("")}
           ${open.length > 4 ? `<div><button class="btn ghost small" data-action="open" data-id="${id}" data-tab="tasks">Alle ${open.length} Aufgaben zeigen</button></div>` : ""}
           <div class="ov-in"><input type="text" data-newtask="${id}" placeholder="Neue Aufgabe, Enter zum Hinzufügen" aria-label="Neue Aufgabe"></div>
           <div class="ov-in"><input list="dl-team" data-newowner="${id}" placeholder="Wer?" aria-label="Zuweisen an" style="flex:1"><input type="date" data-newdue="${id}" aria-label="Fälligkeit der Aufgabe"><button class="btn small" data-action="task-add" data-id="${id}">Hinzufügen</button></div></div>`; })()}
       <div class="ov-blk"><div class="ov-blk-h">Status</div><div class="hpick">${Object.keys(HEALTH).map(k => `<button style="--hc:var(${HEALTH[k].color})" data-action="ov-health" data-id="${id}" data-h="${k}" aria-pressed="${p.health === k}"><i></i>${esc(HEALTH[k].label)}</button>`).join("")}</div></div>
-      <div class="ov-blk"><div class="ov-blk-h">Nächster Schritt</div><div class="ov-in"><input type="text" data-ovf="nextStep" data-id="${id}" value="${esc(p.nextStep)}" placeholder="Was passiert als Nächstes?" aria-label="Nächster Schritt"><input type="date" data-ovf="nextStepDue" data-id="${id}" value="${esc(p.nextStepDue)}" class="${due !== null && due < 0 ? "overdue" : ""}" aria-label="Fälligkeit" title="${due !== null && due < 0 ? `Überfällig seit ${plural(-due, "Tag", "Tagen")}` : "Fälligkeit"}"></div></div>
+      <div class="ov-blk"><div class="ov-blk-h">Nächster Schritt</div><div class="ov-in"><input type="text" data-ovf="nextStep" data-id="${id}" value="${esc(p.nextStep)}" placeholder="Was passiert als Nächstes?" aria-label="Nächster Schritt"><input type="date" data-ovf="nextStepDue" data-id="${id}" value="${esc(p.nextStepDue)}" class="${due !== null && due < 0 ? "overdue" : ""}" aria-label="Fälligkeit" title="${due !== null && due < 0 ? `Überfällig seit ${plural(-due, "Tag", "Tagen")}` : "Fälligkeit"}"></div>${p.nextStepAuto && p.nextStepAuto === p.nextStep ? `<small class="ns-auto">${ico("sparkles")}automatisch erkannt</small>` : ""}${(() => { const sg = !paused && !done && isMineProject(p) ? nsTop(p) : null; return sg ? nsChip(p, sg, true) : ""; })()}</div>
       <div class="ov-blk"><div class="ov-blk-h">Letztes Update</div>
         <div class="ov-last ${stale ? "stale" : ""}">${last ? `${esc(last.text)} <small>· ${esc(fmtDay(String(last.at).slice(0, 10)))}</small>` : `<span class="muted">Noch kein Update erfasst.</span>`}${stale ? `<br><b>${plural(age, "Tag", "Tage")} ohne Update</b>` : ""}</div>
         <div class="ov-in"><input type="text" data-ovupd="${id}" placeholder="Kurzes Update, Enter zum Erfassen" aria-label="Kurzes Update"><button class="btn small" data-action="ov-log" data-id="${id}">Erfassen</button></div></div>
@@ -2213,7 +2322,7 @@ function renderTeam(){
     <div class="ov-stat"><span class="lbl">Offene Aufgaben</span><b class="num">${items.length}</b><small>in ${plural(new Set(items.map(x => x.p.id)).size, "Projekt", "Projekten")}</small></div>
     <div class="ov-stat ${late ? "alert" : ""}"><span class="lbl">Überfällig</span><b class="num">${late}</b><small>${late ? "heute nachfassen" : "nichts überfällig"}</small></div>
     <div class="ov-stat ${waiting ? "alert" : ""}"><span class="lbl">Wartet</span><b class="num">${waiting}</b><small>${waiting ? "hängt an jemandem" : "nichts wartet"}</small></div>
-    <div class="ov-stat ${unassigned.length ? "alert" : ""}"><span class="lbl">Nicht zugewiesen</span><b class="num">${unassigned.length}</b><small>Aufgaben ohne Owner</small></div>
+    <div class="ov-stat ${unassigned.length ? "alert" : ""}"><span class="lbl">Nicht zugewiesen</span><b class="num">${unassigned.length}</b><small>Aufgaben ohne Verantwortliche</small></div>
     <div class="ov-stat"><span class="lbl">Erledigt in 7 Tagen</span><b class="num">${doneWeek}</b><small>Aufgaben geschlossen</small></div>
     <div class="ov-stat"><span class="lbl">Team</span><b class="num">${members.length}</b><small>${members.length ? plural(members.length, "Person", "Personen") : "Team unten ergänzen"}</small></div>`;
   const byTask = (a, b) => byDue(a.t, b.t);
@@ -2238,7 +2347,7 @@ function renderTeam(){
       <td><input data-tmfield="skills" data-mid="${esc(m.id)}" value="${esc(m.skills || "")}" placeholder="z. B. Salesforce, CRM" aria-label="Zuständig für"></td><td>${kindSel(`data-tmfield="kind" data-mid="${esc(m.id)}"`, m.kind || "team")}</td>
       <td><input type="date" data-tmfield="from" data-mid="${esc(m.id)}" value="${esc(m.from || "")}" aria-label="Start ab"></td><td><input data-tmfield="country" data-mid="${esc(m.id)}" value="${esc(m.country)}" aria-label="Land"></td>
       <td class="num">${cnt(m.name)}</td><td><button class="btn ghost small" data-action="tm-del" data-mid="${esc(m.id)}">Entfernen</button></td></tr>`).join("")}
-    <tr><td><input id="tm-new-name" placeholder="Vor- und Nachname" aria-label="Name des neuen Mitglieds"></td><td><input id="tm-new-role" placeholder="z. B. Salesforce Owner" aria-label="Rolle des neuen Mitglieds"></td><td><input id="tm-new-skills" placeholder="z. B. Salesforce, CRM" aria-label="Zuständig für"></td><td>${kindSel(`id="tm-new-kind"`, "team")}</td><td><input type="date" id="tm-new-from" aria-label="Start ab"></td><td><input id="tm-new-country" placeholder="z. B. Polen" aria-label="Land des neuen Mitglieds"></td><td></td><td><button class="btn primary small" data-action="tm-add">Hinzufügen</button></td></tr>
+    <tr><td><input id="tm-new-name" placeholder="Vor- und Nachname" aria-label="Name des neuen Mitglieds"></td><td><input id="tm-new-role" placeholder="z. B. Leitung Salesforce" aria-label="Rolle des neuen Mitglieds"></td><td><input id="tm-new-skills" placeholder="z. B. Salesforce, CRM" aria-label="Zuständig für"></td><td>${kindSel(`id="tm-new-kind"`, "team")}</td><td><input type="date" id="tm-new-from" aria-label="Start ab"></td><td><input id="tm-new-country" placeholder="z. B. Polen" aria-label="Land des neuen Mitglieds"></td><td></td><td><button class="btn primary small" data-action="tm-add">Hinzufügen</button></td></tr>
   </tbody></table></div>`;
 }
 function renderPlan(p){
@@ -2664,8 +2773,10 @@ function renderSmartHints(p, ro){
   const hs = $("#d-health-sg"), ns = $("#d-ns-sg"), dec = $("#d-dec-sec");
   const sg = !drawer.draft && suggestHealth(p);
   if (hs) hs.innerHTML = sg ? `<div class="sg ${sg.h === "green" ? "ok" : ""}"><span>Vorschlag aus den Fakten: <b>${esc(HEALTH[sg.h].label)}</b> · ${esc(sg.why.join(", "))}</span>${ro ? "" : `<button class="btn small" data-action="health-accept" data-id="${esc(p.id)}">Übernehmen</button>`}</div>` : "";
-  const nxt = openTasks(p).sort(byDue)[0];
-  if (ns) ns.innerHTML = !drawer.draft && !ro && !(p.nextStep || "").trim() && nxt ? `<div class="sg ok"><span>Kein nächster Schritt. Vorschlag aus den Aufgaben: <b>${esc(nxt.text)}</b>${nxt.due ? ` · bis ${esc(fmtDay(nxt.due))}` : ""}</span><button class="btn small" data-action="ns-accept" data-id="${esc(p.id)}">Übernehmen</button></div>` : "";
+  if (ns){
+    const list = !drawer.draft && !ro ? nextStepSuggestions(p).filter(x => x.text.toLowerCase() !== (p.nextStep || "").trim().toLowerCase()).slice(0, 3) : [];
+    ns.innerHTML = list.length ? `<div class="ns-box"><div class="ns-h">${ico("sparkles")}Vorgeschlagene nächste Schritte</div>${list.map(x => nsChip(p, x, true)).join("")}</div>` : "";
+  }
   if (!dec) return;
   const decs = p.decisions || [], mts = p.meetings || [];
   dec.innerHTML = `<div class="section-head" style="margin:0"><h2>Entscheidungen & Meetings</h2><span class="muted" style="font-size:13px">${plural(decs.length, "Entscheidung", "Entscheidungen")} · ${plural(mts.length, "Meeting", "Meetings")}</span></div>
@@ -2779,7 +2890,7 @@ function renderToolsList(p){
   const el = $("#tl-list"); if (!el) return;
   const tools = p.tools || [];
   const cls = v => ({ "Ja":"av-ja", "Nein":"av-nein", "Teilweise":"av-teil", "Unklar":"av-unklar" }[v] || "");
-  el.innerHTML = tools.length ? `<table class="tt"><thead><tr><th style="width:17%">Tool / System</th><th style="width:19%">Zweck im Projekt</th><th style="width:17%">Zugriff / Lizenz</th><th style="width:10%">Vorhanden?</th><th style="width:12%">Phase / Abhängigkeit</th><th style="width:10%">Freigabe / Owner</th><th style="width:13%">Nächster Schritt / Ticket</th><th style="width:2%"></th></tr></thead><tbody>
+  el.innerHTML = tools.length ? `<table class="tt"><thead><tr><th style="width:17%">Tool / System</th><th style="width:19%">Zweck im Projekt</th><th style="width:17%">Zugriff / Lizenz</th><th style="width:10%">Vorhanden?</th><th style="width:12%">Phase / Abhängigkeit</th><th style="width:10%">Freigabe / verantwortlich</th><th style="width:13%">Nächster Schritt / Ticket</th><th style="width:2%"></th></tr></thead><tbody>
     ${tools.map(t => `<tr data-tlid="${esc(t.id)}">
       ${["tool","purpose","access"].map(k => `<td><textarea rows="1" data-tid="${esc(t.id)}" data-tfield="${k}" aria-label="${k}">${esc(deUi(t[k]))}</textarea>${k === "tool" && (t.cat || t.kind) ? `<div class="tl-meta" title="${esc(t.src || "")}">${esc([t.kind, t.iface].filter(Boolean).join(" · "))}</div>` : ""}${k === "access" && t.pers ? `<div class="tl-meta">Personenbezug</div>` : ""}</td>`).join("")}
       <td class="${cls(t.available)}"><select data-tid="${esc(t.id)}" data-tfield="available" aria-label="Vorhanden?">${TOOL_AVAIL.map(v => `<option value="${esc(v)}" ${t.available===v?"selected":""}>${TOOL_AVAIL_LABEL[v]}</option>`).join("")}</select></td>
@@ -2796,13 +2907,13 @@ function renderTasksPane(p){
   const row = t => `<tr class="${taskOverdue(t) ? "late" : ""}">
     <td><input type="checkbox" data-task="${esc(t.id)}" data-id="${esc(p.id)}" ${t.status === TASK_DONE ? "checked" : ""} aria-label="Erledigt: ${esc(t.text)}"></td>
     <td><input data-tkfield="text" data-tid="${esc(t.id)}" value="${esc(t.text)}" aria-label="Aufgabe"><input data-tkfield="note" data-tid="${esc(t.id)}" value="${esc(t.note || "")}" placeholder="Statusnotiz" aria-label="Statusnotiz" style="margin-top:4px"></td>
-    <td><input data-tkfield="owner" data-tid="${esc(t.id)}" value="${esc(t.owner)}" list="dl-team" placeholder="Wer?" aria-label="Owner">${!t.owner ? ((sg) => sg ? `<button class="tk-sg" data-action="tk-sugg" data-tid="${esc(t.id)}" data-who="${esc(sg.name)}" title="Zuständig für ${esc(sg.why)}">→ ${esc(sg.name)}</button>` : "")(suggestOwner(t.text)) : ""}</td>
+    <td><input data-tkfield="owner" data-tid="${esc(t.id)}" value="${esc(t.owner)}" list="dl-team" placeholder="Wer?" aria-label="Verantwortlich">${!t.owner ? ((sg) => sg ? `<button class="tk-sg" data-action="tk-sugg" data-tid="${esc(t.id)}" data-who="${esc(sg.name)}" title="Zuständig für ${esc(sg.why)}">→ ${esc(sg.name)}</button>` : "")(suggestOwner(t.text)) : ""}</td>
     <td><select data-tkfield="status" data-tid="${esc(t.id)}" aria-label="Status">${Object.keys(TASK_STATUS).map(k => `<option value="${k}" ${t.status === k ? "selected" : ""}>${esc(TASK_STATUS[k])}</option>`).join("")}</select></td>
     <td><input type="date" data-tkfield="due" data-tid="${esc(t.id)}" value="${esc(t.due)}" aria-label="Fälligkeit"></td>
     <td style="white-space:nowrap"><button class="btn ghost small" data-action="tk-deleg" data-tid="${esc(t.id)}" title="Teams-Nachricht zum Delegieren kopieren">Delegieren</button><button class="btn ghost small" data-action="tk-del" data-tid="${esc(t.id)}">Löschen</button></td></tr>`;
   el.innerHTML = `<div class="section-head" style="margin:0"><h2>Aufgaben</h2>${open.length ? `<button class="btn small" data-action="tk-copy">Offene Aufgaben kopieren</button>` : ""}</div>
     <div class="tk-add"><input id="tk-new-text" placeholder="Was ist zu tun? z. B. @Jonas API klären" aria-label="Neue Aufgabe"><input id="tk-new-owner" list="dl-team" placeholder="Wer? oder @ im Text" aria-label="Zuweisen an"><input type="date" id="tk-new-due" aria-label="Fälligkeit"><button class="btn primary small" data-action="tk-add">Aufgabe hinzufügen</button></div>
-    ${open.length ? `<div class="table-scroll"><table class="tt tk-table" style="min-width:760px"><thead><tr><th></th><th>Aufgabe</th><th>Owner</th><th>Status</th><th>Fällig</th><th></th></tr></thead><tbody>${open.map(row).join("")}</tbody></table></div>` : `<div class="muted" style="font-size:14px">Keine offenen Aufgaben.</div>`}
+    ${open.length ? `<div class="table-scroll"><table class="tt tk-table" style="min-width:760px"><thead><tr><th></th><th>Aufgabe</th><th>Verantwortlich</th><th>Status</th><th>Fällig</th><th></th></tr></thead><tbody>${open.map(row).join("")}</tbody></table></div>` : `<div class="muted" style="font-size:14px">Keine offenen Aufgaben.</div>`}
     ${done.length ? `<details><summary class="muted" style="font-size:13px;cursor:pointer">${plural(done.length, "erledigte Aufgabe", "erledigte Aufgaben")}</summary><div style="display:grid;gap:5px;margin-top:8px">${done.map(t => taskLine(p, t)).join("")}</div></details>` : ""}
     <div class="muted" style="font-size:12.5px">Weise jemanden aus Team &amp; Aufgaben zu und setze eine Frist. In Arbeit und Wartet zeigen den Stand. Die Statusnotiz ist eine Zeile, kein Chat. Das Gespräch bleibt in Teams.</div>`;
 }
@@ -2900,7 +3011,7 @@ function mapHeader(cells, spec){
 }
 function checklistFromSheets(sheets, fileName){
   const Q_SPEC = [["nr",/^nr\.?$|^nummer|^no\.?$|^#$/],["area",/prüfbereich|^bereich|^area|domain/],["core",/^kern|^core/],["q",/leitfrage|^frage|prüfpunkt|question/],["type",/^typ/],["prio",/priorit/],["answer",/antwort|ist-stand|answer|current/],["evidence",/evidenz|artefakt|evidence|artefact|artifact/],["owner",/^owner|verantwortlich/],["status",/^status$/],["due",/fällig|faellig|termin|due/],["action",/folgeaktion|maßnahme|massnahme|follow|action/]];
-  const T_SPEC = [["tool",/^tool|system/],["purpose",/zweck|purpose/],["access",/zugriff|lizenz|access|licen/],["available",/vorhanden|available/],["phase",/phase|abhängigkeit|dependency/],["owner",/approver|owner/],["next",/nächster schritt|next step|ticket/]];
+  const T_SPEC = [["tool",/^tool|system/],["purpose",/zweck|purpose/],["access",/zugriff|lizenz|access|licen/],["available",/vorhanden|available/],["phase",/phase|abhängigkeit|dependency/],["owner",/approver|owner|verantwortlich/],["next",/nächster schritt|next step|ticket/]];
   let qSheet = null, qHead = 0, qMap = null;
   for (const sh of sheets){
     for (const r of Object.keys(sh.rows).map(Number).sort((a,b)=>a-b)){
@@ -3766,7 +3877,7 @@ function mtRender(){
       </section>
       ${sec("Kernpunkte", an.summary.length, `<label class="mt-row" style="align-items:center">${cb("sum", an.sumOn !== false)}<span style="font-size:13.5px">Als Meeting-Protokoll im Projektverlauf speichern</span></label>
         <textarea class="mt-sum" data-mtk="summaryText" rows="${Math.max(3, an.summary.length + 1)}" placeholder="Ein Punkt pro Zeile">${esc(an.summary.join("\n"))}</textarea>`)}
-      ${sec("Aufgaben", an.actions.length, actions, `<span class="muted" style="font-size:12.5px">Owner und Fälligkeit aus dem Gespräch, bitte prüfen</span>`)}
+      ${sec("Aufgaben", an.actions.length, actions, `<span class="muted" style="font-size:12.5px">Verantwortliche und Fälligkeit aus dem Gespräch, bitte prüfen</span>`)}
       ${done}
       ${list("decisions", "Entscheidungen", an.decisions)}
       ${list("open", "Offene Entscheidungen", an.open)}
@@ -3781,7 +3892,7 @@ function mtRender(){
           <div class="mt-actions"><button class="btn small" data-action="mt-cp-copy">Prompt kopieren</button>${SpeechDict.btnHtml("mt-cp-answer")}<button class="btn small" data-action="mt-cp-paste-try" title="Zwischenablage lesen, wenn der Browser es erlaubt">Aus Zwischenablage</button></div>
           <textarea id="mt-cp-answer" class="mt-paste" style="min-height:110px" placeholder='{"summary":[…],"actions":[…],"nextStep":"…"}'></textarea>
           ${mt.cp.err ? `<div class="gate-note">${esc(mt.cp.err)}</div>` : ""}
-          <div class="mt-actions"><button class="btn small primary" data-action="mt-cp-apply">Copilot-Antwort übernehmen</button></div>` : `<p class="muted" style="margin:0;font-size:13.5px">Lokale Auswertung erkennt typische Formulierungen. Copilot liefert bei langen Meetings genauere Aufgaben, Owner und den nächsten Schritt.</p>`}
+          <div class="mt-actions"><button class="btn small primary" data-action="mt-cp-apply">Copilot-Antwort übernehmen</button></div>` : `<p class="muted" style="margin:0;font-size:13.5px">Lokale Auswertung erkennt typische Formulierungen. Copilot liefert bei langen Meetings genauere Aufgaben, Verantwortliche und den nächsten Schritt.</p>`}
       </section>
     </div>
     <div class="d-foot"><span class="muted" id="mt-count" style="font-size:13px">${esc(n)}</span>
@@ -3883,13 +3994,22 @@ async function mtApply(){
 
 /* ---------- Next step moves on by itself ---------- */
 function advanceNextStep(p, doneTask){
+  // A task the radar created from a checklist point ticks that point off too
+  if (doneTask && /^gate:[a-z]+-\d+$/.test(doneTask.auto || "")) p.gates = Object.assign({}, p.gates, { [doneTask.auto.slice(5)]: true });
   const ns = (p.nextStep || "").trim();
   const finished = doneTask && ns && (ns.toLowerCase() === doneTask.text.trim().toLowerCase() || (mtOverlap(ns, doneTask.text).r >= .8 && mtOverlap(doneTask.text, ns).r >= .8));
   if (ns && !finished) return false;
   const nxt = openTasks(p).sort(byDue)[0];
-  if (!nxt){ if (finished){ p.nextStep = ""; p.nextStepDue = ""; } return false; }
-  p.nextStep = nxt.text; p.nextStepDue = nxt.due || "";
-  pushLog(p, logEntry(`Nächster Schritt rückt nach: ${nxt.text}${nxt.due ? ` (bis ${fmtDay(nxt.due)})` : ""}`, "system"));
+  if (nxt){
+    p.nextStep = nxt.text; p.nextStepDue = nxt.due || ""; p.nextStepAuto = "";
+    pushLog(p, logEntry(`Nächster Schritt rückt nach: ${nxt.text}${nxt.due ? ` (bis ${fmtDay(nxt.due)})` : ""}`, "system"));
+    return true;
+  }
+  if (finished){ p.nextStep = ""; p.nextStepDue = ""; }
+  // No task left: the radar works out the next step itself
+  const sg = nextStepSuggestions(p).find(s => !s.advance && !s.taskId);
+  if (!sg) return false;
+  nsApply(p, sg, true);
   return true;
 }
 
@@ -3916,6 +4036,122 @@ function suggestHealth(p){
   if (h === p.health) return null;
   if (h === "green" && p.health !== "green"){ return { h, why: ["keine überfälligen Punkte, kein Blocker, im Zeitplan"] }; }
   return { h, why };
+}
+
+/* ---------- Next steps: the radar works out what comes next ---------- */
+// Checked in the order a senior project manager would: what is late, what blocks, what endangers the go-live,
+// what is missing for the current phase. Each suggestion comes with a reason, an owner and a due date.
+const NS_GATE_ACTION = {
+  intake: ["Problem und Ziel mit dem Fachbereich beschreiben", "Sponsor benennen lassen", "Fachbereich und Ansprechpartner benennen"],
+  analyse: ["Discovery-Termin mit dem Fachbereich halten", "Readiness-Check durchführen (Ziel: Bereit oder Bedingtes Go)", "Tools und Zugriffe klären", "Nutzen und KPIs beziffern"],
+  konzept: ["Lösungsdesign mit dem Fachbereich abstimmen", "Datenschutz prüfen (DSFA, falls nötig)", "Betriebsrat einbeziehen", "AI-Act-Risikoklasse bestimmen", "Freigabe beim Sponsor einholen"],
+  build: ["MVP bzw. Prototyp bauen", "Systeme und Schnittstellen anbinden", "Dokumentation beginnen"],
+  test: ["Testfälle mit dem Fachbereich durchführen", "IT-Sicherheitsprüfung anstoßen", "Fachliche Abnahme unterschreiben lassen"],
+  golive: ["Nutzer schulen", "Rollout abschließen", "Eintrag im AI Inventory anlegen"],
+  hypercare: ["KPIs gegen den Business Case messen", "Feedback und Fehler bearbeiten", "Übergabe an Betrieb bzw. Owner vorbereiten"],
+  done: ["Lessons Learned dokumentieren", "Abschluss an den Sponsor melden"],
+};
+const NS_GATE_HINT = { "konzept-1": "Datenschutz DSFA", "konzept-2": "Betriebsrat", "konzept-3": "AI Act Governance", "konzept-4": "Sponsor", "test-1": "IT-Sicherheit Security", "golive-0": "Schulung Training", "golive-2": "AI Inventory Governance", "build-1": "Schnittstellen API Integration" };
+function addWorkdays(n){
+  const d = new Date(); let left = n;
+  while (left > 0){ d.setDate(d.getDate() + 1); if (d.getDay() !== 0 && d.getDay() !== 6) left--; }
+  return isoDay(d);
+}
+const nsFirstLine = v => String(v || "").split(/\n|;\s/)[0].trim().slice(0, 140);
+function nsOwner(p, hint){
+  const sg = hint ? suggestOwner(hint) : null;
+  return sg ? sg.name : (p.lead || myProfile().name || "");
+}
+function nextStepSuggestions(p){
+  if (!p || !isActive(p) || p.health === "paused") return [];
+  const out = [];
+  const add = (prio, key, text, why, o = {}) => {
+    if (!text || out.some(x => x.text.toLowerCase() === text.toLowerCase())) return;
+    out.push({ prio, key, text, why, owner: o.owner ?? nsOwner(p, o.hint || text), due: o.due || addWorkdays(5), ...o });
+  };
+  const i = phaseIdx(p), ph = PHASES[i];
+  const open = openTasks(p);
+  const covered = text => open.some(t => mtOverlap(text, t.text).r >= .7);
+  open.filter(taskOverdue).sort(byDue).slice(0, 2).forEach(t => {
+    const late = -daysFromToday(t.due);
+    add(95 + Math.min(late, 4), "late:" + t.id, t.owner && !isMine(t.owner) ? `Bei ${firstName(t.owner)} nachhaken: ${t.text}` : t.text,
+      `Aufgabe seit ${plural(late, "Tag", "Tagen")} überfällig`, { owner: t.owner || "", due: todayISO(), taskId: t.id });
+  });
+  if ((p.blockers || "").trim()) add(90, "blocker", `Blocker lösen: ${nsFirstLine(p.blockers)}`, "Offener Blocker hält das Projekt auf", { due: addWorkdays(2), hint: p.blockers });
+  const gl = daysFromToday(p.targetDate);
+  if (gl !== null && gl < 0 && i < PH_INDEX.golive) add(85, "golive-late", "Go-live neu planen und mit dem Sponsor abstimmen", `Go-live war am ${fmtDay(p.targetDate)}`, { due: addWorkdays(3) });
+  else if (gl !== null && gl <= 14 && i < PH_INDEX.test) add(80, "golive-near", "Go-live-Termin prüfen: Test und Abnahme sind noch offen", `Go-live in ${plural(gl, "Tag", "Tagen")}, Projekt steht in ${ph.label}`, { due: addWorkdays(2) });
+  const rs = readinessStats(p);
+  if (rs && i <= PH_INDEX.konzept) rs.critOpen.slice(0, 1).forEach(q => add(75, "crit:" + q.nr, `Kritische Lücke klären: ${deUi(q.q).replace(/\?$/, "")}`, `Readiness-Frage Nr. ${q.nr} ist kritisch und offen`, { owner: q.owner || undefined, due: q.due || addWorkdays(5), hint: deUi(q.q) }));
+  const acc = openAccessFor(p).filter(t => ["Nein", "Unklar", ""].includes(t.available)).sort((a, b) => (a.due || "9999").localeCompare(b.due || "9999"));
+  if (acc.length && i <= PH_INDEX.build){
+    const t = acc[0];
+    add(70, "acc:" + t.id, `Zugang beantragen: ${t.tool}${t.access ? " – " + t.access : ""}`, `${plural(acc.length, "Zugang ist", "Zugänge sind")} noch nicht da`, { owner: t.owner || undefined, due: t.due || addWorkdays(5), hint: `${t.tool} ${t.access || ""}` });
+  }
+  if ((p.openDecisions || "").trim()) add(65, "decision", `Entscheidung herbeiführen: ${nsFirstLine(p.openDecisions)}`, "Entscheidung ist offen", { due: addWorkdays(5), owner: p.sponsor || undefined });
+  const g = gateList(p, ph.key), k = g.findIndex(x => !x);
+  if (k >= 0){
+    const text = (NS_GATE_ACTION[ph.key] || [])[k] || ph.gates[k];
+    if (!covered(text)) add(60, `gate:${ph.key}-${k}`, text, `Phase ${ph.label}: ${g.filter(Boolean).length} von ${g.length} Punkten erledigt`, { gate: `${ph.key}-${k}`, hint: NS_GATE_HINT[`${ph.key}-${k}`] || text });
+  } else if (i < PHASES.length - 1){
+    add(68, "advance", `In Phase „${PHASES[i + 1].long}“ wechseln`, `Alle Punkte der Phase ${ph.label} sind erledigt`, { advance: true, owner: "", due: todayISO() });
+  }
+  if (i >= PH_INDEX.golive && !(p.aiInventoryId || "").trim()) add(55, "inventory", "Eintrag im AI Inventory anlegen", "Live ohne AI-Inventory-ID", { hint: "AI Inventory Governance" });
+  const idle = daysSince(lastActivity(p));
+  if (idle !== null && idle >= STALE_DAYS) add(50, "stale", "Kurzes Status-Update einholen und eintragen", `${plural(idle, "Tag", "Tage")} ohne Update`, { due: addWorkdays(1) });
+  if (!p.targetDate && i >= PH_INDEX.konzept) add(45, "nodate", "Go-live-Termin festlegen", "Kein Go-live-Datum geplant", { due: addWorkdays(5) });
+  const nextTask = open.filter(t => !taskOverdue(t)).sort(byDue)[0];
+  if (nextTask) add(40, "task:" + nextTask.id, nextTask.text, "Nächste offene Aufgabe", { owner: nextTask.owner || "", due: nextTask.due || addWorkdays(5), taskId: nextTask.id });
+  return out.sort((a, b) => b.prio - a.prio);
+}
+/** The suggestion worth showing for a project, or null when its next step is fine. */
+function nsTop(p){
+  const list = nextStepSuggestions(p); if (!list.length) return null;
+  const ns = (p.nextStep || "").trim(), due = daysFromToday(p.nextStepDue);
+  const top = list[0];
+  if (ns && top.text.toLowerCase() === ns.toLowerCase()) return null;
+  if (!ns || (due !== null && due < 0) || top.prio >= 85 || (p.nextStepAuto && p.nextStepAuto === p.nextStep)) return top;
+  return null;
+}
+/** Take a suggestion over: next step, due date, and a task with owner so it shows up in Team and follow-ups. */
+function nsApply(x, sg, auto){
+  if (sg.advance){
+    const nxt = PHASES[phaseIdx(x) + 1]; if (!nxt) return;
+    x.phase = nxt.key; if (nxt.key === "done") x.doneAt = nowISO();
+    pushLog(x, logEntry(`Phase: ${nxt.long} (alle Punkte erledigt)`, "system"));
+    const again = nextStepSuggestions(x).find(s => !s.advance);
+    if (again) nsApply(x, again, auto);
+    return;
+  }
+  x.nextStep = sg.text; x.nextStepDue = sg.due || ""; x.nextStepAuto = auto ? sg.text : "";
+  if (!auto && !sg.taskId && sg.key !== "stale"){
+    const dup = openTasks(x).find(t => mtOverlap(sg.text, t.text).r >= .7);
+    if (dup){ if (!dup.owner && sg.owner) dup.owner = sg.owner; if (!dup.due && sg.due) dup.due = sg.due; }
+    else x.tasks = (x.tasks || []).concat({ id: rid(), text: sg.text.slice(0, 500), owner: sg.owner || "", due: sg.due || "", status: TASK_OPEN, note: "", createdAt: nowISO(), doneAt: "", auto: sg.key });
+  }
+  pushLog(x, logEntry(`Nächster Schritt${auto ? " (automatisch erkannt)" : ""}: ${sg.text}${sg.due ? ` (bis ${fmtDay(sg.due)})` : ""}`, "system"));
+}
+async function nsAccept(id, key){
+  const p = state.projects.find(x => x.id === id); if (!p) return;
+  const sg = nextStepSuggestions(p).find(s => s.key === key) || nsTop(p); if (!sg) return;
+  await patchProject(id, x => nsApply(x, sg, false));
+  const cur = state.projects.find(x => x.id === id);
+  if (drawer && cur){ const a1 = $("#d-nextStep"), a2 = $("#d-nextStepDue"), a3 = document.querySelector("#drawer-slot [data-field='phase']"); if (a1) a1.value = cur.nextStep || ""; if (a2) a2.value = cur.nextStepDue || ""; if (a3) a3.value = cur.phase; }
+  toast(sg.advance ? `${p.code}: weiter zu ${PHASES[phaseIdx(p) + 1] ? PHASES[phaseIdx(p) + 1].long : "nächster Phase"}` : `${p.code}: ${sg.text}${sg.owner ? ` → ${firstName(sg.owner)}` : ""}`);
+}
+/** A ticked checklist point that was the next step: the next one follows automatically. */
+function nsAfterGate(x, key){
+  const [ph, k] = [key.replace(/-\d+$/, ""), +key.split("-").pop()];
+  const ns = (x.nextStep || "").trim().toLowerCase(); if (!ns) return advanceNextStep(x, null);
+  const names = [(NS_GATE_ACTION[ph] || [])[k], (PHASES[PH_INDEX[ph]] || { gates: [] }).gates[k]].filter(Boolean).map(t => t.toLowerCase());
+  (x.tasks || []).filter(t => t.status !== TASK_DONE && (t.auto === `gate:${key}` || names.includes(String(t.text || "").trim().toLowerCase()))).forEach(t => { t.status = TASK_DONE; t.doneAt = nowISO(); });
+  if (!names.includes(ns)) return false;
+  x.nextStep = ""; x.nextStepDue = "";
+  return advanceNextStep(x, null);
+}
+function nsChip(p, sg, compact){
+  return `<div class="ns-sg"><span class="ns-ico">${ico("sparkles")}</span><span class="ns-t"><b>${esc(sg.text)}</b><small>${esc(sg.why)}${sg.owner ? ` · ${esc(firstName(sg.owner))}` : ""}${sg.due && !sg.advance ? ` · bis ${esc(fmtShort(sg.due))}` : ""}</small></span>
+    <button class="btn small ${compact ? "" : "primary"}" data-action="ns-take" data-id="${esc(p.id)}" data-key="${esc(sg.key)}">${sg.advance ? "Phase wechseln" : "Übernehmen"}</button></div>`;
 }
 
 /* ---------- Agenda for the next meeting ---------- */
@@ -4111,12 +4347,6 @@ document.addEventListener("click", async e => {
     const p = state.projects.find(x => x.id === t.dataset.id); const sg = p && suggestHealth(p); if (!sg) return;
     await patchProject(p.id, x => { x.health = sg.h; pushLog(x, logEntry(`Status: ${HEALTH[sg.h].label} (Vorschlag: ${sg.why.join(", ")})`, "system")); });
     toast(`${p.code}: Status ${HEALTH[sg.h].label}`); return;
-  }
-  if (a === "ns-accept"){
-    const p = state.projects.find(x => x.id === t.dataset.id); if (!p) return;
-    await patchProject(p.id, x => { advanceNextStep(x, null); });
-    if (drawer){ const cur = state.projects.find(x => x.id === p.id); const a1 = $("#d-nextStep"), a2 = $("#d-nextStepDue"); if (a1) a1.value = cur.nextStep; if (a2) a2.value = cur.nextStepDue; }
-    toast("Nächster Schritt übernommen"); return;
   }
   if (a === "dec-add"){
     const inp = $("#d-dec-new"); const v = inp ? inp.value.trim() : ""; if (!v){ inp && inp.focus(); return; }
@@ -4457,7 +4687,7 @@ function xlRow(r, cells, ht){
 }
 const ACC_COLS = [
   { h:"Nr.", w:6 }, { h:"Bereich", w:20 }, { h:"Tool / System", w:26 }, { h:"Art", w:14 }, { h:"Zugriff / Lizenz / Prüfpunkt", w:48 }, { h:"Schnittstelle / Technik", w:24 },
-  { h:"Zweck im Projekt", w:32 }, { h:"Vorhanden?", w:14 }, { h:"Phase / Abhängigkeit", w:16 }, { h:"Approver / Owner", w:22 }, { h:"Fällig", w:12 },
+  { h:"Zweck im Projekt", w:32 }, { h:"Vorhanden?", w:14 }, { h:"Phase / Abhängigkeit", w:16 }, { h:"Freigabe / verantwortlich", w:22 }, { h:"Fällig", w:12 },
   { h:"Nächster Schritt / Ticket", w:32 }, { h:"Erkannt aus", w:40 }, { h:"Personenbezug", w:13 }, { h:"ID", w:10, hidden:true }];
 function accSorted(p){
   const order = c => { const i = ACC_CATS.indexOf(c); return i < 0 ? ACC_CATS.length - 1 : i; };
@@ -4597,7 +4827,7 @@ async function accImport(file){
   const p = currentDrawerProject(); if (!p) return;
   let sheets;
   try { sheets = await readXlsx(await file.arrayBuffer()); } catch (err){ toast(err.message || "Die Excel-Datei konnte nicht gelesen werden."); return; }
-  const SPEC = [["id",/^id$/],["cat",/^bereich/],["tool",/^tool|^system/],["kind",/^art$/],["access",/zugriff|lizenz|prüfpunkt|access/],["iface",/^schnittstelle/],["purpose",/zweck|purpose/],["available",/vorhanden|available/],["phase",/^phase|abhängigkeit/],["owner",/approver|owner/],["due",/^fällig|^due/],["next",/nächster schritt|ticket/],["src",/^erkannt/],["pers",/^personenbezug/]];
+  const SPEC = [["id",/^id$/],["cat",/^bereich/],["tool",/^tool|^system/],["kind",/^art$/],["access",/zugriff|lizenz|prüfpunkt|access/],["iface",/^schnittstelle/],["purpose",/zweck|purpose/],["available",/vorhanden|available/],["phase",/^phase|abhängigkeit/],["owner",/approver|owner|verantwortlich/],["due",/^fällig|^due/],["next",/nächster schritt|ticket/],["src",/^erkannt/],["pers",/^personenbezug/]];
   let hit = null;
   for (const sh of sheets){
     const hr = Object.keys(sh.rows).map(Number).sort((a, b) => a - b).find(r => { const c = sh.rows[r] || []; return c.some(x => /^\s*(tool|system)/i.test(x || "")) && c.some(x => /^\s*(vorhanden|available)/i.test(x || "")); });
@@ -5080,7 +5310,26 @@ function renderWeek(){
       <div class="chips">${x.created ? `<span class="chip">neu angelegt</span>` : ""}${x.phase.map(t => `<span class="chip">Phase: ${esc(t)}</span>`).join("")}${x.done.length ? `<span class="chip ok">${x.done.length} erledigt</span>` : ""}${x.added.length ? `<span class="chip">${x.added.length} neue Aufgaben</span>` : ""}${x.decs.length ? `<span class="chip warn">${plural(x.decs.length, "Entscheidung", "Entscheidungen")}</span>` : ""}${x.docs.length ? `<span class="chip">${plural(x.docs.length, "Dokument", "Dokumente")}</span>` : ""}${x.status.map(t => `<span class="chip">Status: ${esc(t)}</span>`).join("")}</div></div>`).join("")}</div>`
     : `<div class="empty" style="padding:14px 4px">In den letzten 7 Tagen hat sich nichts geändert.</div>`;
 }
-function renderSmartToday(){ if (ui.view !== "heute" || !state.projects.length) return; renderFollowUps(); renderWeek(); }
+function renderSmartToday(){ if (ui.view !== "heute" || !state.projects.length) return; renderNextSteps(); renderFollowUps(); renderWeek(); }
+function nsOpenList(){
+  return state.projects.filter(p => isActive(p) && isMineProject(p)).map(p => ({ p, sg: nsTop(p), sc: assess(p).score })).filter(x => x.sg).sort((a, b) => b.sg.prio - a.sg.prio || b.sc - a.sc);
+}
+function renderNextSteps(){
+  const el = $("#ns-list"); if (!el) return;
+  const list = nsOpenList();
+  $("#ns-all").hidden = list.length < 2;
+  $("#ns-sub").textContent = list.length ? `${plural(list.length, "Projekt braucht", "Projekte brauchen")} einen klaren nächsten Schritt. Ein Klick übernimmt ihn mit Verantwortlichem und Termin.` : "Vom Radar erkannt: was als Nächstes dran ist, mit Grund, Verantwortlichem und Termin";
+  el.innerHTML = list.length ? list.slice(0, 8).map(({ p, sg }) => `<div class="ns-row"><button class="ns-p" data-action="open" data-id="${esc(p.id)}"><span class="mono">${esc(p.code)}</span> ${esc(p.title || "Ohne Titel")}${p.nextStep ? `<small>Bisher: ${esc(p.nextStep)}${p.nextStepDue ? ` · ${esc(fmtShort(p.nextStepDue))}` : ""}</small>` : `<small>Noch kein nächster Schritt</small>`}</button>${nsChip(p, sg)}</div>`).join("")
+    + (list.length > 8 ? `<div class="muted" style="font-size:13px;padding:10px 14px">${plural(list.length - 8, "weiteres Projekt", "weitere Projekte")} in der Projektübersicht.</div>` : "")
+    : `<div class="empty" style="padding:14px 16px">Jedes aktive Projekt hat einen klaren nächsten Schritt.</div>`;
+}
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-action='ns-take'],[data-action='ns-take-all']"); if (!t) return;
+  if (t.dataset.action === "ns-take"){ t.disabled = true; await nsAccept(t.dataset.id, t.dataset.key); return; }
+  const list = nsOpenList(); if (!list.length) return;
+  for (const { p, sg } of list) await patchProject(p.id, x => nsApply(x, sg, false));
+  toast(`${plural(list.length, "nächster Schritt", "nächste Schritte")} übernommen, Aufgaben mit Termin angelegt.`);
+});
 
 /* ---------- Events ---------- */
 document.addEventListener("click", async e => {
@@ -5095,7 +5344,7 @@ document.addEventListener("click", async e => {
   if (a === "wk-copy"){ await copyText(weekText(), "Wochenrückblick kopiert. In Teams oder eine E-Mail einfügen."); return; }
   if (a === "tk-deleg"){
     const p = currentDrawerProject(); const tk = p && (p.tasks || []).find(x => x.id === t.dataset.tid); if (!tk) return;
-    if (!tk.owner){ toast("Erst jemanden als Owner eintragen."); const inp = document.querySelector(`[data-tkfield="owner"][data-tid="${CSS.escape(tk.id)}"]`); inp && inp.focus(); return; }
+    if (!tk.owner){ toast("Erst eine verantwortliche Person eintragen."); const inp = document.querySelector(`[data-tkfield="owner"][data-tid="${CSS.escape(tk.id)}"]`); inp && inp.focus(); return; }
     await copyText(delegateText(p, tk, isMine(tk.owner) ? "self" : "deleg"), `Nachricht an ${firstName(tk.owner)} kopiert. In Teams einfügen.`); return;
   }
   if (a === "tk-sugg"){
@@ -5120,29 +5369,39 @@ document.addEventListener("click", async e => {
   if (a === "goto"){ ui.view = t.dataset.view; saveUi(); render(); window.scrollTo(0,0); return; }
   if (a === "menu"){ menuOpen = !menuOpen; renderChrome(); return; }
   if (a === "collapse"){ ui.collapsed = !ui.collapsed; saveUi(); renderChrome(); return; }
-  if (a === "profile"){ profileOpen = !profileOpen; renderChrome(); if (profileOpen) $("#pf-name").focus(); return; }
+  if (a === "profile"){ profileOpen = !profileOpen; renderChrome(); const pf = $("#pf-name"); if (profileOpen && pf) pf.focus(); return; }
   if (a === "db-login"){
     const userId = ($("#db-user") && $("#db-user").value || "").trim();
     const v = ($("#db-key") && $("#db-key").value || "").trim();
     if (!userId){ toast("Bitte ein Konto wählen."); return; }
     if (!v){ toast("Bitte den Zugangscode eingeben."); return; }
-    Store.setCreds(userId, v);
+    t.disabled = true;
+    const ok = await Store.login(userId, v);
+    t.disabled = false;
+    if (!ok){ toast(state.loginError || "Zugangscode passt nicht."); return; }
     await Store.connect();
-    toast(state.needsKey ? "Zugangscode passt nicht." : `Angemeldet als ${state.account ? state.account.name : "Live"}`);
+    toast(state.needsKey ? "Anmeldung fehlgeschlagen." : `Angemeldet als ${state.account ? state.account.name : "Live"}`);
     return;
   }
   if (a === "db-logout"){
-    Store.clearCreds(); state.needsKey = !!state.authRequired; state.mode = state.authRequired ? "local" : state.mode;
-    if (state.authRequired){ state.projects = []; state.requests = []; }
-    toast("Abgemeldet."); render();
+    if (Store.dirty || Store.saving){ toast("Einen Moment, es wird noch gespeichert."); return; }
+    Store.clearCreds(); clearInterval(Store.poll); state.needsKey = !!state.authRequired; state.mode = state.authRequired ? "local" : state.mode;
+    if (state.authRequired){
+      state.projects = []; state.requests = []; state.meta = { me: { name: "", role: "" }, team: [] };
+      try { localStorage.removeItem(LOCAL_KEY); localStorage.removeItem(SAFETY_KEY); } catch { /* nothing stored */ }
+    }
+    profileOpen = false; toast("Abgemeldet. Die Daten wurden aus diesem Browser entfernt."); render();
     if (state.authRequired) await Store.connect();
     return;
   }
-  if (a === "db-upload"){ state.offerLocal = false; Store.persistLocal(); toast("Projekte werden übernommen …"); return; }
+  if (a === "db-retry"){ await Store.connect(); toast(state.mode === "db" ? "Verbunden." : "Noch keine Verbindung."); return; }
+  if (a === "db-upload"){ localStorage.removeItem(OFFLINE_KEY); state.offerLocal = false; Store.pendingRemote = null; Store.persistLocal(); toast("Projekte werden übernommen …"); render(); return; }
   if (a === "db-skip"){
     try { localStorage.setItem("cws-ai-radar-held-v1", localStorage.getItem(LOCAL_KEY) || ""); } catch {}
-    state.offerLocal = false; state.projects = []; state.requests = []; Store.cache();
-    toast("Die Datenbank bleibt leer. Die Projekte dieses Browsers wurden nicht übernommen.");
+    state.offerLocal = false;
+    if (Store.pendingRemote){ Store.apply(Store.pendingRemote); Store.pendingRemote = null; } else { state.projects = []; state.requests = []; }
+    Store.cache();
+    toast("Nicht übernommen. Eine Kopie bleibt in diesem Browser gespeichert.");
     render(); return;
   }
   if (a === "share-user"){
@@ -5346,7 +5605,7 @@ document.addEventListener("change", async e => {
   if (t.dataset && t.dataset.action === "toggle-gate"){
     const key = t.dataset.gate; const val = t.checked;
     const p = currentDrawerProject(); const ph = key.replace(/-\d+$/,""); const i = +key.split("-").pop();
-    await drawerMutate(x => { x.gates = Object.assign({}, x.gates, { [key]: val }); }, () => `${val ? "Erledigt" : "Wieder geöffnet"}: ${PHASES[PH_INDEX[ph]].gates[i]}`);
+    await drawerMutate(x => { x.gates = Object.assign({}, x.gates, { [key]: val }); if (val && !drawer.draft) nsAfterGate(x, key); }, () => `${val ? "Erledigt" : "Wieder geöffnet"}: ${PHASES[PH_INDEX[ph]].gates[i]}`);
     return;
   }
   if (t.id === "import-file"){
@@ -5355,13 +5614,13 @@ document.addEventListener("change", async e => {
   }
   if (t.dataset && t.dataset.ovgate){
     const id = t.dataset.id, key = t.dataset.ovgate, val = t.checked; const ph = key.replace(/-\d+$/, ""), k = +key.split("-").pop();
-    await patchProject(id, x => { x.gates = Object.assign({}, x.gates, { [key]: val }); pushLog(x, logEntry(`${val ? "Erledigt" : "Wieder geöffnet"}: ${PHASES[PH_INDEX[ph]].gates[k]}`, "system")); });
+    await patchProject(id, x => { x.gates = Object.assign({}, x.gates, { [key]: val }); pushLog(x, logEntry(`${val ? "Erledigt" : "Wieder geöffnet"}: ${PHASES[PH_INDEX[ph]].gates[k]}`, "system")); if (val) nsAfterGate(x, key); });
     return;
   }
   if (t.dataset && t.dataset.ovf){
     const id = t.dataset.id, f = t.dataset.ovf, v = t.value.trim(); const cur = state.projects.find(x => x.id === id);
     if (!cur || (cur[f] || "") === v) return;
-    await patchProject(id, x => { x[f] = v; if (f === "nextStep" && v) pushLog(x, logEntry(`Nächster Schritt: ${v}`, "system")); });
+    await patchProject(id, x => { x[f] = v; if (f === "nextStep"){ x.nextStepAuto = ""; if (v) pushLog(x, logEntry(`Nächster Schritt: ${v}`, "system")); } });
     toast(f === "nextStep" ? `${cur.code}: nächster Schritt gespeichert` : `${cur.code}: Fälligkeit gespeichert`); return;
   }
   if (t.dataset && t.dataset.ovupd) return;
@@ -5463,6 +5722,145 @@ function showCopyFallback(text){
 
 /* ================== Start ================== */
 if (!ui.f) ui.f = { q:"", dept:"", sponsor:"", health:"", phase:"", archived:false };
+/* ================== Verwaltung (admins): access, request form, backups, activity ================== */
+const adm = { data: null, loading: false, err: "", code: null };
+const DRIVER_LABEL = { postgres: "PostgreSQL", blob: "Vercel Blob", sqlite: "Lokale Datenbank", memory: "Testspeicher" };
+async function admApi(method, body, query){
+  const r = await fetch("/api/admin" + (query || ""), { method, cache: "no-store", headers: Store.headers(), body: body ? JSON.stringify(body) : undefined });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401){ Store.clearCreds(); state.needsKey = true; state.mode = "local"; render(); }
+  if (!r.ok) throw new Error(j.error || "Das hat nicht geklappt.");
+  return j;
+}
+async function admLoad(){
+  adm.loading = true; adm.err = "";
+  try { adm.data = await admApi("GET"); } catch (e) { adm.err = e.message; }
+  adm.loading = false;
+  if (ui.view === "admin") renderAdmin();
+}
+const fmtWhen = iso => iso ? new Date(iso).toLocaleString("de-DE", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" }) : "–";
+function downloadJson(name, obj){
+  const url = URL.createObjectURL(new Blob([JSON.stringify(obj, null, 1)], { type: "application/json" }));
+  const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function admInvite(c){
+  return `Hallo ${firstName(c.name)},\n\nhier ist dein Zugang zum CWS AI Projekt-Radar:\n${location.origin}\n\nKonto: ${c.name}\nZugangscode: ${c.code}\n\nDer Code ist persönlich. Nach der Anmeldung merkt sich der Browser dich, du brauchst ihn also nur einmal.${myProfile().name ? "\n\nViele Grüße\n" + firstName(myProfile().name) : ""}`;
+}
+function renderAdmin(){
+  const el = $("#adm-body"); if (!el) return;
+  if (!adm.data){
+    if (!adm.loading && !adm.err) admLoad();
+    el.innerHTML = adm.err ? `<div class="banner warn"><span>${esc(adm.err)}</span><button class="btn small" data-action="adm-reload">Erneut laden</button></div>` : `<div class="empty">Wird geladen …</div>`;
+    return;
+  }
+  const d = adm.data, sys = d.system || {}, users = d.users || [], s = d.settings || {};
+  const local = state.localServer && !state.account;
+  const active = users.filter(u => u.active);
+  const me = state.account ? state.account.id : "";
+  const link = location.origin + "/request";
+  const nameOf = id => (users.find(u => u.id === id) || {}).name || (id === "lokal" ? "Lokal" : id);
+  const codeBox = adm.code ? `<div class="adm-code"><span><b>${adm.code.isNew ? "Zugang angelegt" : "Neuer Zugangscode"} für ${esc(adm.code.name)}.</b> Der Code wird nur jetzt angezeigt.</span><b class="code">${esc(adm.code.code)}</b>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary small" data-action="adm-copy-invite">Einladung für Teams kopieren</button><button class="btn small" data-action="adm-code-done">Fertig</button></div></div>` : "";
+  const usersCard = local ? "" : `<div class="panel adm-card"><h2>Zugänge</h2><p class="muted">Jede Person hat einen eigenen Zugangscode. Ein neuer Code sperrt den alten sofort, auch auf anderen Geräten.</p>
+      <div class="table-scroll"><table class="tt adm-table" style="min-width:760px"><thead><tr><th>Name</th><th>Rolle</th><th>Admin</th><th>Zuletzt angemeldet</th><th></th></tr></thead><tbody>
+      ${users.map(u => `<tr class="${u.active ? "" : "off"}"><td><input data-admfield="name" data-uid="${esc(u.id)}" value="${esc(u.name)}" aria-label="Name"></td><td><input data-admfield="role" data-uid="${esc(u.id)}" value="${esc(u.role)}" placeholder="Rolle" aria-label="Rolle"></td>
+        <td><input type="checkbox" data-admfield="admin" data-uid="${esc(u.id)}" ${u.admin ? "checked" : ""} aria-label="Admin"></td>
+        <td>${esc(fmtWhen(u.lastLoginAt))}${u.active ? "" : ` · <b>gesperrt</b>`}${u.envCode ? ` <small class="muted">· Code aus Vercel</small>` : ""}</td>
+        <td><div class="adm-acts"><button class="btn ghost small" data-action="adm-code" data-uid="${esc(u.id)}">Neuer Code</button>${u.id === me ? `<span class="muted" style="font-size:12.5px;padding:4px 6px">du</span>` : `<button class="btn ghost small" data-action="adm-toggle" data-uid="${esc(u.id)}" data-on="${u.active ? "0" : "1"}">${u.active ? "Sperren" : "Entsperren"}</button><button class="btn ghost small" data-action="adm-del" data-uid="${esc(u.id)}">Löschen</button>`}</div></td></tr>`).join("")}
+      </tbody></table></div>
+      <div class="adm-new"><input id="adm-new-name" placeholder="Vor- und Nachname" aria-label="Name"><input id="adm-new-role" placeholder="Rolle, z. B. AI Automation Expert" aria-label="Rolle"><label style="display:flex;gap:6px;align-items:center;font-size:13px"><input type="checkbox" id="adm-new-admin">Admin</label><button class="btn primary small" data-action="adm-create">Zugang anlegen</button></div></div>`;
+  const opt = (v, cur, l) => `<option value="${esc(v)}" ${String(v) === String(cur) ? "selected" : ""}>${esc(l)}</option>`;
+  const formCard = `<div class="panel adm-card"><h2>Anfrageformular</h2><p class="muted">Fachbereiche füllen das Formular aus. Die Anfrage landet direkt unter Projektanfragen, ohne Datei und ohne E-Mail.</p>
+      <div class="adm-link"><span style="flex:1">${esc(link)}</span><button class="btn small" data-action="adm-copy-link">Link kopieren</button></div>
+      <div class="adm-form">
+        <label>Ansprechpartner<input data-admset="contactName" value="${esc(s.contactName || "")}" placeholder="Vor- und Nachname"></label>
+        <label>E-Mail<input data-admset="contactEmail" type="email" value="${esc(s.contactEmail || "")}" placeholder="name@cws.com"></label>
+        <label class="wide">Link zur Terminbuchung (z. B. Microsoft Bookings)<input data-admset="bookingUrl" value="${esc(s.bookingUrl || "")}" placeholder="https://…"></label>
+        <label>Dauer des Termins<select data-admset="meetingMinutes">${[15, 30, 45, 60].map(m => opt(m, s.meetingMinutes || 30, m + " Minuten")).join("")}</select></label>
+        ${local ? "" : `<label>Anfragen landen bei<select data-admset="requestOwner">${opt("", s.requestOwner || "", "Erster Admin")}${active.map(u => opt(u.id, s.requestOwner || "", u.name)).join("")}</select></label>`}
+        <label class="wide" style="display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink)"><input type="checkbox" data-admset="formOpen" ${s.formOpen !== false ? "checked" : ""}>Formular nimmt Anfragen an</label>
+      </div>
+      <div><button class="btn primary small" data-action="adm-save-settings">Speichern</button></div></div>`;
+  const snaps = d.snapshots || [];
+  const days = [...new Set(snaps.map(x => x.stamp.slice(0, 10)))].slice(0, 10);
+  const dayLabel = day => day === todayISO() ? "Heute" : day === isoDay(new Date(Date.now() - DAY)) ? "Gestern" : fmtDay(day);
+  const snapCard = `<div class="panel adm-card"><h2>Sicherungen</h2><p class="muted">Jeden Tag automatisch, 30 Tage lang: der Stand vor der ersten Änderung des Tages. Wiederherstellen legt den aktuellen Stand vorher selbst als Sicherung ab.</p>
+      <div class="adm-snap">${days.length ? days.map(day => `<b style="font-size:13px;margin-top:6px">${esc(dayLabel(day))}</b>${snaps.filter(x => x.stamp.slice(0, 10) === day).map(x => `<div class="row"><span>${esc(nameOf(x.userId))}${x.stamp.length > 10 ? ` <small class="muted">vor Wiederherstellung, ${esc(x.stamp.slice(11, 13) + ":" + x.stamp.slice(13, 15))} Uhr</small>` : ""}</span><span class="adm-acts"><button class="btn ghost small" data-action="adm-snap-dl" data-stamp="${esc(x.stamp)}" data-uid="${esc(x.userId)}">Herunterladen</button><button class="btn ghost small" data-action="adm-snap-restore" data-stamp="${esc(x.stamp)}" data-uid="${esc(x.userId)}">Wiederherstellen</button></span></div>`).join("")}`).join("") : `<div class="muted" style="font-size:13.5px">Die erste Sicherung entsteht mit der ersten Änderung des Tages.</div>`}</div>
+      <div><button class="btn small" data-action="adm-export">${ico("download")}Gesamtsicherung herunterladen</button></div></div>`;
+  const logCard = `<div class="panel adm-card"><h2>Aktivität</h2><p class="muted">Wer hat was geändert. Die letzten ${(d.audit || []).length} Einträge.</p>
+      <div class="adm-log">${(d.audit || []).map(a => `<div class="row"><small>${esc(fmtWhen(a.at))}</small><span>${esc(a.name || "–")}</span><span>${a.projectId && state.projects.some(p => p.id === a.projectId) ? `<button class="task-p" data-action="open" data-id="${esc(a.projectId)}">${esc(a.text)}</button>` : esc(a.text)}</span></div>`).join("") || `<div class="muted" style="font-size:13.5px">Noch keine Einträge.</div>`}</div></div>`;
+  el.innerHTML = `
+    <div class="ov-stats">
+      <div class="ov-stat"><span class="lbl">Speicher</span><b style="font-size:17px">${esc(DRIVER_LABEL[sys.driver] || sys.driver || "–")}</b><small>Verbunden · zuletzt ${esc(fmtWhen(sys.lastSave))}</small></div>
+      <div class="ov-stat"><span class="lbl">Projekte</span><b class="num">${sys.projects ?? 0}</b><small>${plural(sys.requests ?? 0, "Anfrage", "Anfragen")} insgesamt</small></div>
+      <div class="ov-stat"><span class="lbl">Zugänge</span><b class="num">${local ? "–" : active.length}</b><small>${local ? "Lokal ohne Anmeldung" : `${plural(active.filter(u => u.admin).length, "Admin", "Admins")} · ${users.length - active.length} gesperrt`}</small></div>
+      <div class="ov-stat"><span class="lbl">Sicherungen</span><b class="num">${snaps.length}</b><small>automatisch täglich, 30 Tage</small></div>
+    </div>
+    ${codeBox}
+    <div class="adm-grid">${usersCard ? `<div class="adm-wide">${usersCard}</div>` : ""}${formCard}${snapCard}<div class="adm-wide">${logCard}</div></div>`;
+}
+async function admAct(fn, okMsg){
+  try { const r = await fn(); if (okMsg) toast(okMsg); await admLoad(); return r; }
+  catch (e) { toast(e.message); return null; }
+}
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-action^='adm-']"); if (!t) return;
+  const a = t.dataset.action, uid = t.dataset.uid;
+  const u = adm.data && (adm.data.users || []).find(x => x.id === uid);
+  if (a === "adm-reload"){ adm.data = null; adm.err = ""; renderAdmin(); return; }
+  if (a === "adm-create"){
+    const name = $("#adm-new-name").value.trim(); if (name.length < 2){ toast("Bitte einen Namen eingeben."); $("#adm-new-name").focus(); return; }
+    const r = await admAct(() => admApi("POST", { action: "user-create", name, role: $("#adm-new-role").value.trim(), admin: $("#adm-new-admin").checked }));
+    if (r){ adm.code = { name: r.user.name, code: r.code, isNew: true }; renderAdmin(); }
+    return;
+  }
+  if (a === "adm-code" && u){
+    if (!confirm(`Neuen Zugangscode für ${u.name} erzeugen? Der bisherige Code gilt dann nicht mehr.`)) return;
+    const r = await admAct(() => admApi("POST", { action: "user-code", id: u.id }));
+    if (r){ adm.code = { name: u.name, code: r.code }; renderAdmin(); }
+    return;
+  }
+  if (a === "adm-toggle" && u){ await admAct(() => admApi("POST", { action: "user-update", id: u.id, active: t.dataset.on === "1" }), t.dataset.on === "1" ? `${u.name} ist wieder freigeschaltet.` : `${u.name} ist gesperrt.`); return; }
+  if (a === "adm-del" && u){
+    if (!confirm(`${u.name} löschen? Projekte und Anfragen gehen an dich über, der Zugang ist danach weg.`)) return;
+    await admAct(() => admApi("POST", { action: "user-delete", id: u.id, transferTo: state.account ? state.account.id : "" }), `${u.name} ist gelöscht.`);
+    Store.refresh(); return;
+  }
+  if (a === "adm-copy-invite" && adm.code){ await copyText(admInvite(adm.code), "Einladung kopiert. In Teams einfügen."); return; }
+  if (a === "adm-code-done"){ adm.code = null; renderAdmin(); return; }
+  if (a === "adm-copy-link"){ await copyText(location.origin + "/request", "Link zum Anfrageformular kopiert."); return; }
+  if (a === "adm-save-settings"){
+    const settings = {};
+    document.querySelectorAll("[data-admset]").forEach(el => { settings[el.dataset.admset] = el.type === "checkbox" ? el.checked : el.value; });
+    const r = await admAct(() => admApi("POST", { action: "settings", settings }), "Gespeichert. Das Formular nutzt die Angaben sofort.");
+    if (r && settings.bookingUrl && !r.settings.bookingUrl) toast("Der Termin-Link muss mit https:// beginnen.");
+    return;
+  }
+  if (a === "adm-snap-dl"){
+    try { const j = await admApi("GET", null, `?snapshot=${encodeURIComponent(t.dataset.stamp)}&user=${encodeURIComponent(uid)}`); downloadJson(`CWS-AI-Radar_Sicherung_${uid}_${t.dataset.stamp}.json`, j); toast("Sicherung heruntergeladen. Laden über „Importieren“."); }
+    catch (err) { toast(err.message); }
+    return;
+  }
+  if (a === "adm-snap-restore"){
+    const who = (adm.data.users || []).find(x => x.id === uid);
+    if (!confirm(`Stand vom ${fmtDay(t.dataset.stamp.slice(0, 10))} für ${who ? who.name : uid} wiederherstellen? Der aktuelle Stand wird vorher gesichert.`)) return;
+    await admAct(() => admApi("POST", { action: "restore", stamp: t.dataset.stamp, user: uid }), "Wiederhergestellt.");
+    Store.refresh(); return;
+  }
+  if (a === "adm-export"){
+    try { downloadJson(`CWS-AI-Radar_Gesamtsicherung_${todayISO()}.json`, await admApi("GET", null, "?export=alle")); toast("Gesamtsicherung heruntergeladen."); }
+    catch (err) { toast(err.message); }
+    return;
+  }
+});
+document.addEventListener("change", async e => {
+  const el = e.target.closest("[data-admfield]"); if (!el) return;
+  const body = { action: "user-update", id: el.dataset.uid };
+  body[el.dataset.admfield] = el.type === "checkbox" ? el.checked : el.value;
+  await admAct(() => admApi("POST", body), "Gespeichert.");
+});
+
 Store.init();
 })();
 </script>

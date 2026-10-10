@@ -1,28 +1,29 @@
--- CWS AI Projekt-Radar
--- SQLite-Datei: data/radar.sqlite (liegt nicht im Repository).
+-- CWS AI Projekt-Radar · Datenbankstruktur (ab Version 2)
 --
--- Gespeichert wird ein versioniertes Dokument: Projekte, Anfragen und Team
--- gehören zusammen, weil Checklisten, Aufgaben, Entscheidungen und Meetings
--- an genau einem Projekt hängen. radar_state ist der aktuelle Stand,
--- radar_history die letzten 40 Stände.
+-- Eine Tabelle, gleich in PostgreSQL (Web: Neon, Supabase, später Azure) und
+-- SQLite (lokaler Server, data/radar.sqlite). Jede Zeile ist ein Schlüssel mit
+-- einem JSON-Wert und einer Versionsnummer. Gespeichert wird nur, wenn die
+-- Version noch stimmt (kein Überschreiben fremder Änderungen).
 --
--- Die weiteren Tabellen beschreiben den Inhalt dieses Dokuments, damit die
--- Struktur lesbar ist und später nach Azure SQL übernommen werden kann.
+--   doc:<nutzer>            Projekte, Anfragen und Team einer Person
+--   users                   Konten (Codes nur als scrypt-Hash), gelöschte Konten
+--   secret                  Schlüssel für die Sitzungen (wird automatisch erzeugt)
+--   rev                     Änderungsmarke: Version steigt mit jedem Speichern
+--   audit                   Aktivitätsprotokoll (neueste zuerst, max. 400)
+--   settings                Anfrageformular: Kontakt, Termin-Link, Eingang
+--   snap:<datum>:<nutzer>   Tagessicherung (Stand vor der ersten Änderung des Tages, 30 Tage)
+--   inbox:<datum>           Zähler der Formular-Anfragen pro Tag (Spam-Bremse)
+--
+-- Die Tabelle legt das Backend beim ersten Start selbst an (api/_lib/db.js).
 
-create table if not exists radar_state (
-  id          text primary key,          -- immer 'live'
-  rev         integer not null,
-  updated_at  text,
-  document    text not null              -- { projects, requests, meta }
+create table if not exists radar_kv (
+  key         text primary key,
+  value       jsonb not null,             -- SQLite: text
+  version     integer not null default 1,
+  updated_at  timestamptz not null default now()
 );
 
-create table if not exists radar_history (
-  rev         integer primary key,
-  saved_at    text not null,
-  document    text not null
-);
-
--- Inhalt von document.projects[]
+-- Inhalt von doc:<nutzer> → projects[]
 -- project: id, code, title, description, goal, value, sponsor, department,
 --   businessOwner, lead, region, team, phase, health, priority, focus, archived,
 --   startDate, targetDate, plan, nextStep, nextStepDue, blockers, openDecisions,

@@ -1,58 +1,49 @@
 ---
-description: Rules for the CWS AI Project Radar
+description: Regeln für den CWS AI Projekt-Radar
 alwaysApply: true
 ---
 
-# CWS AI Project Radar
+# CWS AI Projekt-Radar
 
-## What it is
-Project tool for AI projects at CWS, live at https://cws-ai-projekt-radar.vercel.app (repo `Ricdog87/cws-ai-projekt-radar`, Vercel deploys `main`): project overview (timeline, live cards), Today, Team & tasks (delegation), project requests from business units (with a required assessment meeting), portfolio, readiness check, access matrix, Excel import, status sharing as text and HTML one-pager. UI language: **German**. The request form `request.html` stays English for international business units. Always light design (no dark mode). **Names:** team members and project members (task owners, `meta.team`) may be named; stakeholders, sponsors and business units stay as roles. Cross-country rollout options: `docs/rollout-decision.md`.
+## Was es ist
+Steuerungs-Tool für die KI-Projekte bei CWS, live unter https://cws-ai-projekt-radar.vercel.app (Repository `Ricdog87/cws-ai-projekt-radar`, Vercel deployt `main`). Projektübersicht mit Zeitachse und Live-Karten, Heute mit erkannten nächsten Schritten, Team & Aufgaben mit Delegation, Projektanfragen der Fachbereiche (Bewertungstermin Pflicht), Portfolio, Readiness-Check, Zugangs-Checkliste als Excel, Dokument-Import (Transkript, PDF, PowerPoint, Word, E-Mail), Verwaltung für Admins.
 
-## Hard rules
-- **No third-party network requests.** No CDNs, no tracking, no analytics, no external APIs. Fonts, logo and icons are embedded. Embed new dependencies too, never load them at runtime. The only requests go same-origin to `/api` (CSP `connect-src 'self'` in `vercel.json`).
-- **Hosting (interim):** Vercel serves the repo root. `.vercelignore` is an allowlist (`index.html`, `request.html`, `api/`, `package.json`, `vercel.json`); README, `docs/`, `data/`, `server/`, `db/` and these rules are never published. A new public file must be added to the allowlist on purpose. Security headers live in `vercel.json` (CSP, `noindex`, no referrer, microphone only for dictation).
-- **Storage and login:** `api/state.js` keeps one document per user in the private Vercel Blob store (`api/_lib/blob.js`, revision markers `radar/revs/N`, conflict → `409`, the app merges). Users come from the env `RADAR_USERS` (`{ id, name, role, code }`, `api/_lib/users.js`), headers `x-radar-user`/`x-radar-key`. A project is visible to its owner, to users in `sharedWith` and to anyone with an open task in their name. The server keeps only `meta.me` and `meta.team` from the client; add new meta fields there too. Without `/api` (file://, no Blob token) the app runs in local mode (localStorage). The local server `server/server.mjs` offers the same `/api/state` contract on SQLite.
-- **Never hardcode names, access codes or tokens.** Names come from the user's data and `RADAR_USERS`; secrets only in the Vercel env.
-- **No real CWS data in the repo.** Backups (`*Backup*.json`, `*Sicherung*.json`), request files (`AI-Request_*.json`), CSV exports and Excel files are blocked by `.gitignore`. Sample data must be fictional (`data/sample-projects.json`, field `example: true`).
-- **Keep the data format stable.** Backups are `{ app, version, exportedAt, projects[], requests[], meta }`. New fields are always optional; update `parseBackup`, `sanitizeRequest`, `sanitizeReadiness`, `sanitizeTools`, `sanitizeTasks` and `sanitizeTeam` with them. Tasks: `project.tasks[]` `{ id, text, owner, due, status, note, createdAt, doneAt }` with status `offen`/`arbeit`/`wartet`/`erledigt` (`TASK_OPEN`/`TASK_WORK`/`TASK_WAIT`/`TASK_DONE`). `note` is one status line, not a chat. Team: `meta.team[]` `{ id, name, role, country }`, merged by name on import (`mergeTeam`). Decisions: `project.decisions[]` `{ id, text, date, meetingId }` (`sanitizeDecisions`). Meetings: `project.meetings[]` `{ id, date, title, participants[], minutes, summary[], counts{a,d,b,x}, source, at }` (`sanitizeMeetings`). **Never store a transcript**, only the confirmed results.
-- **Stored values stay as they are.** Internal keys and stored values are German and must not change (phase keys `intake`/`analyse`/`konzept`…, readiness status `Offen`/`Teilweise`/`Geklärt`/`Nicht relevant`, request status `neu`/`pruefung`/`angenommen`/`zurueck`/`abgelehnt`, `app:"cws-ai-anfrage"`). Show German through label maps (`RD_STATUS_LABEL`, `TOOL_AVAIL_LABEL`, `RQ_STATUS`, `deUi` for the standard readiness questions). This keeps older backups and request files working.
-- **Single-file apps.** The UI lives in `index.html` and `request.html` in the repo root, no build step. Server code only in `api/` (Vercel) and `server/` (local).
-- **View it:** `Start-Radar.cmd` or the task "Start radar" opens `http://localhost:8765` (mini server `start.ps1`). Press F5 after changes; the server sends no-cache. Do not change port 8765, otherwise the browser sees different localStorage data.
+**Sprache:** Oberfläche, Texte, Fehlermeldungen des Backends und Doku auf **Deutsch**. Das Anfrageformular `request.html` ist Deutsch mit Umschalter auf Englisch (alle Texte im `I18N`-Objekt, beide Sprachen pflegen). Immer helles Design, kein Dark Mode. **Namen:** Teammitglieder und Projektbeteiligte dürfen mit Namen erscheinen; Stakeholder, Sponsoren und Fachbereiche bleiben Rollen.
 
-## Structure of index.html
-- **Head:**
-  - `<style id="fonts">` holds embedded fonts as Base64. Do not edit, skip when reading.
-  - The second `<style>` block holds the CI tokens in `:root` (`--cws-red #EA0046`, `--cws-yellow #F9E344`, `--tint`, `--cta` …). Set colours only through tokens.
-- **Body:**
-  - `.shell` contains the sidebar `.side` (logo as Base64 PNG), `.main` with `.topbar` and `.wrap` with the views `#view-overview`, `#view-heute`, `#view-team`, `#view-anfragen` and `#view-portfolio`. `#dl-team` is the shared datalist for owner inputs.
-- **Script (vanilla JS, no frameworks):**
-  - **Config:** `PHASES` with gates, `HEALTH`, `RD_TEMPLATE` (default readiness, 29 questions), `TOOL_TEMPLATE`, `ICONS` (Lucide, inline).
-  - **Derived values:** `readinessStats` (READY at 80 % without critical gap, NOT READY below 50 % or with a critical gap), `assess` (priority in "Today"), `openActions`.
-  - **Storage:** `Store` (`connect`, `login`, `pull`, `push`, `merge`, `startPoll`, `saveProject`, `saveMeta`) syncs with `/api/state` in mode `db` and caches in localStorage (key `cws-ai-radar-v1`); mode `local` uses localStorage only. `normalizeProject` keeps optional fields (`decisions`, `meetings`, `tools`, `sharedWith`, `ownerId`). `exportBackup` and `parseBackup` handle backup and import.
-  - **Rendering:** `render()` calls `renderChrome`, `renderOverview`, `renderHeute`, `renderTeam`, `renderRequests` and `renderPortfolio`.
-  - **Tasks & sharing:** `openTasks`, `taskOverdue`, `ownerNames`, `taskLine`, `addTask`, `renderTasksPane` (drawer tab "Tasks"); `statusText`, `tasksText` and `copyText` for Teams/e-mail; `statusReportHtml` builds the self-contained HTML report (own colour variables, no external resources). Overdue tasks raise the score in `assess`.
-  - **Overview:** `phasePlan` (planned phases, automatic from start and go-live or `p.plan`), `schedule` (delay, forecast), `renderOverview`.
-  - **Requests:** `state.requests`, `sanitizeRequest`, `rqHours`, `rqScore`, `meetingHtml`, `nextMeeting`, `renderRequests`, `openRequest`, `convertRequest`.
-  - **Drawer:** `openDrawer`, `renderDrawerDynamic`, tabs via `setDrawerTab`, readiness and tools via `renderPanes`.
-  - **Meetings (local text analysis, no network):** `mtReadFile` (.vtt, .docx via `unzip`, .txt), `mtParse` (speakers, Teams header, recap headings and bullets), `mtDate` (German/English relative dates from the meeting date), `mtAnalyze` + `mtProjectContext` (tasks with owner/due, done items, decisions, open decisions, blockers/risks, phase, go-live, health, team, next step), `mtMatch` (which project), `mtNewDraft`, `mtNeutral` (task text in infinitive form), review dialog `mtRender`/`mtApply`, optional Copilot path `mtCopilotPrompt`/`mtFromCopilot`. Every suggestion goes through the review; nothing is written without confirmation.
-  - **Interfaces & access checklist (always .xlsx):** catalog `ACC_CATALOG` (system → API/access/licence/environment/approval rows with owner and phase) and `ACC_BASE`; `accSources`/`accDetect` (catalog plus unknown names), `accPlan`/`renderAccGen` (review in tab "Tools & Zugriff"), `accApply`, `accXlsx` (own xlsx writer: `zipStore` STORE + `crc32`, inline strings, styles, formulas, data validation, conditional formatting), `accImport` (round trip via hidden ID column). Tool rows keep optional `cat`, `kind`, `iface`, `due`, `src`, `pers` (`sanitizeTools`). Never add an external xlsx library.
-  - **Documents:** `mtReadFile` dispatches by type: `pdfText` (own PDF reader: objects, object streams, Flate/ASCII85/ASCIIHex, ToUnicode CMaps, text operators), `pptxText`, Word with headings/bullets, `msgParse` (Outlook CFB) and `emlParse` (MIME) → `mailToText` (sender speaks, `parsed.to` gets requests). Multiple files: `mtLoadFiles` queue (`mt.queue`). `MT_KIND_LABEL` names the source. No external library, ever.
-  - **Delegation:** team members have optional `skills`, `kind` (`team`/`kontakt`) and `from` (`sanitizeTeam`). `suggestOwner` matches skills (catalog-aware) for document tasks, quick capture, unassigned tasks (`tk-sugg`) and access rows. `delegateText`, `followUps`/`renderFollowUps` (Heute → Nachhaken), `weekFacts`/`renderWeek`/`weekText` (Heute → Diese Woche). Never hardcode real names in code or sample data; names come from the user's data.
-  - **Quick capture (Ctrl+K):** `qcOpen`, `qcParse` (keywords `nächster Schritt:`, `Aufgabe:`, `@Name`, `Entscheidung:`, `Blocker:`, `Status`, `Go-live`, `Phase`, done detection), `qcApply`.
-  - **PM automation:** `suggestHealth` (status suggestion, also a reason in `assess`), `advanceNextStep` (next step moves on when its task is done), `agendaText`, decision log in `renderSmartHints`. Drag and drop: transcripts open the meeting dialog, .xlsx/.json go through `handleImportFile`.
-  - **Excel:** `unzip`, `readXlsx` and `checklistFromSheets` read .xlsx without a library (DecompressionStream). German and English headers.
-  - **Events:** delegation via `data-action` in the central click handler, field changes via `data-rfield`, `data-tfield`, `data-task`, `data-tkfield` and `data-tmfield` in the change handler.
+## Feste Regeln
+- **Keine Netzwerkzugriffe auf Dritte.** Kein CDN, kein Tracking, keine Analytics, keine externen APIs. Schriften, Logo und Icons sind eingebettet; neue Abhängigkeiten im Frontend ebenfalls einbetten. Der Browser spricht nur mit der eigenen Domain (`/api`, CSP `connect-src 'self'` in `vercel.json`).
+- **Veröffentlicht wird nur, was in `.vercelignore` freigegeben ist:** `index.html`, `request.html`, `api/`, `package.json`, `vercel.json`. README, `docs/`, `data/`, `server/`, `db/` und diese Regeln bleiben privat. Eine neue öffentliche Datei bewusst dort eintragen.
+- **Nie Namen, Zugangscodes oder Tokens im Code.** Namen kommen aus den Daten der Nutzer und aus der Verwaltung; Geheimnisse nur in den Vercel-Einstellungen.
+- **Keine echten CWS-Daten im Repository.** Sicherungen, Anfragedateien, CSV- und Excel-Dateien und Transkripte blockiert `.gitignore`. Beispieldaten sind erfunden (`data/sample-projects.json`, Feld `example: true`).
+- **Datenformat stabil halten.** Sicherungen sind `{ app, version, exportedAt, projects[], requests[], meta }`. Neue Felder immer optional; `parseBackup`, `sanitizeRequest`, `sanitizeReadiness`, `sanitizeTools`, `sanitizeTasks`, `sanitizeTeam` mitziehen. Aufgaben `project.tasks[]` `{ id, text, owner, due, status, note, createdAt, doneAt, auto? }`, Status `offen`/`arbeit`/`wartet`/`erledigt`. Team `meta.team[]` `{ id, name, role, country, skills?, kind?, from? }`. Entscheidungen `project.decisions[]`, Meetings `project.meetings[]`. **Nie ein Transkript speichern**, nur bestätigte Ergebnisse. Nächster Schritt: `nextStep`, `nextStepDue`, `nextStepAuto` (Text des automatisch gesetzten Schritts, sonst leer).
+- **Gespeicherte Werte bleiben, wie sie sind.** Interne Schlüssel und Werte sind deutsch und ändern sich nicht (Phasen `intake`/`analyse`/`konzept`…, Readiness `Offen`/`Teilweise`/`Geklärt`/`Nicht relevant`, Anfragen `neu`/`pruefung`/`angenommen`/`zurueck`/`abgelehnt`, `app:"cws-ai-anfrage"`). Anzeige über Label-Maps (`RD_STATUS_LABEL`, `TOOL_AVAIL_LABEL`, `RQ_STATUS`, `deUi`).
+- **Ein-Datei-Apps.** UI in `index.html` und `request.html` im Wurzelverzeichnis, kein Build. Server-Code nur in `api/` (Vercel) und `server/` (lokal).
+- **Ansehen:** `Start-Radar.cmd` oder Aufgabe „Start radar“ → `http://localhost:8765`. Port 8765 nicht ändern.
 
-## request.html
-- Standalone form for business units, shared as a file. Settings at the top: `CONTACT_NAME`, `CONTACT_EMAIL`, `BOOKING_URL`, `MEETING_MINUTES`.
-- Required: title, current situation, expected outcome, business unit, country / site, name, e-mail, booked meeting date (not in the past) and the confirmation tick.
-- Saves `AI-Request_<unit>_<date>.json` as `{ app:"cws-ai-anfrage", version, request }`.
-- Governance signals on a request are optional and stored in German: `affects` (`kunden`/`mitarbeitende`/`bewerber`/`niemand`/`unklar`), `decides` (`vorschlag`/`entscheidung`/`unklar`), `sensitiveUse` (`keine`/`bewerbung`/`leistung`/`kredit`/`ueberwachung`/`unklar`). The form does not classify the EU AI Act risk. `rqGov` flags an early check; `sanitizeRequest` keeps the fields.
+## Backend (`api/`)
+- **Endpunkte:** `health` (Speicher erreichbar, Login nötig?), `login` (GET Namensliste, POST `{ user, code }` → Token), `state` (GET `?since=<rev>` → Sicht oder `{ unchanged }`, PUT Stand speichern), `admin` (nur Admins: Zugänge, Einstellungen, Sicherungen, Protokoll, Export), `public` (ohne Login: Formular-Einstellungen, Anfrage senden). Jeder Endpunkt über `endpoint()` aus `_lib/http.js`; Fehler als `{ error }` auf Deutsch.
+- **Speicher-Schicht `_lib/db.js`:** Schlüssel-Wert-Schnittstelle `get/put/list/keys/del` mit Versionen, Treiber `postgres` (`DATABASE_URL`/`POSTGRES_URL`, empfohlen), `blob` (`BLOB_READ_WRITE_TOKEN`, ETags), `sqlite` (lokaler Server), `memory` (Tests, `RADAR_STORE=memory`). `put(key, value, { version })`: ohne Version unbedingt, `null` nur anlegen, sonst nur wenn die Version stimmt (`Conflict`). Eine Tabelle `radar_kv` (`db/schema.sql`).
+- **Schlüssel:** `doc:<nutzer>` (Projekte, Anfragen, Team einer Person), `users`, `secret`, `rev` (Änderungsmarke), `audit`, `settings`, `snap:<datum>:<nutzer>` (Tagessicherung, 30 Tage), `inbox:<datum>` (Spam-Bremse).
+- **Regeln `_lib/radar.js`:** `viewFor` (eigene, freigegebene und per offener Aufgabe zugewiesene Projekte), `saveState` (Versionsprüfung über `base`, ältere Apps über `rev`; fremde Projekte nur, wenn die Kopie neuer ist), `describeChanges`/`appendAudit`, Tagessicherung vor der ersten Änderung, `restoreSnapshot`, `submitRequest` (Formular → Eingang der zuständigen Person), `cleanRequest`, `cleanSettings`.
+- **Konten `_lib/auth.js`:** Konten in `users`, Codes nur als scrypt-Hash, Sitzungs-Token mit HMAC (60 Tage, `ver` beendet Sitzungen). `RADAR_USERS` übernimmt Konten einmalig und bleibt Rückfall; gelöschte Konten stehen in `removed`. Lokaler Server ohne Konten: `LOCAL_USER`.
+- **Sparsam bleiben:** Polling nur mit `?since=`, keine Listen-Abfragen pro Poll, Nebenaufgaben (Sicherung, Protokoll) dürfen das Speichern nie blockieren (`quietly`).
+- **Tests:** jeden Endpunkt gegen `memory`, eine echte PostgreSQL und den Blob-Treiber prüfen, bevor gepusht wird.
 
-## Style
-- **Look** like the AI Governance Portal:
-  - Sidebar, action cards with a pink icon tile
-  - KPI cards with a red edge when action is needed
-  - Status as a pill with a dot
-- **Copy:** German, clear and direct, no filler. Buttons say what happens ("Sichern", "Projekt anlegen"). Stored keys stay unchanged.
-- Always output user text through `esc()`.
+## Aufbau von index.html
+- **Head:** `<style id="fonts">` (eingebettete Schriften, nicht bearbeiten), danach CI-Tokens in `:root` (`--cws-red #EA0046`, `--cws-yellow #F9E344`, `--tint`, `--cta` …). Farben nur über Tokens.
+- **Body:** `.shell` mit Seitenleiste `.side` und den Ansichten `#view-overview`, `#view-heute`, `#view-team`, `#view-anfragen`, `#view-portfolio`, `#view-admin`.
+- **Script (Vanilla JS):**
+  - **Konfiguration:** `PHASES` mit Gates, `HEALTH`, `RD_TEMPLATE`, `TOOL_TEMPLATE`, `ICONS` (Lucide, inline).
+  - **Speicher `Store`:** `connect` (Health → Login → Sicht), `login` (Token in `cws-ai-radar-token`, nie den Code), `pull(since)`, `push` (`base` + `rev`, bei 409 `merge`), `refresh` alle 15 s nur bei sichtbarem Tab, Cache in localStorage (`cws-ai-radar-v1`), Sicherheitskopie vor dem Abgleich, Offline-Änderungen (`cws-ai-radar-offline-changes`) werden beim Wiederverbinden zusammengeführt. Erster Abgleich eines Kontos: Banner „In die Datenbank übernehmen“.
+  - **Nächste Schritte:** `nextStepSuggestions(p)` (Regeln in Reihenfolge: überfällig, Blocker, Go-live, kritische Lücke, Zugänge, Entscheidung, Phasen-Gate bzw. Phasenwechsel, AI Inventory, Stillstand, Termin, nächste Aufgabe), `nsTop`, `nsApply` (nächster Schritt + Aufgabe mit Verantwortlichem und Termin), `nsAccept`, `nsAfterGate`, `advanceNextStep` (rückt automatisch nach). Anzeige `nsChip` auf Karten, in Heute (`renderNextSteps`) und im Projekt (`renderSmartHints`). `NS_GATE_ACTION` formuliert die Gates als Tätigkeit.
+  - **Verwaltung:** `renderAdmin`, `admApi`, Aktionen `adm-*` (Zugang anlegen, neuer Code, sperren, löschen mit Übergabe, Einstellungen, Sicherung herunterladen/wiederherstellen, Gesamtsicherung).
+  - **Dokumente & Meetings:** `mtReadFile` (pdfText, pptxText, Word, msgParse, emlParse), `mtParse`, `mtAnalyze`, `mtMatch`, Prüfung `mtRender`/`mtApply`, Copilot-Weg. Mehrere Dateien `mtLoadFiles`. Nie eine externe Bibliothek.
+  - **Delegation:** `suggestOwner` (Zuständigkeiten), `delegateText`, `followUps`/`renderFollowUps`, `weekFacts`/`renderWeek`/`weekText`.
+  - **Schnell erfassen (Strg+K):** `qcOpen`, `qcParse`, `qcApply`. **PM-Automatik:** `suggestHealth`, `agendaText`.
+  - **Excel:** `unzip`, `readXlsx`, `checklistFromSheets`, Zugangs-Checkliste `accXlsx`/`accImport` (eigener xlsx-Schreiber, keine Bibliothek).
+  - **Events:** Klicks über `data-action`, Felder über `data-rfield`, `data-tfield`, `data-task`, `data-tkfield`, `data-tmfield`, `data-admfield`, `data-admset`.
+
+## Stil
+- Aussehen wie das AI Governance Portal: Seitenleiste, Aktionskarten mit rosa Icon-Kachel, KPI-Karten mit rotem Rand bei Handlungsbedarf, Status als Pill mit Punkt.
+- Texte deutsch, klar und direkt, ohne Füllwörter. Buttons sagen, was passiert („Übernehmen“, „Zugang anlegen“, „Projekt anlegen“).
+- Nutzertext immer über `esc()` ausgeben.

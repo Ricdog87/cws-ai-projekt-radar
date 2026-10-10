@@ -1,9 +1,13 @@
 {
   "name": "cws-ai-projekt-radar",
   "private": true,
-  "description": "CWS AI Projekt-Radar – multi-user live storage on Vercel",
+  "description": "CWS AI Projekt-Radar – Web-App mit Backend für Vercel (PostgreSQL oder Vercel Blob)",
   "type": "module",
+  "scripts": {
+    "start": "node server/server.mjs"
+  },
   "dependencies": {
-    "@vercel/blob": "^2.6.1"
+    "@vercel/blob": "^2.8.0",
+    "pg": "^8.13.0"
   }
 }
