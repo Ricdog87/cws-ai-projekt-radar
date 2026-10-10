@@ -61,7 +61,7 @@ export const clientIp = (req) =>
 
 export function storageMessage(e) {
   const msg = String((e && (e.name + " " + e.message)) || e);
-  if (/suspended|quota|limit/i.test(msg)) return "Der Online-Speicher ist gesperrt, weil das Kontingent erschöpft ist. Daten bleiben in diesem Browser.";
+  if (/suspended|quota|limit|403|forbidden/i.test(msg)) return "Der Online-Speicher ist gesperrt (Kontingent erschöpft oder kein Zugriff). Daten bleiben in diesem Browser.";
   if (/ECONNREFUSED|ENOTFOUND|ETIMEDOUT|timeout|connect|password authentication/i.test(msg)) return "Die Datenbank ist gerade nicht erreichbar. Daten bleiben in diesem Browser.";
   return "Speichern ist fehlgeschlagen. Daten bleiben in diesem Browser.";
 }
