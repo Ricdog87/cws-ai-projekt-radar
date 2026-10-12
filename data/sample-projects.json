@@ -349,7 +349,7 @@
   "health": "green",
   "startDate": "2026-03-02",
   "targetDate": "2026-08-31",
-  "nextStep": "Nutzungs-KPIs nach 4 Wochen an Sponsor berichten",
+  "nextStep": "Nutzungskennzahlen nach 4 Wochen an den Auftraggeber berichten",
   "nextStepDue": "2026-10-05",
   "blockers": "",
   "openDecisions": "",
@@ -384,14 +384,14 @@
     "id": "ex9",
     "at": "2026-09-01T09:00:00Z",
     "by": null,
-    "text": "Go-Live für alle Standorte DE.",
+    "text": "Produktivstart für alle Standorte in Deutschland.",
     "kind": "update"
    },
    {
     "id": "ex10",
     "at": "2026-09-01T09:05:00Z",
     "by": null,
-    "text": "Phase: Hypercare",
+    "text": "Phase: Nachbetreuung",
     "kind": "system"
    }
   ],

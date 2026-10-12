@@ -15,6 +15,16 @@ Jede Person hat ein eigenes Dashboard (Anmeldung mit Zugangscode). Projekte und 
 - **Portfolio:** Kacheln nach Phase oder Tabelle.
 - **Verwaltung** (nur Admins): Zugänge, Anfrageformular, Sicherungen, Aktivitätsprotokoll.
 
+## Arbeitspakete statt vieler Einzelaufgaben
+
+Ein Projekt besteht aus wenigen **Arbeitspaketen** mit Teilschritten, Fortschritt, verantwortlicher Person und Termin:
+
+- **Automatisch aus dem Projekt** (ohne Tippen): die aktuelle Phase („Konzept & Freigabe abschließen“, Teilschritte = Checkliste der Phase), „Systeme & Zugänge bereitstellen“ (geprüfte Zugänge) und „Startklar-Check: kritische Fragen klären“. Abhaken im Paket hakt die Quelle mit ab.
+- **Eigene Pakete:** bei jeder Aufgabe „+ Teilschritte“. Einzelne Teilschritte können eine eigene verantwortliche Person haben und erscheinen dann bei ihr unter Team & Aufgaben.
+- **Bündeln:** Bei vielen Einzelaufgaben schlägt das Radar Pakete nach Thema vor (Datenschutz & Mitbestimmung, Systeme & Zugänge, Daten, Test & Abnahme, Einführung & Schulung, Abstimmung & Freigaben, Lösung bauen). Ein Klick bündelt, „Rückgängig“ holt alles zurück. Unter Team & Aufgaben geht das für alle Projekte auf einmal.
+- Aufgaben aus Dokumenten landen als Teilschritt im passenden offenen Paket statt als weitere Einzelaufgabe.
+- Der Zeitplan ist eingeklappt: Das Radar verteilt die Phasen selbst zwischen Start und Produktivstart; „Anpassen“ nur, wenn ein Termin feststeht.
+
 ## Weniger Verwaltung: Dokumente rein, Ergebnisse raus
 
 **1. Dokument einlesen** (oben rechts, in der Seitenleiste oder per Drag & Drop)
@@ -41,7 +51,7 @@ Für jedes aktive Projekt prüft das Radar, was als Nächstes dran ist, in der R
 7. Der nächste offene Punkt der Phasen-Checkliste, oder der Phasenwechsel, wenn alles erledigt ist
 8. AI-Inventory-Eintrag nach dem Go-live, Stillstand von mehr als 10 Tagen, fehlender Go-live-Termin
 
-Jeder Vorschlag kommt mit Grund, verantwortlicher Person (aus den Zuständigkeiten im Team) und Termin (in Arbeitstagen). „Übernehmen“ setzt den nächsten Schritt und legt die Aufgabe an, damit sie in Team & Aufgaben und beim Nachhaken auftaucht. „Alle übernehmen“ erledigt das für alle Projekte auf einmal.
+Jeder Vorschlag kommt mit Grund, verantwortlicher Person (aus den Zuständigkeiten im Team) und Termin (in Arbeitstagen). „Übernehmen“ setzt den nächsten Schritt. Eine eigene Aufgabe entsteht nur bei Themen ohne Paket (Hindernis, Entscheidung, Produktivstart in Gefahr, KI-Inventar); Checklisten-Punkte, Zugänge und Startklar-Fragen stecken bereits in den Arbeitspaketen. „Alle übernehmen“ erledigt das für alle Projekte auf einmal.
 
 Ist ein nächster Schritt erledigt (Aufgabe abgehakt oder Checklisten-Punkt erledigt), rückt der nächste **automatisch** nach: zuerst die nächste offene Aufgabe, sonst der nächste erkannte Schritt. Er ist dann mit „automatisch erkannt“ markiert.
 
@@ -68,11 +78,11 @@ Schutz gegen Spam: Pflichtfelder, verstecktes Lockfeld für Bots, höchstens 5 A
 
 ## Projektphasen
 
-Aufnahme & Idee → **Discovery & Readiness** → Konzept & Freigabe → Umsetzung → Test & Abnahme → Go-live & Rollout → Hypercare → Abgeschlossen
+Aufnahme & Idee → **Analyse & Startklar-Check** → Konzept & Freigabe → Umsetzung → Test & Abnahme → Einführung & Produktivstart → Nachbetreuung → Abgeschlossen
 
-Jede Phase hat eine Checkliste (Readiness-Check, Datenschutz, Betriebsrat, AI-Act-Risikoklasse, AI-Inventory-Eintrag …). Ohne eigene Termine verteilt das Radar die Phasen zwischen Start und Go-live, danach 6 Wochen Hypercare und 2 Wochen Abschluss. Liegt heute hinter dem geplanten Ende der aktuellen Phase, zeigt es Verzug und eine Go-live-Prognose.
+Jede Phase hat eine Checkliste (Startklar-Check, Datenschutz, Betriebsrat, Risikoklasse nach KI-Verordnung, Eintrag im KI-Inventar …). Ohne eigene Termine verteilt das Radar die Phasen zwischen Start und Go-live, danach 6 Wochen Hypercare und 2 Wochen Abschluss. Liegt heute hinter dem geplanten Ende der aktuellen Phase, zeigt es Verzug und eine Go-live-Prognose.
 
-**Readiness-Check** (29 Fragen in 9 Bereichen, Kernfragen ★, kritische Fragen): Bereit ab 80 % ohne kritische Lücke, Nicht bereit unter 50 % oder mit kritischer Lücke, dazwischen Bedingtes Go. Excel-Checklisten (deutsche oder englische Spalten) lassen sich importieren.
+**Startklar-Check** (29 Fragen in 9 Bereichen, Kernfragen ★, kritische Fragen): Bereit ab 80 % ohne kritische Lücke, Nicht bereit unter 50 % oder mit kritischer Lücke, dazwischen Bedingtes Go. Excel-Checklisten (deutsche oder englische Spalten) lassen sich importieren.
 
 **Schnittstellen & Zugänge als Excel:** pro Projekt eine maßgeschneiderte Checkliste (SAP, Salesforce, SharePoint, Azure OpenAI, n8n, Power Platform …) mit API, technischem Nutzer, Lizenz, Testumgebung und Freigabe, Termin aus dem Phasenplan. Mit der IT ausfüllen und wieder einlesen.
 

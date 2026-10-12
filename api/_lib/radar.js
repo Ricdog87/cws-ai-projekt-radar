@@ -42,12 +42,13 @@ export function matchName(a, b) {
   const fx = x.split(/\s+/)[0];
   return fx.length > 1 && fx === y.split(/\s+/)[0];
 }
-/** Owner, people it is shared with, and anyone with an open task in their name. */
+/** Owner, people it is shared with, and anyone with an open task or open step of a package in their name. */
 export function canSeeProject(p, user) {
   if (!user || !p) return false;
   if (p.ownerId === user.id) return true;
   if (Array.isArray(p.sharedWith) && p.sharedWith.includes(user.id)) return true;
-  return (p.tasks || []).some((t) => t && t.status !== "erledigt" && matchName(t.owner, user.name));
+  return (p.tasks || []).some((t) => t && t.status !== "erledigt" && (matchName(t.owner, user.name)
+    || (Array.isArray(t.steps) && t.steps.some((st) => st && !st.done && matchName(st.owner, user.name)))));
 }
 export const canWriteProject = canSeeProject;
 
