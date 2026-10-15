@@ -78,6 +78,9 @@ param radarUsers string = ''
 @description('Application Insights and Log Analytics for logs, requests and availability.')
 param monitoring bool = true
 
+@description('E-mail for alerts when the plan runs above 90 % CPU or memory (deployments can then fail; scale out before releasing). Empty = no alerts.')
+param alertEmail string = ''
+
 @description('GitHub repository (owner/name) allowed to deploy via OpenID Connect, e.g. "Ricdog87/cws-ai-projekt-radar". Empty = no deployment identity is created.')
 param githubRepository string = ''
 
@@ -391,6 +394,47 @@ resource siteLogs 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = i
     metrics: [ { category: 'AllMetrics', enabled: true } ]
   }
 }
+
+// Above 90 % CPU or memory a deployment may not get through: alert, so IT can scale out first.
+resource alertGroup 'Microsoft.Insights/actionGroups@2023-01-01' = if (!empty(alertEmail)) {
+  name: 'ag-${appName}'
+  location: 'global'
+  tags: tags
+  properties: {
+    groupShortName: 'radar'
+    enabled: true
+    emailReceivers: [ { name: 'it', emailAddress: alertEmail, useCommonAlertSchema: true } ]
+  }
+}
+
+resource planBusy 'Microsoft.Insights/metricAlerts@2018-03-01' = [for m in [ 'CpuPercentage', 'MemoryPercentage' ]: if (!empty(alertEmail)) {
+  name: 'alert-${appName}-${toLower(replace(m, 'Percentage', ''))}'
+  location: 'global'
+  tags: tags
+  properties: {
+    description: '${m} of the App Service plan above 90 % for 15 minutes. Scale out before the next release.'
+    severity: 2
+    enabled: true
+    scopes: [ plan.id ]
+    evaluationFrequency: 'PT5M'
+    windowSize: 'PT15M'
+    criteria: {
+      'odata.type': 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria'
+      allOf: [
+        {
+          name: m
+          criterionType: 'StaticThresholdCriterion'
+          metricName: m
+          metricNamespace: 'Microsoft.Web/serverfarms'
+          operator: 'GreaterThan'
+          threshold: 90
+          timeAggregation: 'Average'
+        }
+      ]
+    }
+    actions: [ { actionGroupId: alertGroup.id } ]
+  }
+}]
 
 /* ---------------- deployment identity for GitHub Actions (OpenID Connect, no stored password) ---------------- */
 resource deployer 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = if (!empty(githubRepository)) {

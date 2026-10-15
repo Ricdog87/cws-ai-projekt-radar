@@ -24,19 +24,32 @@ Slot "production"  https://<app>.azurewebsites.net            database radar
 
 ## 2. How the setup follows the best practices
 
-| Recommendation | Implementation |
+Checked section by section against Microsoft Learn, *Deployment best practices* for Azure App Service (last updated 29 Nov 2025).
+
+| Article section | Recommendation | Implementation |
+|---|---|---|
+| Deployment source | Production code comes from a repository | GitHub, branch `main` |
+| Build pipeline | Build, test and package on a build server | GitHub Actions job `test`: backend tests in memory and on PostgreSQL 16, package, start test of the package exactly as App Service starts it |
+| Deployment mechanism | Kudu endpoints (zip deploy); FTP/WebDeploy bypass Kudu | Zip deploy via `azure/webapps-deploy@v3`. FTP and SCM basic authentication are disabled |
+| Use deployment slots | Standard tier or better; deploy to staging, validate, smoke test, then swap. The swap warms up instances to production scale | Plan `P0v3`, slot `staging`, smoke test (`.github/scripts/smoke.sh`), then swap |
+| Continuously deploy code | Never enable continuous deployment on the production slot; deploy `main` to a non-production slot and swap. Roll back by swapping again | `main` only ever goes to `staging`. Production changes only by swap, after approval in the GitHub environment `production`. Rollback: section 6; the pipeline swaps back on its own when the production check fails |
+| Continuously deploy code | Test/QA branches continuously deployed so stakeholders can try them | Every branch already gets its own preview on Vercel. A further App Service slot (e.g. `qa`) can be added to the template if IT wants branch tests on Azure |
+| Continuously deploy containers | Tag every build with the commit, not `latest`, so it is clear what is deployed | Code deployment, no container. Same traceability: the package carries the commit (`build.json`), `/api/ready` shows `build` and `slot`, and the smoke tests check that the expected commit is running |
+| Other automation providers | Service principal with Contributor on the resource group | Tighter: user-assigned managed identity with OpenID Connect (no secret at all), *Website Contributor* on this one app only |
+| Node | Disable the Kudu build when a build service is used: `SCM_DO_BUILD_DURING_DEPLOYMENT=false` | Set. `node_modules` comes in the package from `npm ci --omit=dev` |
+| Local cache | High-performance read-only content, always together with slots | Local cache is a Windows-only feature. On Linux the app runs read-only from the deployed package (`WEBSITE_RUN_FROM_PACKAGE=1`), and the two pages are compressed once in memory at start-up |
+| High CPU or memory | Above 90 % CPU or memory a deployment can fail: scale out temporarily | Metric alerts on the plan for CPU and memory above 90 % (parameter `alertEmail`). Procedure before a release: section 7 |
+| App Service Diagnostics | Use *Diagnose and solve problems* | Section 7 |
+
+Additional measures from the App Service slot documentation:
+
+| Measure | Implementation |
 |---|---|
-| Deploy to a staging slot, not to production | Job `staging` deploys with `azure/webapps-deploy@v3`, `slot-name: staging` |
-| Validate before going live | `.github/scripts/smoke.sh`: `/api/ready` (database reachable, expected commit), dashboard, request form, `/api/health`, security headers |
-| Warm up before the swap | `WEBSITE_SWAP_WARMUP_PING_PATH=/api/ready`, `WEBSITE_SWAP_WARMUP_PING_STATUSES=200`. During the swap App Service applies the production settings to the new code, restarts it and only switches traffic once `/api/ready` answers 200 with the **production** database. If it never does, the swap is aborted and production stays as it was |
+| Warm up with the production settings before the swap | `WEBSITE_SWAP_WARMUP_PING_PATH=/api/ready`, `WEBSITE_SWAP_WARMUP_PING_STATUSES=200`. During the swap App Service applies the production settings to the new code, restarts it and only switches traffic once `/api/ready` answers 200 with the **production** database. If it never does, the swap is aborted and production stays as it was |
 | Keep environment settings with the slot | Sticky slot settings (`slotConfigNames`): `DATABASE_URL`, `RADAR_USERS`, `RADAR_SECRET`, `RADAR_SLOT` |
-| Controlled go-live | Job `swap` runs in the GitHub environment `production` with required reviewers |
-| Fast rollback | The previous release is in the staging slot after every swap. Swap again (section 6). The pipeline swaps back on its own when the production check fails |
-| Run from package, no build on the server | `WEBSITE_RUN_FROM_PACKAGE=1`, `SCM_DO_BUILD_DURING_DEPLOYMENT=false`, `node_modules` from `npm ci --omit=dev` in the package |
 | Always On, health check | `alwaysOn: true`, `healthCheckPath: /api/ready` |
 | No session affinity | `clientAffinityEnabled: false` (the app keeps no state in memory) |
 | Clean restarts | `server/azure.mjs` finishes running requests on `SIGTERM`, closes the database pool, and keeps connections open longer than the Azure load balancer (no sporadic 502) |
-| No publishing passwords | FTP and SCM basic authentication disabled; GitHub signs in via OpenID Connect to a user-assigned managed identity with *Website Contributor* on this app only |
 
 ## 3. What `infra/main.bicep` creates
 
@@ -48,6 +61,7 @@ Slot "production"  https://<app>.azurewebsites.net            database radar
 | Key Vault (RBAC) | `kv<app><suffix>` | Secrets `database-url`, `database-url-staging`, `radar-users`; soft delete and purge protection |
 | Virtual network | `vnet-<app>` | With `privateNetwork=true` (default): app subnet for VNet integration, delegated subnet for PostgreSQL, private DNS zone. PostgreSQL has no public endpoint |
 | Log Analytics + Application Insights | `log-<app>`, `appi-<app>` | Console, HTTP and platform logs; requests and dependencies |
+| Alerts (optional) | `ag-<app>`, `alert-<app>-cpu`, `alert-<app>-memory` | E-mail when the plan runs above 90 % CPU or memory for 15 minutes; only with `alertEmail` |
 | Managed identity for GitHub | `id-<app>-deploy` | Federated credentials for the GitHub environments `staging` and `production` |
 
 Rough monthly cost at list prices in Germany West Central, without reservations: App Service P0v3 around 60–70 €, PostgreSQL B1ms with 32 GB around 20–25 €, monitoring, Key Vault and network a few euros. The staging slot runs on the same plan and costs nothing extra. Please confirm with the Azure pricing calculator.
@@ -84,6 +98,7 @@ Parameters worth checking in `infra/main.parameters.json`:
 - `privateNetwork`: `true` keeps PostgreSQL private. For a quick pilot without VNet, `false` opens the PostgreSQL firewall to Azure services only.
 - `vnetAddressPrefix`, `appSubnetPrefix`, `postgresSubnetPrefix`: adjust to the CWS address plan if the VNet will be peered with the hub.
 - `deployPostgres=false` with `externalDatabaseUrl` and `externalStagingDatabaseUrl`: use an existing CWS PostgreSQL instead.
+- `alertEmail`: IT mailbox for the CPU/memory alerts.
 - `githubRepository`: the repository allowed to deploy (`owner/name`). If the repository moves, change it and deploy the template again.
 
 The outputs contain the URLs, the Key Vault name and the values for GitHub (`githubClientId`, `githubTenantId`, `githubSubscriptionId`).
@@ -149,6 +164,12 @@ Data is not rolled back by a swap (the database setting stays with the slot). Fo
 - **Health:** `/api/ready` is 200 only when the database answers within 5 seconds, otherwise 503. App Service uses it as health check and as warm-up for swaps. `/api/health` shows storage and sign-in status.
 - **Logs:** Web app → Log stream, or Log Analytics: `AppServiceConsoleLogs | order by TimeGenerated desc`. Request lines contain method, path, status and duration, never query strings or tokens. Successful `/api/ready` pings are not logged.
 - **Scaling:** change the plan (`planSku`) or `instanceCount`. With 2 or more instances the health check replaces an unhealthy instance automatically.
+- **Release under high load:** if a CPU or memory alert is active (above 90 %), scale out before approving the swap, and back afterwards. The swap warms up as many instances as production runs.
+  ```bash
+  az appservice plan update -g <rg> -n asp-<app> --number-of-workers 2   # before the release
+  az appservice plan update -g <rg> -n asp-<app> --number-of-workers 1   # after the release
+  ```
+- **Diagnostics:** Web app → *Diagnose and solve problems* → *Availability and Performance* (also *High CPU Analysis*) shows the state of the app against these best practices.
 - **Rotate the database password:** set the new password on the server, update the Key Vault secrets `database-url` and `database-url-staging`, restart both slots.
 - **End all sessions:** delete the row `secret` in `radar_kv`; the app creates a new key and everyone signs in again. A single person: Verwaltung → Neuer Code.
 - **Node.js updates:** `linuxFxVersion` in the template (`NODE|22-lts`). Test a new major version on staging first.

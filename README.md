@@ -123,10 +123,10 @@ Für den Betrieb bei CWS läuft dasselbe Repository auch auf Azure App Service, 
 main → Tests → Paket → Slot „staging“ (eigene Datenbank) → Prüfung → Freigabe → Tausch → Produktion
 ```
 
-- **Vorlage** `infra/main.bicep`: App Service (Linux, Node.js 22), Staging-Slot, PostgreSQL Flexible Server (Datenbanken `radar` und `radar_staging`), Key Vault für Geheimnisse, privates Netz, Monitoring, Deploy-Identität für GitHub ohne Passwort. Region Frankfurt.
+- **Vorlage** `infra/main.bicep`: App Service (Linux, Node.js 22), Staging-Slot, PostgreSQL Flexible Server (Datenbanken `radar` und `radar_staging`), Key Vault für Geheimnisse, privates Netz, Monitoring mit Warnung ab 90 % CPU oder Arbeitsspeicher, Deploy-Identität für GitHub ohne Passwort. Region Frankfurt.
 - **Pipeline** `.github/workflows/azure-app-service.yml`: Tests in Arbeitsspeicher und PostgreSQL, Starttest des Pakets, Staging, Prüfung (`.github/scripts/smoke.sh`), Freigabe in der GitHub-Umgebung `production`, Tausch mit Aufwärmen, Prüfung in Produktion, bei Fehler automatisch zurück. Bleibt aus, bis die Variable `AZURE_WEBAPP_NAME` gesetzt ist.
 - **Start** `server/azure.mjs` (`npm start`): Port von App Service, Komprimierung, HSTS, sauberes Herunterfahren beim Slot-Tausch. **`/api/ready`** antwortet 200 erst, wenn die Datenbank erreichbar ist; darauf warten Health Check und Tausch.
-- **Runbook für die IT** (Einrichtung, Freigabe, Rollback, Betrieb, Sicherheit): [docs/azure-app-service.md](docs/azure-app-service.md)
+- **Runbook für die IT** (Abgleich mit Microsoft „Deployment best practices“ Abschnitt für Abschnitt, Einrichtung, Freigabe, Rollback, Betrieb, Sicherheit): [docs/azure-app-service.md](docs/azure-app-service.md)
 
 Vercel deployt `main` weiter, bis die IT umstellt. Die Daten beider Versionen sind getrennt: zum Umziehen in der Vercel-Version „Sichern“, in der Azure-Version „Importieren“.
 

@@ -11,6 +11,7 @@
     "postgresBackupDays": { "value": 14 },
     "privateNetwork": { "value": true },
     "monitoring": { "value": true },
+    "alertEmail": { "value": "" },
     "githubRepository": { "value": "Ricdog87/cws-ai-projekt-radar" },
     "tags": { "value": { "app": "cws-ki-projekt-radar", "owner": "BPM & AI" } }
   }
