@@ -100,7 +100,7 @@ Repository → Settings:
 
 1. **Secrets and variables → Actions → Secrets:** `AZURE_CLIENT_ID` (= output `githubClientId`), `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`. These are identifiers, not passwords.
 2. **Variables:** `AZURE_WEBAPP_NAME` (= `appName`), `AZURE_RESOURCE_GROUP`. As long as `AZURE_WEBAPP_NAME` is empty, the workflow only runs the tests.
-3. **Environments:** create `staging` and `production`. On `production` add **required reviewers** (BPM & AI lead and IT) and limit deployment branches to `main`.
+3. **Environments:** create `staging` and `production`. On **both**, limit deployment branches to `main` (the Azure sign-in is bound to these environments). On `production` add **required reviewers** (BPM & AI lead and IT).
    If the GitHub plan does not offer required reviewers for private repositories, set the variable `AZURE_SWAP_MODE=manual`: the pipeline then stops after staging, and IT swaps in the portal (section 6).
 
 ### 4.3 First release
