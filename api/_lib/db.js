@@ -142,7 +142,7 @@ async function postgresDriver(env) {
     ssl: local ? false : { rejectUnauthorized: env.DATABASE_SSL_INSECURE !== "1" },
   });
   pool.on("error", () => { /* idle client dropped by the server; the next query reconnects */ });
-  return sqlDriver((sql, params) => pool.query(sql, params), "postgres");
+  return { ...sqlDriver((sql, params) => pool.query(sql, params), "postgres"), close: () => pool.end() };
 }
 
 /* ---------------- blob ---------------- */
@@ -286,4 +286,12 @@ export async function store(env = process.env) {
 /** Tests and the local server set the storage themselves. */
 export function useStore(driver) {
   instance = driver;
+}
+
+/** Closes open connections when the server shuts down (App Service sends SIGTERM). */
+export async function closeStore() {
+  const s = instance;
+  instance = null;
+  if (s && typeof s.close === "function") await s.close();
+  else if (s && s.raw && typeof s.raw.close === "function") s.raw.close();
 }

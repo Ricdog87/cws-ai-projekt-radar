@@ -1,10 +1,12 @@
 {
   "name": "cws-ai-projekt-radar",
   "private": true,
-  "description": "CWS AI Projekt-Radar – Web-App mit Backend für Vercel (PostgreSQL oder Vercel Blob)",
+  "description": "CWS KI-Projekt-Radar – Web-App mit Backend für Vercel und Azure App Service (PostgreSQL)",
   "type": "module",
   "scripts": {
-    "start": "node server/server.mjs"
+    "start": "node server/azure.mjs",
+    "start:local": "node server/server.mjs",
+    "test": "node tests/backend.test.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

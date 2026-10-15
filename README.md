@@ -92,10 +92,11 @@ Jede Phase hat eine Checkliste (Startklar-Check, Datenschutz, Betriebsrat, Risik
 Browser (index.html, request.html)
    │  HTTPS, nur zur eigenen Domain (/api)
    ▼
-Vercel Functions  api/health · login · state · admin · public
+Vercel Functions  api/health · ready · login · state · admin · public
+oder Azure App Service (server/azure.mjs, gleiche Endpunkte)
    │  api/_lib: auth.js (Konten, Codes, Sitzungen) · radar.js (Regeln, Sichtbarkeit, Sicherungen, Protokoll)
    ▼
-Speicher-Schicht  api/_lib/db.js: PostgreSQL (empfohlen) · Vercel Blob · SQLite (lokal)
+Speicher-Schicht  api/_lib/db.js: PostgreSQL (empfohlen, auch Azure) · Vercel Blob · SQLite (lokal)
 ```
 
 - **Eine Tabelle** `radar_kv` (Schlüssel, JSON-Wert, Version), gleich in PostgreSQL und SQLite (`db/schema.sql`). Gespeichert wird nur, wenn die Version noch stimmt. Zwei gleichzeitige Änderungen überschreiben sich nicht; die App führt die Stände zusammen.
@@ -114,11 +115,26 @@ Optional: `RADAR_SECRET` (eigener Schlüssel für Sitzungen; sonst erzeugt das B
 
 **Beim ersten Login nach dem Umzug** fragt die App: „Dieser Browser hat schon Daten … In die Datenbank übernehmen“. Damit wandert dein Stand aus dem Browser in die Datenbank. Eine Kopie bleibt im Browser.
 
+## Betrieb auf Azure App Service (mit Deployment Slots)
+
+Für den Betrieb bei CWS läuft dasselbe Repository auch auf Azure App Service, nach den Microsoft-Empfehlungen mit **Staging-Slot**: erst Staging, dort prüfen, dann tauschen. Zurück geht es mit einem zweiten Tausch.
+
+```
+main → Tests → Paket → Slot „staging“ (eigene Datenbank) → Prüfung → Freigabe → Tausch → Produktion
+```
+
+- **Vorlage** `infra/main.bicep`: App Service (Linux, Node.js 22), Staging-Slot, PostgreSQL Flexible Server (Datenbanken `radar` und `radar_staging`), Key Vault für Geheimnisse, privates Netz, Monitoring, Deploy-Identität für GitHub ohne Passwort. Region Frankfurt.
+- **Pipeline** `.github/workflows/azure-app-service.yml`: Tests in Arbeitsspeicher und PostgreSQL, Starttest des Pakets, Staging, Prüfung (`.github/scripts/smoke.sh`), Freigabe in der GitHub-Umgebung `production`, Tausch mit Aufwärmen, Prüfung in Produktion, bei Fehler automatisch zurück. Bleibt aus, bis die Variable `AZURE_WEBAPP_NAME` gesetzt ist.
+- **Start** `server/azure.mjs` (`npm start`): Port von App Service, Komprimierung, HSTS, sauberes Herunterfahren beim Slot-Tausch. **`/api/ready`** antwortet 200 erst, wenn die Datenbank erreichbar ist; darauf warten Health Check und Tausch.
+- **Runbook für die IT** (Einrichtung, Freigabe, Rollback, Betrieb, Sicherheit): [docs/azure-app-service.md](docs/azure-app-service.md)
+
+Vercel deployt `main` weiter, bis die IT umstellt. Die Daten beider Versionen sind getrennt: zum Umziehen in der Vercel-Version „Sichern“, in der Azure-Version „Importieren“.
+
 ## Lokal starten
 
 1. Repository klonen oder als ZIP laden.
 2. `Start-Radar.cmd` doppelklicken oder in Cursor `Strg+Shift+B`. Das Radar öffnet sich unter **http://localhost:8765**.
-3. Der lokale Server (`server/server.mjs`, Node.js ab 22.13) nutzt **dasselbe Backend** wie die Web-Version, mit einer SQLite-Datei `data/radar.sqlite` (nie im Repository). Ohne Konten ist man an diesem Computer automatisch angemeldet; Verwaltung, Tagessicherungen und Protokoll gibt es auch lokal. Ein Stand aus der alten lokalen Version wird beim ersten Start übernommen.
+3. Der lokale Server (`server/server.mjs` bzw. `npm run start:local`, Node.js ab 22.13) nutzt **dasselbe Backend** wie die Web-Version, mit einer SQLite-Datei `data/radar.sqlite` (nie im Repository). Ohne Konten ist man an diesem Computer automatisch angemeldet; Verwaltung, Tagessicherungen und Protokoll gibt es auch lokal. Ein Stand aus der alten lokalen Version wird beim ersten Start übernommen.
 4. Ohne Node.js startet `start.ps1` einen einfachen Webserver; dann bleiben die Daten im Browser. `index.html` lässt sich auch direkt per Doppelklick öffnen.
 
 Lokale Daten und die Web-Version sind getrennt. Zum Umziehen: lokal „Sichern“, online „Importieren“.
@@ -127,8 +143,9 @@ Lokale Daten und die Web-Version sind getrennt. Zum Umziehen: lokal „Sichern�
 
 - `index.html`: die ganze App in einer Datei, ohne Build-Schritt und ohne externe Abhängigkeiten (Schriften, Logo und Icons eingebettet).
 - `request.html`: Anfrageformular, Deutsch mit Umschalter auf Englisch.
-- `api/`: Backend für Vercel (Node.js), Abhängigkeiten `pg` und `@vercel/blob`.
-- `server/server.mjs`, `start.ps1`, `Start-Radar.cmd`: lokaler Betrieb.
+- `api/`: Backend (Node.js), Abhängigkeiten `pg` und `@vercel/blob`. Läuft als Vercel Functions oder über `server/`.
+- `server/app.mjs`: gemeinsamer HTTP-Kern; `server/azure.mjs`: Azure App Service (`npm start`); `server/server.mjs`, `start.ps1`, `Start-Radar.cmd`: lokaler Betrieb (`npm run start:local`).
+- `infra/`, `.github/`: Azure-Vorlage und Pipeline. `tests/`: Backend-Tests (`npm test`).
 - CI wie cws.com/workwear: CWS-Rot `#EA0046`, Gelb `#F9E344`, Schrift Inter, Icons Lucide.
 - Sicherungsformat `{ app, version, exportedAt, projects[], requests[], meta }`. Neue Felder sind immer optional, ältere Sicherungen lassen sich weiter laden.
 

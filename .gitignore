@@ -20,4 +20,4 @@ node_modules/
 *.docx
 !data/Beispiel-Meeting*.vtt
 .vercel
-package-lock.json
+build.json

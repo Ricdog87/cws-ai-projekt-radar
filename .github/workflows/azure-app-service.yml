@@ -1,0 +1,208 @@
+# CWS KI-Projekt-Radar → Azure App Service with a staging deployment slot.
+#
+#   test     every push and pull request: backend tests (in memory and on PostgreSQL 16),
+#            then the package is started exactly as App Service starts it and smoke-tested.
+#   staging  push to main: deploy the package to the "staging" slot (its own database), smoke test.
+#   swap     after approval in the GitHub environment "production": swap staging ↔ production.
+#            App Service warms the new code up against the production settings (/api/ready)
+#            before it switches traffic. Smoke test in production; if it fails, swap back.
+#
+# Stays inactive until the repository variable AZURE_WEBAPP_NAME is set (only tests run).
+# Repository variables: AZURE_WEBAPP_NAME, AZURE_RESOURCE_GROUP, optional AZURE_SWAP_MODE=manual.
+# Repository secrets (no passwords, OpenID Connect): AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID.
+# Setup and rollback: docs/azure-app-service.md
+name: Azure App Service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - request.html
+      - vercel.json
+      - package.json
+      - package-lock.json
+      - api/**
+      - server/**
+      - tests/**
+      - .github/workflows/azure-app-service.yml
+      - .github/scripts/**
+  pull_request:
+    paths:
+      - index.html
+      - request.html
+      - package.json
+      - package-lock.json
+      - api/**
+      - server/**
+      - tests/**
+      - .github/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One release at a time. A newer push waits until the release before it is swapped or rejected.
+concurrency:
+  group: azure-app-service-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  APP: ${{ vars.AZURE_WEBAPP_NAME }}
+  RG: ${{ vars.AZURE_RESOURCE_GROUP }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: radar
+          POSTGRES_PASSWORD: radar
+          POSTGRES_DB: radar_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U radar"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install production dependencies
+        run: npm ci --omit=dev --no-audit --no-fund
+
+      - name: Backend tests (in memory)
+        run: npm test
+
+      - name: Backend tests (PostgreSQL 16)
+        run: npm test
+        env:
+          RADAR_TEST_DATABASE_URL: postgres://radar:radar@localhost:5432/radar_ci
+
+      - name: Build the package
+        run: |
+          printf '{"commit":"%s","builtAt":"%s"}\n' "$GITHUB_SHA" "$(date -u +%FT%TZ)" > build.json
+          zip -q -r -X radar.zip build.json index.html request.html vercel.json package.json package-lock.json api server node_modules
+          ls -l radar.zip
+
+      - name: Start the package like App Service and smoke-test it
+        run: |
+          mkdir -p "$RUNNER_TEMP/pkg"
+          unzip -q radar.zip -d "$RUNNER_TEMP/pkg"
+          cd "$RUNNER_TEMP/pkg"
+          PORT=8080 DATABASE_URL=postgres://radar:radar@localhost:5432/radar_ci RADAR_SLOT=ci node server/azure.mjs > "$RUNNER_TEMP/server.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/server.pid"
+          "$GITHUB_WORKSPACE/.github/scripts/smoke.sh" http://localhost:8080 "$GITHUB_SHA"
+
+      - name: Stop the package
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/server.pid" ]; then kill "$(cat "$RUNNER_TEMP/server.pid")" 2>/dev/null || true; fi
+          if [ -f "$RUNNER_TEMP/server.log" ]; then cat "$RUNNER_TEMP/server.log"; fi
+
+      - uses: actions/upload-artifact@v4
+        if: vars.AZURE_WEBAPP_NAME != '' && github.event_name != 'pull_request'
+        with:
+          name: radar-package
+          path: radar.zip
+          retention-days: 30
+          if-no-files-found: error
+
+  staging:
+    needs: test
+    if: vars.AZURE_WEBAPP_NAME != '' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: staging
+      url: ${{ steps.slot.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: radar-package
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to the staging slot
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          slot-name: staging
+          package: radar.zip
+
+      - id: slot
+        name: Staging address
+        run: echo "url=https://$(az webapp show -g "$RG" -n "$APP" --slot staging --query defaultHostName -o tsv)" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke test on staging
+        run: .github/scripts/smoke.sh "${{ steps.slot.outputs.url }}" "$GITHUB_SHA"
+
+  swap:
+    needs: staging
+    # AZURE_SWAP_MODE=manual: no swap here, IT swaps in the portal (Deployment slots → Swap).
+    if: vars.AZURE_SWAP_MODE != 'manual'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    # Required reviewers on this environment decide when the release goes live.
+    environment:
+      name: production
+      url: ${{ steps.prod.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - id: hosts
+        name: Slot addresses
+        run: |
+          echo "staging=https://$(az webapp show -g "$RG" -n "$APP" --slot staging --query defaultHostName -o tsv)" >> "$GITHUB_OUTPUT"
+          echo "production=https://$(az webapp show -g "$RG" -n "$APP" --query defaultHostName -o tsv)" >> "$GITHUB_OUTPUT"
+
+      - name: Staging still holds this release
+        run: .github/scripts/smoke.sh "${{ steps.hosts.outputs.staging }}" "$GITHUB_SHA"
+
+      - id: swap
+        name: Swap staging into production
+        run: az webapp deployment slot swap -g "$RG" -n "$APP" --slot staging --target-slot production
+
+      - id: prod
+        name: Smoke test in production
+        run: |
+          echo "url=${{ steps.hosts.outputs.production }}" >> "$GITHUB_OUTPUT"
+          .github/scripts/smoke.sh "${{ steps.hosts.outputs.production }}" "$GITHUB_SHA"
+
+      - name: Swap back after a failed check
+        if: failure() && steps.swap.outcome == 'success'
+        run: |
+          echo "::warning::Production check failed. Swapping the previous release back."
+          az webapp deployment slot swap -g "$RG" -n "$APP" --slot staging --target-slot production
+          .github/scripts/smoke.sh "${{ steps.hosts.outputs.production }}"

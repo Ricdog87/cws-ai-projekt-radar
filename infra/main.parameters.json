@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName": { "value": "cws-ki-projekt-radar" },
+    "location": { "value": "germanywestcentral" },
+    "planSku": { "value": "P0v3" },
+    "instanceCount": { "value": 1 },
+    "deployPostgres": { "value": true },
+    "postgresSku": { "value": "Standard_B1ms" },
+    "postgresBackupDays": { "value": 14 },
+    "privateNetwork": { "value": true },
+    "monitoring": { "value": true },
+    "githubRepository": { "value": "Ricdog87/cws-ai-projekt-radar" },
+    "tags": { "value": { "app": "cws-ki-projekt-radar", "owner": "BPM & AI" } }
+  }
+}
